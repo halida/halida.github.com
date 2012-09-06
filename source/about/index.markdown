@@ -15,12 +15,12 @@ footer: true
 兴趣点
 ======
 
--   音乐: 旋律类的都可, 钢琴(正在练, 每天1小时, 持续..一辈子)
 -   经济学fans
 -   科幻奇幻小说迷
 -   编程: c/c++/lisp/lua/delphi/python/ruby/js/coffeescript
 -   系统: linux, emacs
 -   独立游戏: [roguelike](http://en.wikipedia.org/wiki/Roguelike), [Cortex Command](http://blog.linjunhalida.com/blog/cortex_command/), [minecraft](http://blog.linjunhalida.com/blog/minecraft/)
+-   音乐: 旋律类的都可, 钢琴(正在练, 每天1小时, 持续..一辈子)
 
 混迹于
 ======
