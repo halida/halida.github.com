@@ -1,0 +1,15 @@
+
+---
+layout: post
+title: _pyramid初探
+date: 2011-02-24 16:43:14 +0800
+
+comments: true
+categories: 
+---
+
+pyramid是一个继承自pylons的python web框架,
+
+问题:
+
+-   为什么要安装?

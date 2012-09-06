@@ -1,0 +1,99 @@
+
+---
+layout: post
+title: 我们来捐款吧
+date: 2011-03-31 11:49:51 +0800
+
+comments: true
+categories: 
+---
+
+![image](http://www.returntothedeen.org/wp-content/uploads/2010/10/donate_small1.jpg)
+
+从2011/3月起, 我计划开始把我收入的十分之一捐出去, 用来让世界更美好一点.
+
+捐款也不是随便捐的, 有三不捐:
+
+-   不捐给国内政府背景的基金和组织. 这个你知道的.
+-   不捐给我认为对改变世界没有帮助的. 比如某些环保组织,
+    针对老年人的基金. 我认为这些基金对改变世界用处不大. 比如路上的乞丐,
+    这个无助于改变他们的生活, 甚至鼓励他们乞讨.
+-   不捐给太大众的基金, 他们已经有很多人捐了, 不缺我这一份.
+
+然后也有几个指导思想:
+
+-   捐给自己比较了解的领域. 比如wiki, 开源社区. 利用自己的领域知识,
+    让捐助变得更有效.
+-   捐给本地事业和自己生活周边的事情, 改变世界, 从自己周围做起.
+-   捐给未来. 比如给学生买VPN等等.
+
+以上. 欢迎大家都参与这样的事情. 捐款的数量和你的收入成正比,
+如果你的收入少, 比例就少一些. "没钱"从来不是借口.
+
+捐款统计
+========
+
+十分之一收入捐: 500人民币, 70美元
+
+-   2011/03
+
+    -   50$ wikipedia
+    -   (时间到了没成, 已退款) 50$ mike的上海技术咖啡馆
+        [http://gurudigger.com/idea/detail?iid=14417](http://gurudigger.com/idea/detail?iid=14417)
+    -   ¥3,000(日元) 日本红十字 Japanese Red Cross Society
+
+-   2011/04
+
+    -   700 mike的上海技术咖啡馆
+        [http://gurudigger.com/idea/detail?iid=14417](http://gurudigger.com/idea/detail?iid=14417)
+
+-   2011/05
+
+    -   30$
+        [http://www.thedanplan.com/donations.php](http://www.thedanplan.com/donations.php)
+    -   40$ wikipedia
+
+-   2011/06
+
+    -   30 翻墙用VPS
+
+-   2011/07
+
+    -   30 翻墙用VPS
+    -   100$ FSF
+
+-   2011/08
+
+    -   20$ JADE [http://www.adom.de](http://www.adom.de)
+    -   10$
+        [http://gurudigger.com/ideas/36317](http://gurudigger.com/ideas/36317)
+    -   1$
+        [http://gurudigger.com/ideas/36283](http://gurudigger.com/ideas/36283)
+    -   10$
+        [http://gurudigger.com/ideas/36311](http://gurudigger.com/ideas/36311)
+    -   20$
+        [http://gurudigger.com/ideas/36230](http://gurudigger.com/ideas/36230)
+
+-   2011/11
+
+    -   155$ 成为艾未未债主
+
+-   2011/12
+
+    -   300 积木
+        [http://jimudonation.com/project/1](http://jimudonation.com/project/1)
+
+-   2012/1 和 2012/2
+
+    -   120$ FSF
+
+    ![image](http://static.fsf.org/nosvn/associate/fsf-10545.png)
+-   2012/3
+
+    -   300 支持方舟子打假, 愿赛先生, 德先生, 理先生能够来到中国.
+        [http://www.dajiajijin.org/definemenu.asp?id=72](http://www.dajiajijin.org/definemenu.asp?id=72)
+
+-   2012/7
+
+    -   ADOM
+        [http://www.indiegogo.com/resurrect-adom-development?contribution\_success=true&a=843272](http://www.indiegogo.com/resurrect-adom-development?contribution_success=true&a=843272)

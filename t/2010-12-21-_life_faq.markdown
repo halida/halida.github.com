@@ -1,0 +1,10 @@
+
+---
+layout: post
+title: _life_faq
+date: 2010-12-21 21:25:52 +0800
+
+comments: true
+categories: 
+---
+
