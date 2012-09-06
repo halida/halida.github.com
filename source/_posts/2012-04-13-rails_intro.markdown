@@ -2,7 +2,7 @@
 ---
 layout: post
 title: rails介绍
-date: 2012-05-13 20:05:20 +0800
+date: 2012-04-13 20:05:20 +0800
 
 comments: true
 categories: 

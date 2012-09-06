@@ -1,11 +1,10 @@
-
 ---
-layout: post
-title: about
+layout: page
+title: "关于"
 date: 2011-11-09 19:02:11 +0800
-
 comments: true
-categories: 
+sharing: true
+footer: true
 ---
 
 ![image](https://lh6.googleusercontent.com/-phObbT9xpTg/TxZ1j2F0EBI/AAAAAAAAEcc/emsStX8ShTI/s800/s.jpg)
@@ -21,7 +20,7 @@ categories:
 -   科幻奇幻小说迷
 -   编程: c/c++/lisp/lua/delphi/python/ruby/js/coffeescript
 -   系统: linux, emacs
--   独立游戏: roguelike, Cortex Command, minecraft
+-   独立游戏: [roguelike](http://en.wikipedia.org/wiki/Roguelike), [Cortex Command](http://blog.linjunhalida.com/blog/cortex_command/), [minecraft](http://blog.linjunhalida.com/blog/minecraft/)
 
 混迹于
 ======
