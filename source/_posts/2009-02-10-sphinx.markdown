@@ -1,15 +1,12 @@
 
 ---
 layout: post
-title: 旧_用sphinx写文档
-date: 2012-05-01 22:08:26 +0800
+title: 用sphinx写文档
+date: 2009-02-10 22:08:26 +0800
 
 comments: true
 categories: 
 ---
-
--- 发布时间: 2009-02-10
-
 现在的自动文档生成系统很多了，今天我介绍一个：sphinx。sphinx是python官方文档所使用的一套很简单的文档自动生成系统。
 
 官方网站：http://sphinx.pocoo.org/index.html

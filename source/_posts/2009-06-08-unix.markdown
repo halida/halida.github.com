@@ -1,15 +1,12 @@
 
 ---
 layout: post
-title: 旧_unix的哲學
-date: 2012-05-01 22:08:26 +0800
+title: unix的哲學
+date: 2009-06-08 22:08:26 +0800
 
 comments: true
 categories: 
 ---
-
--- 发布时间: 2009-06-08
-
 以前看過UNIX編程藝術一書，里面提到了unix的哲學，以及對應能夠帶來的好處：
 
 問題分解為子問題：

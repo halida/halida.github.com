@@ -1,15 +1,12 @@
 
 ---
 layout: post
-title: 旧_为什么我要用linux
-date: 2012-05-01 22:08:26 +0800
+title: 为什么我要用linux
+date: 2009-02-02 22:08:26 +0800
 
 comments: true
 categories: 
 ---
-
---发布时间： 2009-02-02
-
 因为我要学习编程。
 
 因为emacs。
