@@ -31,17 +31,21 @@ windows等)
 
 stdafx.h:
 
-    #include <string>
-    #include <stdio.h>
+```c
+#include <string>
+#include <stdio.h>
+```
 
 a.cpp:
 
-    #include "stdafx.h"
-    int main(int argc, char**argv)
-    {
-      std::string s = "Hi";
-      return 0;
-    }
+```c
+#include "stdafx.h"
+int main(int argc, char**argv)
+{
+  std::string s = "Hi";
+  return 0;
+}
+```
 
 编译和执行命令:
 
@@ -53,9 +57,9 @@ a.cpp:
 
 实现的原理很简单:
 
-> -   首先把一个stdafx.h头文件,编译成stdafx.h.gch.
-> -   当执行g++
->     a.cpp的时候,g++编译器会先去找stdafx.h.gch,把它包含进来.这样就节省了编译时间.
+-   首先把一个stdafx.h头文件,编译成stdafx.h.gch.
+-   当执行`g++ a.cpp`的时候,g++编译器会先去找stdafx.h.gch， 把它包含进来.这样就节省了编译时间.
+    
 
 如果stdafx.h被很多源文件引用,节省的编译时间是很可观的.
 

@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 我玩的游戏
@@ -22,8 +21,7 @@ adom
 cortex command
 ==============
 
-[Cortex
-Command介绍](http://vps.linjunhalida.com/blog/article/CortexCommand介绍/)
+[Cortex Command介绍](http://vps.linjunhalida.com/blog/article/CortexCommand介绍/)
 
 这款游戏让我通宵了. 完成度不高, 但是能够建设基地, 爽快的射击与杀戮,
 以及物理系统带来的纷飞碎块, 真的让我沉迷了好一阵子.
@@ -32,8 +30,7 @@ Command介绍](http://vps.linjunhalida.com/blog/article/CortexCommand介绍/)
 drawf fortress
 ==============
 
-[Drawf
-fortress介绍](http://vps.linjunhalida.com/blog/article/DwarfFortress介绍/)
+[Drawf fortress介绍](http://vps.linjunhalida.com/blog/article/DwarfFortress介绍/)
 
 又是一款字符界面游戏, 又是建设基地, 多层, 自由活动的矮人,
 随机生成的世界, 操作非常复杂, 以前接触过, 但是在操作面前退步了.

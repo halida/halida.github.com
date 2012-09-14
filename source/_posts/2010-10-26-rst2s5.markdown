@@ -1,33 +1,34 @@
 
 ---
 layout: post
-title: rst2s5
+title: 文本方式写幻灯片
 date: 2010-10-26 14:53:37 +0800
 
 comments: true
 categories: 
 ---
 
-文本方式写幻灯片
-================
-
-Authors
-  ~ 机械唯物主义
-    <[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\>
-
 为什么要用S5?
 -------------
 
--   纯文本
--   html
+- 纯文本
+- html
 
 S5实例
 ------
 
-::
-  ~ <!-- 这是一张slide --\> <div class="slide" id="id1"\> <!--
-    这是slide的标题 --\> <h1\>为什么要用S5?</h1\> <!-- 这是slide的内容
-    --\> <ul\> <li\>纯文本</li\> <li\>html</li\> </ul\> </div\>
+```html
+<!-- 这是一张slide -->
+<div class="slide" id="id1"> 
+    <!-- 这是slide的标题 --> 
+    <h1>为什么要用S5?</h1> 
+    <!-- 这是slide的内容 -->
+    <ul> 
+        <li>纯文本</li> 
+        <li>html</li> 
+    </ul> 
+</div>
+```
 
 rst2s5实例
 ----------
@@ -43,8 +44,7 @@ rst2s5实例
 试用一下
 --------
 
-不多说, [在线rst2s5](http://vps.linjunhalida.com/tools/rst2s5/) :
-[http://server.linjunhalida.com/tools/rst2s5](http://server.linjunhalida.com/tools/rst2s5)/
+不多说, [在线rst2s5](http://vps.linjunhalida.com/tools/rst2s5/) : [http://server.linjunhalida.com/tools/rst2s5](http://server.linjunhalida.com/tools/rst2s5)/
 
 本地生成
 --------
@@ -58,37 +58,32 @@ need docutils:
 如何写rst2s5?
 -------------
 
--   [rst2s5教程](http://docutils.sourceforge.net/docs/user/slide-shows.html)
-    : google rst2s5
+- [rst2s5教程](http://docutils.sourceforge.net/docs/user/slide-shows.html)
 
 写代码
 ------
 
 代码:
 
-    from docutils.core import publish_string
+```python
+from docutils.core import publish_string
 
-    overrides = {'theme': '',
-                 'theme_url': '/statics/S5/ui/small-white',}
+overrides = {'theme': '',
+             'theme_url': '/statics/S5/ui/small-white',}
 
-    def rst2S5(string):
-        return publish_string(
-            source=string,
-            settings_overrides=overrides,
-            writer_name='s5')
+def rst2S5(string):
+    return publish_string(
+        source=string,
+        settings_overrides=overrides,
+        writer_name='s5')
+```
 
 资源
 ----
 
--   [在线rst2s5](http://vps.linjunhalida.com/tools/rst2s5/):
-    [http://vps.linjunhalida.com/tools/rst2s5](http://vps.linjunhalida.com/tools/rst2s5)/
--   [slide工具列表](http://en.wikipedia.org/wiki/Category:Presentation_software/):
-    [http://en.wikipedia.org/wiki/Category:Presentation\_software](http://en.wikipedia.org/wiki/Category:Presentation_software)/
--   [rst2s5教程](http://docutils.sourceforge.net/docs/user/slide-shows.html):
-    [http://docutils.sourceforge.net/docs/user/slide-shows.html](http://docutils.sourceforge.net/docs/user/slide-shows.html)
--   [ReST快速入门](http://docutils.sourceforge.net/docs/user/rst/quickref.html):
-    [http://docutils.sourceforge.net/docs/user/rst/quickref.html](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
--   [S5](http://meyerweb.com/eric/tools/s5/):
-    [http://meyerweb.com/eric/tools/s5](http://meyerweb.com/eric/tools/s5)/
--   [docutils](http://docutils.sourceforge.net/):
-    [http://docutils.sourceforge.net](http://docutils.sourceforge.net)/
+- [在线rst2s5](http://vps.linjunhalida.com/tools/rst2s5/)
+- [slide工具列表](http://en.wikipedia.org/wiki/Category:Presentation_software/)
+- [rst2s5教程](http://docutils.sourceforge.net/docs/user/slide-shows.html)
+- [ReST快速入门](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
+- [S5](http://meyerweb.com/eric/tools/s5/)
+- [docutils](http://docutils.sourceforge.net/)

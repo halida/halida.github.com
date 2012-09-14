@@ -8,13 +8,6 @@ comments: true
 categories: 
 ---
 
-reStructuredText介绍
-====================
-
-Authors
-  ~ 机械唯物主义
-    <[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\>
-
 什么是reStructuredText?
 -----------------------
 

@@ -47,6 +47,7 @@ categories:
 [http://code.google.com/p/smallgtd](http://code.google.com/p/smallgtd)/
 
 ![image](http://lh5.ggpht.com/_os_zrveP8Ns/SU9BeZiEWUI/AAAAAAAAC4g/AunMpJk4_FY/temp.png)
+
 无论从什么角度上看，都不能说是一个成品，更别说和商业作品相比了，文档什么的更别说。
 
 为什么我不完善？我不知道别人怎么样，我自己的感觉就是，程序编出来后，我再也不想看代码了，有种恶心的感觉。

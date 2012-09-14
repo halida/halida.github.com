@@ -22,17 +22,21 @@ categories:
 
 制作自解压程序的方法是:
 
-    7z a -sfx7z.sfx [自解压程序名] [需要压缩的文件]
+```sh
+7z a -sfx7z.sfx 自解压程序名 需要压缩的文件
+```
 
 7-zip还可以用来把一堆文件制作成一个单独的exe文件，方法是用7-zip的制作安装包的功能，选定一个解压后自动运行的程序：
 
 先把文件压缩起来。
 
-再运行 copy /b 7zS.sfx + config.txt + [用7-zip压缩后的文件名]
-[可执行文件名]
+再运行
 
-7zS.sfx可以从
-http://prdownloads.sourceforge.net/sevenzip/（7-zip的下载地址）
+```sh
+copy /b 7zS.sfx  config.txt  用7-zip压缩后的文件名 可执行文件名
+```
+
+7zS.sfx可以从 [7-zip的下载地址](http://prdownloads.sourceforge.net/sevenzip/)
 里面的extra包（比如7z457\_extra.7z）里面得到，这是一个7-zip用来做安装程序的模块，
 上面语句的原理是直接把config.txt
 和压缩文件附到这个7zS.sfx后面，就成为一个exe文件了。

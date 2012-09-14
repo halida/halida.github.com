@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: sphinx介绍
@@ -7,18 +6,11 @@ date: 2010-12-19 19:17:22 +0800
 comments: true
 categories: 
 ---
-
-reStructuredText介绍
-====================
-
-Authors
-  ~ 机械唯物主义
-    <[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\>
-
 什么是sphinx?
 -------------
 
-![image](http://www.openerofways.com/images/essays/sphinx.jpg)
+![image](http://www.crystalinks.com/sphinx.jpg)
+
 它有什么特性?
 -------------
 
@@ -91,15 +83,15 @@ Authors
 
 sphinx-build
 
-> $ sphinx-build -b html sourcedir builddir
+    $ sphinx-build -b html sourcedir builddir
 
 make
 
-> $ make html
+    $ make html
 
 资源
 ----
 
-官方文档
+官方文档 [http://sphinx.pocoo.org](http://sphinx.pocoo.org)
 
-> [http://sphinx.pocoo.org](http://sphinx.pocoo.org)/
+
