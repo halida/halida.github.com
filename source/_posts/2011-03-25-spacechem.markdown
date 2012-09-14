@@ -9,7 +9,7 @@ categories:
 ---
 
 什么是spacechem?
-================
+------------------------------
 
 ![image](http://www.spacechemthegame.com/images/header1.jpg)
 独立游戏. linux下可玩. 编程类型游戏. 考智商. 音乐很好听.
@@ -41,7 +41,7 @@ categories:
 估计你快晕了吧...
 
 哪里有下?
-=========
+------------------------------
 
 官方网址:
 [http://www.spacechemthegame.com](http://www.spacechemthegame.com)/

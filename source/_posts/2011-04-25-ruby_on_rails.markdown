@@ -13,7 +13,7 @@ categories:
 最近有项目要用到ruby on rails, 于是下载了书, 看了一段时间.
 
 具体学习方法
-============
+------------------------------
 
 根据专家意见, 直接看ruby on rails guide.
 
@@ -21,7 +21,7 @@ categories:
 (前提是web程序员)
 
 个人感觉
-========
+------------------------------
 
 -   ror哲学是convention over configuration, 就是约定大于配置.
     比如默认约定xxx/是指向xxx/index,

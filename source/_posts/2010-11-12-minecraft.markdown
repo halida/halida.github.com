@@ -50,7 +50,7 @@ categories:
 > 97块人民币, 在线帐号, 至少3个月不腻, 值了!
 
 爽点在哪里?
-===========
+------------------------------
 
 -   一个随机生成的世界
 -   你可以很简单地建造
@@ -66,12 +66,12 @@ categories:
 -   可以在浏览器内打开(java写的)
 
 如何开始?
-=========
+------------------------------
 
 可以看 [wiki](http://minecraftwiki.net/) , 里面有详细的帮助.
 
 我的minecraft设置
-=================
+------------------------------
 
 为了增强游戏性, 增加了不少的东西, 不定时更新
 
@@ -101,7 +101,7 @@ minecraft修改
 但我在ubuntu下面, 只有MCPlayerEdit最好用, 因为是python的.
 
 搭建minecraft服务器
-===================
+------------------------------
 
 [如何搭建官方服务器](http://www.minecraftwiki.net/wiki/Server)
 
@@ -110,7 +110,7 @@ minecraft修改
 -   [McMyAdmin](http://minecraftwiki.net/wiki/McMyAdmin)
 
 ubuntu下面注意!
-===============
+------------------------------
 
 因为minecraft是用java写的, 会和ibus输入法冲突(找了半天才知道),
 造成无法输入键盘命令, 玩之前需要
@@ -118,7 +118,7 @@ ubuntu下面注意!
     pkill ibus
 
 资源
-====
+------------------------------
 
 -   [官方网站](http://minecraft.net)
 -   [官方论坛](http://www.minecraftforum.net/index.php)

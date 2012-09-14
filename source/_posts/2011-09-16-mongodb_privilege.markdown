@@ -14,7 +14,7 @@ categories:
 以及mongodb自带的密码验证(key验证等有需求的时候再研究)
 
 iptable限制访问资源
-===================
+------------------------------
 
 服务器完全开放mongodb, 通过iptables来限制访问.
 
@@ -30,7 +30,7 @@ iptables -A INPUT -p tcp --dport 27017 -j DROP
 设置完毕后, 安装iptables-persistent 保证重启后iptables还是有效.
 
 mongodb权限管理
-===============
+------------------------------
 
 有的时候还是需要限制权限, 方法整理如下:
 

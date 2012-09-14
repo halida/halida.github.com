@@ -11,7 +11,7 @@ categories:
 ![image](http://tech.chitgoks.com/wp-content/uploads/2009/07/ruby_rails.png)
 
 安装rvm
-=======
+------------------------------
 
 首先, 安装源里面的ruby, git, curl等依赖
 
@@ -64,7 +64,7 @@ rvm use 1.9.3 --default
 ```
 
 安装rails
-=========
+------------------------------
 
 gem安装即可
 
@@ -73,7 +73,7 @@ gem install rails
 ```
 
 mysql设置
-=========
+------------------------------
 
 rails默认db是sqlite, 为了调试, 也可能整成mysql的,
 这里也加上mysql方面的设置方式.
@@ -118,7 +118,7 @@ grant all privileges on test.* to tester;
 ```
 
 postgresql设置
-==============
+------------------------------
 
 我们也可以设置采用postgresql。
 
@@ -141,7 +141,7 @@ EOF
 好了, 现在东西都已经可以用了, 开始干活吧.
 
 issues
-======
+------------------------------
 
 如果sqlite安装出现问题, 需要
 

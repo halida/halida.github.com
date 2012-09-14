@@ -11,7 +11,7 @@ categories:
 这里整理一下rails deploy的几种方法.
 
 Passenger
-=========
+------------------------------
 
 首先是最简单的采用 [Phusion
 Passenger](http://www.modrails.com/documentation.html),

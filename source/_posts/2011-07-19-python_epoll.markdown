@@ -19,7 +19,7 @@ categories:
 [在这里下载](http://scotdoyle.com/python-epoll-examples.tar.gz).
 
 介绍
-====
+------------------------------
 
 从2.6版本开始, [python](http://www.python.org/) 提供了使用linux
 [epoll](http://linux.die.net/man/4/epoll) 的功能.
@@ -100,7 +100,7 @@ categories:
 > finally: 24 serversocket.close()
 
 异步socket和linux epoll的优势
-=============================
+------------------------------
 
 第2个例子里面的socket采用的是阻塞方式,
 因为python解释器在出现事件之前都处在停止状态. 16行的accept()一直阻塞,
@@ -139,7 +139,7 @@ poll和epoll. epoll和poll比select性能更好,
 伸缩性更强的机制. [图示](http://lse.sourceforge.net/epoll/index.html).
 
 采用epoll的异步socket编程示例
-=============================
+------------------------------
 
 采用epoll的程序一般这样操作:
 
@@ -296,7 +296,7 @@ mask用来设置边沿触发.
 当用到这个选项的时候, 事件只有效一次, 之后会自动从监控的注册列表中移除.
 
 性能考虑
-========
+------------------------------
 
 Listen Backlog Queue Size
 
@@ -408,7 +408,7 @@ TCP Options
 > serversocket.close()
 
 源码
-====
+------------------------------
 
 本程序的源码属于共有领域,
 [在这里下载](http://scotdoyle.com/python-epoll-examples.tar.gz).

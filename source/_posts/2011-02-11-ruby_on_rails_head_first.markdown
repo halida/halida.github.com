@@ -13,14 +13,14 @@ categories:
 好吧, 昨天看了一下ruby, 今天就要来看看ruby on rails了.
 
 哲学
-====
+------------------------------
 
 -   DRY: 不写重复的东西
 -   约定取代设置: rails假定了你要做的事情, 而不是你自己设置一切.
 -   REST方式.
 
 教程
-====
+------------------------------
 
 这里是一篇
 [rails教程](http://guides.rubyonrails.org/getting_started.html#guide-assumptions),
@@ -28,7 +28,7 @@ categories:
 这里就不再重复.
 
 整体架构
-========
+------------------------------
 
 ![image](http://dedicatedwebserverhosting.co.uk/Images/Tools%20for%20Ruby%20on%20Rails-2.png)
 如上图, rails采用MVC架构. 进来的http请求,
@@ -36,7 +36,7 @@ categories:
 然后controller把数据交给view(app/views)渲染返回.
 
 特性
-====
+------------------------------
 
 自动代码生成
 ------------
@@ -78,7 +78,7 @@ class PostsController < ApplicationController
 把复杂度隐藏到framework里面了, 不好说是好事还是坏事.
 
 结论
-====
+------------------------------
 
 按照上面的教程走了一遍, 个人感觉:
 

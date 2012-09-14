@@ -9,7 +9,7 @@ categories:
 ---
 
 什么是ipython
-=============
+------------------------------
 
 python里面的一个杀手级应用就是它的解释器,
 我们可以利用这个解释器来完成一些日常的工作, 比如计算器, 字符串处理,
@@ -22,7 +22,7 @@ ipython的目标是成为一个全方位的交互性和探索计算的平台,
 它的特性已经足够好到替换掉python自带的那个解释器了. 下面为大家介绍.
 
 如何安装
-========
+------------------------------
 
 先把ipython装起来吧. ubuntu下面: .. code-block:: sh
 
@@ -32,7 +32,7 @@ ipython的目标是成为一个全方位的交互性和探索计算的平台,
 [安装文档](http://ipython.scipy.org/doc/stable/html/install/install.html#installing-ipython-itself)
 
 ipython好在哪里?
-================
+------------------------------
 
 列出一些我觉得好用的东西:
 
@@ -119,7 +119,7 @@ ipython -p sh
 来获取介绍信息.
 
 emacs + ipython
-===============
+------------------------------
 
 作为emacs控, 所有东西都要整合到emacs里面去. 根据 [emacs
 python文档](http://www.emacswiki.org/emacs/PythonProgrammingInEmacs#toc10)
@@ -143,7 +143,7 @@ python文档](http://www.emacswiki.org/emacs/PythonProgrammingInEmacs#toc10)
 所以只要require它就可以了.
 
 相关资源
-========
+------------------------------
 
 -   \`ipython\`\_ 官方网站
 -   [文档](http://ipython.scipy.org/doc/stable/html/)

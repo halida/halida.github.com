@@ -17,7 +17,7 @@ categories:
 rails的测试框架用得比较多的是rspec.
 
 rspec的原理
-===========
+------------------------------
 
 我们有一段代码:
 
@@ -59,7 +59,7 @@ should的写法可以去看
 这一块不太容易懂, 需要看看.
 
 factory\_girl
-=============
+------------------------------
 
 factory\_girl是取代rails默认生成测试数据的yml格式的一种写法, 原生ruby,
 写起来比较舒服和能够嵌入ruby代码.
@@ -83,7 +83,7 @@ user = FactoryGirl.build(:user)
 [https://github.com/thoughtbot/factory\_girl/blob/master/GETTING\_STARTED.md](https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md)
 
 rspec和rails整合
-================
+------------------------------
 
 上面是rspec做测试的部分, 下面我们看如何和rails整合. 其实文档都全了,
 我觉得大家还是直接去看官方的文档就好:
@@ -93,7 +93,7 @@ rspec和rails整合
 重点是测试的几个类型.
 
 rspec加上spork
-==============
+------------------------------
 
 rspec跑一遍下来超级慢, 于是就有了 [spork](http://spork.rubyforge.org/)
 这样的东西. 原理就是先跑一个服务器, 加载好对应的环境.
@@ -108,14 +108,14 @@ rspec跑一遍下来超级慢, 于是就有了 [spork](http://spork.rubyforge.or
 -   跑测试. 执行rspec --drb
 
 配置
-====
+------------------------------
 
 这里有别人贴出来的配置, 还是挺复杂的, 需要搞搞清楚. 但是搞清楚了,
 开发起来你会发现非常舒服(前提是你的机器够好...)
 [https://gist.github.com/1191428](https://gist.github.com/1191428)
 
 一些资料
-========
+------------------------------
 
 rspec书籍:
 [http://pragprog.com/book/achbd/the-rspec-book](http://pragprog.com/book/achbd/the-rspec-book)

@@ -11,7 +11,7 @@ categories:
 ![image](http://www.clickonf5.org/wp-content/uploads/2009/12/InternetAccessVPN_thumb.png)
 
 什么是VPN
-=========
+------------------------------
 
 简单地说, VPN就是, 网络上面一台主机, 建立了一个虚拟的网络.
 然后我们的电脑登录上去, 加入到这个虚拟的网络里面来.
@@ -27,7 +27,7 @@ categories:
     就是我们说的翻墙.
 
 windows下面设置方法
-===================
+------------------------------
 
 这里有一个教程:
 [http://netfee.ustc.edu.cn/ylxia/help/faq/faq\_howtosetupvpn\_winxp.htm](http://netfee.ustc.edu.cn/ylxia/help/faq/faq_howtosetupvpn_winxp.htm)

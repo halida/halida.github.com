@@ -21,13 +21,13 @@ categories:
 [http://joneslee85.wordpress.com/2010/03/13/howto-nginx-wordpress-ubuntu-shortest-setup](http://joneslee85.wordpress.com/2010/03/13/howto-nginx-wordpress-ubuntu-shortest-setup)/
 
 原理
-====
+------------------------------
 
 nginx把网站导向到wordpress安装目录, 对于php文件, 采用fastcgi的方式,
 导向到一个php-fastcgi服务器上面处理.
 
 具体安装过程
-============
+------------------------------
 
 新建一个wordpress nginx配置文件: /etc/nginx/site-avariable/wordpress
 

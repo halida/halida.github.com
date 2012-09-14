@@ -11,7 +11,7 @@ categories:
 ![image]( http://www.deltat.com/uploaded/inline_pipe_heater_from_Convectronics.JPG)
 
 什么是pipe?
-===========
+------------------------------
 
 在python里面实现命令行的pipe功能, 比如
 
@@ -42,7 +42,7 @@ categories:
 个人觉得这个东西完全可以扩展到python核心模块中去了.
 
 pipe是如何实现的?
-=================
+------------------------------
 
 官方网站:
 [https://github.com/JulienPalard/Pipe](https://github.com/JulienPalard/Pipe)

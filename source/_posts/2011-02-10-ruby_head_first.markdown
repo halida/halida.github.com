@@ -11,7 +11,7 @@ categories:
 ![image](http://www.ruby-lang.org/images/logo.gif)
 
 python和ruby的区别
-==================
+------------------------------
 
 python经常被拿来和ruby做比较, 他们都是动态脚本语言,
 在应用场景上面也非常相似. 我们听到的, 它们之间广为认知的区别是:
@@ -79,7 +79,7 @@ ruby
 我们还是通过示例来看看ruby的特质.
 
 ruby特质
-========
+------------------------------
 
 下面的内容取自 [the ruby programming
 language](http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177).
@@ -195,14 +195,14 @@ s # => "hmolo"
 ruby里面, 只有false和nil是假, 0和""都是为真, 需要注意.
 
 如何学习ruby
-============
+------------------------------
 
 直接去 \`ruby看官方文档\` 吧. 当然, 作者写的书: [the ruby programming
 language](http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177)
 是深入了解ruby的基础, 和K&R对C的重要性一样.
 
 结论
-====
+------------------------------
 
 花了一下午的时间熟悉ruby, 学习前, 感觉ruby会很繁杂,
 以及会有"有了python干嘛学习ruby"的想法. 真正开始学了之后,

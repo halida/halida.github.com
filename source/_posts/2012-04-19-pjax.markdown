@@ -11,7 +11,7 @@ categories:
 ![image](http://webification.com/wp-content/uploads/2011/03/pjaxascii.png)
 
 什么是pjax?
-===========
+------------------------------
 
 现在很多网站([facebook](https://twitter.com/),
 [twitter](https://twitter.com/))都支持这样的一种浏览方式，
@@ -33,7 +33,7 @@ pjax项目地址在
 链接都是变成了ajax刷新。
 
 为什么要用pjax?
-===============
+------------------------------
 
 pjax有好几个好处：
 
@@ -72,7 +72,7 @@ pjax有好几个好处：
 **我强烈推荐大家使用。**
 
 如何使用pjax?
-=============
+------------------------------
 
 直接看 [官方文档](https://github.com/defunkt/jquery-pjax) 就可以了。
 
@@ -83,7 +83,7 @@ pjax有好几个好处：
 [django的支持](https://github.com/jacobian/django-pjax) 。
 
 pjax的原理
-==========
+------------------------------
 
 为了能够处理问题， 我们需要能够理解pjax的运作方式。
 pjax的代码只有一个文件：
@@ -223,7 +223,7 @@ options.beforeSend = function(xhr, settings) {
 ```
 
 结论
-====
+------------------------------
 
 既然都看到这里了， 你为什么不去实际使用一下pjax呢？ 有那么多好处，
 我觉得几乎所有网站都应该采用pjax。 赶紧用起来吧！

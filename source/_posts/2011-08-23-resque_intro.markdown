@@ -11,7 +11,7 @@ categories:
 ![image](https://a248.e.akamai.net/assets.github.com/img/7744a8503993132e8a14c79be38e3724c6564fa2/687474703a2f2f696d672e736b697463682e636f6d2f32303130303131312d6b6d326635676d747062713233656e70756a6272756a366d676b2e706e67)
 
 resque
-======
+------------------------------
 
 resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能,
 来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合.
@@ -43,7 +43,7 @@ decode redis.lpop("queue:#{queue}")
 ```
 
 resque-scheduler
-================
+------------------------------
 
 resque-scheduler是基于resque的一个计划任务插件, 简单地说,
 就是能够利用它来做一些定时和定时循环的任务. 项目主页:
@@ -84,7 +84,7 @@ end
 enqueue\_delayed\_items\_for\_timestamp比较复杂, 就不贴了.
 
 结论
-====
+------------------------------
 
 基本上resque的逻辑很直观, 和想象中的一样. resque-scheduler就不一样了.
 复杂很多.

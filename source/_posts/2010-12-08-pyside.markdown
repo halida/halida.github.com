@@ -9,19 +9,19 @@ categories:
 ---
 
 什么是pyside?
-=============
+------------------------------
 
 \`pyside\`\_ 是一个Qt4在python下面的绑定, 是PyQt4的取代.
 它和PyQt4不同的地方是, 支持商业闭源应用, 以及是Qt4官方支持的.
 
 pyside现在状况怎么样?
-=====================
+------------------------------
 
 第一个beta版本已于2010/12/26释放. 处于火热开发中. pyside是完全跟进qt的.
 beta里面带有qml的支持.
 
 如何获取pyside?
-===============
+------------------------------
 
 如果你用ubuntu, 加一下ppa的源就好了. 网址:
 [https://launchpad.net/\~pyside/+archive/ppa](https://launchpad.net/~pyside/+archive/ppa)
@@ -31,7 +31,7 @@ beta里面带有qml的支持.
 也可以去clone \`pyside源码库\`\_.
 
 尝试pyside
-==========
+------------------------------
 
 我们通过几个示例来看pyside的状况:
 
@@ -113,14 +113,14 @@ pyside可以和qml一起使用, 不过我对qml不熟悉,
 里面关于declarative的部分.
 
 结论
-====
+------------------------------
 
 经过测试, pyside现在大致可用, 不过在一些地方会有bug, 现在是beta版本,
 根据这个态势, 很快就能稳定了. 如果因为pyqt价格问题观望的同学,
 现在可以下手pyside了, 也可以当当小白鼠, 为开源社区做点贡献(从我做起吧).
 
 资源
-====
+------------------------------
 
 -   [pyside](http://www.pyside.org/) 官方网站
 -   [pyside文档](http://developer.qt.nokia.com/wiki/PySideDocumentation/)

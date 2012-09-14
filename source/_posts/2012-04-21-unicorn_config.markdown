@@ -11,20 +11,20 @@ categories:
 ![image](http://i.imgur.com/hYztb.png)
 
 什么是unicorn?
-==============
+------------------------------
 
 [unicorn](http://unicorn.bogomips.org/) 是ruby下面的一个基于Rack的HTTP
 server. 类似的工具有 passenger, thin 等。
 
 unicorn简单的使用方式
-=====================
+------------------------------
 
 在你的rails项目下面， 直接执行下面的代码就可以了
 
     unicorn_rails
 
 unicorn的原理
-=============
+------------------------------
 
 它的工作模式是master/worker多进程模式。 简单地说，
 首先建立一个master进程， 然后fork出来worker进程。
@@ -37,7 +37,7 @@ worker进程处理进来的请求， master负责管控， 当worker消耗内存
 [https://github.com/blog/517-unicorn](https://github.com/blog/517-unicorn)
 
 unicorn详细配置
-===============
+------------------------------
 
 一般来说， 按照这个架构方式:
 
@@ -146,12 +146,12 @@ end
 不过我还没有评测过。
 
 性能和易用性
-============
+------------------------------
 
 没有评测过， 等我有时间的时候考虑一下。
 
 结论
-====
+------------------------------
 
 听说rails的初学者去用passenger， 熟悉了一些之后会用unicorn，
 我对为什么要用它并没有什么太多的感受。 听说应该是它的可配置性，
