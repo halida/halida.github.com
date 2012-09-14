@@ -8,7 +8,7 @@ comments: true
 categories: 
 ---
 
-![image](http://cdn.softsailor.com/wp-content/uploads/2010/09/Qt-.png)
+![image](http://hopf.chem.brandeis.edu/yanglingfa/pic/Qt_logostrap_CMYK.png)
 
 很多python开发人员, 在选择界面库的时候都会犹豫一段时间, 到底是选择tk,
 wxpython, pygtk, pyqt, 还是什么其他奇怪的解决方案. 这里, 我建议,

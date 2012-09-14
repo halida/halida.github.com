@@ -11,7 +11,6 @@ categories:
 什么是纯文本
 ------------------------------
 
-![image](http://anthrologico.com/wp-content/uploads/2010/11/plaintext.png)
 我们所说的纯文本, 有几层含义:
 
 任何信息, 都采用文本的方式来展示
@@ -85,21 +84,7 @@ categories:
 
 为了能够实践我们纯文本主义, 我们需要有强大的工具作为支持:
 
-[reStructuredText](http://docutils.sourceforge.net/rst.html)
-
-> 这是我们的主要文档编写工具. 适合人编写和阅读,
-> 也可以很容易地转变为其他需要的格式.
-
-[S5](http://s5project.org/)
-
-> 文本方式写幻灯片. S5本身是html的, 为了能够深刻实践纯文本主义,
-> 我们建议你采用
-> [rst2s5](http://docutils.sourceforge.net/docs/user/slide-shows.html).
-
-[graphviz](http://www.graphviz.org/)
-
-> 文本方式画图. 文本方式编写图的结构和显示, 没有再适合的了.
-
-[csv](http://en.wikipedia.org/wiki/Comma-separated_values)
-
-> 表格. 单一的符号以及回车符分割开具体的数据, csv非常适合阅读和修改.
+- [reStructuredText](http://docutils.sourceforge.net/rst.html) 这是我们的主要文档编写工具. 适合人编写和阅读, 也可以很容易地转变为其他需要的格式.
+- [S5](http://s5project.org/) 文本方式写幻灯片. S5本身是html的, 为了能够深刻实践纯文本主义, 我们建议你采用 [rst2s5](http://docutils.sourceforge.net/docs/user/slide-shows.html).
+- [graphviz](http://www.graphviz.org/) 文本方式画图. 文本方式编写图的结构和显示, 没有再适合的了.
+- [csv](http://en.wikipedia.org/wiki/Comma-separated_values) 表格. 单一的符号以及回车符分割开具体的数据, csv非常适合阅读和修改.

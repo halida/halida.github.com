@@ -12,6 +12,7 @@ categories:
 ------------------------------
 
 ![image](http://lh4.ggpht.com/_os_zrveP8Ns/TQrJ7IXV-_I/AAAAAAAADOU/AFzkVbp1W_8/s800/101118-Caribou-web.jpg)
+
 我们的客户端程序庞大, 笨重, 更为严重的是, 当我们的程序发布给用户之后,
 如果没有问题还好, 遇到了bug, 修改很成问题.
 如何把更新后的程序发布给用户呢? 很多项目在做架构的时候,
