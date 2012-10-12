@@ -3,7 +3,7 @@ layout: post
 title: "FTL游戏评测"
 date: 2012-10-05 16:05
 comments: true
-categories: 
+categories: game
 ---
 
 ![image](http://i.imgur.com/bkIoK.jpg)
