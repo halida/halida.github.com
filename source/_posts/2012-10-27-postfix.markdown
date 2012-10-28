@@ -1,0 +1,82 @@
+---
+layout: post
+title: "postfix架构初探"
+date: 2012-10-27 23:57
+comments: true
+categories: 技术
+---
+
+![image](https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&do=get&target=PostfixComponentsNw.gif)
+
+最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。 
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。
+
+什么是postfix
+----------------------------------
+简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。
+
+![image](http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg)
+
+但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：
+
+- [postfix介绍文章](http://www.linuxjournal.com/article/9454)
+- [ubuntu basic setup的文章](https://help.ubuntu.com/community/PostfixBasicSetupHowto)
+
+如何配置
+----------------------------------
+我发现[ubuntu的配置文档](https://help.ubuntu.com/community/Postfix)已经非常全了， 可以安装上面来配置。
+邮件系统的用户和密码， 默认是采用unix的用户和密码， 但是很多时候我们的邮件系统是和真正的系统用户分开的， 
+这个时候我们需要[设置Virtual Mailbox](https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto)，
+postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要另外安装dovecot， 前面的教程里面有具体的安装方法。
+
+邮件流程
+----------------------------------
+为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：
+
+**邮件是如何从外面发送进来， 被客户端接收的**
+
+外面的服务器会通过smtp发送邮件， postfix服务器会响应, 然后最后保存到本地的邮件目录存放地上面。
+
+**邮件是如何通过客户端， 发送给其他邮件的。**
+
+通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。
+
+postfix也提供一个命令行的工具sendmail来[在本地发送邮件](http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/)。
+
+**如何验证用户**
+
+devocot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。
+
+**具体的邮件本地缓存位置，配置文件和进程。**
+
+- 邮件本地存储的目录， 见postfix配置参数`virtual_mailbox_base`。
+- postfix配置目录在`/etc/postfix`
+- dovecot配置目录`/etc/dovecot`
+- 里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 `/var/log/mail.log`
+- postfix master进程 `/usr/lib/postfix/master`， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。
+- dovecot进程 `/usr/sbin/dovecot`， 用户验证进程 `dovecot-auth`， 还有以dovecot为用户的一些pop/imap服务器。
+
+更进一步的需求
+----------------------------------
+前面做的事情只是比较基本的一些， 如果要成为生产环境， 还是需要一些其他的事情：
+
+* 用户管理系统
+* spam过滤
+* 保证自己不被当作spam
+
+很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。
+
+2012-10-26问题整理
+----------------------------------
+本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：
+
+- 不是很懂postfix， 看文档
+- pop服务器不知道是什么， 最后看postfix设置才知道是dovecot
+- 跑起来后发现没有起来pop， 安装dovecot-pop3d
+- 用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。
+
+回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。
