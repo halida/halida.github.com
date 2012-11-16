@@ -21,7 +21,7 @@ adom
 cortex command
 ------------------------------
 
-[Cortex Command介绍](http://vps.linjunhalida.com/blog/article/CortexCommand介绍/)
+[Cortex Command介绍](http://blog.linjunhalida.com/blog/cortex-command/)
 
 这款游戏让我通宵了. 完成度不高, 但是能够建设基地, 爽快的射击与杀戮,
 以及物理系统带来的纷飞碎块, 真的让我沉迷了好一阵子.
@@ -30,7 +30,7 @@ cortex command
 drawf fortress
 ------------------------------
 
-[Drawf fortress介绍](http://vps.linjunhalida.com/blog/article/DwarfFortress介绍/)
+[Drawf fortress介绍](http://blog.linjunhalida.com/blog/DwarfFortress-intro/)
 
 又是一款字符界面游戏, 又是建设基地, 多层, 自由活动的矮人,
 随机生成的世界, 操作非常复杂, 以前接触过, 但是在操作面前退步了.
@@ -39,6 +39,8 @@ drawf fortress
 
 minecraft
 ------------------------------
+
+[minecraft介绍](http://blog.linjunhalida.com/blog/minecraft/)
 
 随机生成的世界, 完全自由建设, 合成系统, 晚上的怪物, 铁路,
 作者赚了几百万欧元.

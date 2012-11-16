@@ -5,3 +5,7 @@
 ## markdown help
 
 http://en.wikipedia.org/wiki/Markdown
+
+image:
+
+    [!image](url)

@@ -11,7 +11,7 @@ categories:
 ![image](http://www.soso5u.com/uploads/allimg/110628/20592551S-1.jpg)
 
 上次我们讨论了
-[如何改变一个人](http://blog.linjunhalida.com/article/如何改变一个人),
+[如何改变一个人](http://blog.linjunhalida.com/blog/how-to-change-yourself/),
 主要靠训练和洗脑. 那么从现在开始, 我整理一些训练的技术.
 假设我们决定好了通过训练改变自己, 比如, 我们希望养成天天锻炼的习惯.
 那么我们如何开始, 以及如何保证训练能够进行下去呢?

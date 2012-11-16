@@ -53,7 +53,7 @@ categories:
 ------------------------------
 
 本文就是采用纯文本方式编辑的, 原始文件可以在
-[这里](https://bitbucket.org/linjunhalida/blog/src/tip/为什么要用纯文本.rst)
+[这里](https://bitbucket.org/linjunhalida/blog/src/tip/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%AF%E6%96%87%E6%9C%AC.rst)
 看到.
 
 为什么要用纯文本

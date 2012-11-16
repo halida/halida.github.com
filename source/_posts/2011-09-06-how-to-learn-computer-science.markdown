@@ -11,7 +11,7 @@ categories:
 ![image](http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-171-software-engineering-for-web-applications-fall-2003/6-171f03.jpg)
 
 在
-[计算机领域学习路线图](http://blog.linjunhalida.com/article/计算机领域学习路线图)
+[计算机领域学习路线图](http://blog.linjunhalida.com/blog/CS-roadmap/)
 里面, 我们知道了需要做的事情, 那么我们如何开始呢?
 这里面是一个总的路线规划.
 
