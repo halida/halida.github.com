@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>hujs活动整理和总结2 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="第二天 第二天的演讲： James Halliday， 87年的， browserling 的作者，
+讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/hujs-2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hujs活动整理和总结2</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://i.imgur.com/vAQgj.jpg" alt="image" /></p>
+
+<h2>第二天</h2>
+
+<p>第二天的演讲：</p>
+
+<p><a href="https://github.com/substack">James Halliday</a>， 87年的， <a href="https://browserling.com/">browserling</a> 的作者，
+讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。
+这个项目非常有用， 而他肢体语言给人的感觉， 和我以前遇到的一些年轻的技术天才也很类似。</p>
+
+<p>下面是node-webkit的当前开发和维护者<a href="https://github.com/zcbenz">小型笨蛋/赵成</a>， 现在他在Intel专职做这个项目。
+基本上是把node整合到webkit里面， 让js能够通过node的API访问本地资源， 然后提供一个打包的工具， 做成客户端。
+现在用到它的一些项目是把html5的游戏本地化。 我觉得， 优势是跨平台发布应用程序， 以后有这样的需求可以考虑用它。 当然如果是复杂UI客户端， 我觉得还是用有很多强大控件的Qt比较好。</p>
+
+<p>然后是JEFFSU介绍的如何用node.js来做服务器监控平台系统的。 算是一个nodejs的实际应用案例。 因为用到了长连接broadcast之类的东西。</p>
+
+<p>然后是来自网易的谢骋超/圈圈套圈圈讲的NODE.JS游戏服务器开发， 他们team应该是做一个原型验证， 看看nodejs是否适合在游戏服务器开发上面应用。
+这个应该算是node做的比较大的项目了吧， 效果也很不错， 能够支持同一个场景上千玩家同时在线。 看来以后会兴起一波用nodejs架设游戏服务器的潮流了。</p>
+
+<p>然后进入下午场。下午场的几个主题， 我没有认真听， 内容上面也没有什么好说的了。
+在白天场结束后， 需要统计最后一天hackthon参加的人数。 尽管有Glenn在台上拼命激励大家来参加， 结果实际来参加的人还是比较少。
+我感觉， 如果是国外开发者的话， 基本上都是全部参加的。 国内没有流行这样的文化， 不过我觉得会越来越好的， 只是时间问题。</p>
+
+<p>还有一个晚上的party活动， 在<a href="http://factual.com">factual</a>他们的公司场地里面进行。</p>
+
+<h2>晚上party</h2>
+
+<p>晚上的party， 有准备给我们小食， BBQ， 和啤酒， 然后就是大家随意聊天。 我感觉非常好，
+和来自github的一位员工， 应该是<a href="https://github.com/vmg">vmg</a>吧， 交换了关于中国程序员为什么不乐于分享的一些看法，
+问了James他怎么把url贴到浏览器地址栏里面的， 以及和各位做技术的人聊各种各样技术人感兴趣的事情。</p>
+
+<h2>hackthon</h2>
+
+<p>最后一天是全天的hackthon， 我本来想参加， 结果有其他事情， 只能过来看看就走了。 也没有什么好多说的， 和其他hackthon也差不多。</p>
+
+<h2>总结</h2>
+
+<p>这几天我觉得自己的收获有以下几点：</p>
+
+<ul>
+<li>对nodejs在业界的使用有了一定的了解， 看起来已经有很多人在用它了， 也有很多部署到生产环境的例子。</li>
+<li>了解了nodejs的特性和适用场景， 以后在长连接， 高吞吐性能的领域， 它将是我的第一选择。</li>
+<li>认识了不少做node的人和公司。</li>
+<li>在party上面和外国的开发者用英语交流， 增加了我对于英语口语使用的信心。</li>
+<li>体验了国际水平的活动组织， 演讲技巧， 主持技巧。 可以作为素材借鉴。</li>
+</ul>
+
+
+<p>总之， 对于我来说， 参加这几天的会议是非常值得的。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/hujs-2/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/hujs-2/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/hujs-1/" title="Previous Post: hujs活动整理和总结1">&laquo; hujs活动整理和总结1</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/coffeescript-class/" title="Next Post: coffeescript里面的类机制">coffeescript里面的类机制 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/hujs-2/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/hujs-2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>电脑是如何实现图形显示的 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="今天去 hacking thursday 的活动,
+听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
+整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下. 我们先从显示器说起. 显示器负责真正把图像呈现给我们,
+一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/GUI-under-the-hood/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">电脑是如何实现图形显示的</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T16:04:16+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>今天去 <a href="http://www.shlug.org/?page_id=523">hacking thursday</a> 的活动,
+听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
+整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下.</p>
+
+<p>我们先从显示器说起. 显示器负责真正把图像呈现给我们,
+一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号, 数字的一般用
+<a href="http://en.wikipedia.org/wiki/Digital_Visual_Interface">DVI</a>, 模拟的一般
+<a href="http://en.wikipedia.org/wiki/VGA_connector">VGA</a> 的接口.
+传给显示器的数据不神奇, 就是图像数据流,
+每个点拆分成RGB红绿蓝3原色的数值表示. VGA还要带的是 horizontal sync,
+vertical sync, 这个是水平和垂直扫描率, 就是每秒钟横竖扫描多少条,
+就是我们说的屏幕分辨率再乘上没秒钟屏幕的刷新率. 这个数据丢给显示器,
+显示器里面也有CPU, 负责控制屏幕把这样的数据显示出来,
+也可能对这个数据做一点微调什么的,
+比如我们显示器一般都有的对颜色位置亮度饱和度的调整.</p>
+
+<p>要传给显示器的数据量是非常巨大的(根据屏幕尺寸),
+也需要不断地传数据给显示器. 具体负责这些操作的是显卡.
+现代的显卡要做相当多的事情. 不止是不间断地发送视频,
+还会有渲染(3d游戏场景的渲染主要工作是交给显卡来做的),
+视频数据解码等工作.
+与上层的接口一般是通过显卡来读取特定的内存区块(DMA等方式)来实现.
+简单地说, 告诉显卡, 主内存里面一个区块存放了需要显示的数据,
+然后显卡自己过来取数据, 上层应用定时往这个内存区块放数据.</p>
+
+<p>显卡会有自己的一些做事情的方式, 对于上层应用来说, 这些都是实现细节,
+不需要知道. 显卡厂商会把功能抽象成opengl的API,
+然后上层应用就调用这样的API即可. 在linux里面,
+Xwindow做的事情就是提供一个server/client的接口, 具体接口还是opengl.</p>
+
+<p>然后我们到了更上层的gnome/kde, 它们是提供关于窗口绘制的api,
+再往上面就是应用程序了, 调用gui的库来设置控件, 交互什么的.</p>
+
+<p>如果上层应用需要直接发送显示的东西怎么办? 比如视频.
+这个时候调用opengl的api, 申请一块内存区,
+把渲染好的特定数据结构的图像放到这个内存区,
+然后用opengl通知下层显示即可. 上层应用的进程需要控制刷新率,
+一秒30桢的话就要刷30次, 如果应用是一个播放器的话, 可能需要多个线程,
+一个线程用来做用户交互, 一个线程用来刷屏幕, 一个线程用来处理数据编码.
+显卡也可以做解码的工作, 播放器可以控制显卡来解码,
+这样显卡直接解码后写到显卡的缓存区块里面去.</p>
+
+<p>具体技术细节非常复杂, 但是对于我来说, 对整体的过程有一个概念即可.
+知道了原理就行了.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T16:04:16+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/GUI-under-the-hood/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/GUI-under-the-hood/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/Metaprogramming-Ruby/" title="Previous Post: Metaprogramming_Ruby学习笔记">&laquo; Metaprogramming_Ruby学习笔记</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/people-square-english-corner/" title="Next Post: 人民广场英语角参加小记">人民广场英语角参加小记 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/GUI-under-the-hood/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/GUI-under-the-hood/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

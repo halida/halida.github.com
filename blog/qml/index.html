@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>qml介绍 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="QML 今天去看Qt的最新进展, 发现: Qt 4.7 已于2010年九月份发布了,
+里面带有一个全新的写GUI的方式: QML. 具体相关的介绍, 在
+Qt4.7官方文档 上面有
+QML介绍
+. 我花了半个晚上的时间来学习
+QML的教程 ,
+发现真的不错. 下面是 `QML的教程`_ 里面的内容 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/qml/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Qml介绍</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-24T21:35:12+08:00" pubdate data-updated="true">Nov 24<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>QML</h2>
+
+<p>今天去看Qt的最新进展, 发现: Qt 4.7 已于2010年九月份发布了,
+里面带有一个全新的写GUI的方式: QML.</p>
+
+<p>具体相关的介绍, 在
+<a href="http://doc.qt.nokia.com/4.7-snapshot/index.html">Qt4.7官方文档</a> 上面有
+<a href="http://doc.qt.nokia.com/4.7-snapshot/qdeclarativeintroduction.html">QML介绍</a>
+. 我花了半个晚上的时间来学习
+<a href="http://doc.qt.nokia.com/4.7-snapshot/qml-tutorial.html">QML的教程</a> ,
+发现真的不错.</p>
+
+<p>下面是 `QML的教程`_ 里面的内容, 我稍微介绍一下.</p>
+
+<h2>示例1</h2>
+
+<p>简单点说, QML就是以定义的方式来写界面, 格式很像CSS. 一个简单的示例代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//首先引入相关的模块</span>
+</span><span class='line'><span class="kr">import</span> <span class="nx">QtQuick</span> <span class="mf">1.0</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Rectangle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">id</span><span class="o">:</span> <span class="nx">page</span>
+</span><span class='line'>    <span class="nx">width</span><span class="o">:</span> <span class="mi">500</span><span class="p">;</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">200</span>
+</span><span class='line'>    <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;lightgray&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Text</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">helloText</span>
+</span><span class='line'>        <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Hello world!&quot;</span>
+</span><span class='line'>        <span class="nx">y</span><span class="o">:</span> <span class="mi">30</span>
+</span><span class='line'>        <span class="nx">anchors</span><span class="p">.</span><span class="nx">horizontalCenter</span><span class="o">:</span> <span class="nx">page</span><span class="p">.</span><span class="nx">horizontalCenter</span>
+</span><span class='line'>        <span class="nx">font</span><span class="p">.</span><span class="nx">pointSize</span><span class="o">:</span> <span class="mi">24</span><span class="p">;</span> <span class="nx">font</span><span class="p">.</span><span class="nx">bold</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里面定义了一个Rectangle(其实就是方块啦)作为背景, 上面再加了一个Text.
+注意, Text的位置是通过设定anchors的方法来定位的.</p>
+
+<p>显示的效果就是:</p>
+
+<p><img src="http://doc.qt.nokia.com/4.7-snapshot/images/declarative-tutorial1.png" alt="image" /></p>
+
+<h2>示例2</h2>
+
+<p>QML能够自己定义对象类型, 比如,新建一个文件Cell.qml:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="nx">QtQuick</span> <span class="mf">1.0</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Item</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">id</span><span class="o">:</span> <span class="nx">container</span>
+</span><span class='line'>    <span class="nx">property</span> <span class="nx">alias</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="nx">rectangle</span><span class="p">.</span><span class="nx">color</span>
+</span><span class='line'>    <span class="nx">signal</span> <span class="nx">clicked</span><span class="p">(</span><span class="nx">color</span> <span class="nx">cellColor</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">width</span><span class="o">:</span> <span class="mi">40</span><span class="p">;</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">25</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Rectangle</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">rectangle</span>
+</span><span class='line'>        <span class="nx">border</span><span class="p">.</span><span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;white&quot;</span>
+</span><span class='line'>        <span class="nx">anchors</span><span class="p">.</span><span class="nx">fill</span><span class="o">:</span> <span class="nx">parent</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">MouseArea</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">anchors</span><span class="p">.</span><span class="nx">fill</span><span class="o">:</span> <span class="nx">parent</span>
+</span><span class='line'>        <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">clicked</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">cellColor</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里面定义了一个Cell类型, 它里面有一个Rectangle,
+以及一个MouseArea(后面再说).</p>
+
+<p>我们可以定义新的属性:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">property</span> <span class="nx">alias</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="nx">rectangle</span><span class="p">.</span><span class="nx">color</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个属性只是Rectangle颜色的别名.</p>
+
+<p>也可以定义新的事件:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">signal</span> <span class="nx">clicked</span><span class="p">(</span><span class="nx">color</span> <span class="nx">cellColor</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>MouseArea是用来做用户交互的,
+我们把它的onClicked事件和我们定义的clicked事件绑定起来:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MouseArea</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'>    <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">clicked</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">cellColor</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样, 当用户点击Cell之后, 就会触发clicked事件,
+这个事件附带Cell方块的颜色作为参数.</p>
+
+<p>我们定义了一个Cell之后, 如何使用呢? 这里是使用Cell的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="nx">QtQuick</span> <span class="mf">1.0</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Rectangle</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">id</span><span class="o">:</span> <span class="nx">page</span>
+</span><span class='line'>    <span class="nx">width</span><span class="o">:</span> <span class="mi">500</span><span class="p">;</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">200</span>
+</span><span class='line'>    <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;lightgray&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Text</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">helloText</span>
+</span><span class='line'>        <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Hello world!&quot;</span>
+</span><span class='line'>        <span class="nx">y</span><span class="o">:</span> <span class="mi">30</span>
+</span><span class='line'>        <span class="nx">anchors</span><span class="p">.</span><span class="nx">horizontalCenter</span><span class="o">:</span> <span class="nx">page</span><span class="p">.</span><span class="nx">horizontalCenter</span>
+</span><span class='line'>        <span class="nx">font</span><span class="p">.</span><span class="nx">pointSize</span><span class="o">:</span> <span class="mi">24</span><span class="p">;</span> <span class="nx">font</span><span class="p">.</span><span class="nx">bold</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Grid</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">colorPicker</span>
+</span><span class='line'>        <span class="nx">x</span><span class="o">:</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">anchors</span><span class="p">.</span><span class="nx">bottom</span><span class="o">:</span> <span class="nx">page</span><span class="p">.</span><span class="nx">bottom</span><span class="p">;</span> <span class="nx">anchors</span><span class="p">.</span><span class="nx">bottomMargin</span><span class="o">:</span> <span class="mi">4</span>
+</span><span class='line'>        <span class="nx">rows</span><span class="o">:</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">columns</span><span class="o">:</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">spacing</span><span class="o">:</span> <span class="mi">3</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;green&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;steelblue&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>        <span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;black&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>效果如下:</p>
+
+<p><img src="http://doc.qt.nokia.com/4.7-snapshot/images/declarative-tutorial2.png" alt="image" />
+别看上面那些代码那么多, 其实都是些图块的定义. 功能就是,
+点击上面一堆Cell其中的一个, 就会改变Hello world的颜色. 如何做到的呢?
+只要定义Cell的onClicked事件引发后, 对应执行的代码就好了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Cell</span> <span class="p">{</span> <span class="nx">cellColor</span><span class="o">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">;</span> <span class="nx">onClicked</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="nx">cellColor</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>示例3</h2>
+
+<p>QML最神奇的地方是, 能够定义效果, 比如实现这个:</p>
+
+<p><img src="http://doc.qt.nokia.com/4.7-snapshot/images/declarative-tutorial3_animation.gif" alt="image" />
+当鼠标点击hello world的时候, 就会出现上面的动画.</p>
+
+<p>核心代码是这个:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Text</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Hello world!&quot;</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">MouseArea</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">mouseArea</span><span class="p">;</span> <span class="nx">anchors</span><span class="p">.</span><span class="nx">fill</span><span class="o">:</span> <span class="nx">parent</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">states</span><span class="o">:</span> <span class="nx">State</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">;</span> <span class="nx">when</span><span class="o">:</span> <span class="nx">mouseArea</span><span class="p">.</span><span class="nx">pressed</span> <span class="o">==</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="nx">PropertyChanges</span> <span class="p">{</span> <span class="nx">target</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">;</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">160</span><span class="p">;</span> <span class="nx">rotation</span><span class="o">:</span> <span class="mi">180</span><span class="p">;</span> <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;red&quot;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">transitions</span><span class="o">:</span> <span class="nx">Transition</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">from</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="nx">to</span><span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">;</span> <span class="nx">reversible</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="nx">ParallelAnimation</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">NumberAnimation</span> <span class="p">{</span> <span class="nx">properties</span><span class="o">:</span> <span class="s2">&quot;y,rotation&quot;</span><span class="p">;</span> <span class="nx">duration</span><span class="o">:</span> <span class="mi">500</span><span class="p">;</span> <span class="nx">easing</span><span class="p">.</span><span class="nx">type</span><span class="o">:</span> <span class="nx">Easing</span><span class="p">.</span><span class="nx">InOutQuad</span> <span class="p">}</span>
+</span><span class='line'>            <span class="nx">ColorAnimation</span> <span class="p">{</span> <span class="nx">duration</span><span class="o">:</span> <span class="mi">500</span> <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>先定义一个MouseArea, 捕捉用户点击的事件</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">MouseArea</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">mouseArea</span><span class="p">;</span> <span class="nx">anchors</span><span class="p">.</span><span class="nx">fill</span><span class="o">:</span> <span class="nx">parent</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后定义一个Hello world翻转的状态, 当mouseArea被点击的时候,
+就会把自己变成翻转的状态.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">states</span><span class="o">:</span> <span class="nx">State</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">;</span> <span class="nx">when</span><span class="o">:</span> <span class="nx">mouseArea</span><span class="p">.</span><span class="nx">pressed</span> <span class="o">==</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="nx">PropertyChanges</span> <span class="p">{</span> <span class="nx">target</span><span class="o">:</span> <span class="nx">helloText</span><span class="p">;</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">160</span><span class="p">;</span> <span class="nx">rotation</span><span class="o">:</span> <span class="mi">180</span><span class="p">;</span> <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;red&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当然, 现在的话点击之后, 就会立刻把hello world翻转过来,
+我们要定义一个效果</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">transitions</span><span class="o">:</span> <span class="nx">Transition</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 这个效果是为从初始状态变为down状态而设定的</span>
+</span><span class='line'>    <span class="nx">from</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="nx">to</span><span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 并且这个效果是双向的, down变回初始状态也会反过来执行这样的效果.</span>
+</span><span class='line'>    <span class="nx">reversible</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 好了, 这里具体定义效果是什么. ParallelAnimation是说同时进行若干效果</span>
+</span><span class='line'>    <span class="nx">ParallelAnimation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 转换方向</span>
+</span><span class='line'>        <span class="nx">NumberAnimation</span> <span class="p">{</span> <span class="nx">properties</span><span class="o">:</span> <span class="s2">&quot;y,rotation&quot;</span><span class="p">;</span> <span class="nx">duration</span><span class="o">:</span> <span class="mi">500</span><span class="p">;</span> <span class="nx">easing</span><span class="p">.</span><span class="nx">type</span><span class="o">:</span> <span class="nx">Easing</span><span class="p">.</span><span class="nx">InOutQuad</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 变色</span>
+</span><span class='line'>        <span class="nx">ColorAnimation</span> <span class="p">{</span> <span class="nx">duration</span><span class="o">:</span> <span class="mi">500</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过这样定义的方式来写GUI, 是不是很清晰明了?</p>
+
+<h2>结论</h2>
+
+<p>我原先接触过WPF, 也是定义的方式来做的, 现在看到Qt也支持了, 感到蛮欣慰的.
+我现在使用pyqt, 听说pyside的snapshot里面已经支持qml了,
+期待稳定版本的发布.</p>
+
+<p>看到网站上面有对应的截图, 个人猜测他们会把QML的内容整合到web上面.
+QML是支持javascript的, 具体内容可在
+<a href="http://doc.qt.nokia.com/4.7-snapshot/qml-advtutorial.html">深入教程</a>
+里面, 可以看看.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-24T21:35:12+08:00" pubdate data-updated="true">Nov 24<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/qml/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/qml/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/why-qt-is-for-you/" title="Previous Post: 为什么qt是最适合你的">&laquo; 为什么qt是最适合你的</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/qwt-intro/" title="Next Post: qwt介绍与使用">qwt介绍与使用 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/qml/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/qml/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

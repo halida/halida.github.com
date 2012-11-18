@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>pyqt_animation_framework - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="Qt animation framework介绍 传统的GUI界面, 一般是静态的, 按钮就是按钮, 不会到处乱蹦,
+不过现在这个时代, 冷冰冰的界面不是很吸引人. Qt 4.6里面带有新的animation
+framework, 就可以帮助我们完成让界面&#8221;动起来&#8221;的工作 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/pyqt-animation-framework/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Pyqt_animation_framework</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-30T09:14:01+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Qt animation framework介绍</h2>
+
+<p>传统的GUI界面, 一般是静态的, 按钮就是按钮, 不会到处乱蹦,
+不过现在这个时代, 冷冰冰的界面不是很吸引人. Qt 4.6里面带有新的animation
+framework, 就可以帮助我们完成让界面&#8221;动起来&#8221;的工作.</p>
+
+<h2>系统架构</h2>
+
+<p><img src="http://doc.qt.nokia.com/4.7/images/animations-architecture.png" alt="image" />
+上面是Qt支持动画的所有类的继承关系列表, 最主要的有几个:</p>
+
+<ul>
+<li><p><a href="http://doc.qt.nokia.com/4.7/qpropertyanimation.html">QPropertyAnimation</a>
+类负责具体的动画效果,
+它可以通过设置QWidget属性(property)的方式来完成动画.</p></li>
+<li><p><a href="http://doc.qt.nokia.com/4.7/qanimationgroup.html">QAnimationGroup</a>,
+用来把不同的动画拼在一起, 实现连续和复杂的动画效果.</p></li>
+</ul>
+
+
+<p>具体我们看实际的代码吧.</p>
+
+<h2>示例1: 一个简单的动画</h2>
+
+<p>正如上面所说的, `QPropertyAnimation`_ 负责动画, 这里一个简单的示例,
+控制一个按钮移动. 代码如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 动来动去的按钮</span>
+</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;Button&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">button</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 生成一个动画, 它会修改button的geometry属性</span>
+</span><span class='line'><span class="n">animation</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 动画时间是10秒</span>
+</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setDuration</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 开始的位置</span>
+</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setStartValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</span><span class='line'><span class="c"># 结束的位置</span>
+</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setEndValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</span><span class='line'><span class="c"># 开始吧</span>
+</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单吧? 它默认是以恒定速度运动的, 可以通过设置
+<a href="http://doc.qt.nokia.com/4.7/qvariantanimation.html#easingCurve-prop">easyCurve</a>
+来设置运动的类型, 比如先加速后减速什么的, 很方便.</p>
+
+<h2>示例2: 分组</h2>
+
+<p>上面只是一个普通的动作, 如果我们需要做一组复杂的动作的话, 就要用
+`QAnimationGroup`_ 来组织. 有2种group,
+QParallelAnimationGroup和QtSequentialAnimationGroup, 一个平行动作,
+一个顺序动作. 这个示例设置无数个按钮淡入到窗口中. 上代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#生成一堆按钮, 不同的初始位置</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">pbs</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">pb</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pb</span><span class="o">.</span><span class="n">move</span><span class="p">((</span><span class="n">i</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span> <span class="o">%</span> <span class="mi">600</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">pbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pb</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 建立一个平行执行的动作组</span>
+</span><span class='line'><span class="n">ag</span> <span class="o">=</span> <span class="n">QParallelAnimationGroup</span><span class="p">()</span>
+</span><span class='line'><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbs</span><span class="p">:</span>
+</span><span class='line'>    <span class="c"># 对于每个按钮, 都生成一个进入的动作</span>
+</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setDuration</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setEasingCurve</span><span class="p">(</span><span class="n">QEasingCurve</span><span class="o">.</span><span class="n">OutQuad</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setStartValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">w</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">w</span><span class="o">.</span><span class="n">height</span><span class="p">()))</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setEndValue</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">geometry</span><span class="p">())</span>
+</span><span class='line'>    <span class="c"># 添加到组里面去</span>
+</span><span class='line'>    <span class="n">ag</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ag</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其实简单点说, 只要把要动作的animation添加到group里面, 然后start就好了.</p>
+
+<h2>示例3: 状态机</h2>
+
+<p>Qt本身提供一个状态机的功能, 和animation结合起来,
+可以很方便地完成我们想要的工作. 毕竟, 不同状态的切换,
+才是界面运动的本质. 这个示例演示一个按钮, 点击后会在两个位置之间移动.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">dlg</span> <span class="o">=</span> <span class="n">QDialog</span><span class="p">()</span>
+</span><span class='line'><span class="n">dlg</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;Button&quot;</span><span class="p">,</span> <span class="n">dlg</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们先生成一个状态机</span>
+</span><span class='line'><span class="n">machine</span> <span class="o">=</span> <span class="n">QStateMachine</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 然后给状态机加上几个状态:</span>
+</span><span class='line'><span class="c"># 不同状态下, button的位置是不同的.</span>
+</span><span class='line'><span class="n">state1</span> <span class="o">=</span>  <span class="n">QState</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span>
+</span><span class='line'><span class="n">state1</span><span class="o">.</span><span class="n">assignProperty</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">,</span> <span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</span><span class='line'><span class="n">state2</span> <span class="o">=</span>  <span class="n">QState</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span>
+</span><span class='line'><span class="n">state2</span><span class="o">.</span><span class="n">assignProperty</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">,</span> <span class="n">QRect</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</span><span class='line'><span class="n">machine</span><span class="o">.</span><span class="n">setInitialState</span><span class="p">(</span><span class="n">state1</span><span class="p">)</span> <span class="c"># 初始状态是哪个</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 然后, 我们需要设置状态变化的转换方式.</span>
+</span><span class='line'><span class="n">transition1</span> <span class="o">=</span> <span class="n">state1</span><span class="o">.</span><span class="n">addTransition</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">clicked</span><span class="p">,</span> <span class="n">state2</span><span class="p">)</span>
+</span><span class='line'><span class="n">transition2</span> <span class="o">=</span> <span class="n">state2</span><span class="o">.</span><span class="n">addTransition</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">clicked</span><span class="p">,</span> <span class="n">state1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 把动作加到转换方式里面去</span>
+</span><span class='line'><span class="n">an</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">transition1</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">an</span><span class="p">)</span>
+</span><span class='line'><span class="n">an2</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">transition2</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">an2</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 设置完了, 开始吧.</span>
+</span><span class='line'><span class="n">machine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'><span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>就是这么简单..</p>
+
+<h2>资源</h2>
+
+<p>如果你安装了Qt4.6以上版本, 可以在assistant-qt4里面搜索the animation
+framework看具体的文档, 也可以看 `在线版本
+&lt;<a href="http://doc.qt.nokia.com/4.7/animation-overview.html">http://doc.qt.nokia.com/4.7/animation-overview.html</a>>`.
+上面的例子都是脱胎于这个文档的.</p>
+
+<p>Qt附带有几个好玩的示例, 在qt example下面的animation目录下面.
+pyqt也是一样.</p>
+
+<p>上面我写的的几个示例代码, 可以在这里下载到:
+<a href="http://bitbucket.org/linjunhalida/code-example/src/tip/animation">http://bitbucket.org/linjunhalida/code-example/src/tip/animation</a>/</p>
+
+<h2>结论</h2>
+
+<p>Qt animation framework已经出来那么久了, 我现在才真正去学习它,
+是有点晚了, 后面的QML都出来的时候, 现在再来看是否有点不合时宜?
+但是看着Qt演变的过程, 还是有意义的. 有时间的话, 我去看看它实现的原理,
+能不能从中借鉴点什么.</p>
+
+<p>PS: pythonxy里面的pyqt还是4.5, 没有带有animation framework, 郁闷.
+不好把功能加到公司项目里面去了.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-30T09:14:01+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/pyqt-animation-framework/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/pyqt-animation-framework/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/qwt-intro/" title="Previous Post: qwt介绍与使用">&laquo; qwt介绍与使用</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ipython/" title="Next Post: ipython">ipython &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/pyqt-animation-framework/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/pyqt-animation-framework/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

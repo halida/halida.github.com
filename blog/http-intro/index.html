@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>http_介绍 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="HTTP是什么就不说了, 大家都知道.
+这篇文章对HTTP实现方式的相关内容做一个整理, 满足大家的窥私欲望. 用户如何利用HTTP 先不管HTTP下面是如何实现的, 我们看看上层: 对于用户而言,
+HTTP的使用很简单: 打开一个浏览器, 输入网址, 比如:
+http://www. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/http-intro/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Http_介绍</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-09T10:46:21+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://perl.apache.org/docs/2.0/user/handlers/http_cycle.gif" alt="image" /></p>
+
+<p>HTTP是什么就不说了, 大家都知道.
+这篇文章对HTTP实现方式的相关内容做一个整理, 满足大家的窥私欲望.</p>
+
+<h2>用户如何利用HTTP</h2>
+
+<p>先不管HTTP下面是如何实现的, 我们看看上层: 对于用户而言,
+HTTP的使用很简单: 打开一个浏览器, 输入网址, 比如:
+<a href="http://www.example.com">http://www.example.com</a>, 然后按回车,
+浏览器就打开了一个界面. 整体工作逻辑就是</p>
+
+<pre><code>发出网址(URL) --&gt; 服务器传回网站内容 --&gt; 浏览器显示界面
+</code></pre>
+
+<p>我们理清接口(不用去管浏览器渲染的部分):</p>
+
+<p>输入
+  ~ 用户给本地的一个程序URL信息</p>
+
+<p>输出
+  ~ 服务器返回状态, 以及HTML内容</p>
+
+<h2>HTTP通讯过程</h2>
+
+<p>HTTP是如何实现上面的目标的呢? HTTP直接利用TCP连接, 并且通讯模式很简单,
+客户端发出一个请求, 服务器给出一个响应. 并且这个通讯过程是纯文本的.</p>
+
+<p>我们看一个实际的例子, 通过telnet来直接看看HTTP是如何通讯的:</p>
+
+<p>首先连接目标服务器, 80端口是HTTP协议的默认端口.</p>
+
+<pre><code>halida@halida-desktop:~$ telnet tonycode.com 80
+Trying 67.205.49.228...
+Connected to tonycode.com.
+Escape character is '^]'.
+</code></pre>
+
+<p>telnet连接上之后, 我们发出请求.</p>
+
+<pre><code>GET / HTTP/1.1
+Host: tonycode.com
+</code></pre>
+
+<p>&#8220;GET&#8221;是HTTP请求的方法, &#8220;/&#8221;是获取资源的目录,
+&#8220;HTTP/1.1&#8221;标示采用的是什么HTTP协议版本. &#8220;Host&#8221;行代表的是HTTP header,
+请求附带的一些其他信息. cookie, 页面缓存等. 具体可见: `HTTP headers`</p>
+
+<p>最后输入2行回车, 表示请求内容发送完毕.</p>
+
+<p>下面是接收到的内容</p>
+
+<pre><code>HTTP/1.1 200 OK
+</code></pre>
+
+<p>200是状态码, 表示&#8230;就是上面的OK, 请求处理完成.</p>
+
+<pre><code>Date: Wed, 09 Feb 2011 01:06:45 GMT
+Server: Apache
+Last-Modified: Wed, 21 Apr 2010 15:49:54 GMT
+ETag: "71de2eb-bce-484c1252b6c80"
+Accept-Ranges: bytes
+Content-Length: 3022
+Vary: Accept-Encoding
+Content-Type: text/html
+</code></pre>
+
+<p>然后就是返回的一串 `HTTP header`, 里面含有返回内容的信息等.</p>
+
+<p>最后是正文了, 就是我们喜闻乐见的HTML文档了(太长就不显示出来了)</p>
+
+<pre><code>&lt;!DOCTYPE html&gt; ...
+</code></pre>
+
+<p>整体过程就是那么简单. 更多的细节在 `HTTP` wiki文档.</p>
+
+<h2>状态码</h2>
+
+<p>不是每次请求都是200 OK的, 这里面列出一些常见的状态码:</p>
+
+<p>200 OK
+  ~ 没什么好说的.</p>
+
+<p>400 Bad Request
+  ~ 请求有问题.</p>
+
+<p>404 Not Found
+  ~ 最常见的错误, 无法在服务器上找到对应的资源.</p>
+
+<p>403 Forbidden
+  ~ 服务器禁止访问此资源.</p>
+
+<p>其他的见: <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">status code
+wiki页面</a></p>
+
+<h2>连接状态</h2>
+
+<p>HTTP/0.9, HTTP/1.0都是请求/响应后立刻断开,
+HTTP/1.1里面可以同一个TCP连接使用多次,
+以减小多次重复连接带来的资源消耗和延迟.</p>
+
+<h2>cookies</h2>
+
+<p>HTTP协议本身是无状态的, 一个请求一个响应, 就是那么简单.
+但是很多时候我们需要记录状态, 比如用户登录等功能. 一般比较常用的是采用
+<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> 的方式实现.</p>
+
+<p>简单点说, 当客户端发出一个请求后, 服务器返回的HTTP header里面会带有一个</p>
+
+<pre><code>Set-Cookie: name=value; name2=value2
+</code></pre>
+
+<p>的段, 然后客户端会把这个字符段缓存下来, 下次请求的时候,
+就会在自己的header里面带上</p>
+
+<pre><code>Cookie: name=value; name2=value2
+</code></pre>
+
+<p>就是这么简单. 其他一些技术细节, 比如cookie的作用时间和范围, 见
+<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> wiki介绍.</p>
+
+<h2>HTTPS</h2>
+
+<p>HTTP本身是明文的, 非常不安全. 为了解决这方面的问题, 就有了HTTPS.</p>
+
+<p>简单地说, HTTPS和HTTP的区别在于, 不是使用TCP作为连接方式,
+而是采用SSL的方式来做连接, 上层应用层是没有多少变化的,
+传输的时候数据做了加密, 以及连接到服务器的时候,
+会有一套验证机制保证服务器是真正的服务器.</p>
+
+<p>具体还是见 `HTTPS` 的wiki界面.</p>
+
+<h2>结论</h2>
+
+<p>HTTP协议很简单优雅, 或许是这样的简单优雅才承载起来一个庞大的web世界.
+对它的掌握是web程序员必备的基础,
+之后才能更好地理解在此之上的很多精妙应用.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-09T10:46:21+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/http-intro/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/http-intro/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/hackers-and-painters/" title="Previous Post: 黑客与画家">&laquo; 黑客与画家</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ruby-head-first/" title="Next Post: ruby初探">ruby初探 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/http-intro/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/http-intro/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
