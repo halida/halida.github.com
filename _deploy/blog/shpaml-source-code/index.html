@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>shpaml源码分析 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="在上次已经
+介绍过shpaml,
+它的代码总共只有365行, 既然这么一点代码, 没有理由不分析分析它的具体实现. 首先, 代码可以在这里看到:
+http://shpaml.webfactional.com/source_code 首先是入口出的代码: 1
+2
+3
+4
+5
+6
+7
+8
+if &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/shpaml-source-code/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Shpaml源码分析</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-20T21:43:59+08:00" pubdate data-updated="true">Feb 20<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在上次已经
+<a href="http://server.linjunhalida.com/blog/article/shpaml%E4%BB%8B%E7%BB%8D/">介绍过shpaml</a>,
+它的代码总共只有365行, 既然这么一点代码, 没有理由不分析分析它的具体实现.</p>
+
+<p>首先, 代码可以在这里看到:
+<a href="http://shpaml.webfactional.com/source_code">http://shpaml.webfactional.com/source_code</a></p>
+
+<p>首先是入口出的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="c"># if file name is given convert file, else convert stdin</span>
+</span><span class='line'>    <span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">shpaml_text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">shpaml_text</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">convert_text</span><span class="p">(</span><span class="n">shpaml_text</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里面是实现以下3种语法的功能, 太简单就不说了:</p>
+
+<blockquote><p>python -c &#8220;import shpaml; shpaml.convert_text()&#8221; echo &#8216;b | foo&#8217; |
+python shpaml.py touch test.shpaml; python shpaml.py test.shpaml</p></blockquote>
+
+<p>然后, 从convert_text函数,
+一直深入调用到了indent_lines函数(外面的几层都是包装), 这个才是重心.</p>
+
+<p>我们知道, html是树状的, 输入的shpaml格式的文档本质上也是树状的.
+我们需要把shpaml按照树状的方式解析出来,
+同时对分析出来的数据做处理(加&lt;>以及结尾加&lt;/tag>).</p>
+
+<p>简单地介绍下代码里面的处理方式. 程序内嵌一个recurse函数,
+这个函数的输入是字符串列表(就是需要转换的文本啦),
+处理文本的时候如果发现有新的子树, 就会嵌套调用recurse,
+用函数调用栈的方式来遍历tag树. 每次处理文本,
+都会把生成的文本放到output这个字符串列表里面去. 下面是具体的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">indent_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">output</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">branch_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">leaf_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">pass_syntax</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">flush_left_syntax</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">flush_left_empty_line</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">indentation_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">get_block</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Returns None.</span>
+</span><span class='line'><span class="sd">    一堆注释不管它</span>
+</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="n">append</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">append</span>
+</span><span class='line'>    <span class="c"># 递归调用函数</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 循环解析传进来的字符串列表</span>
+</span><span class='line'>        <span class="k">while</span> <span class="n">prefix_lines</span><span class="p">:</span>
+</span><span class='line'>            <span class="c"># 列表已经处理过了, 分割成空格的前缀和后面的字符</span>
+</span><span class='line'>            <span class="n">prefix</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+</span><span class='line'>                <span class="n">prefix_lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">continue</span>
+</span><span class='line'>            <span class="c"># 我们看看这一行是否有缩进</span>
+</span><span class='line'>            <span class="n">block_size</span> <span class="o">=</span> <span class="n">get_block</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">block_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class='line'>                <span class="c"># 如果没有缩进, 就根据状况来处理</span>
+</span><span class='line'>                <span class="n">prefix_lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">pass_syntax</span><span class="p">:</span>
+</span><span class='line'>                    <span class="k">pass</span>
+</span><span class='line'>                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">flush_left_syntax</span><span class="p">):</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">flush_left_syntax</span><span class="p">):])</span>
+</span><span class='line'>                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">flush_left_empty_line</span><span class="p">):</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">leaf_method</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>                <span class="c"># 如果是一个新的缩进, 我们需要找到缩进的结尾, 然后把这一块数据取出来, </span>
+</span><span class='line'>                <span class="c"># 让branch_method处理下来</span>
+</span><span class='line'>                <span class="n">block</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[:</span><span class="n">block_size</span><span class="p">]</span>
+</span><span class='line'>                <span class="n">prefix_lines</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[</span><span class="n">block_size</span><span class="p">:]</span>
+</span><span class='line'>                <span class="n">branch_method</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">recurse</span><span class="p">)</span>
+</span><span class='line'>            <span class="c"># 循环消耗prefix_lines, 直到消耗完毕, 任务就完成了.</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>    <span class="n">prefix_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">indentation_method</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+</span><span class='line'>    <span class="n">recurse</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>recurse 最后会进入到2个函数里面去, 一个是leaft_method,
+它处理单行的一些语法, 比如: tag > tag2 > tag3 | text,
+也是采用上面那种循环消耗字符串的方法. 这里略过不表.</p>
+
+<p>另一个就是branch_method, 这里面的值是函数html_block_tag.
+它里面是处理缩进后的一些语法. 处理完头部之后,
+会把缩进里面的内容传给recurse函数, 就这样一步步解析玩子树.
+里面的append函数就把解析玩的内容传给output, 最后打印成html代码.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">html_block_tag</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">recurse</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">append</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">append</span>
+</span><span class='line'>    <span class="n">prefix</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">RAW_HTML</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 如果是html代码(&lt;开头)就不解析头部</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 解析子树</span>
+</span><span class='line'>        <span class="n">recurse</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="n">COMMENT_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 注释..</span>
+</span><span class='line'>        <span class="k">pass</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="n">VERBATIM_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 子树不解析, 直接打印出来</span>
+</span><span class='line'>        <span class="n">m</span> <span class="o">=</span> <span class="n">VERBATIM_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tag</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">start_tag</span><span class="p">,</span> <span class="n">end_tag</span> <span class="o">=</span> <span class="n">apply_jquery_sugar</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">start_tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">stream</span><span class="p">(</span><span class="n">append</span><span class="p">,</span> <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">end_tag</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># 普通的状况, 解析出tag</span>
+</span><span class='line'>        <span class="n">start_tag</span><span class="p">,</span> <span class="n">end_tag</span> <span class="o">=</span> <span class="n">apply_jquery_sugar</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 输出tag头</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">start_tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 解析子树</span>
+</span><span class='line'>        <span class="n">recurse</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>        <span class="c"># 输出tag尾</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">end_tag</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>shpaml采用函数嵌套调用的方法来解析和处理树状结构,
+这个也是通常用的解析树状结构的方法(如果树状结构嵌套不多的话),
+对于编程语法的解析, 也可以采用类似这样的方式,
+对于每一个语法规则都有一个函数, 然后嵌套调用解析, 直到解析完毕.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-20T21:43:59+08:00" pubdate data-updated="true">Feb 20<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/shpaml-source-code/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/shpaml-source-code/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/shpaml/" title="Previous Post: shpaml介绍">&laquo; shpaml介绍</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/not-work-8-hours-a-day/" title="Next Post: 你不需要一天工作8小时">你不需要一天工作8小时 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/shpaml-source-code/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/shpaml-source-code/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

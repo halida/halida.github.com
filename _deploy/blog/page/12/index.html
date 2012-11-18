@@ -1,0 +1,1697 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="2010/5/30聚会，沈大侠分享了一下python dict get的四种方法: 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+# method 1
+# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/12/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ways-to-rome/">回的四种写法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T20:42:05+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/ways-to-rome/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>2010/5/30聚会，沈大侠分享了一下python dict get的四种方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># method 1</span>
+</span><span class='line'><span class="c"># 采用异常捕捉来处理KeyError</span>
+</span><span class='line'><span class="c"># 查询1次</span>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'><span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># method 2</span>
+</span><span class='line'><span class="c"># 取值前先进行条件判断</span>
+</span><span class='line'><span class="c"># 查询2次</span>
+</span><span class='line'><span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># method 3</span>
+</span><span class='line'><span class="c"># 和method2类似，只是利用in取代函数调用</span>
+</span><span class='line'><span class="c"># 查询2次</span>
+</span><span class='line'><span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># method 4</span>
+</span><span class='line'><span class="c"># 函数调用</span>
+</span><span class='line'><span class="c"># 查询1次</span>
+</span><span class='line'><span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span class='line'><span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>提到几点： 函数调用是比较慢的，不如data[key]和key in data快。
+所以method2完全可以被method3替代。 method4在多数情况下也没有method2好。</p>
+
+<p>异常处理因为需要建立Error的对象，是最慢的。
+所以method1不很适用命中率低的状况。</p>
+
+<p>method1和method4都只查询一次， method2和method3都要查询两次，
+在某些查询是性能瓶颈的时候，不如method1和2快。</p>
+
+<p>为了对上面的估计作实际验证，我写了测试程序，如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">json</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#method 1</span>
+</span><span class='line'>        <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'>        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;method 1 spend time: </span><span class="si">%f</span><span class="s"> s.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#method 2</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;method 2 spend time: </span><span class="si">%f</span><span class="s"> s.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#method 3</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;method 3 spend time: </span><span class="si">%f</span><span class="s"> s.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+</span><span class='line'>        <span class="c">#method 4</span>
+</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;method 4 spend time: </span><span class="si">%f</span><span class="s"> s.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">times</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;test hit&quot;</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}</span>
+</span><span class='line'>    <span class="n">k</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+</span><span class='line'>    <span class="n">times1</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">print</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;test not hit&quot;</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}</span>
+</span><span class='line'>    <span class="n">k</span> <span class="o">=</span> <span class="s">&#39;ab&#39;</span>
+</span><span class='line'>    <span class="n">times2</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">print</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&quot;test data IO&quot;</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}</span>
+</span><span class='line'>    <span class="n">k</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span>
+</span><span class='line'>    <span class="n">fd</span> <span class="o">=</span> <span class="n">FileDict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">times3</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">print</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</span><span class='line'>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">times1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ind</span><span class="o">+</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">times2</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ind</span><span class="o">+</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">times3</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;method 1&#39;</span><span class="p">,</span> <span class="s">&#39;method 2&#39;</span><span class="p">,</span> <span class="s">&#39;method 3&#39;</span><span class="p">,</span> <span class="s">&#39;method 4&#39;</span><span class="p">)</span> <span class="p">)</span>
+</span><span class='line'>    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p3</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;hit&#39;</span><span class="p">,</span> <span class="s">&#39;not hit&#39;</span><span class="p">,</span> <span class="s">&#39;IO&#39;</span><span class="p">)</span> <span class="p">)</span>
+</span><span class='line'>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">FileDict</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">open</span><span class="p">(</span><span class="s">&#39;temp.txt&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;temp.txt&#39;</span><span class="p">))[</span><span class="n">key</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">__getitem__</span> <span class="o">=</span> <span class="n">get</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">has_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;temp.txt&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">__contains__</span> <span class="o">=</span> <span class="n">has_key</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果如图 (ubuntu9.10 + python2.6):</p>
+
+<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TMrAxqHFJwI/AAAAAAAADK4/1aJhy9uAV_w/s800/Screenshot-Figure%201-2.png" alt="image" />
+method3性能比method2好，method1在not hit的情况下时间消耗最多，
+在get消耗大的情况下method1和method4消耗的时间要比method2和method3少一半。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/PyQt4-async-message/">PyQt4的异步消息机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T20:37:00+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/PyQt4-async-message/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因为工作需要，要在GUI的后台维护一个监控线程，该线程需要和主线程做通讯。为了完成这个需求，需要采用一种线程安全的消息机制。因为我采用PyQt4作为GUI的库，因此，直接使用PyQt4的消息机制成为我考虑的首选。</p>
+
+<p>在PyQt4里面，发出消息采用emit的方式。比如:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 新的pythonic的方式</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">setValue</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 旧的</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;setValue(int)&quot;</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是放到多线程里面，会发生什么事情呢？</p>
+
+<p>先解释一下消息处理的原理。我们知道，GUI之所以能够处理消息，是因为GUI主线程在初始化完毕的时候，会运行一个ecec_()方法，在这个方法里面，线程不断地检查消息队列，看是否有新的消息发出来，如果有，就处理它。这就是我们说的：event
+loop。</p>
+
+<p>然后看文档。
+<a href="http://doc.trolltech.com/4.1/threads.html#synchronizing-threads">Qt在多线程下的消息传递机制</a>
+:</p>
+
+<p><img src="http://doc.trolltech.com/4.1/images/threadsandobjects.png" alt="image" />
+里面一段话:</p>
+
+<p>Qt supports three types of signal-slot connections: * With direct
+connections, the slot gets called immediately when the signal is
+emitted. The slot is executed in the thread that emitted the signal
+(which is not necessarily the thread where the receiver object lives).
+* With queued connections, the slot is invoked when control returns to
+the event loop of the thread to which the object belongs. The slot is
+executed in the thread where the receiver object lives. * With auto
+connections (the default), the behavior is the same as with direct
+connections if the signal is emitted in the thread where the receiver
+lives; otherwise, the behavior is that of a queued connection.</p>
+
+<p>也就是说，有3种机制： * 采用直接调用的方式。类似于callback。
+调用者线程直接去执行被调用的方法。 *
+队列方式。调用者线程把消息丢给消息队列，然后就不管它了。被调用者的线程在处理消息队列的时候，就会处理它。
+*
+自动方式（默认）。如果调用者和被调用者是属于一个线程的，系统选择直接调用，不然就采用队列的方式。</p>
+
+<p>而机制的选择，可以在connect方法里面设置type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">bool</span> <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span> <span class="p">(</span><span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">sender</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">signal</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+</span><span class='line'>                       <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那麽，我们可以开始做实验验证这样是否在PyQt4里面行得通了。</p>
+
+<p>测试代码1：测试在单线程下，修改type之后，emit消息是否会立刻执行下一行代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">线程中发消息</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;amp;amp;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
+</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>点击按钮，&#8221;sended!&#8221;要过一段时间才出现在命令行。 把上面的注释部分改为:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>             <span class="n">self</span><span class="p">.</span><span class="n">waitProcess</span><span class="p">,</span> <span class="n">Qt</span><span class="p">.</span><span class="n">QueuedConnection</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再执行一次，点击按钮，&#8221;sended!&#8221;立刻就出现了。</p>
+
+<p>测试代码2：现在转到线程里面:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">线程中发消息</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>    <span class="c">#app.exec_()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行后，前3秒线程等待，GUI不会卡死。然后线程打印：&#8221;sended..&#8221;，然后GUI卡死3秒，然后GUI显示&#8221;hello!&#8221;。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/PyQt4-skin/">PyQt4的皮肤效果</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T20:27:05+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/PyQt4-skin/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>PyQt4提供了非常好的皮肤机制，可以作出非常炫的效果。其中一个功能就是qss，利用类似css的方式来配置界面。
+文档在这里。 使用方法(顺便分享一下我的qss配置):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="c">/*背景贴图*/</span>
+</span><span class='line'><span class="nt">QWidget</span><span class="p">{</span> <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(res/tex.png)</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QAbstractScrollArea</span><span class="o">,</span><span class="nt">QPushButton</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*背景色*/</span>
+</span><span class='line'><span class="nt">QWidget</span><span class="p">{</span> <span class="k">background-color</span><span class="o">:</span> <span class="n">bgdColor</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="o">,</span><span class="nt">QSplashScreen</span><span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*menu*/</span>
+</span><span class='line'><span class="nt">QMenuBar</span> <span class="p">{</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">qlineargradient</span><span class="p">(</span><span class="n">x1</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">y1</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">x2</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">y2</span><span class="o">:</span><span class="m">1</span><span class="o">,</span>
+</span><span class='line'><span class="n">stop</span><span class="o">:</span><span class="m">0</span> <span class="n">lightgray</span><span class="o">,</span> <span class="n">stop</span><span class="o">:</span><span class="m">1</span> <span class="nb">darkgray</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QMenu</span> <span class="p">{</span>
+</span><span class='line'><span class="k">margin</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="c">/* some spacing around the menu */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QMenu</span><span class="o">:</span><span class="nd">:item:selected</span> <span class="p">{</span>
+</span><span class='line'><span class="k">border-color</span><span class="o">:</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">100</span><span class="o">,</span> <span class="m">100</span><span class="o">,</span> <span class="m">100</span><span class="o">,</span> <span class="m">150</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*按钮*/</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="p">{</span>
+</span><span class='line'><span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">outset</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">bgdColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class='line'><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="nd">:checked</span> <span class="p">{</span><span class="k">border-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">}</span>
+</span><span class='line'><span class="c">/*醒目按下的按钮*/</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="nd">:pressed</span> <span class="p">{</span><span class="k">border-color</span><span class="o">:</span> <span class="nb">green</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*QSlider*/</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove:horizontal</span> <span class="p">{</span> <span class="k">height</span><span class="o">:</span> <span class="m">6px</span><span class="p">;}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove:vertical</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span> <span class="m">6px</span><span class="p">;}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle</span> <span class="p">{</span>
+</span><span class='line'><span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+</span><span class='line'><span class="k">background</span><span class="o">:</span> <span class="n">bgdColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle:horizontal</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">-3px</span> <span class="m">0</span> <span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle:vertical</span> <span class="p">{</span> <span class="k">height</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">-3px</span> <span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:add-page</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:sub-page</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">green</span><span class="p">;}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*QTableView*/</span>
+</span><span class='line'><span class="nt">QTableView</span> <span class="p">{</span>
+</span><span class='line'><span class="n">alternate</span><span class="o">-</span><span class="k">background-color</span><span class="o">:</span> <span class="n">darkContentColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">contentColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面作为字符串放在DEFAULT_STYLE里面,
+然后具体的颜色在下面的python代码中设置:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#设置style里面的颜色</span>
+</span><span class='line'><span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'><span class="s">&#39;borderColor&#39;</span><span class="p">:</span><span class="s">&#39;gray&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;bgdColor&#39;</span><span class="p">:</span><span class="s">&#39;#FCF6E4&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;contentColor&#39;</span><span class="p">:</span><span class="s">&#39;#E1EDFB&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;darkContentColor&#39;</span><span class="p">:</span><span class="s">&#39;#CDE2F8&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">COLOR_MAP</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+</span><span class='line'><span class="n">DEFAULT_STYLE</span> <span class="o">=</span> <span class="n">DEFAULT_STYLE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'><span class="n">app</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">DEFAULT_STYLE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>显示的效果如下：</p>
+
+<p><img src="http://lh5.ggpht.com/_os_zrveP8Ns/TMq9KU_BbTI/AAAAAAAADKw/IUfIQ7_oFjc/s800/screenshot-mainwindow.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/amway-to-education/">安利模式做教育</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T19:52:07+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/amway-to-education/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TMq1FRg4bQI/AAAAAAAADKo/hJVgxqHbdcA/s400/%E4%BC%A0%E9%94%80%E5%9B%BE.jpg" alt="image" /></p>
+
+<h2>安利模式的问题</h2>
+
+<p>考虑安利的商业模式,每次交易发生在上线与下线之间,交易的成本是上线在下线身上投入的时间.</p>
+
+<p>如果只是卖商品,直接营销的成本往往很大,而这部分成本是会转嫁给下线的,整个过程不会创造价值,或者整个体系的价值产出为负.</p>
+
+<p>具体分析在这里:
+<a href="http://www.impencil.org/?p=7486">http://www.impencil.org/?p=7486</a></p>
+
+<h2>替代方案</h2>
+
+<p>我考虑了一下,如果采用教练指导作为商品,这样的模式可以带来价值. 因为: *
+教练指导是对下线有价值的 * 而这个价值不容易通过其他渠道来体现</p>
+
+<p>什么是教练指导:</p>
+
+<ul>
+<li>在目标和方法都能够确定的前提下,教练指导学员一步步完成整个学习或训练过程.</li>
+<li>教练模式需要教练根据每个学员的状况作指导,必须是一对一的关系.</li>
+<li>普通人很难获得一个称职靠谱的教练.</li>
+</ul>
+
+
+<p>作为商业模式来讲,下线可以通过上线的教育获得直接的收入提高,这个模式是可以带来价值的.</p>
+
+<h2>计划</h2>
+
+<p>这个模式的重点在于上线和下线的关系.为了保证这个模式成功,需要有以下几点:</p>
+
+<ul>
+<li>上线和下线能够保持一个稳定的关系</li>
+<li>下线还能继续发展下线</li>
+<li>防止体系”腐化”,像安利一样成为一个无法提供价值的体系</li>
+</ul>
+
+
+<p>因此,考虑以下几个注意的方面:</p>
+
+<ul>
+<li>下线必须是”空白”人士,方便灌输</li>
+<li>上线拥有足够的指导能力,能够指导下线提升收入</li>
+<li>下线提升收入后,还是可以通过上线的指导继续提升</li>
+<li>上线鼓励下线发展下下线,提升双方的共同受益</li>
+<li>不会有滚雪球效应,防止其中一方独立门户</li>
+</ul>
+
+
+<p>具体实施方法(初稿):</p>
+
+<p>上线主动联系下线,说服下线,以工资收入的百分比方式获得教练费用.为了提升说服力,可以设定期望,没有满足期望的时候,上线返回若干钱.以合约的方式确立起来.</p>
+
+<p>上线采用一系列方式教育下线,这个过程可以不是全职:上线最好有工作,才能保证上线自己足够的成长程度.</p>
+
+<p>当上线无法提供价值给下线的时候,合约终止,因此上线必须时刻提升自己的价值产出.合约本身是制式文件,限制上线对下线采用洗脑的方式榨取收入,同时由于是双方签订合约,出现问题也与上线的上线无关.</p>
+
+<p>上线可以通过培训下线的能力,让下线继续发展下下线,提升双方受益.</p>
+
+<p>传输这样的观念:每个人必须要有教练,时刻监控自己的成长.</p>
+
+<p>提供平台,让所有的成员都在这个平台上面交流,发展,防止社区分裂.</p>
+
+<h2>问题</h2>
+
+<p>以上只是初步的分析,但是也暴露出来几个问题点:</p>
+
+<ul>
+<li>如何吸引新人加入,收入分成的方法是不为绝大多数人接受的</li>
+<li>解法:需要这个体系能真正提升价值,然后新人才会希望加入</li>
+<li>如何保证关系持久,下线可能因为不值的原因取消合约,上线也可能因为不值的原因取消合约.</li>
+<li>解法:无法保证.但是可以让双方养成发展下线的习惯,新的合约建立速度大于旧的合约解除的速度即可.</li>
+<li>社区分裂:无法保证该模式不被其他人学去,并建立其他”邪恶”的组织.</li>
+<li>解法:需要能够提供一个稳定的,不会被夺取的上游价值提供源,比如通过该网络发送讯息,提升网络中人士的职业发展机会.这个平台直接通过上线下线获取收入和讯息,维持平台的运转.</li>
+</ul>
+
+
+<h2>结论</h2>
+
+<p>以上都是泛泛而论,需要通过进一步的实践来验证理论的有效和可行性.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/can-we-do-this/">可以这样做吗</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T16:37:20+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/can-we-do-this/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TMqygkKlBLI/AAAAAAAADKg/1XLcDk3_uk8/s800/out-of-the-box.jpg" alt="image" /></p>
+
+<p>在超市里, 肚子饿了, 直接拿袋食物开封就吃, 但是不要忘了出去的时候付账.</p>
+
+<p>一本书感觉不错/糟糕, 直接通知作者本人, 告诉他哪里不错/糟糕.</p>
+
+<p>走在路上, 发现一个人吸引了自己的注意力, 走上前去告诉他/她,
+你吸引了我,以及为什么吸引我.</p>
+
+<p>不在意亲戚的想法, 做自己想要做的事情, 等做成了, 再通知他们.</p>
+
+<p>路上遇到一个陌生人, 假装认识他, 和他寒暄.</p>
+
+<p>如果已经离开了校园, 找一所大学正在上课的教室进去听课, 提问,
+和其他同学交流.</p>
+
+<p>到一个公司/单位/政府部门, 观察其中的一个人, 去和他交朋友.</p>
+
+<p>每个月把家里重新装饰一遍</p>
+
+<p>没钱买房, 去租一个别墅住一段时间.</p>
+
+<p>工作无聊了就辞职.</p>
+
+<p>让自己领域里面的人知道自己的存在, 如果不是通过实力, 至少通过特立独行.</p>
+
+<p>把自己的一段时间卖给陌生人.</p>
+
+<p>如果想做什么事情, 立刻就去做, 即使是离开自己当前住的地方,
+即使是离开自己当前的工作, 即使自己当前的工作收入不菲</p>
+
+<p>尝试同性爱, 异性爱, 以及嫖妓.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/C-RAII/">C语言如何实现RAII</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T14:25:54+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/C-RAII/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>资源的获取与释放，C语言里面是要让程序员考虑的，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在C++里面，有raii这样很方便的特性，当离开作用域的时候，自动释放资源，如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我在想，如何让C支持这样的特性？于是就有了下面这个宏</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#define using(b) \</span>
+</span><span class='line'><span class="cp">for(int i=0; i&lt;2; i++){\</span>
+</span><span class='line'><span class="cp">if (i==0) \</span>
+</span><span class='line'><span class="cp">  { init(b); } \</span>
+</span><span class='line'><span class="cp">else \</span>
+</span><span class='line'><span class="cp">  { if (i==1) \</span>
+</span><span class='line'><span class="cp">    { del(b); \</span>
+</span><span class='line'><span class="cp">      break; \</span>
+</span><span class='line'><span class="cp">    }; \</span>
+</span><span class='line'><span class="cp">  }; </span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">work</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">using</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;working..</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>edit: 被批了，C就按照C的方式干活，RAII交给C++.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/DwarfFortress-intro/">DwarfFortress介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-28T21:25:29+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2010</time>
+        
+         | <a href="/blog/DwarfFortress-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是dwarf fortress?</h2>
+
+<p>一个建设矮人部落的游戏. 随机生成世界地图, 历史, 超级复杂的建设…</p>
+
+<p><a href="http://www.bay12games.com/dwarves/screens.html">http://www.bay12games.com/dwarves/screens.html</a></p>
+
+<p>有人甚至用部落和矮人实现出了一个
+<a href="http://www.pcworld.com/article/194434/dwarf_fortress_player_creates_a_working_ingame_digital_computer.html">计算机</a>
+(有种3体里面那个人计算机的感觉)</p>
+
+<p>免费的. 有linux版本可以下.</p>
+
+<p>一个漂亮的
+<a href="http://www.bay12forums.com/smf/index.php?topic=43260.0">显示工具</a>:</p>
+
+<p><img src="http://i.imgur.com/WT0jH.png" alt="image" />
+<img src="http://i481.photobucket.com/albums/rr172/nil2008/screenshot1.jpg" alt="image" />
+这个工具可以在linux下面用cmake编译,但是我没有编译成功, 摸索中.</p>
+
+<p>有一些其他的类似的游戏， 整理在这里：</p>
+
+<p><a href="http://www.townsgame.com">http://www.townsgame.com</a>/</p>
+
+<p><a href="http://www.goblincamp.com">http://www.goblincamp.com</a>/</p>
+
+<p><a href="http://www.paradoxplaza.com/games/a-game-of-dwarves">http://www.paradoxplaza.com/games/a-game-of-dwarves</a></p>
+
+<p><a href="http://gnomoria.com/?page_id=15">http://gnomoria.com/?page_id=15</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/why-use-ReST-for-blogging/">为什么用ReST写博客</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/why-use-ReST-for-blogging/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是ReST</h2>
+
+<p>ReST全称是reStructuredText,是一种容易写,容易看的文本格式,</p>
+
+<p>具体介绍在这里:
+<a href="http://docutils.sourceforge.net/rst.html">http://docutils.sourceforge.net/rst.html</a></p>
+
+<p>如果你看不懂英文,可以看&#8212;&#8212;好吧,我没有找到中文的介绍.</p>
+
+<h2>ReST的好处</h2>
+
+<p>好处就是:以后再也不用为了调整格式而费心啦,专心写文章.</p>
+
+<p>当然了,遇到复杂的状况(比如写书,写公式,图表之类),还需要其他的工具.</p>
+
+<p>对于写博客和简单的文档来说,是非常适合的.</p>
+
+<h2>如何发布到博客上</h2>
+
+<p>写好ReST后,把文本拷贝到:
+<a href="http://www.tele3.cz/jbar/rest/rest.html">http://www.tele3.cz/jbar/rest/rest.html</a></p>
+
+<p>这是一个在线生成工具,生成html之后,复制到博客里面发布就可以了.</p>
+
+<p>记得保存备份,说不定以后什么时候还要用到的说.</p>
+
+<h2>结论</h2>
+
+<ul>
+<li>中文资料比英文资料少多了,所以好好学英文吧.</li>
+<li>简单就是美.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/trinity/">三一学会</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/trinity/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>需求</h2>
+
+<p>我发现在学校之外, 以及学校里面, 都有许多的人, 希望上进, 但苦于:</p>
+
+<ul>
+<li>一个人很难分析出自己真正想要什么, 也无法监督自己执行.</li>
+<li>自己学习无法保证按照计划执行.</li>
+<li>由於自我的局限性, 无法看得更高, 更远.</li>
+</ul>
+
+
+<p>因此, 我希望建立一种机制, 能够帮助这些人解决关于学习, 理想,
+以及持续进步的问题.</p>
+
+<h2>思路</h2>
+
+<p>我发现, 有几个方法可以用来解决上面的问题:</p>
+
+<ul>
+<li>建立学习的环境.</li>
+<li>教练指导.</li>
+<li>教学相长.</li>
+</ul>
+
+
+<h2>实现</h2>
+
+<p>现在我还只是在尝试过程中, 采用以下解决方案:</p>
+
+<ul>
+<li>住在附近, 有志提高自己的人, 休息时间聚集在一起, 共同学习.</li>
+<li>大家互相监督, 保证持续的时间投入.</li>
+<li>学会一个概念后, 向其他人教授该概念, 达到共同学习, 以及加强理解的目的.</li>
+<li>成员互相的关系应该是教练&lt;->学生的关系. 有教练经验的成员指导他人明确目标, 制定计划, 执行计划.</li>
+<li>成员必须把发展下线, 即自己做教练, 作为成长后的目标之一, 吸引其他有上进心的人加入学会.</li>
+<li>为了效率, 一起学习的人数必须有限, 太多了, 就要分拆成两个小组.</li>
+</ul>
+
+
+<p>现在我会在生活中实验这种模式, 以及做推广与研究,
+这种学习小组就叫三一学会吧. 随便起的.</p>
+
+<p>当解决方案成熟之后, 我希望能够把这种方案,
+以类似病毒发展方式推广到全中国.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rst2s5/">文本方式写幻灯片</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/rst2s5/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>为什么要用S5?</h2>
+
+<ul>
+<li>纯文本</li>
+<li>html</li>
+</ul>
+
+
+<h2>S5实例</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="c">&lt;!-- 这是一张slide --&gt;</span>
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;slide&quot;</span> <span class="na">id=</span><span class="s">&quot;id1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- 这是slide的标题 --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;h1&gt;</span>为什么要用S5?<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- 这是slide的内容 --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span>纯文本<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span>html<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>rst2s5实例</h2>
+
+<p>代码</p>
+
+<pre><code>为什么要用S5?
+================================
+
+* 纯文本
+* html
+</code></pre>
+
+<h2>试用一下</h2>
+
+<p>不多说, <a href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a> : <a href="http://server.linjunhalida.com/tools/rst2s5">http://server.linjunhalida.com/tools/rst2s5</a>/</p>
+
+<h2>本地生成</h2>
+
+<p>need docutils:</p>
+
+<pre><code>rst2s5 xxx.rst xxx.html
+rst2s5 --theme small-white xxx.rst xxx.html
+rst2s5 --theme-url http://xxx.com/ui/small-white xxx.rst xxx.html
+</code></pre>
+
+<h2>如何写rst2s5?</h2>
+
+<ul>
+<li><a href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a></li>
+</ul>
+
+
+<h2>写代码</h2>
+
+<p>代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">overrides</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;theme&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">&#39;theme_url&#39;</span><span class="p">:</span> <span class="s">&#39;/statics/S5/ui/small-white&#39;</span><span class="p">,}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">rst2S5</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">publish_string</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">source</span><span class="o">=</span><span class="n">string</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">settings_overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;s5&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>资源</h2>
+
+<ul>
+<li><a href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Presentation_software/">slide工具列表</a></li>
+<li><a href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a></li>
+<li><a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">ReST快速入门</a></li>
+<li><a href="http://meyerweb.com/eric/tools/s5/">S5</a></li>
+<li><a href="http://docutils.sourceforge.net/">docutils</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/11/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

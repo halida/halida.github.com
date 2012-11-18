@@ -1,0 +1,2002 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2012-11-19T01:11:26+08:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GDC China 2012]]></title>
+    <link href="http://blog.linjunhalida.com/blog/gdc-china-2012/"/>
+    <updated>2012-11-18T18:52:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/gdc-china-2012</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/Cpbai.jpg" alt="image" /></p>
+
+<p>这个周末是GDC China 2012会议的时间，本来我想去参加，但是一看票价上千块，不由望而却步。
+不过18号有开放部分的展台，我就过来看看了。地点是在陆家嘴的上海会议中心。我下午2点多的时候过来。直接上到5楼的独立游戏展台。</p>
+
+<p><img src="http://i.imgur.com/uv5fk.jpg" alt="image" /></p>
+
+<p>这里面是很多参展的独立游戏，我基本上试玩了一圈，和他们交流了很久。 具体游戏的列表在 <a href="http://www.gdcchina.cn/events/igf">这里</a></p>
+
+<h2>独立游戏试玩</h2>
+
+<p><img src="http://i.imgur.com/ysqHu.jpg" alt="image" /></p>
+
+<p>首先一款位图类型的游戏UNCLE GO，感觉很一般，游戏方式倒是挺多种多样的。没有留图。</p>
+
+<p>不过回来之后看了一下<a href="http://site.douban.com/172568/widget/videos/9581955/video/198313/">视频</a>，作为只有一个开发者的游戏来说，还是挺有意思的一个小品游戏。</p>
+
+<p>然后是一个韩国人做的的回合策略游戏<a href="http://www.piedpipersent.com/blogs/?page_id=17&amp;lang=en">Army and Strategy</a>，开发团队5个人。我玩了很久，提了很多的问题和很多的改进意见。</p>
+
+<p><img src="http://i.imgur.com/yPdnO.jpg" alt="image" /></p>
+
+<p>游戏还是大地图，区块进攻防御，回合制的。特色是各种扑克牌类型的人，以及特殊的战斗模式。
+战斗的话在各个将军之间进行。每个将军可以带几个兵。我推荐他们去看看<a href="http://www.shrapnelgames.com/Illwinter/DOM3/DOM3_page.html">dominions3</a>，一款超级复杂的骨灰级别游戏。</p>
+
+<p><img src="http://i.imgur.com/9o4Ekh.jpg" alt="image" /></p>
+
+<p>然后是一个新加坡学生团体的游戏Blockhead。特性是移动方块，改变重力，我和他们的程序聊了一下关于游戏实现的一些问题。</p>
+
+<p><img src="http://i.imgur.com/hdDinh.jpg" alt="image" /></p>
+
+<p>我问了一下游戏引擎是怎么实现的。他主要介绍的部分是在游戏主循环里面，游戏逻辑，碰撞检测的部分。
+还有就是3D渲染如何进行。基本上还是我了解的传三角形矩阵给GPU。
+这个游戏的游戏性还可以，不过感觉画面效果太粗糙了，需要打磨。</p>
+
+<p>然后是一个典型的独立游戏团队，一个程序，一个美工。</p>
+
+<p><img src="http://i.imgur.com/8Q6Ww.jpg" alt="image" /></p>
+
+<p>他们做的<a href="http://forums.toucharcade.com/showthread.php?threadid=151156">飞刀</a>这款游戏不错，的确是职业级别的游戏。不过我还是觉得没有特别突出的地方，比较中规中矩。</p>
+
+<p><img src="http://i.imgur.com/rNS5p.jpg" alt="image" /></p>
+
+<p><img src="http://i.imgur.com/k2Ao5h.jpg" alt="image" /></p>
+
+<p>在看这个游戏的过程中，有遇到椰岛游戏的<a href="http://weibo.com/devvi">devvi</a>，看了他拿出来一个索尼新出来的强力四核主机，里面一款游戏，改变重力方向，大场景沙盒，效果还是很不错的，可惜没有留图。</p>
+
+<p>和屌丝伞兵的逆袭的人扯了一下游戏性的问题。他们说这个游戏是免费放出来玩的。我看了一下，还是走游戏内商店的方式。感觉美工设计比较差，游戏性的话一般。反正我是死的比较快的。。</p>
+
+<p><img src="http://i.imgur.com/elmvW.jpg" alt="image" /></p>
+
+<p>后面发现有大牌在。 <a href="http://dustforce.com/">Dustforce</a>。介绍的人是从美国飞过来的，主要做的是音效。他全程指导我玩这款游戏，可惜我上手比较慢。</p>
+
+<p><img src="http://i.imgur.com/iV71rh.jpg" alt="image" /></p>
+
+<p>这款游戏是hardcore方向的，需要非常强力的操作能力。游戏内有排名，一些玩家玩的真的很辛苦。关于游戏本身，其中有说道角色动画很多，美工画了三千多帧。
+给我展示了一些牛逼玩家打通关的视频。</p>
+
+<p><img src="http://i.imgur.com/2W50Jh.jpg" alt="image" /></p>
+
+<p>然后是一款学生作品，来自四川美术学院的魔豆校园，里面采用了大块的手绘场景，效果非常好。不过游戏引擎采用的是现成的。
+但是手绘背景这点就足够吸引眼球了。不过其他的不期待了。后来也有听到关于四川美术学院的名声，看起来是个好学校。</p>
+
+<p><img src="http://i.imgur.com/T218lh.jpg" alt="image" /></p>
+
+<h2>三楼厂商展厅</h2>
+
+<p>这个时候已经很晚了，我最后又去了三楼的展台，他们大多已经走了，还留下少数的几家。</p>
+
+<p>发现比较好的一个是动作捕捉系统。询问了一下技术细节。他们是通过惯性陀螺仪来判断移动，通过算法来处理数据。</p>
+
+<p><img src="http://i.imgur.com/cLzYxh.jpg" alt="image" /></p>
+
+<p>工作人员和我说，算法的难度主要是在快速移动的时候判断距离。现在的精度是能够做到毫米级别的。
+我问了一下价格，是在二十万到七十万左右。我问具体成本，他说是软件成本。我问硬件成本，他说老板才知道。我看估计也是在万级别的吧。</p>
+
+<p>这个是真人美女演示。</p>
+
+<p><img src="http://i.imgur.com/SdJq0h.jpg" alt="image" /></p>
+
+<p><img src="http://i.imgur.com/9SWAnh.jpg" alt="image" /></p>
+
+<p>然后是另外一家做声音效果软件的。我试听了一下，没有感觉到效果。工作人员说主要还是针对开发者来用，测试声音效果，类似于debuger之类的工具。</p>
+
+<p><img src="http://i.imgur.com/Lv01Nh.jpg" alt="image" /></p>
+
+<h2>独立游戏party</h2>
+
+<p>晚上去独立游戏party。地点在Arcade酒吧，空间比较小，人很多。</p>
+
+<p><img src="http://i.imgur.com/ePaVth.jpg" alt="image" /></p>
+
+<p>试玩了最近出来的那个比较酷的概念性质游戏，就是模拟hack进一个系统，恢复破碎的文件的，感觉很伤害眼睛。</p>
+
+<p>然后我和 <a href="http://weibo.com/u/1826447761">失忆的大陆</a> 聊了聊，他是一个老游戏程序员了。聊的东西很多，记不太清楚了，列一些重要的吧。</p>
+
+<p>他说游戏（主要还是网游）分前端和后端，前端和后端的思考方式不一样，都关注性能和稳定，前端性能高于稳定，跑的顺最重要。后端稳定高于性能，性能不足可以堆机器。</p>
+
+<p>他说游戏有几个基础的方向，UI，渲染，网络，AI，逻辑，这算是基础的部分，然后只能够有精力深入其中的一个。只是AI的部分就有上万种的算法。</p>
+
+<p>他说看工作方式就知道是老手还是新手。新手基本上都是不断地敲代码调试，老手就是会停下来想一段时间，然后再做。</p>
+
+<p>有说到程序员的发展问题。
+程序员提高水平靠踩的坑多，踩过了才知道会有问题。
+他说5年的程序员和8年的程序员有很大的区别，不只是3年。
+经验多了，设计出来的架构就有很大的区别。</p>
+
+<p>还有说道，如何提升这个过程。他说基本还是靠多接触和用心。
+都是三年的程序员，用心与不用心差别就非常的明显。</p>
+
+<p>还有就是说游戏现在技术上面都比较成熟了，程序员基本上只要实现东西就好，主要的还是在创意上面。</p>
+
+<p>一直聊到10点，他走了我也走了，我出去路上遇到<a href="http://weibo.com/weibopp">围脖飘飘</a>，
+我们聊到了手机游戏的前景。他说根据现在android手机的普及率，明年手机游戏会有大的爆发。准备入局。有说按照韩国游戏的模式来做。
+在地铁站入口我们聊了一会，看时间差不多了我和他告别后跑回了住的地方。</p>
+
+<h2>总结</h2>
+
+<p>今天白天我和好几个国家的人扯了外语，感觉自己的外语水平提升了很多。聊了很多关于游戏的东西，还是很high的。可惜没有机会进去里面听游戏业者的演讲。
+晚上的party主要是遇到了几个人聊了很多东西，略有所得。今天一天的信息量还是很大的啊。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[买了新的笔记本]]></title>
+    <link href="http://blog.linjunhalida.com/blog/new-mac-book-pro/"/>
+    <updated>2012-11-16T08:39:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/new-mac-book-pro</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/d9K68.jpg" alt="image" /></p>
+
+<p>我计划购买笔记本电脑已经有很长一段时间了。最近终于赶着苹果最近的发布会，入手了新出来的<a href="http://www.okhqb.com/detail/1000323769.html">rmbp MD212</a>，花费了我一万多一点。买来后花费了一段时间的安装和掌握，感觉还是非常顺手的。</p>
+
+<h2>我为什么要买笔记本电脑</h2>
+
+<p>我现在已经有了一台比较强力的开发用PC，系统装的是ubuntu，但是我还是要购买一台比较好的笔记本，主要原因是我有移动办公的需求。</p>
+
+<p>首先，我需要能够<strong>自由切换站立工作和坐着工作</strong>，这是为了我健康的考虑。台式机调整起来很繁琐，笔记本只需要两个高度不同的台面。</p>
+
+<p><strong>Coding Everywhere</strong>是我一直想做的事情，比如在躺椅上面coding，比如在咖啡馆，图书馆等参合coding，换一个环境能够带来更多的灵感和乐趣。</p>
+
+<p>我还是会有一些<strong>必须进行的移动办公需求</strong>，比如我要参加<a href="http://www.primesplus.com/2012/09/16/hobby-project-day-%E2%80%93-09-2012/">hobby project day</a>，hackthon之类的活动等等。</p>
+
+<h2>考虑的几个要点</h2>
+
+<p>既然我有实际的需求，那么选择什么类型的笔记本，基本上可以根据这些需求来确定一下。</p>
+
+<p>笔记本必须要能够提供<strong>舒适的开发体验</strong>。我现在有的一个华硕的eeePC小本实在不堪使用。</p>
+
+<p>笔记本要<strong>足够轻便</strong>，这样我才能很方便地拿着到处走。</p>
+
+<p>笔记本要<strong>大小适宜</strong>，太小了不方便coding，太大了又太重。</p>
+
+<p>考虑到现在苹果产品因为量产足够，性价比已经非常高了，以及我是个开发者，需要体验苹果的优秀设计，还有就是苹果在笔记本领域的口碑，我<strong>选择苹果笔记本</strong>。</p>
+
+<h2>选择rmbp MD212的理由</h2>
+
+<p><img src="http://i.imgur.com/54kP2.jpg" alt="image" /></p>
+
+<p>既然确定了要点，那么下面就是具体选型的问题了。</p>
+
+<p>考虑到<strong>retina屏幕是下一个阶段发展方向</strong>，以及retina屏幕技术已经足够成熟，我还是尽量选择这样的屏幕。考虑到价格因素，我从最便宜的MD212开始看起。</p>
+
+<p><strong>i5已经能够满足开发需求</strong>，现在CPU频率基本到一个极限了，在这方面的改进程度不大，我还是选择比较通用的CPU型号。
+对于我来说，<strong>13寸显示访问还是够的</strong>，尤其是retina屏幕，细节都看得很清楚。
+虽然SSD 128G有点少，但是根据以往的经验，128G对于我来说，勉强还能够用。
+至于内存8G，对于普通的开发加上一台虚拟机来说完全够用了。</p>
+
+<h2>为什么这个时间点</h2>
+
+<p>型号选定了，然后是具体出手的时间。根据我的观察，苹果的产品价格在新的发布会之后一段时间内，还是很稳定的。MD212又刚刚出来，我觉得现在是入手的好时机。</p>
+
+<h2>后记</h2>
+
+<p>经过这几天的实际使用，感觉上手飞快，没有什么需要适应的地方，整体上很舒服。OSX操作系统是基于BSD的，从linux切换过来基本只需要熟悉目录结构。安装开发环境消耗了不少时间，主要是homebrew，rails，emacs，最好都整好了。然后就是感觉台式机买的有点亏，完全可以直接入mbp，但是时间点的话不对，也没有办法。</p>
+
+<p>rmbp MC212报价在我购买了之后<a href="http://www.appletuan.com/t/2553">又跌了200元</a>，算是小亏，这个时间点其实很难把握，既然买了东西，沉没成本不是成本，以后就不要关注这个价格了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[postfix架构初探]]></title>
+    <link href="http://blog.linjunhalida.com/blog/postfix/"/>
+    <updated>2012-10-27T23:57:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/postfix</id>
+    <content type="html"><![CDATA[<p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
+
+<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
+
+<h2>什么是postfix</h2>
+
+<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
+
+<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
+
+<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
+
+<ul>
+<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
+<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
+</ul>
+
+
+<h2>如何配置</h2>
+
+<p>我发现<a href="https://help.ubuntu.com/community/Postfix">ubuntu的配置文档</a>已经非常全了， 可以安装上面来配置。
+邮件系统的用户和密码， 默认是采用unix的用户和密码， 但是很多时候我们的邮件系统是和真正的系统用户分开的，
+这个时候我们需要<a href="https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto">设置Virtual Mailbox</a>，
+postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要另外安装dovecot， 前面的教程里面有具体的安装方法。</p>
+
+<h2>邮件流程</h2>
+
+<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
+
+<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
+
+<p>外面的服务器会通过smtp发送邮件， postfix服务器会响应, 然后最后保存到本地的邮件目录存放地上面。</p>
+
+<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
+
+<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
+
+<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
+
+<p><strong>如何验证用户</strong></p>
+
+<p>devocot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
+
+<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
+
+<ul>
+<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
+<li>postfix配置目录在<code>/etc/postfix</code></li>
+<li>dovecot配置目录<code>/etc/dovecot</code></li>
+<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
+<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
+<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
+</ul>
+
+
+<h2>更进一步的需求</h2>
+
+<p>前面做的事情只是比较基本的一些， 如果要成为生产环境， 还是需要一些其他的事情：</p>
+
+<ul>
+<li>用户管理系统</li>
+<li>spam过滤</li>
+<li>保证自己不被当作spam</li>
+</ul>
+
+
+<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
+
+<h2>2012-10-26问题整理</h2>
+
+<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
+
+<ul>
+<li>不是很懂postfix， 看文档</li>
+<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
+<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
+<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
+</ul>
+
+
+<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[尝试站着工作]]></title>
+    <link href="http://blog.linjunhalida.com/blog/standing-at-work/"/>
+    <updated>2012-10-21T11:57:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/standing-at-work</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/CSNCr.jpg" alt="image" /></p>
+
+<p>大多数人每天上班的时候， 基本都是坐在座位上面， 面对电脑工作。 久坐， 往往会带来一些腰部和颈部的疾病，
+我在最近的几个月里面， 尝试了站立工作。 上面就是我的工作台设置。 就是把一个高度合适的座位放到台面上来而已。
+我能够找到刚好配起来的家具， 如果你找不到的话， 可以看<a href="http://www.douban.com/note/226194410/">这个解决方案</a>。</p>
+
+<p>尝试下来发现一些东西:</p>
+
+<ul>
+<li>站立工作会更消耗精力一些， 很多时候不太容易集中精神。 毕竟站立不能像坐着的时候那样放松。</li>
+<li>颈部和腰部完全没有不适的感觉。 但是可能是我键盘高度位置有问题， 手腕部位还是会有疼痛。</li>
+<li>站立给膝盖造成了很大的压力， 有不适。 以及长期站立容易造成小腿静脉曲张， 我现在是隔段时间坐下抬高小腿休息一会。</li>
+</ul>
+
+
+<p>现在我还是在用台式机， 如果我买了笔记本的话， 我可以很方便地在站立和坐着两种工作方式之间切换。
+个人建议大家可以尝试一段时间站立工作， 对工作环境进行调节是提升工作舒适度以及工作效率的好办法。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[尝试哈萨克斯坦时间]]></title>
+    <link href="http://blog.linjunhalida.com/blog/kazakhstan-time-zone/"/>
+    <updated>2012-10-14T22:56:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/kazakhstan-time-zone</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/rQmBc.png" alt="image" /></p>
+
+<p>我一直认为， 尝试新事物， 是一个具有完全行为能力的人应该具有的习惯。 不管是接触新的东西， 或者是对自己现有生活的调整，
+不仅可以给生活增加调剂， 也是对现有生活的优化， 有的时候， 因此获得更多的机会， 或者获得一个新的角度来重新审视自己的生活。</p>
+
+<p>我现在在全职做<a href="http://gurudigger.com/">GuruDigger</a>， 每天工作时间是由自己控制的， 因此我拥有尝试多种作息时间的自由。
+这周开始的时候， 我决定尝试一下哈萨克斯坦时间， 简单地说， 就是把每天的时间轴往后延迟5个小时左右，
+每天12点起来吃早饭， 5点吃中午饭， 晚上10点吃晚饭， 4点休息， 尝试一段时间看看怎么样。</p>
+
+<p>今天是这周的结束， 经过这一周的尝试， 我最后还是决定放弃这样的作息方式。</p>
+
+<p>我选择哈萨克斯坦时间的考虑， 是观察一些朋友以及一些名人的生活习惯得来的。 4点钟睡觉， 相当于把上午的时间移植到了深夜。
+在深夜的时候， 周边的干扰显得比较少， 可以获得大段时间， 更集中精神去做事情。 不过生活习惯因人而异， 对于我来说效果不是很好。</p>
+
+<p>我现在的工作环境是民宅， 工作的时候， 人其实也只有两个， 在白天， 也不会有什么干扰（如果从窗户外面射进来的阳光也算干扰的话），
+深夜工作的好处我在白天也能获得。 因为机会成本的存在， 好处就打了一个很大的折扣。</p>
+
+<p>深夜其实是一天的最后时刻， 人的精力是一天中最少的， 我感觉自己的精神还是比较难集中起来，
+做复杂的事情有比较大的困难。
+切换作息之后， 还有一些我没有考虑到的问题出现了。 首先是吃饭问题。 11点的时候， 可以选择的吃饭场所变得很有限，
+甚至我经常吃的全家盒饭也基本上卖完了。 虽然我对食物不挑剔， 但是找不到传统中餐还是让我很困扰。
+晚上做事情， 如果只是一个人的话还比较好说， 但是和别人同住的话， 就会给其他人带来困扰。 这方面的因素也要考虑进来。</p>
+
+<p>综合上面的一些考虑， 我觉得哈萨克斯坦时间不适合我。 不过， 下次我可以尝试吉里巴斯时间(UTC+12)？</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[English Matters]]></title>
+    <link href="http://blog.linjunhalida.com/blog/english-matters/"/>
+    <updated>2012-10-12T15:07:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/english-matters</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/fD9By.jpg" alt="image" /></p>
+
+<p>This is the first time I&#8217;m blogging in English here,
+And from now on, I will keep on doing it regularly.</p>
+
+<h2>Why Blogging?</h2>
+
+<p>I&#8217;m blogging for good reason. As a blogger, I&#8217;m not elegant or productive, or even continus,
+I had drop blogging for quite a long time; Hopefully I struggle to bring all things togather again.
+Blogging is not easy as it starts, it needs patience, persistence, continus self-improvement.
+And it worth that, I told you reasons.</p>
+
+<p>Blogging is a process to help you <strong>organize thoughts</strong>. Things are not as clear as you think it is, before you write it down.</p>
+
+<p>Blogging is <strong>practice of writting</strong>, there is no need to emphisize the importance of writing.</p>
+
+<p>Blogging is a <strong>good communication</strong>, small talks are good, but too small for serious disscussion, and hard to summon all things up.</p>
+
+<p>Blogging is <strong>self advertizing</strong>. There is no better way to know a person&#8217;s mind then seeing things written by him, and writting itself can reflat lots of great attributes.</p>
+
+<h2>Why English Blogging?</h2>
+
+<p>And there comes another question: Why I start english blogging? here are some reasons:</p>
+
+<p>English is <strong>THE</strong> universal language, practice it, is a good investment.</p>
+
+<p>The people using English is <strong>better</strong> than The people using Chinese (statistically).</p>
+
+<p>The thinking process is very <strong>different</strong> between English and Chinese. It brings me an opportunity of switching.</p>
+
+<h2>conclusion</h2>
+
+<p>According to the reason I list above and the condition I&#8217;m currently in, English blogging is profitable.
+Maybe it is also a good option for you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FTL游戏评测]]></title>
+    <link href="http://blog.linjunhalida.com/blog/ftl/"/>
+    <updated>2012-10-05T16:05:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/ftl</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/bkIoK.jpg" alt="image" /></p>
+
+<p>很早以前， 我就是一个电脑游戏玩家了， 初中时期的魔兽一代， 毁灭公爵， 赤壁； 到高中的博得之门， 星际， 半条命， 再到大学的魔兽争霸， 无冬之夜；
+新的游戏， 符合我的喜好， 再加上能够在我的PC上面跑起来， 我都会拿来玩一遍。
+游戏给我开启了无数想象的门， 沉迷在多种多样的游戏世界里面， 我度过了人生的前半阶段。</p>
+
+<p>工作之后， 玩游戏成为了一种奢侈， 投入在上面的时间和精力机会成本很大，
+于是乎我不再去玩一些比如辐射3之类的大游戏， 转移到独立游戏（Inide Game）阵营中去了。
+和大游戏比起来， 独立游戏制作成本小， 无法再奢侈地在图像特效等细节上面烧钱， 这样的局限带来的就是游戏会专注在交互， 创新上面，
+带来和传统游戏不一样的体验。 加上购买花费少， 容量不大下载方便等游戏， 我选择成为一个独立游戏迷， 经常去尝试各种新的游戏。</p>
+
+<p>FTL就是其中的一个。 它是位于上海的两个外国人开发的游戏， 在<a href="http://www.kickstarter.com/projects/64409699/ftl-faster-than-light">kickstarter上面</a>募款阶段就吸引了不少眼球。
+购买费用是10美元， 并不低， 反复抉择之后， 我还是出了这个价钱。</p>
+
+<p>这款游戏， 介绍说是 spaceship simulation roguelike-like，<br/>
+我稍微解释一下<a href="http://en.wikipedia.org/wiki/Roguelike">roguelike</a>，
+目标一般是玩家为了消灭一个大Boss， 进入到一个随机的地下城中， 不同房间会遇到不同的敌人和事件， 最后要么死亡要么通关。
+这类游戏好玩的地方在于， 随机的关卡， 丰富的游戏玩法， 以及只有一次生命的刺激感。
+它已经有几十年的历史， 直到现在还是很有生命力。 经常会有许多<a href="http://en.wikipedia.org/wiki/Roguelike">新的这类游戏出现</a>。
+但是由于游戏采用ACSII的界面， 采用非直觉的操作， 需要掌握的复杂规则和游戏世界背景（这个算是卖点！），
+普通玩家往往望而却步， 但是一旦喜欢上， 可能成为一辈子的爱好。</p>
+
+<p>Roguelike游戏画面：</p>
+
+<p><img src="http://3.bp.blogspot.com/-Bw7ZYDVQF1k/UFyh6sIwASI/AAAAAAAAAcM/T5uf_lcfuGY/s1600/doomrl.gif" alt="image" /></p>
+
+<p>回到FTL。 实际的游戏方式混合了策略和即时， 玩法解释起来比较麻烦， 因为没有什么同类的模式。 可以去看官方网站上面的<a href="http://www.ftlgame.com/">视频介绍</a>， 或者下面的一个walkthrough：</p>
+
+<iframe width="560" height="315" src="http://www.youtube.com/embed/nSvxjNvPYBw" frameborder="0" allowfullscreen></iframe>
+
+
+<p>实际的游戏画面：</p>
+
+<p><img src="http://i.imgur.com/pcy5f.png" alt="image" /></p>
+
+<p>大地图：</p>
+
+<p><img src="http://i.imgur.com/WfZrb.png" alt="image" /></p>
+
+<p>FTL和传统的roguelike游戏相比， 内容上面完全改变了， 但是roguelike的核心精神得到了保留。
+游戏的过程中， 一旦失败， 存档就不复存在， 没有拯救的机会，
+飞船有限的燃料， 随时间推进的敌方进攻， 让游戏保证了持续的紧张感。
+玩家需要在游戏过程中通过各种选择来build自己的飞船， 而选择本身是有限和随机的， 每次游戏都会完全不同。
+战斗过程中是即时制加上随时暂停， 刺激又不至于手忙脚乱。</p>
+
+<p>总体来说， 这款游戏没有明显的瑕疵， 通关一次需要3个小时左右， 并且可以采用不同玩法多次重复通关， 算是值回售价。
+不过游戏内容上面还是增加更多的东西， 比如更多的装备， 更多的随机事件； 一些内容的提示， 比如船员信息上面做的不够好；
+通关之后有点意犹未尽， 消灭一个Boss作为普通游戏来说还好， 但是对于骨灰玩家来说还需要更多的挑战。</p>
+
+<p>我觉得roguelike有点像是人生， 各种人不同的初始条件， 有限的时间， 随机的事件和无数的抉择， 多样的玩法。
+不过游戏中会有一个大Boss需要干掉， 会有happy ending/bad ending， 但是人生没有， 一直进行下去， 直到人生的终点。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[coffeescript]]></title>
+    <link href="http://blog.linjunhalida.com/blog/coffeescript/"/>
+    <updated>2012-09-24T11:01:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/coffeescript</id>
+    <content type="html"><![CDATA[<p><img src="http://coffeescript.org/documentation/images/logo.png" alt="image" /></p>
+
+<h2>什么是coffeescript?</h2>
+
+<p>我们知道javascript是一门有历史的语言， 在被创造出来的时候， 它只是浏览器的一个附属物， 没有预期能够那么流行，
+拥有一些的设计缺陷， 缺少很多现代语言必须的特性。 为了弥补这些的缺陷， 我们有jQuery， 各种js的库，
+javascript语言本身也非常灵活， 开发者可以做很多扩展。</p>
+
+<p>但是库的方式并不能解决所有的问题， 我们还需要更重的解决方案。
+coffeescript是能够编译成javascript的一门小的语言， 它的目的是为了能够让大家以更好的方式来写javascript。</p>
+
+<p>简单的说， 就是你采用coffeescript的写法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Assignment:</span>
+</span><span class='line'><span class="n">number</span>   <span class="o">=</span> <span class="mi">42</span>
+</span><span class='line'><span class="n">opposite</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Conditions:</span>
+</span><span class='line'><span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span> <span class="k">if</span> <span class="n">opposite</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Functions:</span>
+</span><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>coffeescript的工具帮助把上面的代码编译成js：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">opposite</span><span class="p">,</span> <span class="nx">square</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">number</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">opposite</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">opposite</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>具体的语法还是去看<a href="http://coffeescript.org/">官方网站</a>， 这里我就不多说了。</p>
+
+<h2>优点和缺点</h2>
+
+<p>它解决的问题主要是：
+- javascript语言本身是模仿java的语法， 带有很多冗余， coffeescript借鉴了其他一些现代语言的语法， 让代码变得更简洁清晰。
+- javascript本身有设计缺陷， 比如全局变量的问题， coffeescript自动把变量变成局部， 减少开发错误。
+- javascript本身缺少一些重要的特性， 比如类机制， cofeescript提供这样的机制。</p>
+
+<p>写完coffeescript， 可以通过它提供的一个工具， 转换成javascript， 而转换出来的javascript和coffeescript基本上是一一对应的，
+语法也很简单， 会javascript的人看懂不难。</p>
+
+<p>总体上面来说， 使用coffeescript带来的好处是： 增加生产力， 减少代码缺陷， 增加代码的可读性，
+付出的代价是需要建立一整套的编译机制， 以及开发者需要熟悉coffeescript这门语言， 以及项目必须依赖coffeescript。</p>
+
+<h2>结论</h2>
+
+<p>针对coffeescript的使用， 赞同和反对者都有， 具体的意见：</p>
+
+<p>赞同者的意见比较好理解。 因为coffeescript带来的好处很多（上面列出来的）， 付出的代价也没有多少。
+甚至哪天你不想用了， 也可以直接把它丢掉， 编译出来的javascript也是可以继续维护的。</p>
+
+<p>反对者的意见基本上是从项目的角度来考虑，
+一个是写javascript不只是程序员， 可能是设计师， 需要让所有人都学会coffeescript， 而这个是有成本的。
+还有就是项目代码一致性， 原先javascript的项目， 如果加上了coffeescript的代码， 就会比较混乱。
+以及有人并不喜欢coffeescript里面的一些实现， 比如类机制。</p>
+
+<p>我个人倾向使用cofeescript， 现在我基本不直接写javascript了。
+反对的意见我觉得对于普通的开发者来说不重要，
+而它的优点是如此地显著， 以至于我会推荐所有的javascript开发者去使用它。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[coffeescript里面的类机制]]></title>
+    <link href="http://blog.linjunhalida.com/blog/coffeescript-class/"/>
+    <updated>2012-09-18T09:40:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/coffeescript-class</id>
+    <content type="html"><![CDATA[<p>这里假设你知道什么是<a href="http://coffeescript.org/">coffeescript</a>， 也知道coffeescript里面的类和类继承是怎么使用的。
+这里面主要是分析一下coffeescript是如何实现类机制的。</p>
+
+<h2>代码</h2>
+
+<p>首先看代码。 下面是全部的代码， 后面会介绍里面发生了什么。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">People</span>
+</span><span class='line'>    <span class="n">constructor</span><span class="p">:</span> <span class="p">(</span><span class="vi">@name</span><span class="p">)</span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">hello</span><span class="p">:</span> <span class="o">-&gt;</span> <span class="s2">&quot;hello, I&#39;m </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Programmer</span> <span class="n">extends</span> <span class="no">People</span>
+</span><span class='line'>    <span class="n">constructor</span><span class="p">:</span> <span class="o">-&gt;</span> <span class="k">super</span>
+</span><span class='line'>    <span class="n">hello</span><span class="p">:</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="n">result</span> <span class="o">=</span> <span class="k">super</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">p</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">Programmer</span><span class="p">(</span><span class="s1">&#39;halida&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">console</span><span class="o">.</span><span class="n">log</span> <span class="nb">p</span><span class="o">.</span><span class="n">hello</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很简单的一个继承。</p>
+
+<p>这里是生成的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">People</span><span class="p">,</span> <span class="nx">Programmer</span><span class="p">,</span> <span class="nx">p</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">__hasProp</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">hasOwnProperty</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">__extends</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span> <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span> <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="p">}</span> <span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span> <span class="p">}</span> <span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span> <span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="k">return</span> <span class="nx">child</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">People</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">People</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;hello, I&#39;m &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">People</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">})();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Programmer</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">__extends</span><span class="p">(</span><span class="nx">Programmer</span><span class="p">,</span> <span class="nx">_super</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">Programmer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Programmer</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">})(</span><span class="nx">People</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Programmer</span><span class="p">(</span><span class="s1">&#39;halida&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">hello</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>类定义</h2>
+
+<p>前面的先不看， 先看后面的部分。 弄清楚coffeescript的接口， 以及实现。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Programmer</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">__extends</span><span class="p">(</span><span class="nx">Programmer</span><span class="p">,</span> <span class="nx">_super</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">Programmer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Programmer</span><span class="p">;</span>
+</span><span class='line'><span class="p">})(</span><span class="nx">People</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Programmer类， 做的事情就是创建了一个闭包， 在闭包里面生成了一个Programmer构造函数， 并且返回，
+这样就可以通过<code>p = new Programmer('halida');</code>来创建一个对象。</p>
+
+<p>对于对象方法的创建， 是在闭包里面给prototype赋值新函数来实现， coffeescript里面可以用<code>super</code>这个关键词来继承父类里面同样名称的方法。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Programmer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是继承， 首先是Programmer的构造函数：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Programmer.__super__</code>是父类的构造函数（后面在讲__extends会提到是如何生成它的），
+直接获取父类的构造函数constructor（这个是coffeescript缓存的， 下面会讲），
+传给它本函数的参数<code>arguments</code>， 然后在<code>this</code>这个环境里面执行它。</p>
+
+<p><code>Programmer.hello</code>里面， 也采用了同样的方式来继承父类的方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>里面<code>call(this)</code>是为了把当前环境切换到当前对象中去。</p>
+
+<p>这样我们大致知道了类部分的代码到底发生了什么， 但是， <code>__extends</code>里面才是实现类继承功能的核心代码。</p>
+
+<h2>__extends</h2>
+
+<p>首先整理一下代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">__hasProp</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">hasOwnProperty</span><span class="p">,</span>
+</span><span class='line'><span class="nx">__extends</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span>
+</span><span class='line'>            <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="k">return</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们来实际看一下执行 <code>__extends(Programmer, People);</code>发生了什么：</p>
+
+<p>首先是第一个循环：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span>
+</span><span class='line'>        <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>__hasProp.call(parent, key)</code>是用来判断key是否是parent本身定义的属性。
+这段代码是循环People里面所有的属性， 如果是People本身定义的， 就赋值到child里面去，</p>
+
+<p>它的目的是继承父类的类方法和属性。 如果<code>People.CLASS_NAME = "People";</code>， 那么结果就是<code>Programmer.CLASS_NAME = People";</code>，
+通过拷贝的方式来继承父类的类方法。</p>
+
+<p>然后是难懂的部分了， 如何继承父类的对象方法呢？</p>
+
+<p>首先给child生成一个prototype对象构造函数， 在里面还会缓存child的构造函数constructor，
+这样child的child就可以通过调用它来执行父类的方法（实现了上面类定义部分的调用父类对象方法）。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最顶层的父类People里面没有定义constructor，
+是因为js里面返回函数的对象构造函数， 它本身的prototype里面就有constructor，
+console里面执行：<code>People.prototype.constructor</code>， 返回的是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后， child的prototype对象的prototype就是父类的prototype，
+这样， 子类对象找一个方法的时候， 如果在prototype， 也就是ctor里面找不到对应的方法，
+就会找ctor的prototype里面是不是有这样的方法，然后就可以从父类里面找到对应的方法了。
+这就是为什么要用<code>new ctor()</code>来创建一个prototype对象， 这样才能形成一个prototype链。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span><span class='line'><span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以及上面提到的， <code>__super__</code>缓存了父类的prototype。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>走一遍</h2>
+
+<p>上面是对代码本身的分析， 要弄懂， 我们还需要根据实际的状况， 模拟执行一下。</p>
+
+<p>比如一个创建一个对象： <code>p = new Programmer('halida');</code></p>
+
+<p>如果需要找Programmer里面定义的函数， 我们假设是<code>coding</code>吧， 那么过程是：</p>
+
+<ul>
+<li>执行<code>p.coding()</code></li>
+<li>在p对象里面找是否有coding。</li>
+<li>在p的prototype<code>new ctor();</code>里面找是否有coding。定义类里面， 添加的方法都是塞到它里面去的。</li>
+<li>在prototype的prototype： Programmer的prototype里面找是否有coding。</li>
+</ul>
+
+
+<p>这个是对象方法的执行， 还有类方法的执行。 比如<code>Programmer.CLASS_NAME</code>， 那么过程是：</p>
+
+<ul>
+<li>执行<code>Programmer.CLASS_NAME</code></li>
+<li>在Programmer里面找是否有CLASS_NAME</li>
+</ul>
+
+
+<p>继承父类的时候， 会拷贝出所有的父类方法， 在子类定义的时候， 如果定义了类方法， 就会覆盖父类的类方法。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[hujs活动整理和总结2]]></title>
+    <link href="http://blog.linjunhalida.com/blog/hujs-2/"/>
+    <updated>2012-09-16T23:34:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/hujs-2</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/vAQgj.jpg" alt="image" /></p>
+
+<h2>第二天</h2>
+
+<p>第二天的演讲：</p>
+
+<p><a href="https://github.com/substack">James Halliday</a>， 87年的， <a href="https://browserling.com/">browserling</a> 的作者，
+讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。
+这个项目非常有用， 而他肢体语言给人的感觉， 和我以前遇到的一些年轻的技术天才也很类似。</p>
+
+<p>下面是node-webkit的当前开发和维护者<a href="https://github.com/zcbenz">小型笨蛋/赵成</a>， 现在他在Intel专职做这个项目。
+基本上是把node整合到webkit里面， 让js能够通过node的API访问本地资源， 然后提供一个打包的工具， 做成客户端。
+现在用到它的一些项目是把html5的游戏本地化。 我觉得， 优势是跨平台发布应用程序， 以后有这样的需求可以考虑用它。 当然如果是复杂UI客户端， 我觉得还是用有很多强大控件的Qt比较好。</p>
+
+<p>然后是JEFFSU介绍的如何用node.js来做服务器监控平台系统的。 算是一个nodejs的实际应用案例。 因为用到了长连接broadcast之类的东西。</p>
+
+<p>然后是来自网易的谢骋超/圈圈套圈圈讲的NODE.JS游戏服务器开发， 他们team应该是做一个原型验证， 看看nodejs是否适合在游戏服务器开发上面应用。
+这个应该算是node做的比较大的项目了吧， 效果也很不错， 能够支持同一个场景上千玩家同时在线。 看来以后会兴起一波用nodejs架设游戏服务器的潮流了。</p>
+
+<p>然后进入下午场。下午场的几个主题， 我没有认真听， 内容上面也没有什么好说的了。
+在白天场结束后， 需要统计最后一天hackthon参加的人数。 尽管有Glenn在台上拼命激励大家来参加， 结果实际来参加的人还是比较少。
+我感觉， 如果是国外开发者的话， 基本上都是全部参加的。 国内没有流行这样的文化， 不过我觉得会越来越好的， 只是时间问题。</p>
+
+<p>还有一个晚上的party活动， 在<a href="http://factual.com">factual</a>他们的公司场地里面进行。</p>
+
+<h2>晚上party</h2>
+
+<p>晚上的party， 有准备给我们小食， BBQ， 和啤酒， 然后就是大家随意聊天。 我感觉非常好，
+和来自github的一位员工， 应该是<a href="https://github.com/vmg">vmg</a>吧， 交换了关于中国程序员为什么不乐于分享的一些看法，
+问了James他怎么把url贴到浏览器地址栏里面的， 以及和各位做技术的人聊各种各样技术人感兴趣的事情。</p>
+
+<h2>hackthon</h2>
+
+<p>最后一天是全天的hackthon， 我本来想参加， 结果有其他事情， 只能过来看看就走了。 也没有什么好多说的， 和其他hackthon也差不多。</p>
+
+<h2>总结</h2>
+
+<p>这几天我觉得自己的收获有以下几点：</p>
+
+<ul>
+<li>对nodejs在业界的使用有了一定的了解， 看起来已经有很多人在用它了， 也有很多部署到生产环境的例子。</li>
+<li>了解了nodejs的特性和适用场景， 以后在长连接， 高吞吐性能的领域， 它将是我的第一选择。</li>
+<li>认识了不少做node的人和公司。</li>
+<li>在party上面和外国的开发者用英语交流， 增加了我对于英语口语使用的信心。</li>
+<li>体验了国际水平的活动组织， 演讲技巧， 主持技巧。 可以作为素材借鉴。</li>
+</ul>
+
+
+<p>总之， 对于我来说， 参加这几天的会议是非常值得的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[hujs活动整理和总结1]]></title>
+    <link href="http://blog.linjunhalida.com/blog/hujs-1/"/>
+    <updated>2012-09-16T21:55:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/hujs-1</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/amxpah.jpg" alt="image" /></p>
+
+<h2>我当了一回250</h2>
+
+<p>前段时间， 我在网络上面听说有一个关于nodejs的活动在上海举行， 进入到他们的官方网站： http://www.hujs.org/，
+时间在9/14-9/16号， 组织形式是， 前两天会议， 最后一天hackson。 我看了价格， 200元预售， 249正式。
+我看到这个活动的时候， 价格已经是249了。</p>
+
+<p>nodejs我已经听说过了很久， 也略微尝试过， 不过没有深入接触。 这次的活动我是有小小兴趣的， 但是考虑到票价以及3天的时间参与，
+我还是放弃了。 但是事情发生转机是在咨询了几个朋友之后。 一位朋友说千万不要错过，
+而另外一位朋友许久没有见过， 本来就要联系， 也要去参加这次活动。 我终于下定决心当这个250（票价是250-1）了。
+这个决定， 从整个活动结束之后看起来， 是非常值得的。 具体待我把整个活动整理一下后慢慢道来。</p>
+
+<h2>第一天</h2>
+
+<p>会场是在创智天地， 9点开始比较早。 我赶到江湾体育场， 领一群不认识路的人到会场， 坐下。 场地是KIC 7号楼的一楼会议厅。</p>
+
+<p>在来之前， 我查过活动的组织方， 看起来是2个做nodejs的老外， 聊到在上海举办这样的活动， 然后兴趣十足， 就做起来了。
+因此， 他们邀请到了很多来自国外的演讲者， 这是我觉得这次活动的亮点。 会场开始， 这两名老外就开始做自我介绍， 以及开场白（上面那张图片就是了）。</p>
+
+<p>然后下面是第一天的演讲：</p>
+
+<p>第一个演讲就是组织者之一的<a href="https://github.com/thoward">Troy</a>， 他讲的主要还是本次活动的缘起， 以及组织的经过。
+没有什么可以说的。</p>
+
+<p>第二个演讲有了调整。 本来第二天的<a href="https://github.com/stevesanderson">Steve</a>， knockout.js的作者，
+因为第二天要回伦敦看刚刚出生的小孩， 就改成了今天。 内容是knockout的介绍， 以及微软那个云平台Azure。
+演讲的内容非常熟练， knockout和Azure的使用一步步说过来， 是讲师的素质了。
+讲的非常清楚， 过程非常的顺， 我想从这点可以学习一下。 估计这样的演讲他都进行了不知道多少次了。</p>
+
+<p><img src="http://i.imgur.com/tM9dMh.jpg" alt="image" /></p>
+
+<p>第三个演讲是盛大的程劭非/寒冬WINTER， 讲的是ECMAScript5， 我觉得这些东西都是可以网上找到文档， 以及加入的东西也没有什么我不熟悉的就没有多听。</p>
+
+<p>中间有一个coffee break， 时间非常的短暂。</p>
+
+<p>下面是袁峰， 中国node社区的人都熟悉的， fawave的作者。 介绍了在nodejs开发上面遇到的几个bug以及调试过程。 说话很幽默。
+debug过程还是很有借鉴意义的。</p>
+
+<p>下面一个是来自Github的Vicent Marti， 来自西班牙， 因为签证问题没有办法过来， 就做了一个介绍视频给我们， 远程skype做其他解说。
+讲的是github的<a href="http://hubot.github.com/">hubot</a>， 基本上就是一个聊天室机器人， 只是这个机器人可以做各种有意思的扩展功能。</p>
+
+<p><img src="http://i.imgur.com/GQojzh.jpg" alt="image" /></p>
+
+<p>然后是中午饭了。 饭量比较少让我诟病， 赶到外面去又买了点蛋糕垫肚子。</p>
+
+<p>下午第一场比较有料， Tim Caswell把js移植成lua， 讲了很多深技术的东西， 加上我午后犯困就昏睡过去了，
+不过如果有对应需求， 这个东西是非常非常酷的。</p>
+
+<p>再后面是老赵的<a href="http://windjs.org/cn/">wind.js</a>， 解决的是我很感兴趣的一个问题， 如何把js里面反人类思维的callback转变成顺序的写法。
+我提了问题， 关于我认为这样的功能应该整合到js语言本身里面去， 以及什么时候会这样做。
+他说已经有这样的讨论了， 可能要等过些年。 他的库就是打这样的一个时差。
+看起来我以后在未来如果有类似的需求， 可以用这个库。</p>
+
+<p>下面是seajs的作者王保平， 我基本上又是昏睡。。。没有听到什么。</p>
+
+<p>panel discussion， 里面有说道大家对coffeescript的看法， 有人喜欢有人讨厌， 喜欢的理由不必说， 用过的人都知道。
+讨厌的人有几个理由， 主要还是在协作上面。 不是所有人都认同coffee的类实现方法的， 以及如果一个项目是纯js（比如node），
+提交coffee是会破坏代码一致性的。 还有就是很多非程序员和非资深程序员也写js（比如设计师）， 如果用coffee的话有一个熟悉成本，
+也不一定能够让大家接受， <a href="https://github.com/jeffsu">jeffsu</a>就因此实现了一个js的超集<a href="https://github.com/jeffsu/mochiscript">mochiscript</a>。</p>
+
+<p>然后是今天的最后一段时间。 CHARLIE ROBBINS的演讲我想不起来讲什么了。。。 16岁的node开发者小问的演讲我也没有认真听。</p>
+
+<p>王达心， 黄友昆基本上介绍的是node在工作上面的应用， 设计和架构， 我听下来的感觉就是，
+nodejs在长连接的状况下性能非常好， 以前C10K不再成为瓶颈, 以及nodejs本身性能很足，
+加上js的学习成本低， 可以用来作为后端高性能吞吐的解决方案。CPU密集的话， 还是要上C++/go。
+我觉得可以用它来在一些场景下写一些后端服务了， 等有空的时候尝试一下。</p>
+
+<p>然后今天一天就结束了。 上面是演讲的部分。 在演讲的穿插过程中， 我认识了一些人， 聊了聊， 不过感觉收获也不大， 社交而已吧。</p>
+
+<p>晚上本来还有一个party， 我有点累就没有去了。</p>
+
+<p>第二天的活动总结在<a href="http://blog.linjunhalida.com/blog/hujs-2/">这里</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[oauth个人总结]]></title>
+    <link href="http://blog.linjunhalida.com/blog/oauth/"/>
+    <updated>2012-09-12T19:29:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/oauth</id>
+    <content type="html"><![CDATA[<p><img src="http://hueniverse.com/wp-content/uploads/2007/12/My-Endpoints-300x267.png" alt="image" /></p>
+
+<p>最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。</p>
+
+<h2>什么是oauth？</h2>
+
+<p>在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net），
+用户希望利用另外一个网站（priter.example.net）来打印这些照片， 但是因为安全性的考虑， 用户不想提供用户名和密码给它，
+希望只是提供一个受限的访问权限。 oauth就是为了实现这样的功能产生的。</p>
+
+<p>oauth本身是一个标准， 它指定了一系列的操作规范， 服务提供方（就是上面的photos.example.net）提供一系列的API，
+任何需要访问用户资源的第三方网站或者应用， 遵循这套规范， 向用户请求权限， 然后用户授权了之后， 这些第三方网站就能够获得需要的信息，
+同时兼顾了用户的安全需求。</p>
+
+<h2>oauth的过程</h2>
+
+<p>oauth的流程基于http协议， 通过POST请求实现数据通讯。首先定义一下涉及到的几个角色(引用<a href="http://zh.wikipedia.org/wiki/OAuth">维基百科</a>):</p>
+
+<ul>
+<li><strong>服务提供方(server)</strong>: 用户使用服务提供方来存储受保护的资源，如照片，视频，联系人列表。</li>
+<li><strong>用户(resource owner)</strong>: 存放在服务提供方的受保护的资源的拥有者。</li>
+<li><strong>客户端(client)</strong>: 要访问服务提供方资源的第三方应用，通常是网站，如提供照片打印服务的网站。在认证过程之前，客户端要向服务提供者申请客户端标识。</li>
+</ul>
+
+
+<p>整体流程分成3个步骤：</p>
+
+<ul>
+<li>client向服务器获得<code>request_token</code>， 包含token和secret， token用来作标识， secret用来做后续的通讯验证。</li>
+<li>client把resource owner导向到server， 让resource owner授权， 获得一个<code>verifier</code>， 通过后server又把用户重导向到client。</li>
+<li>client利用获得的<code>verifier</code>， 向server申请一个新的<code>access_token</code>， 申请成功后，就可以利用它来访问resource owner的受限资源。</li>
+</ul>
+
+
+<p>具体过程如下图：
+<img src="http://www.formatix.eu/wp-content/uploads/2009/12/diagram-oauth-handshake.png" alt="image" /></p>
+
+<p>为了安全起见， 这些通讯操作都应该在https下面进行。</p>
+
+<h2>疑问</h2>
+
+<p>下面是我在看<a href="rfc">rfc</a>的时候遇到的一些疑问， 以及我对它们的解答。</p>
+
+<h3>在第二步的时候， 如何跳转回client？</h3>
+
+<p>几个地方， 可以在网站创建<code>consumer_key</code>的时候设置默认callback， 以及在申请<code>request_token</code>的时候传入参数<code>oauth_callback</code>，
+就我用linkedin API的时候， 在authorize过程传入<code>oauth_callback</code>。</p>
+
+<h3>nonce的作用？</h3>
+
+<p>文档在<a href="http://tools.ietf.org/html/rfc5849#section-3.3">rfc3.3</a>，
+client生成的一个随机字符串， 让服务器记忆， 防止有中间人记录了通讯， 重复进行这样的请求来做攻击。
+每次给server的请求， 都会生成一个新的nonce。
+为了防止产生大量的nonce给服务器带来负担， 服务器会考虑利用时间来给出限制(具体如何做我也不是很明白， 猜测就是做一个延时吧)。</p>
+
+<h3>为什么要分离 <code>request_token</code> 和 <code>access_token</code>， 而不是只用request_token？</h3>
+
+<p>恩， 不是很清晰地明白具体会引发什么安全隐患， 个人猜测：
+<code>request_token</code>在resource owner， client， server之间通讯会有安全隐患，
+真正做访问的只有一个access_token， 获得<code>access_token</code>只在client和server之间发生一次， 这样限制一下更安全？</p>
+
+<h3>如何通过token和secret让服务器知道自己的？</h3>
+
+<p>用&#8221;HMAC-SHA1&#8221;, &#8220;RSA-SHA1&#8221;, &#8220;PLAINTEXT&#8221;三种方式验证，
+利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
+
+<h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>
+
+<p>根据我看<a href="https://github.com/pelle/oauth-plugin">oauth-plugin的实现</a>， 最后追溯到的是一个随机字串生成器， 看起来只要服务器生成后记住就可以了。</p>
+
+<h3>可能的安全问题</h3>
+
+<p><a href="rfc">rfc</a>里面列出来很多安全性的考虑， 我因为只关心具体的使用， 就不看它们了， 等有担忧的时候再看。</p>
+
+<h3>oauth2.0</h3>
+
+<p>根据<a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">Eran的说法</a>，oauth2.0状况不妙，facebooke和google做的还可以，那么我先不跟踪它了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[你想要多快乐，就能多快乐]]></title>
+    <link href="http://blog.linjunhalida.com/blog/you-can-be-happy/"/>
+    <updated>2012-09-10T10:50:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/you-can-be-happy</id>
+    <content type="html"><![CDATA[<p><img src="http://www.cavstheblog.com/wp-content/uploads/2012/03/happy-sad.jpeg" alt="image" /></p>
+
+<p>我们每个人都有开心和沮丧的时候。</p>
+
+<p>工资涨了， 和朋友一起去外面玩， 很久没有见面的老朋友来拜访， 遇到这些事情， 我们会开心；</p>
+
+<p>丢失了手机， 被老板或父母教训， 不小心摔坏了心爱的杯子， 遇到这些事情， 我们会沮丧；</p>
+
+<p>我们总是想让自己更开心一些， 但是生活中往往那些让你郁闷的事情发生的更多一些，
+要不然就是平平淡淡， 上学放学， 上班下班， 吃饭睡觉。</p>
+
+<p>不过在我们身边， 往往有一类人， 他们的生活不是很好， 或许一直都混得很惨，
+读书掉车尾， 工作天天被老板骂， 或者在街上摆小摊，
+不过他们一直保留着笑容， 好像天天都很快乐， 情绪一直很high，
+不像我们大多数， 摆着一副 “我很烦， 不要来惹我“的表情。</p>
+
+<p>他们到底用了什么魔法？ 能够在生活不如意的时候， 保持快乐？</p>
+
+<p>抱着这样的疑问， 你可能上前去问： “请问你， 为什么这么快乐呢？”</p>
+
+<p>她可能给出一些匪夷所思解答： “因为今天天空云彩很漂亮啊～”</p>
+
+<p>你可能又问： “但是今天你又被老板骂耶。。”</p>
+
+<p>她可能好像一点都不在意的样子： “又不是第一天了， 都习惯啦。。”</p>
+
+<p>这个时候， 你估计只有摇摇头, 摆摆手， 当她脑子里缺根筋了。</p>
+
+<p>不过且慢， 我们需要的是快乐， 如果我们可以模拟这样的状况， 那么我们不就掌握了快乐的诀窍吗？</p>
+
+<p>假如， 我们遇到不开心的事情， 可以摆摆手把问题撇到一边， 说， “生活总是会遇到不开心的事情啦～”；</p>
+
+<p>假如， 我们可以因为各种小事而兴奋半天： “今天又是一个大晴天耶！”；</p>
+
+<p>那么我们应该要更快乐的吧。</p>
+
+<p>不过大家可能会说： “遇到这样那样的事情， 怎么可能摆摆手就过去了嘛， 还有这些无关紧要的事情， 我怎么可能开心得起来。。”</p>
+
+<p>但是有人就能够开心得起来， 那么， 我们是否可以怀疑一下：</p>
+
+<p>事情发生了也就发生了， 可能是好事也是坏事。但是因为我们的认知状况不同， 会产生完全不一样的情感反应！</p>
+
+<p>也就是说， 我们可以通过改变自己对事物的解读方式， 改变我们的情感反应， <strong>我们自己的情感， 是可以被自己操控的</strong>！</p>
+
+<p>从理论上， 我们可以做到， 想让自己多快乐， 就能多快乐， 不需要改变周围的事物， 只是改变自己的认知， 来达到让自己更快乐的目的。</p>
+
+<p>我们每天辛苦工作， 休息日还要加班， 很多时候为了更好的房子， 更好的服装， 可以去更多的地方玩， 这些的目的， 都是为了让我们更快乐，
+但是每个人的能力不同， 我们认为自己需要的物质条件， 可能永远都无法获得， 我们可能永远都没有办法在居住的城市里面买到一套房子。</p>
+
+<p>但是如果我们只需要改变自己对事物的看法， 就能获得快乐， 那么就完全可以放下辛苦工作， 只赚一点点生活费， 也能生活得很快乐了。</p>
+
+<p>那么我们可以尝试一下， 遇到事情， 用能够给自己带来快乐的方式解读：</p>
+
+<p><strong>被老板骂， 很开心</strong>， 因为： “老板关心我的工作， 而不是把我炒鱿鱼， 还来教训我， 这是一个多么好的反思自己工作方式的机会呀～”</p>
+
+<p><strong>丢了手机， 很开心</strong>， 因为： “还好遇到的是小偷， 如果硬抢， 那么我丢的可不一定只是手机了， 可能手也没有了。。”</p>
+
+<p><strong>不小心摔坏了心爱的杯子， 很开心</strong>， 因为： “旧的不去， 新的不来， 我有机会用到更喜欢的杯子了！”</p>
+
+<p>听起来很阿Q， 但是我们获得了快乐的能力， 可以不在执着于一些我们不真正需要的东西了， 因为我们能够让自己， 想要多快乐， 就能多快乐！</p>
+
+<p>恩， 还没有完， 我们是否可以进一步想想, 这样我们也能够想让自己多不快乐， 就多不快乐，
+为什么要这样呢？ 因为<strong>情感只是我们的工具</strong>（待续）。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[老书换新封]]></title>
+    <link href="http://blog.linjunhalida.com/blog/new-blog-system/"/>
+    <updated>2012-09-06T16:01:00+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/new-blog-system</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/2ntGD.jpg" alt="image" /></p>
+
+<p>博客已然数月没有更新了，作为博客的主人我很惭愧，现在改头换面重新开张，在此我小小地列一下来龙去脉。</p>
+
+<p>原先的博客系统是本人折腾的产物，写文档采用<a href="http://en.wikipedia.org/wiki/ReStructuredText">ReST</a>格式，页面采用静态更新，回复全部交由<a href="http://disqus.com/">Disqus</a>打理。
+虽磕磕碰碰年许，还是凑合能用。不过时代发展迅速，<a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a>成为主流，与之相比，ReST显得太重了，毕竟，它主要的目标还是在于文档编写。</p>
+
+<p>我逐渐产生了移植博客系统到<a href="http://octopress.org/">Octopress</a>的打算，由于历史成本，一直未能顺利完成，折腾了许久，再加上自己开发的系统设计考虑不周，发布过程比较痛苦，写博客这件事算是耽搁下来了。
+原以为写博客系统和写文章可以一起搞定，但最后还是又验证了那个谚语：一个人同时只能做好一件事。
+博客系统和写博文混杂起来对心智负担甚重，还是先专注写文章吧。</p>
+
+<p>回首已多月，最后我终于下定决心投入时间整顿它们，全部移植到Octopress上去。
+从ReST转移到Markdown耗费了一些功夫，有<a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>在，工作还算顺利，有些许的格式混乱，容我以后时间充裕时再慢慢调整吧，
+若您看到什么格式混乱的地方，还请包涵，这些我都会在将来的几个月里面慢慢整理完毕的～</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[黑客马拉松活动小记]]></title>
+    <link href="http://blog.linjunhalida.com/blog/hackthon-in-may/"/>
+    <updated>2012-05-07T15:01:12+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/hackthon-in-may</id>
+    <content type="html"><![CDATA[<p><img src="http://topgeek.org/wp-content/uploads/2012/04/hackson.jpg" alt="image" /></p>
+
+<h2>活动</h2>
+
+<p>上周的周末（5/5-5/6）， 我们参加了 <a href="http://topgeek.org/?p=399">黑客马拉松</a>
+活动， 简单点的介绍， 就是一群程序员/美工/产品经理， 花费1整天的时间，
+鼓捣出一个酷的东西。 黑客的文化在于创造， 分享， 进步，
+hackathon的活动是黑客文化的一个体现。</p>
+
+<h2>过程</h2>
+
+<p>参与活动可以考虑预先组队和现场组队， 我们是预先组好的， 4个人：
+我(GuruDigger)， 蔡金(GuruDiggger)， 吴杰蔚(住隔壁， 交大硕士)，
+周航(EMC云存储), 准备做的产品， 是我的一个Idea:
+<a href="http://gurudigger.com/balloons/164">豆瓣match</a> ，
+通过豆瓣上面的喜好资料， 来寻找志同道合的对象。</p>
+
+<p>一天时间非常的紧张， 我们提前一天的晚上， 小聚了一下， 讨论了一下产品，
+以及具体的分工。 我负责web前端和数据挖掘算法， 吴杰蔚考虑推荐算法，
+周航负责爬豆瓣数据， 蔡金负责页面设计。</p>
+
+<p>黑客马拉松举办的场地是在江湾体育场的创智天地， 我们早上9点开始， 到了现场，
+我们抢了一个靠近门的位置， 没有理会现场的举办方， 直接开工了。</p>
+
+<p>我把网站的架子弄起来（rails），
+我们在如何让ubuntu默认安装的mysql可以让其他机器访问到这点上花费了比较多的时间，
+然后上午的时间就结束了。</p>
+
+<p>中午在现场吃饭， 也是社交的时间， 到处找人聊天， 以及认识新朋友。
+平时很少有机会聊的一些话题。</p>
+
+<p>下午的时候， 我遇到了技术问题：
+基本上的时间都花费在了如何让豆瓣用户登录这一块上面。 我本来采用的是
+<a href="https://github.com/ballantyne/omniauth-douban">omniauth-douban</a> ，
+花费了大量时间， 流程还是没有走通顺， 后来换了道哥的
+<a href="https://github.com/lidaobing/douban-ruby">douban-ruby</a> ,
+看懂了豆瓣oauth的逻辑, 总算实现了登录和替用户发豆邮的功能。
+周航这边导数据也遇到了一些问题， 不过总算都搞定了。</p>
+
+<p>开发期间， 抽空去看了一下其他团队。 团队采用的技术区别还是比较大， ruby,
+python, java, node.js, objective-C, 还有一组是用.net的，
+现场学习新的技术。。 采用的开发工具也百花齐放， eclipse, Xcode, emacs,
+vim, sublime, textmate&#8230; 如果是非技术的人过来， 看大家的电脑屏幕，
+是搞不清楚大家在做什么的。</p>
+
+<p>就做的东西而言， 大多数还是以做产品为导向， 有做团购搜索的，
+有做青年旅社查找应用的， 有做平台的， 都是大东西啊。
+让我眼前一亮的只有一个： 基于js+webgl的3D小游戏。
+引擎是组里面一个做游戏的牛人现场写的。
+我觉得这个产品算是最符合黑客精神的了。</p>
+
+<p>晚上我的精力不足， 效率低下， 不过把网站的整体流程跑出来了。
+10点钟我们离开场地回去， 我和蔡金整理好UI， 然后我把整体流程跑顺， 处理bug，
+我弄到了4点才去睡觉。 不过， 产品的完成度总算是能够应付第二天的展示了。</p>
+
+<p>第二天7点半我起床， 和蔡金一起去场地。 这一天都是展示日， 没有我什么事情，
+就在下面休息。 最后的结果是， 我们的产品得到了三等奖，
+应该算是理所应当的吧。 第一名是Chop, 一个聊天的产品。</p>
+
+<p><img src="http://image20.it168.com/201205_500x375/1041/349bd5185b1d5905.jpg" alt="image" /></p>
+
+<h2>小结</h2>
+
+<p>就开发而言。 我觉得有些可以总结的：</p>
+
+<ul>
+<li>Hackathon活动一天都应该处于一个集中精神做事情的状态，
+我前一天没有休息好， 造成这一天精力不充沛， 时间效率不高。</li>
+<li>为了更好的产能， 可以做的是提前把技术细节都准备好， 现场做的只是拼装，
+但是我觉得这样就太作弊了， 不算是好的行为。
+毕竟现场搞定问题才是意义所在。</li>
+<li>开发的时候， 因为分工做好了， 沟通链减少很多， 基本上都在全力开发中。</li>
+<li>一天的时间非常紧张， 项目计划需要弄好。 我们还是错误预估了工作量，
+预期要做的根据喜好推荐用户的功能没有做出来，
+只能通过部分的随机来模拟一个效果。如果还有下次的活动，
+一定要考虑清楚工作量。</li>
+<li>成功的很大因素靠产品设计， 在这点上面蔡金考虑产品考虑得很好。
+直截了当地解决问题。</li>
+</ul>
+
+
+<p>然后就是本次活动：</p>
+
+<ul>
+<li>黑客精神应该是用技术的方式巧妙解决问题。 参与者做的大都是产品导向，
+解决问题的方式也不是很开创性质的。 只能算是做出来一个东西吧。</li>
+<li>奇怪的评委， VC或者公司大员，
+有人还提问“你们的盈利模式是什么”（我把这个当成一个笑话来看），
+如果这个活动是以产品开发为主题还差不多。
+但是不符合“黑客马拉松”的气氛。</li>
+<li>和硅谷双线举办的效果不好， 基本上是双方分开做自己的事情。
+这样就没有太多的意义了。</li>
+<li>我觉得应该得到第一名的那个3D游戏连第二轮都没有进入，
+在这样的评委组成下， 意料以外情理之中。</li>
+</ul>
+
+
+<p>我觉得让开发者们时不时地聚在一起，
+花费一天两天的时间做一个小原型的活动很有意义，
+但是不应该像本次活动一样办成一个大会形式了。 如果下次还有类似的活动，
+我还是会去的。 然后我会考虑做一个更有黑客精神的东西。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[TDD 测试驱动开发]]></title>
+    <link href="http://blog.linjunhalida.com/blog/TDD/"/>
+    <updated>2012-05-01T22:08:26+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/TDD</id>
+    <content type="html"><![CDATA[<p>TDD是这样一种开发方式，引用至wikipedia，以及中文：</p>
+
+<p>利用测试来驱动软件程序的设计和实现。</p>
+
+<p><img src="http://dl.dropbox.com/u/1167873/images/tdd.png" alt="image" />
+具体内容我就不多说了，网络上面的资料很多。</p>
+
+<p>我没有试过TDD，比较像样的测试也没有做过，所以没有什么权力来评价TDD，</p>
+
+<p>考虑到我们公司现有的开发流程－－谈需求，开发代码，测试，验收，</p>
+
+<p>以及我们公司经常出现需求变更的状况，TDD可能可用，下次开发时要实际应用一下。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[unicorn配置]]></title>
+    <link href="http://blog.linjunhalida.com/blog/unicorn-config/"/>
+    <updated>2012-04-21T11:05:54+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/unicorn-config</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/hYztb.png" alt="image" /></p>
+
+<h2>什么是unicorn?</h2>
+
+<p><a href="http://unicorn.bogomips.org/">unicorn</a> 是ruby下面的一个基于Rack的HTTP
+server. 类似的工具有 passenger, thin 等。</p>
+
+<h2>unicorn简单的使用方式</h2>
+
+<p>在你的rails项目下面， 直接执行下面的代码就可以了</p>
+
+<pre><code>unicorn_rails
+</code></pre>
+
+<h2>unicorn的原理</h2>
+
+<p>它的工作模式是master/worker多进程模式。 简单地说，
+首先建立一个master进程， 然后fork出来worker进程。</p>
+
+<p>worker进程处理进来的请求， master负责管控， 当worker消耗内存过多，
+或者相应时间太长， 杀掉worker进程。</p>
+
+<p>这里是一篇github使用他们的文档：</p>
+
+<p><a href="https://github.com/blog/517-unicorn">https://github.com/blog/517-unicorn</a></p>
+
+<h2>unicorn详细配置</h2>
+
+<p>一般来说， 按照这个架构方式:</p>
+
+<p><img src="http://i.imgur.com/s6dth.png" alt="image" />
+nginx负责端口映射， 从80端口映射到本地unix socket,
+然后unicorn按照daemon方式执行。</p>
+
+<h2>设置nginx</h2>
+
+<p>nginx只需要设置一下端口转发就可以了。 （对于rails， 另外提供静态资源服务）</p>
+
+<pre><code>server
+{
+    listen 80;
+    server_name doubanmash.com;
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre>
+
+<h2>设置unicorn</h2>
+
+<p>基本摘抄 <a href="https://github.com/blog/517-unicorn">上面github的配置</a> ，
+文件保存为./config/unicorn.rb， 稍微解释一下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># -*- coding: utf-8 -*-</span>
+</span><span class='line'><span class="n">rails_env</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;production&#39;</span>
+</span><span class='line'><span class="c1"># 需要设置一下rail的路径</span>
+</span><span class='line'><span class="no">RAILS_ROOT</span> <span class="o">=</span> <span class="s2">&quot;/rails/path&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 设置生产和开发环境下面跑的worker数量</span>
+</span><span class='line'><span class="n">worker_processes</span> <span class="p">(</span><span class="n">rails_env</span> <span class="o">==</span> <span class="s1">&#39;production&#39;</span> <span class="p">?</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># rails环境是需要预先加载的， 节省时间和内存</span>
+</span><span class='line'><span class="n">preload_app</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 每个请求最长的响应时间， 超过了就杀掉worker</span>
+</span><span class='line'><span class="n">timeout</span> <span class="mi">30</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 监听端口设置， 可以设置成unix socket或者tcp， 这里是用tcp, 因为开发环境可以直接看网站</span>
+</span><span class='line'><span class="c1"># listen &#39;/data/github/current/tmp/sockets/unicorn.sock&#39;, :backlog =&gt; 2048</span>
+</span><span class='line'><span class="n">listen</span> <span class="mi">8080</span><span class="p">,</span> <span class="n">backlog</span><span class="p">:</span> <span class="mi">2048</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">before_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">##</span>
+</span><span class='line'>  <span class="c1"># 这里是实现重启的时候无缝衔接的代码。</span>
+</span><span class='line'>  <span class="c1"># 首先unicorn提供了这样一个机制：</span>
+</span><span class='line'>  <span class="c1"># 当我们发送 USR2 信号给master的时候， unicorn就会把旧的pidfile加上.oldbin后缀，</span>
+</span><span class='line'>  <span class="c1"># 然后启动一个新的master， 新的master也会fork worker出来。</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'>  <span class="c1"># 下面的代码就是当新的master起来的时候， 检查oldbin这个文件， 告诉旧的master退出（发送QUIT信号）。</span>
+</span><span class='line'>  <span class="c1"># 这样我们保证了无缝重启。</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">old_pid</span> <span class="o">=</span> <span class="no">RAILS_ROOT</span> <span class="o">+</span> <span class="s1">&#39;/tmp/pids/unicorn.pid.oldbin&#39;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="n">old_pid</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">server</span><span class="o">.</span><span class="n">pid</span> <span class="o">!=</span> <span class="n">old_pid</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="s2">&quot;QUIT&quot;</span><span class="p">,</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">old_pid</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">,</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ESRCH</span>
+</span><span class='line'>      <span class="c1"># someone else did our job for us</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">##</span>
+</span><span class='line'>  <span class="c1"># fork了之后， 原先开启的socket就不能用了， 重新开启</span>
+</span><span class='line'>  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="o">.</span><span class="n">establish_connection</span>
+</span><span class='line'>  <span class="c1"># Redis 和 Memcached 的连接是按需的， 不需要重新开启</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>信号是外界给unicorn发命令的方式， 我们利用发信号来控制unicorn。
+上面的配置中无缝重启的部分利用到了这个机制。 最好看看 <a href="http://unicorn.bogomips.org/SIGNALS.html">unicorn
+信号文档</a> 。</p>
+
+<p>更多的配置， 可以见 <a href="http://unicorn.bogomips.org/Unicorn/Configurator.html">unicorn
+配置文档</a></p>
+
+<h2>具体使用</h2>
+
+<p>设置完成后， 在命令行下面执行</p>
+
+<pre><code>bundle exec unicorn_rails -c ./config/unicorn.rb -D
+</code></pre>
+
+<p>如果是生产环境</p>
+
+<pre><code>bundle exec unicorn_rails -c ./config/unicorn.rb -D -E production
+</code></pre>
+
+<p>当新版本上线， 需要重启的时候， 执行</p>
+
+<pre><code>kill -USR2 `cat ${RAILS_ROOT}/tmp/pids/unicorn.pid`
+</code></pre>
+
+<h2>如何监控</h2>
+
+<p>好像有的时候, unicorn master会出现内存泄漏的状况，
+还需要一个进程来监控它。 有人推荐我用 <a href="http://godrb.com/">god</a> ，
+不过我还没有评测过。</p>
+
+<h2>性能和易用性</h2>
+
+<p>没有评测过， 等我有时间的时候考虑一下。</p>
+
+<h2>结论</h2>
+
+<p>听说rails的初学者去用passenger， 熟悉了一些之后会用unicorn，
+我对为什么要用它并没有什么太多的感受。 听说应该是它的可配置性，
+以及比较好的性能吧。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[pjax是什么以及为什么推荐大家用]]></title>
+    <link href="http://blog.linjunhalida.com/blog/pjax/"/>
+    <updated>2012-04-19T16:21:04+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/pjax</id>
+    <content type="html"><![CDATA[<p><img src="http://webification.com/wp-content/uploads/2011/03/pjaxascii.png" alt="image" /></p>
+
+<h2>什么是pjax?</h2>
+
+<p>现在很多网站(<a href="https://twitter.com/">facebook</a>,
+<a href="https://twitter.com/">twitter</a>)都支持这样的一种浏览方式，
+当你点击一个站内的链接的时候， 不是做页面跳转， 而是只是站内页面刷新。
+这样的用户体验， 比起整个页面都闪一下来说， 好很多。</p>
+
+<p>其中有一个很重要的组成部分， 这些网站的ajax刷新是支持浏览器历史的，
+刷新页面的同时， 浏览器地址栏位上面的地址也是会更改，
+用浏览器的回退功能也能够回退到上一个页面。</p>
+
+<p>那么如果我们想要实现这样的功能， 我们如何做呢？</p>
+
+<p>我发现pjax提供了一个脚本支持这样的功能。</p>
+
+<p>pjax项目地址在
+<a href="https://github.com/defunkt/jquery-pjax">https://github.com/defunkt/jquery-pjax</a>
+。 实际的效果见： <a href="http://pjax.heroku.com">http://pjax.heroku.com</a>/
+没有勾选pjax的时候， 点击链接是跳转的。 勾选了之后，
+链接都是变成了ajax刷新。</p>
+
+<h2>为什么要用pjax?</h2>
+
+<p>pjax有好几个好处：</p>
+
+<ul>
+<li><p>用户体验提升。</p>
+
+<p>页面跳转的时候人眼需要对整个页面作重新识别， 刷新部分页面的时候，
+只需要重新识别其中一块区域。自从我在自己的网站
+<a href="http://gurudigger.com/">GuruDigger</a> 上面采用了pjax技术后，
+不由觉得访问其他只有页面跳转的网站难受了许多。 同时，
+由于刷新部分页面的时候提供了一个loading的提示，
+以及在刷新的时候旧页面还是显示在浏览器中，
+用户能够容忍更长的页面加载时间。</p></li>
+<li><p>极大地减少带宽消耗和服务器消耗。</p>
+
+<p>由于只是刷新部分页面， 大部分的请求（css/js）都不会重新获取，
+网站带有用户登录信息的外框部分都不需要重新生成了。
+虽然我没有具体统计这部分的消耗， 我估计至少有40%以上的请求，
+30%以上的服务器消耗被节省了。</p></li>
+</ul>
+
+
+<p>坏处我觉得也有：</p>
+
+<ul>
+<li><p>IE6等历史浏览器的支持</p>
+
+<p>虽然我没有实际测试， 但是由于pjax利用到了新的标准，
+旧的浏览器兼容会有问题。 不过pjax本身支持fallback，
+当发现浏览器不支持该功能的时候， 会回到原始的页面跳转上面去。</p></li>
+<li><p>复杂的服务器端支持</p>
+
+<p>服务器端需要根据过来的请求， 判断是作全页面渲染还是部分页面渲染，
+相对来说系统复杂度增大了。 不过对于设计良好的服务器代码，
+支持这样的功能不会有太大的问题。</p></li>
+</ul>
+
+
+<p>综合起来， 由于用户体验和资源利用率的提升， 坏处是可以完全得到弥补的。
+<strong>我强烈推荐大家使用。</strong></p>
+
+<h2>如何使用pjax?</h2>
+
+<p>直接看 <a href="https://github.com/defunkt/jquery-pjax">官方文档</a> 就可以了。</p>
+
+<p>我觉得做技术的人要养成看一手的技术资料的习惯。</p>
+
+<p>有一个rails针对pjax的 <a href="https://github.com/rails/pjax_rails">gem插件</a>
+可以直接使用。 也有
+<a href="https://github.com/jacobian/django-pjax">django的支持</a> 。</p>
+
+<h2>pjax的原理</h2>
+
+<p>为了能够处理问题， 我们需要能够理解pjax的运作方式。
+pjax的代码只有一个文件：
+<a href="https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js">https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js</a></p>
+
+<p>如果有能力， 可以自己去看一遍。 我这里解释一下原理。</p>
+
+<p>首先， 我们在html里面指定， 需要做pjax的链接内容是哪些，
+以及点击之后需要更新的部分（放在data-pjax属性里面）:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a[data-pjax]&#39;</span><span class="p">).</span><span class="nx">pjax</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当加载了pjax脚本之后， 它会拦截这些链接的事件， 然后包装成一个ajax请求，
+发送给服务器。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click.pjax&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">pjax</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">pjax</span><span class="p">.</span><span class="nx">xhr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个请求带有X-PJAX的HEADER标识， 服务器在收到这样的请求的时候，
+就知道只需要渲染部分页面返回就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX-Container&#39;</span><span class="p">,</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pjax接受到返回的请求之后， 更新data-pjax指定的区域，
+同时也会更新浏览器的地址。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">extractContainer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span>
+</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了能够支持浏览器的后退， 利用到了history的api， 记录下来对应的信息，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">id</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="nx">uniqueId</span><span class="p">(),</span>
+</span><span class='line'>  <span class="nx">url</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">container</span><span class="o">:</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">fragment</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">timeout</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">timeout</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">push</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span><span class="p">(</span><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当浏览器后退的时候， 拦截事件， 根据记录的历史信息， 产生一个新的ajax请求。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;popstate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">state</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">state</span> <span class="o">&amp;&amp;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">container</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">push</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">fragment</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">timeout</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">timeout</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">scrollTo</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">contents</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;start.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">state</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:end&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;end.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了支持fallback， 一个是在加载的时候判断浏览器是否支持history push state
+API：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Is pjax supported by this browser?</span>
+</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">support</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span>
+</span><span class='line'>  <span class="c1">// pushState isn&#39;t reliable on iOS until 5.</span>
+</span><span class='line'>  <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个是当发现请求一段时间没有回复的时候（可以设置参数timeout），
+直接做页面跳转。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">beforeSend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">timeoutTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;pjax:timeout&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">]))</span>
+</span><span class='line'>        <span class="nx">xhr</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">},</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Clear timeout setting so jquerys internal timeout isn&#39;t invoked</span>
+</span><span class='line'>    <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>既然都看到这里了， 你为什么不去实际使用一下pjax呢？ 有那么多好处，
+我觉得几乎所有网站都应该采用pjax。 赶紧用起来吧！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rails介绍]]></title>
+    <link href="http://blog.linjunhalida.com/blog/rails-intro/"/>
+    <updated>2012-04-13T20:05:20+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/rails-intro</id>
+    <content type="html"><![CDATA[<p>我现在算是一个rails程序员了， 作为一门技术的使用者，
+必要的时候要向其他人推广和介绍这门技术， 下面是我准备的slide,
+不定期更新。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rspec]]></title>
+    <link href="http://blog.linjunhalida.com/blog/rspec/"/>
+    <updated>2012-03-13T23:00:51+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/rspec</id>
+    <content type="html"><![CDATA[<p><img src="https://www.rapleaf.com/images/developers/open_source/rspec.gif" alt="image" /></p>
+
+<p>我现在在做的 <a href="http://gurudigger.com">GuruDigger</a> 项目一直没有用测试框架,
+最近我做了几次大的重构, 结果出现了许多bug,
+为了能够保证以后项目不会在重构中挂掉, 我还是需要把测试给整起来.</p>
+
+<p>rails的测试框架用得比较多的是rspec.</p>
+
+<h2>rspec的原理</h2>
+
+<p>我们有一段代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">exp</span> <span class="n">number</span> <span class="n">n</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">n</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="n">result</span> <span class="o">*=</span> <span class="n">number</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">result</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们需要给出一个单元测试. rspec的写法是这样的:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">describe</span> <span class="n">exp</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should work&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">8</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">125</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们来解释一下. 里面的describe和it是什么意思呢?
+rspec里面的测试是采用描述性的方式进行的.
+describe说明具体描述的是什么东西, it指代这个东西它的行为应该是怎么样.
+上面的代码一方面做好了测试,
+另外一方面也直观地描述了这个方法需要做的事情, 符合人类直觉.</p>
+
+<p>然后, 我们看具体验证的部分. 和其他单元测试框架的 assert_equal 函数不同,
+rspec-expectations 修改了Kernel, 给了一个should方法.
+这样让原先的外层函数调用, 变成了内层的方法调用,
+造成的结果就是写起来超级直观. 这个算是ruby比较常用的套路了.</p>
+
+<p>should的写法可以去看
+<a href="https://github.com/rspec/rspec-expectations">rspec-expectations的文档</a>.</p>
+
+<p><a href="https://github.com/rspec/rspec-mocks">https://github.com/rspec/rspec-mocks</a>
+这一块不太容易懂, 需要看看.</p>
+
+<h2>factory_girl</h2>
+
+<p>factory_girl是取代rails默认生成测试数据的yml格式的一种写法, 原生ruby,
+写起来比较舒服和能够嵌入ruby代码.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 定义一个对象</span>
+</span><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="s1">&#39;John&#39;</span>
+</span><span class='line'>    <span class="n">last_name</span>  <span class="s1">&#39;Doe&#39;</span>
+</span><span class='line'>    <span class="n">admin</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 用到的时候build一下就好.</span>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上也有很详细的教程:</p>
+
+<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md</a></p>
+
+<h2>rspec和rails整合</h2>
+
+<p>上面是rspec做测试的部分, 下面我们看如何和rails整合. 其实文档都全了,
+我觉得大家还是直接去看官方的文档就好:</p>
+
+<p><a href="https://github.com/rspec/rspec-rails">https://github.com/rspec/rspec-rails</a></p>
+
+<p>重点是测试的几个类型.</p>
+
+<h2>rspec加上spork</h2>
+
+<p>rspec跑一遍下来超级慢, 于是就有了 <a href="http://spork.rubyforge.org/">spork</a>
+这样的东西. 原理就是先跑一个服务器, 加载好对应的环境.
+然后需要执行测试的时候, 就通知这个服务器开始测试. 服务器会fork一下,
+执行对应的测试.</p>
+
+<p>如何使用上面的文档都有. 重点是几步:</p>
+
+<ul>
+<li>用spork &#8211;bootstrap初始化spec_helper.rb,
+把每次fork需要做的事情填到对应的方法里面去.</li>
+<li>跑服务器, 执行spork</li>
+<li>跑测试. 执行rspec &#8211;drb</li>
+</ul>
+
+
+<h2>配置</h2>
+
+<p>这里有别人贴出来的配置, 还是挺复杂的, 需要搞搞清楚. 但是搞清楚了,
+开发起来你会发现非常舒服(前提是你的机器够好&#8230;)
+<a href="https://gist.github.com/1191428">https://gist.github.com/1191428</a></p>
+
+<h2>一些资料</h2>
+
+<p>rspec书籍:
+<a href="http://pragprog.com/book/achbd/the-rspec-book">http://pragprog.com/book/achbd/the-rspec-book</a></p>
+
+<p>rspec cheetsheet:
+<a href="http://cheat.errtheblog.com/s/rspec">http://cheat.errtheblog.com/s/rspec</a>/</p>
+
+<p>capybara cheetsheet:
+<a href="https://gist.github.com/428105">https://gist.github.com/428105</a>
+<a href="http://cheat.errtheblog.com/s/rspec_shoulda">http://cheat.errtheblog.com/s/rspec_shoulda</a>/</p>
+
+<p>rspec最佳实践:
+<a href="http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips">http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips</a>/</p>
+]]></content>
+  </entry>
+  
+</feed>

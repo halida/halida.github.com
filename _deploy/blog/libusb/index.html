@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>采用libusb库让PC与USB通讯 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="需求 作为设备开发者, 一般需要让设备与上位机PC通讯,
+我们往往考虑采用以下几种接口: rs232, USB, ethernet. 现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
+USB大多成为我们的首选. 对于数据偏少的应用, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/libusb/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">采用libusb库让PC与USB通讯</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>需求</h2>
+
+<p>作为设备开发者, 一般需要让设备与上位机PC通讯,
+我们往往考虑采用以下几种接口: rs232, USB, ethernet.</p>
+
+<p>现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
+USB大多成为我们的首选. 对于数据偏少的应用,
+我们可以利用USB虚拟串口的方式来完成这样的任务, 虚拟串口的驱动和实例,
+对于下位机来说也非常常见. 有个问题:
+很多应用无法用虚拟串口的方式来得到满足, 只能按照USB的方式来解决问题.
+这个时候, 我们只好针对USB进行编程. 对于复杂的驱动编程,
+大多数程序员往往望而却步. 不过总有其他简单的方法解决问题. 这里,
+我们介绍一个USB通讯库: libusb.</p>
+
+<h2>介绍</h2>
+
+<p>libusb是一个针对usb通讯的库. 使用它, 你不需要知道操作系统的细节,
+你只需要对USB有足够的了解即可. 它也不需要你写驱动,
+所有的工作都可以在用户态完成. 使用方法很简单, 这里有一个示例:
+<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples</a>
+, 是不是很简单?</p>
+
+<h2>原理</h2>
+
+<p>libusb自己带有一个内核驱动, 名字叫libusb0.sys,
+放在WINDOWSSYSTEM32DRIVERS里面. 用户程序调用libusb0.dll,
+dll会把任务交由驱动来完成. 这样保证用户态就能够完成USB通讯的作业.</p>
+
+<p>具体做了什么, 可以通过下载项目的源文件来了解, 等我有时间的时候再看看吧.</p>
+
+<h2>安装方法</h2>
+
+<p>libusb现在有好几个版本. 主页面在这里:
+<a href="http://www.libusb.org">http://www.libusb.org</a>/</p>
+
+<ul>
+<li>因为我们一般是进行工程应用, 选择相对稳定的版本: libusb-0.1.</li>
+<li>平台在windows下的话, 我们采用libusb-win32: <a href="http://www.libusb.org/wiki/libusb-win32">http://www.libusb.org/wiki/libusb-win32</a></li>
+<li>linux下一般已经添加到源里面去了, 查找libusb即可.</li>
+</ul>
+
+
+<p>windows下安装方法: <a href="http://www.libusb.org/wiki/libusb-win32#Installation">http://www.libusb.org/wiki/libusb-win32#Installation</a></p>
+
+<p>里面有2种安装方式, Filter Driver Installation 和 Device Driver
+Installation, 前面一个可以说是开发环境, 后面可以说是发布驱动本身.
+我们因为是做系统, 选择前面一个方式, 省得麻烦.</p>
+
+<h2>使用</h2>
+
+<p>这里有比较详细的文档:
+<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/libusb/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/libusb/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/learn-sqlalchemy/" title="Previous Post: sqlalchemy学习">&laquo; sqlalchemy学习</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/qt-compile-speed-up/" title="Next Post: qt编译加速以及使用预编译头">qt编译加速以及使用预编译头 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/libusb/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/libusb/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>pyqt编写的程序如何发布 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="2009年12月3号研究了一下如何发布pyqt的程序，整理内容如下： pyqt是qt图形库对于python编程语言的一个绑定，qt是著名的跨平台图形开发库，专业，易用，以及企业级别支持，文档齐全。python是一个简单易用的解释语言。不过这篇文章是关于如何发布pyqt程序的，那么读者应该都知道这些 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/pyqt-publish/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Pyqt编写的程序如何发布</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T21:06:18+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>2009年12月3号研究了一下如何发布pyqt的程序，整理内容如下：</p>
+
+<p>pyqt是qt图形库对于python编程语言的一个绑定，qt是著名的跨平台图形开发库，专业，易用，以及企业级别支持，文档齐全。python是一个简单易用的解释语言。不过这篇文章是关于如何发布pyqt程序的，那么读者应该都知道这些，我就不多介绍了。</p>
+
+<p>我们用pyqt开发完程序的时候，得到的是一堆python源代码，以及一些资源文件，比如用到的图片，声音什么的。程序在我们开发平台上可以运行，但是我们还需要想办法让客户机也能够用我们的代码。</p>
+
+<p>我们需要做2件事情：一个是把源代码打包成可以放到任何电脑都能够执行的程序，另一个是做一个安装程序，好方便安装到客户机上。</p>
+
+<p>我现在选择py2exe作为打包的工具，nsis作为生成安装程序的工具。</p>
+
+<p>py2exe</p>
+
+<ul>
+<li><a href="http://www.cppblog.com/len/archive/2008/08/11/58547.html">py2exe教程1</a></li>
+<li><a href="http://www.py2exe.org/index.cgi/Tutorial">py2exe官方教程</a></li>
+<li><a href="http://sourceforge.net/projects/py2exe/files/">py2exe下载</a></li>
+</ul>
+
+
+<p>nsis</p>
+
+<ul>
+<li><a href="http://www.52z.com/soft/16497.html">nsis教程</a></li>
+<li><a href="http://nsis.sourceforge.net/Simple_tutorials">nsis官方教程</a></li>
+<li><a href="http://nsis.sourceforge.net/Download">nsis下载</a></li>
+</ul>
+
+
+<p>nsis下载后文档中有详细的介绍，安装目录中含有许多的示例。</p>
+
+<p>我写的示例在
+<a href="http://dl.dropbox.com/u/1167873/others/test_pyqt.zip">这里</a></p>
+
+<p>稍微解释一下：
+比如，我写了一个新的专案，名称叫test_pyqt，新建了一个这样的文件夹。
+里面有一个main.py源代码。同时还有一个res的资源目录。
+为了能够利用py2exe打包，需要新建一个setup.py的设置文件。</p>
+
+<p>几个难点整理如下：
+根据py2exe里面说的，pyqt需要包含sip（我也不知道这是什么东西，估计是C++转python的时候要用到的。。），下面的脚本含有具体的设置。
+编译好的文件还需要一些额外的dll文件（主要是针对没有加sp的XP版本运行时出现“程序出错”报错的状况），放在dll文件夹里面，打包的时候要加上（dll文件在上面的示例中）。我没有研究出如何把这些文件加到可执行文件里面的办法，如果你知道的话，就告诉我。</p>
+
+<p>内容如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="c"># ---------------------------------</span>
+</span><span class='line'><span class="c"># 打包程序</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">py2exe</span><span class="o">,</span><span class="nn">glob</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">setup</span><span class="p">(</span><span class="n">windows</span><span class="o">=</span><span class="p">[{</span>
+</span><span class='line'>                <span class="s">&quot;script&quot;</span><span class="p">:</span> <span class="s">&#39;main.py&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="c">#应用程序图标</span>
+</span><span class='line'>                <span class="s">&quot;icon_resources&quot;</span><span class="p">:[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;res/py.ico&quot;</span><span class="p">)]</span> <span class="p">}],</span>
+</span><span class='line'>      <span class="n">data_files</span><span class="o">=</span><span class="p">[</span>
+</span><span class='line'>                  <span class="c">#资源文件</span>
+</span><span class='line'>                  <span class="p">(</span><span class="s">&quot;res&quot;</span><span class="p">,</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&quot;res/*.*&quot;</span><span class="p">)),</span>
+</span><span class='line'>                  <span class="c">#因为客户机可能缺少部分开发文件造成无法运行程序，需要打包一些文件</span>
+</span><span class='line'>                  <span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&quot;dlls/*.*&quot;</span><span class="p">)),</span>
+</span><span class='line'>                  <span class="p">],</span>
+</span><span class='line'>      <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;py2exe&quot;</span><span class="p">:{</span><span class="s">&quot;includes&quot;</span><span class="p">:[</span><span class="s">&quot;sip&quot;</span><span class="p">],</span>
+</span><span class='line'>                         <span class="s">&quot;optimize&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>                         <span class="c">#打包成一个文件，加快读取速度</span>
+</span><span class='line'>                         <span class="s">&quot;compressed&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>                         <span class="s">&quot;bundle_files&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>                         <span class="c">#文件放在哪里</span>
+</span><span class='line'>                         <span class="s">&quot;dist_dir&quot;</span><span class="p">:</span><span class="s">&quot;temp/dist&quot;</span><span class="p">,</span>
+</span><span class='line'>                         <span class="c">#少了个文件,不管它</span>
+</span><span class='line'>                         <span class="s">&quot;dll_excludes&quot;</span><span class="p">:[</span><span class="s">&quot;MSVCP90.dll&quot;</span><span class="p">],</span>
+</span><span class='line'>                         <span class="p">},</span>
+</span><span class='line'>               <span class="p">},</span>
+</span><span class='line'>      <span class="n">zipfile</span><span class="o">=</span><span class="bp">None</span><span class="p">,)</span><span class="c">#一个文件</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#删除build临时目录</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">shutil</span>
+</span><span class='line'><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s">&#39;build&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行:</p>
+
+<pre><code>python setup.py py2exe
+</code></pre>
+
+<p>以上语句需要把python的目录加到path里面去，或者你可以在python前加上完整的python安装目录.
+我是加path的，因为这样使用python更方便。</p>
+
+<p>之后，会生成temp/dist文件夹，里面就是一个main.exe可执行文件了，还有res文件夹。</p>
+
+<p>之后是生成安装文件，新建一个installer.nsi文件，内容如下（因为比较长，放到最后）。</p>
+
+<p>内容比较多。当时我在做的时候，看了很多的文档才知道具体怎么做。为了方便，你还是用我的示例吧。</p>
+
+<p>下面的内容含有多语言，license页面，安装内容页面，安装目录页面，以及反安装页面。</p>
+
+<p>如果你感兴趣的话可以自己研究，我是被nsis细节给累倒了。</p>
+
+<p>这个文件你只需要改下面软件名称的部分，它会自动把dist打包安装到program
+files里面，生成执行文件链接到桌面以及菜单项中。</p>
+
+<p>对了，主执行文件的入口是main.py这个源代码。</p>
+
+<p>文件写好后，鼠标右键菜单中有一个compile nsis
+script的选项，点击就可以生成安装文件。</p>
+
+<p>具体的细节可以看我上面示例的压缩文档。我写了一个makefile来方便快速执行操作（别告诉我你不会用make）。
+该示例在windows
+xp,python2.6,nsis2.46,pyqt4.5,py2exe上测试通过。等以后考虑跨平台版本:</p>
+
+<pre><code>#coding:utf-8
+
+;软件名称
+!define NAME "test_pyqt"
+
+;主执行文件
+!define EXE "dist\main.exe"
+
+;样式
+XPstyle on
+
+;输出的安装文件
+OutFile "temp/${NAME}_installer.exe"
+
+;默认目录
+InstallDir $PROGRAMFILES\${NAME}
+
+; 检查是否已经安装过
+InstallDirRegKey HKLM "Software\${NAME}" "Install_Dir"
+
+;需要管理员权限
+RequestExecutionLevel admin
+
+;--------------------------------
+
+; 页面
+
+Page license
+Page components
+Page directory
+Page instfiles
+
+UninstPage uninstConfirm
+UninstPage instfiles
+
+;--------------------------------
+
+; 安装主目录
+Section "main"
+
+SectionIn RO
+
+; Set output path to the installation directory.
+SetOutPath $INSTDIR
+
+; 需要安装的程序
+File /r "temp\dist"
+
+; Write the installation path into the registry
+WriteRegStr HKLM SOFTWARE\${NAME} "Install_Dir" "$INSTDIR"
+
+; Write the uninstall keys for Windows
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${NAME}"
+WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoModify" 1
+WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoRepair" 1
+WriteUninstaller "uninstall.exe"
+
+SectionEnd
+
+; 开始菜单
+Section "开始菜单"
+
+CreateDirectory "$SMPROGRAMS\${NAME}"
+CreateShortCut "$SMPROGRAMS\${NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+SetOutPath $INSTDIR\dist
+CreateShortCut "$SMPROGRAMS\${NAME}\${NAME}.lnk" "$INSTDIR\${EXE}" "" "$INSTDIR\${EXE}" 0
+
+SectionEnd
+
+; 桌面快捷方式
+Section "桌面快捷方式"
+SetOutPath $INSTDIR\dist
+CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${EXE}" "" "$INSTDIR\${EXE}" 0
+SectionEnd
+
+;--------------------------------
+
+; Uninstaller
+
+Section "Uninstall"
+
+; Remove registry keys
+DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\"
+DeleteRegKey HKLM SOFTWARE\${NAME}
+
+; Remove directories used
+Delete "$DESKTOP\${NAME}.lnk"
+RMDir /r "$SMPROGRAMS\${NAME}"
+RMDir /r "$INSTDIR"
+
+SectionEnd
+
+;--------------------------------
+; 语言部分
+; First is default
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\SimpChinese.nlf"
+
+; License data
+; Not exactly translated, but it shows what's needed
+LicenseLangString myLicenseData ${LANG_ENGLISH} "license.txt"
+LicenseLangString myLicenseData ${LANG_SIMPCHINESE} "license.txt"
+LicenseData $(myLicenseData)
+
+; Set name using the normal interface (Name command)
+; LangString Name ${LANG_ENGLISH} "English"
+; LangString Name ${LANG_SIMPCHINESE} "Simplified Chinese"
+; Name $(Name)
+
+;--------------------------------
+Function .onInit
+
+;Language selection dialog
+
+Push ""
+Push ${LANG_ENGLISH}
+Push English
+Push ${LANG_SIMPCHINESE}
+Push "Simplified Chinese"
+Push A ; A means auto count languages
+; for the auto count to work the first empty push (Push "") must remain
+LangDLL::LangDialog "Installer Language" "Please select the language of the installer"
+
+Pop $LANGUAGE
+StrCmp $LANGUAGE "cancel" 0 +2
+Abort
+FunctionEnd
+[/sourcecode]
+</code></pre>
+
+<p>2010/10/29修改: 其实现在pyinstaller用起来更方便, 直接build就可以了.
+python2.6以后的版本需要下载开发版本使用.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T21:06:18+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/pyqt-publish/" data-via="linjunhalida" data-counturl="http://blog.linjunhalida.com/blog/pyqt-publish/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/realpeople-steampunk/" title="Previous Post: 真人蒸汽朋克">&laquo; 真人蒸汽朋克</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/fair-game/" title="Next Post: 所谓的你情我愿">所谓的你情我愿 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/postfix/">postfix架构初探</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/standing-at-work/">尝试站着工作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/kazakhstan-time-zone/">尝试哈萨克斯坦时间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("linjunhalida", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/linjunhalida?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/pyqt-publish/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/pyqt-publish/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
