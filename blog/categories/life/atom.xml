@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: life | 网络寻租]]></title>
-  <link href="http://blog.linjunhalida.com/blog/categories/life/atom.xml" rel="self"/>
-  <link href="http://blog.linjunhalida.com/"/>
-  <updated>2012-11-19T01:17:28+08:00</updated>
-  <id>http://blog.linjunhalida.com/</id>
+  <link href="http://halida.github.com/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://halida.github.com/"/>
+  <updated>2012-11-27T11:29:12+08:00</updated>
+  <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[尝试哈萨克斯坦时间]]></title>
-    <link href="http://blog.linjunhalida.com/blog/kazakhstan-time-zone/"/>
+    <link href="http://halida.github.com/blog/kazakhstan-time-zone/"/>
     <updated>2012-10-14T22:56:00+08:00</updated>
-    <id>http://blog.linjunhalida.com/blog/kazakhstan-time-zone</id>
+    <id>http://halida.github.com/blog/kazakhstan-time-zone</id>
     <content type="html"><![CDATA[<p><img src="http://i.imgur.com/rQmBc.png" alt="image" /></p>
 
 <p>我一直认为， 尝试新事物， 是一个具有完全行为能力的人应该具有的习惯。 不管是接触新的东西， 或者是对自己现有生活的调整，

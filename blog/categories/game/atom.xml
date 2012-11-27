@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: game | 网络寻租]]></title>
-  <link href="http://blog.linjunhalida.com/blog/categories/game/atom.xml" rel="self"/>
-  <link href="http://blog.linjunhalida.com/"/>
-  <updated>2012-11-19T01:17:28+08:00</updated>
-  <id>http://blog.linjunhalida.com/</id>
+  <link href="http://halida.github.com/blog/categories/game/atom.xml" rel="self"/>
+  <link href="http://halida.github.com/"/>
+  <updated>2012-11-27T11:29:12+08:00</updated>
+  <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[FTL游戏评测]]></title>
-    <link href="http://blog.linjunhalida.com/blog/ftl/"/>
+    <link href="http://halida.github.com/blog/ftl/"/>
     <updated>2012-10-05T16:05:00+08:00</updated>
-    <id>http://blog.linjunhalida.com/blog/ftl</id>
+    <id>http://halida.github.com/blog/ftl</id>
     <content type="html"><![CDATA[<p><img src="http://i.imgur.com/bkIoK.jpg" alt="image" /></p>
 
 <p>很早以前， 我就是一个电脑游戏玩家了， 初中时期的魔兽一代， 毁灭公爵， 赤壁； 到高中的博得之门， 星际， 半条命， 再到大学的魔兽争霸， 无冬之夜；

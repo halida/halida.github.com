@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: english | 网络寻租]]></title>
-  <link href="http://blog.linjunhalida.com/blog/categories/english/atom.xml" rel="self"/>
-  <link href="http://blog.linjunhalida.com/"/>
-  <updated>2012-11-19T01:17:28+08:00</updated>
-  <id>http://blog.linjunhalida.com/</id>
+  <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
+  <link href="http://halida.github.com/"/>
+  <updated>2012-11-27T11:29:12+08:00</updated>
+  <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[English Matters]]></title>
-    <link href="http://blog.linjunhalida.com/blog/english-matters/"/>
+    <link href="http://halida.github.com/blog/english-matters/"/>
     <updated>2012-10-12T15:07:00+08:00</updated>
-    <id>http://blog.linjunhalida.com/blog/english-matters</id>
+    <id>http://halida.github.com/blog/english-matters</id>
     <content type="html"><![CDATA[<p><img src="http://i.imgur.com/fD9By.jpg" alt="image" /></p>
 
 <p>This is the first time I'm blogging in English here,
