@@ -5,13 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>postfix架构初探 - 网络寻租</title>
+  <title>github最近DNS被污染的事情经过以及解法 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
-我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
-在这里整理一下具体的信息， &hellip;">
+  <meta name="description" content="缘由 最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/postfix/">
+  <link rel="canonical" href="http://halida.github.com/blog/github-dns-issue/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Postfix架构初探</h1>
+      <h1 class="entry-title">github最近DNS被污染的事情经过以及解法</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2012-10-27T23:57:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
+<time datetime="2013-01-21T22:45:00+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,92 +108,58 @@
   </header>
 
 
-<div class="entry-content"><p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
+<div class="entry-content"><p><img src="http://i.imgur.com/9MBJLOd.jpg" alt="image" /></p>
 
-<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
-我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
-在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
-根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
+<h2>缘由</h2>
 
-<h2>什么是postfix</h2>
+<p>最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为，
+进而上头发了命令封锁掉了Github。</p>
 
-<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
-postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
-
-<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
-
-<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
+<p>根据我们国家防火墙的行为特征，我预期到只要满足一定条件的网站一定会被封锁：</p>
 
 <ul>
-<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
-<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
+<li>用户能够自由发布内容的网站，这个内容可以是中文，可以是各种敏感信息。</li>
+<li>这个网站大到了一定规模。</li>
 </ul>
 
 
-<h2>如何配置</h2>
+<p>Github原本只是放源码，但是之后它们又多出来可以发布内容的功能，满足了我的预期条件，我认为它们被封只是时间问题。
+原本我以为会是因为一些发布在Github上面的博客，哪成想竟然会是这样的原因。
+预期一件事情一定会发生，但是却预期不到发生时候的诱因，这应该是混沌科学领域的知识和智慧吧。</p>
 
-<p>我发现<a href="https://help.ubuntu.com/community/Postfix">ubuntu的配置文档</a>已经非常全了， 可以安装上面来配置。
-邮件系统的用户和密码， 默认是采用unix的用户和密码， 但是很多时候我们的邮件系统是和真正的系统用户分开的，
-这个时候我们需要<a href="https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto">设置Virtual Mailbox</a>，
-postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要另外安装dovecot， 前面的教程里面有具体的安装方法。</p>
+<h2>封锁策略</h2>
 
-<h2>邮件流程</h2>
+<p>在shlug里面，Jiajun Wang介绍了封锁的方法(全文转载)：</p>
 
-<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
+<p>简单地说，由于 DNS 一般使用 <a href="http://tools.ietf.org/html/rfc1035">UDP协议</a>，
+只要在某个节点发现你查询某某网站，然后造一个假的回应包并在真正的包返回之前给你就行了，
+然后假的包里面只要把实际的IP改成另外一个IP就行。</p>
 
-<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
+<p>给你看个 wireshark 抓包应该清晰易懂。运行的命令是：</p>
 
-<p>外面的服务器会通过smtp发送邮件， postfix服务器会响应, 然后最后保存到本地的邮件目录存放地上面。</p>
+<pre><code>dig @8.8.8.8 twitter.com
+</code></pre>
 
-<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
+<p>可以看到实际上有两个返回，第一个返回的 ip 是 59.24.3.173
+第二个返回了 3 个 ip。（这个是对的）
+这个就是 dns 污染。</p>
 
-<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
+<p><img src="http://i.imgur.com/WHzaoTc.png" alt="image" /></p>
 
-<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
+<h2>解法</h2>
 
-<p><strong>如何验证用户</strong></p>
+<p>Github被封锁后，极大地影响到我们程序员的日常工作，包括Github上面放的开源版本库的访问，oh-my-zsh的更新，更严重的是homebrew的使用。
+全局翻墙算是一个解决方案，但是依赖很多，也有不方便的地方。
+这里我建议采用的是：<a href="http://dnscrypt.org/">dnscrypt</a>，让DNS都走安全的加密通道，以及采用opendns作为dns服务提供商。
+使用方法也很简单，下载对应的客户端，安装即可。</p>
 
-<p>devocot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
+<h2>结论</h2>
 
-<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
-
-<ul>
-<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
-<li>postfix配置目录在<code>/etc/postfix</code></li>
-<li>dovecot配置目录<code>/etc/dovecot</code></li>
-<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
-<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
-<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
-</ul>
-
-
-<h2>更进一步的需求</h2>
-
-<p>前面做的事情只是比较基本的一些， 如果要成为生产环境， 还是需要一些其他的事情：</p>
-
-<ul>
-<li>用户管理系统</li>
-<li>spam过滤</li>
-<li>保证自己不被当作spam</li>
-</ul>
-
-
-<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
-
-<h2>2012-10-26问题整理</h2>
-
-<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
-花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
-
-<ul>
-<li>不是很懂postfix， 看文档</li>
-<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
-<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
-<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
-</ul>
-
-
-<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
+<p>Github被封，对于程序员整体来说是损害，但对于能够打破这个封锁的程序员来说却也是利好：又可以在竞争中筛掉一批竞争者了。
+政府可以随意限制我们的权利，对于中国人整体上面是非常严重的伤害，现代中国还在像以前一样闭关锁国，为了维持一个非正义政权的统治。
+我对中国的未来不是很看好。</p>
 </div>
 
 
@@ -216,21 +182,15 @@ postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要
   
 
 
-<time datetime="2012-10-27T23:57:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
+<time datetime="2013-01-21T22:45:00+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/技术/'>技术</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/postfix/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/postfix/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/github-dns-issue/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/github-dns-issue/" >Tweet</a>
   
   
   
@@ -239,10 +199,8 @@ postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/standing-at-work/" title="Previous Post: 尝试站着工作">&laquo; 尝试站着工作</a>
+        <a class="basic-alignment left" href="/blog/obfuscated-openssh/" title="Previous Post: obfuscated-openssh介绍">&laquo; obfuscated-openssh介绍</a>
       
-      
-        <a class="basic-alignment right" href="/blog/new-mac-book-pro/" title="Next Post: 买了新的笔记本">买了新的笔记本 &raquo;</a>
       
     </p>
   </footer>
@@ -363,8 +321,8 @@ postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/postfix/';
-        var disqus_url = 'http://halida.github.com/blog/postfix/';
+        var disqus_identifier = 'http://halida.github.com/blog/github-dns-issue/';
+        var disqus_url = 'http://halida.github.com/blog/github-dns-issue/';
         var disqus_script = 'embed.js';
       
     (function () {

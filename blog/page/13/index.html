@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是ReST ReST全称是reStructuredText,是一种容易写,容易看的文本格式, 具体介绍在这里:
-http://docutils.sourceforge.net/rst.html 如果你看不懂英文,可以看&#8212;&#8212;好吧,我没有找到中文的介绍. ReST的好处 &hellip;">
+  <meta name="description" content="什么是dwarf fortress? 一个建设矮人部落的游戏. 随机生成世界地图, 历史, 超级复杂的建设… http://www.bay12games.com/dwarves/screens.html 有人甚至用部落和矮人实现出了一个
+计算机
+(有种3体里面那个人计算机的感觉) 免费的. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,71 @@ http://docutils.sourceforge.net/rst.html 如果你看不懂英文,可以看&#821
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/DwarfFortress-intro/">DwarfFortress介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-28T21:25:29+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2010</time>
+        
+         | <a href="/blog/DwarfFortress-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是dwarf fortress?</h2>
+
+<p>一个建设矮人部落的游戏. 随机生成世界地图, 历史, 超级复杂的建设…</p>
+
+<p><a href="http://www.bay12games.com/dwarves/screens.html">http://www.bay12games.com/dwarves/screens.html</a></p>
+
+<p>有人甚至用部落和矮人实现出了一个
+<a href="http://www.pcworld.com/article/194434/dwarf_fortress_player_creates_a_working_ingame_digital_computer.html">计算机</a>
+(有种3体里面那个人计算机的感觉)</p>
+
+<p>免费的. 有linux版本可以下.</p>
+
+<p>一个漂亮的
+<a href="http://www.bay12forums.com/smf/index.php?topic=43260.0">显示工具</a>:</p>
+
+<p><img src="http://i.imgur.com/WT0jH.png" alt="image" />
+<img src="http://i481.photobucket.com/albums/rr172/nil2008/screenshot1.jpg" alt="image" />
+这个工具可以在linux下面用cmake编译,但是我没有编译成功, 摸索中.</p>
+
+<p>有一些其他的类似的游戏， 整理在这里：</p>
+
+<p><a href="http://www.townsgame.com">http://www.townsgame.com</a>/</p>
+
+<p><a href="http://www.goblincamp.com">http://www.goblincamp.com</a>/</p>
+
+<p><a href="http://www.paradoxplaza.com/games/a-game-of-dwarves">http://www.paradoxplaza.com/games/a-game-of-dwarves</a></p>
+
+<p><a href="http://gnomoria.com/?page_id=15">http://gnomoria.com/?page_id=15</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -896,106 +962,6 @@ g++ a.cpp
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/create-a-caculator/">实现计算器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
-        
-         | <a href="/blog/create-a-caculator/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>原因</h2>
-
-<p>因为想要练习自己的编程能力, 所以打算写一个计算器出来.</p>
-
-<p>具体的需求:
-- 实现一个支持四则运算的计算器
-- 实现括号, 乘方运算</p>
-
-<h2>分析</h2>
-
-<p>我打算的实现步骤如下:
- - 实现词法解析器, 把输入的字符串解析成词语.
- - 实现简单的四则运算语法分析与计算</p>
-
-<h2>词法解析器</h2>
-
-<p>采用状态机来实现</p>
-
-<p>词法:</p>
-
-<pre><code>number := [0..9] | number [0..9]
-add := +
-sub := -
-mul := *
-div := /
-lp  := (
-rp  := )
-mmu := **
-</code></pre>
-
-<p>根据词法获得的状态表格:</p>
-
-<pre><code>----------------- -------- --------- ------- -----
-statuscondition   [0..9]   [+-/()]   [\*]    [ ]
-0.start           1 num    0 fac     2       0
-1.numcheck        1 num    0 fac     0       0
-2.mulcheck        1 num    0 fac     0 mmu   0
------------------ -------- --------- ------- -----
-</code></pre>
-
-<p>当跳出number状态时, 记录number. 当跳出mulcheck状态时, 记录mul.</p>
-
-<h2>四则运算语法分析和处理</h2>
-
-<p>先来一个简单的吧, 只实现四则运算, 2次循环, 一次计算*/, 一次计算+-,
-然后打印出结果.</p>
-
-<p>实现完成, 函数是caculate.</p>
-
-<p>然后是能够实现括号, 乘方等复杂操作, 这个需要语法分析,
-甚至可能用到AST(抽象语法树)</p>
-
-<p>语法</p>
-
-<pre><code>prime := ( p3 ) | number
-p1 := prime ** prime | prime
-p2 :=  p2 * p1 | p2 / p1 | p1
-p3 := p3 - p2 | p3 + p2 | p2
-</code></pre>
-
-<p>自己研究了半天, 最后还是看the c programming language里面的解法完成了.</p>
-
-<p>总共花费了1天, 看起来过了一个有意义的中秋(好悲哀).</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1013,6 +979,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/github-dns-issue/">github最近DNS被污染的事情经过以及解法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/obfuscated-openssh/">obfuscated-openssh介绍</a>
       </li>
     
@@ -1026,10 +996,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/gdc-china-2012/">GDC China 2012</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-mac-book-pro/">买了新的笔记本</a>
       </li>
     
   </ul>
