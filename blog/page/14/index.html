@@ -9,9 +9,16 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="原因 因为想要练习自己的编程能力, 所以打算写一个计算器出来. 具体的需求:
-- 实现一个支持四则运算的计算器
-- 实现括号, 乘方运算 分析 我打算的实现步骤如下: - 实现词法解析器, 把输入的字符串解析成词语. - 实现简单的四则运算语法分析与计算 词法解析器 采用状态机来实现 词法: &hellip;">
+  <meta name="description" content="注意事项 为了统一,docstring的注释用 """ """
+不要硬性说返回什么,因为无法确定.要表示会返回什么.
+class的docstring要与上下分离开来,表示单独的一个部分.
+override重载和extend扩展要注明
+fill-paragraph断行 实例 1
+2
+3
+4
+5
+6 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +87,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/docstring/">Docstring</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/docstring/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>注意事项</h2>
+
+<ul>
+<li>为了统一,docstring的注释用 <code>""" """</code></li>
+<li>不要硬性说返回什么,因为无法确定.要表示会返回什么.</li>
+<li>class的docstring要与上下分离开来,表示单独的一个部分.</li>
+<li>override重载和extend扩展要注明</li>
+<li>fill-paragraph断行</li>
+</ul>
+
+
+<h2>实例</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">kos</span>\<span class="n">_root</span><span class="p">():</span>
+</span><span class='line'>  <span class="o">~</span> <span class="s">&quot;&quot;&quot;Return the pathname of the KOS root directory.&quot;&quot;&quot;</span> <span class="k">global</span>
+</span><span class='line'>    \<span class="n">_kos</span>\<span class="n">_root</span> <span class="k">if</span> \<span class="n">_kos</span>\<span class="n">_root</span><span class="p">:</span> <span class="k">return</span> \<span class="n">_kos</span>\<span class="n">_root</span> <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">complex</span><span class="p">(</span><span class="n">real</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">imag</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+</span><span class='line'>  <span class="o">~</span> <span class="s">&quot;&quot;&quot;Form a complex number.</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    Keyword arguments: real -- the real part (default 0.0) imag -- the</span>
+</span><span class='line'><span class="s">    imaginary part (default 0.0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="s">    &quot;&quot;&quot;</span> <span class="k">if</span> <span class="n">imag</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">real</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span> <span class="k">return</span> <span class="nb">complex</span>\<span class="n">_zero</span> <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -619,68 +700,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/when-plan-failed/">计划没有按照预定来怎么办</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-05-31T22:08:26+08:00" pubdate data-updated="true">May 31<span>st</span>, 2009</time>
-        
-         | <a href="/blog/when-plan-failed/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天没有写博，今天来反省，补充一篇。计划没有按照预定来，怎么办？</p>
-
-<p>昨天一天都在打游戏，或者看小说，在这种情况下，无法记住每天博客的任务。</p>
-
-<p>那么今天又记住了，怎么办呢？</p>
-
-<p>这个问题，本质来说，是一个实施过程，发现新问题需要处理的状况。</p>
-
-<p>首先，分析一下，计划没有完成，是否是实际发生的状况，在计划时没有考虑？</p>
-
-<p>是的，计划时没有考虑如果忘记了如何处理。不过现在可以修改计划：忘记了写，需要补充，缺多少补多少。</p>
-
-<p>思考这样的处理方法是否有问题？如果忘记了很久，怎么办？</p>
-
-<p>那就平均任务，每天2篇，直到补充完成。</p>
-
-<p>任何计划和实施都会出现问题，我们叫它风险（risk），遇到风险时，必须立刻处理它。</p>
-
-<p>如果风险影响到计划排程，就需要做计划里程碑变更，（写博客是一个长期任务，没有里程碑。）</p>
-
-<p>如果风险发生的原因在于计划的不完善，需要修改计划以符合实际情况的发生。（在这个例子里，是约定缺多少补多少）</p>
-
-<p>如果风险无法解决，计划只有放弃，实施一个无法完成的计划是不明智的。（如果哪天我被抓，写博当然就只能停止了。）</p>
-
-<p>以上。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -698,6 +717,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/learn-programming/">从零开始学编程</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/github-dns-issue/">github最近DNS被污染的事情经过以及解法</a>
       </li>
     
@@ -711,10 +734,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/tedxfdu-2012-11/">TEDxFDU 2012年11月 活动总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/gdc-china-2012/">GDC China 2012</a>
       </li>
     
   </ul>
