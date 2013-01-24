@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-01-23T21:16:03+08:00</updated>
+  <updated>2013-01-24T16:42:06+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/learn-programming/"/>
     <updated>2013-01-23T15:40:00+08:00</updated>
     <id>http://halida.github.com/blog/learn-programming</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/KRDG0Sq.png" alt="image" /></p>
+    <content type="html"><![CDATA[<p><img src="https://dl.dropbox.com/u/1167873/blog/KRDG0Sq.png" alt="image" /></p>
 
 <p>很多人想学习如何编程，我这里整理一下资料，被问到的时候可以直接丢这个地址。
 这里是一个学习过程简介，目标是针对想正正经经把编程学好的人，
@@ -64,7 +64,8 @@
 <p>到这里你基本上算是会编程了，不过离能够掌握还差很远，你需要懂得计算机基础，算法，软件工程，以及很多其他的东西。。
 不过这又是另外一个教程里面的事情了。</p>
 
-<p>最后总结一下学会编程的要点：学会google，加入社区，多想多练。编程这门技术是所有人都能够掌握的，你需要的是信心和努力，当然还有一定程度的英文阅读能力。</p>
+<p>最后总结一下学会编程的要点：学会google，加入社区，多想多练。
+编程这门技术是所有人都能够掌握的，你需要的是信心和努力，当然还有一定程度的英文阅读能力。</p>
 ]]></content>
   </entry>
   
