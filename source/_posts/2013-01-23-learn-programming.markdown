@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/KRDG0Sq.png)
+![image](https://dl.dropbox.com/u/1167873/blog/KRDG0Sq.png)
 
 很多人想学习如何编程，我这里整理一下资料，被问到的时候可以直接丢这个地址。
 这里是一个学习过程简介，目标是针对想正正经经把编程学好的人，
