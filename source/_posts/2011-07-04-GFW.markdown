@@ -85,7 +85,7 @@ categories:
     [http://www.twitter.com](http://www.twitter.com) , 关注我吧, 搜索:
     linjunhalida
 -   如果你想看看百科全书以及40年前中国到底发生了什么,
-    你可以去cn.wikipedia.org, 搜索对应的年份和事件.
+    你可以去[zh.wikipedia.org](http://zh.wikipedia.org/), 搜索对应的年份和事件.
 -   如果你只是想看妹子, 去
     [http://boards.4chan.org/s](http://boards.4chan.org/s)/
 -   如果你想看美剧而你的英语又比较好的话, 上
