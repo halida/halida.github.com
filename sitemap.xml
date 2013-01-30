@@ -406,7 +406,7 @@
     </url>
     <url>
         <loc>http://halida.github.com/blog/GFW/</loc>
-        <lastmod>2012-11-18T18:51:11+08:00</lastmod>
+        <lastmod>2013-01-27T19:40:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/blog/snake-challenge-event/</loc>
@@ -641,15 +641,23 @@
         <lastmod>2013-01-24T16:41:34+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/selenium/</loc>
+        <lastmod>2013-01-25T19:37:06+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/god-as-service/</loc>
+        <lastmod>2013-01-30T13:32:14+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/about/</loc>
         <lastmod>2012-11-18T18:51:11+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2013-01-24T16:41:34+08:00</lastmod>
+        <lastmod>2013-01-30T13:32:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2013-01-24T16:41:34+08:00</lastmod>
+        <lastmod>2013-01-30T13:32:14+08:00</lastmod>
     </url>
 </urlset>
