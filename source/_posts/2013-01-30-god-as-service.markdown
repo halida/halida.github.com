@@ -16,7 +16,7 @@ categories:
 
 ```bash
 autossh -M 2121 -D 10.78.78.105:7070 linjunhalida.com -N -p 2201  -zZ OOO
-autossh -M 2122 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22
+autossh -M 2132 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22
 ```
 
 为了能够让ssh自动重连，我采用了[autossh](http://www.harding.motd.ca/autossh/)。
@@ -58,7 +58,7 @@ God.watch do |w|
 
   w.dir = "/home/halida/workspace/sources/autossh"
   w.env = {"AUTOSSH_PATH" => "/home/halida/Dropbox/sync/bin/ssh"}
-  w.start = "./autossh -M 2122 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22"
+  w.start = "./autossh -M 2132 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22"
   w.log = File.join god_path, "log/bypass.log"
   w.keepalive
 end
