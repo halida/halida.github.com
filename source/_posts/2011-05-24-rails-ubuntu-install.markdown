@@ -1,14 +1,14 @@
 
 ---
 layout: post
-title: rails_ubuntu_安装
+title: rails ubuntu 下安装
 date: 2011-05-24 10:23:21 +0800
 
 comments: true
 categories: 
 ---
 
-![image](http://tech.chitgoks.com/wp-content/uploads/2009/07/ruby_rails.png)
+![image](http://rubyonrails.org/images/rails.png)
 
 安装rvm
 ------------------------------
@@ -16,15 +16,15 @@ categories:
 首先, 安装源里面的ruby, git, curl等依赖
 
 ```bash
-sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ libxml2-dev libxslt1-dev libmysqlclient-dev autoconf
+sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2-dev libxslt1-dev libmysqlclient-dev libyaml-dev autoconf build-essential
 ```
 
 然后安装rvm (按照
-[https://rvm.beginrescueend.com/rvm/install](https://rvm.beginrescueend.com/rvm/install)/
+[rvm.io](http://rvm.io)/
 )
 
 ```bash
-bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+\curl -L https://get.rvm.io | bash -s stable --ruby
 ```
 
 把环境加到shell path里面

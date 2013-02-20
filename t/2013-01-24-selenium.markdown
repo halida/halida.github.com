@@ -1,0 +1,52 @@
+---
+layout: post
+title: "selenium介绍和使用"
+date: 2013-01-24 17:01
+comments: true
+categories: 
+---
+
+![image](https://dl.dropbox.com/u/1167873/blog/selenium.png)
+
+什么是selenium
+-------------------------------
+
+
+如何使用
+-------------------------------
+这里只是ruby的示例
+
+ruby环境安装
+
+    gem install selenium-webdriver
+
+简单的示例代码
+
+```ruby
+require 'rubygems'
+require 'selenium-webdriver'
+
+driver = Selenium::WebDriver.for :firefox
+driver.get "http://google.com"
+
+element = driver.find_element :name => "q"
+element.send_keys "Cheese!"
+element.submit
+
+puts "Page title is #{driver.title}"
+
+wait = Selenium::WebDriver::Wait.new(:timeout => 10)
+wait.until { driver.title.downcase.start_with? "cheese!" }
+
+puts "Page title is #{driver.title}"
+driver.quit
+```
+
+如何学习？
+
+支持其他浏览器
+
+一个真实示例
+-------------------------------
+现在的任务是，我有很多人的信息，我希望能够根据这些信息，来搜索看看是否可以得到他的github账号
+爬很多人的github
