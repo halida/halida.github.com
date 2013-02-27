@@ -16,7 +16,7 @@ categories:
 首先, 安装源里面的ruby, git, curl等依赖
 
 ```bash
-sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2-dev libxslt1-dev libmysqlclient-dev libyaml-dev autoconf build-essential
+sudo aptitude install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2-dev libxslt1-dev libmysqlclient-dev libyaml-dev autoconf build-essential
 ```
 
 然后安装rvm (按照
@@ -43,6 +43,14 @@ echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM
 
 ```bash
 source .bash_profile
+```
+
+如果你用的是zsh，在~/.zshrc最后加上：
+
+```bash
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 ```
 
 测试rvm是否装好了
