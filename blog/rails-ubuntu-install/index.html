@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>rails_ubuntu_安装 - 网络寻租</title>
+  <title>rails ubuntu 下安装 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
   <meta name="description" content="安装rvm 首先, 安装源里面的ruby, git, curl等依赖 1
-sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ libxml2-dev &hellip;">
+sudo aptitude install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,7 +82,7 @@ sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev lib
   
   <header>
     
-      <h1 class="entry-title">Rails_ubuntu_安装</h1>
+      <h1 class="entry-title">Rails Ubuntu 下安装</h1>
     
     
       <p class="meta">
@@ -107,23 +107,23 @@ sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev lib
   </header>
 
 
-<div class="entry-content"><p><img src="http://tech.chitgoks.com/wp-content/uploads/2009/07/ruby_rails.png" alt="image" /></p>
+<div class="entry-content"><p><img src="http://rubyonrails.org/images/rails.png" alt="image" /></p>
 
 <h2>安装rvm</h2>
 
 <p>首先, 安装源里面的ruby, git, curl等依赖</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ libxml2-dev libxslt1-dev libmysqlclient-dev autoconf
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo aptitude install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2-dev libxslt1-dev libmysqlclient-dev libyaml-dev autoconf build-essential
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>然后安装rvm (按照
-<a href="https://rvm.beginrescueend.com/rvm/install">https://rvm.beginrescueend.com/rvm/install</a>/
+<a href="http://rvm.io">rvm.io</a>/
 )</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>bash -s stable &lt; &lt;<span class="o">(</span>curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer<span class="o">)</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="se">\c</span>url -L https://get.rvm.io | bash -s stable --ruby
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -145,6 +145,17 @@ sudo apt-get install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev lib
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> .bash_profile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你用的是zsh，在~/.zshrc最后加上：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[[</span> -s <span class="s2">&quot;$HOME/.rvm/scripts/rvm&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> . <span class="s2">&quot;$HOME/.rvm/scripts/rvm&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/.rvm/bin <span class="c"># Add RVM to PATH for scripting</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -335,11 +346,11 @@ character-set-server = utf8
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/god-as-service/">进程监控遇到的麻烦事</a>
+        <a href="/blog/i-am-a-atheist/">关于宗教信仰</a>
       </li>
     
       <li class="post">
-        <a href="/blog/selenium/">selenium介绍和使用</a>
+        <a href="/blog/god-as-service/">进程监控遇到的麻烦事</a>
       </li>
     
       <li class="post">
