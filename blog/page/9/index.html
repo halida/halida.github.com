@@ -9,11 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我们每天定时起床, 吃饭, 上公车, 赶在9点之前到达公司,
-然后在哈欠中开始一天的工作. 刚刚打开电脑, 看了一个小时的邮件, 打算真正开始工作的时候,
-就被邮件通知需要参加一个有很多头头出席的会议,
-会议里面讨论的东西和你八杆子打不着,
-等到最后的时候才问你一个很简单的问题, &hellip;">
+  <meta name="description" content="今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下: 什么是UCS? 我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
+叫UCS, 全称: Universal Character Set, 它是关于所有字符编码的标准. 简单地说, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +79,267 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/utf8/">Utf8介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+        
+         | <a href="/blog/utf8/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
+
+<h2>什么是UCS?</h2>
+
+<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
+叫UCS, 全称: Universal Character Set,</p>
+
+<p>它是关于所有字符编码的标准. 简单地说,
+为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
+每个字符都指代单独的一个数字做标识.</p>
+
+<h2>什么是UTF-8?</h2>
+
+<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
+所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
+方便解析和除错做了优化. 具体表示方式如下:</p>
+
+<ul>
+<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
+<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
+第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
+<li>以此类推&#8230;</li>
+</ul>
+
+
+<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
+
+<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
+U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
+U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
+U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+</code></pre>
+
+<p>同时, 长的表示方式不能涵盖短的表示方式,
+所以下面的范围是错误的(可以快速排除错误):</p>
+
+<pre><code>1100000x (10xxxxxx)
+11100000 100xxxxx (10xxxxxx)
+11110000 1000xxxx (10xxxxxx 10xxxxxx)
+11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
+11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
+</code></pre>
+
+<p>我们来看具体的例子(python代码):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
+</span><span class='line'><span class="err">©</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
+</span><span class='line'><span class="err">≠</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
+</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
+</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>现在还没有什么心得, 总之, 了解了上面的概念,
+才能处理好平时遇到的字符编码问题.</p>
+
+<p>参考资料: -
+<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/how-to-learn-python/">如何学习python</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-25T11:20:51+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2011</time>
+        
+         | <a href="/blog/how-to-learn-python/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://images.amazon.com/images/P/0596002815.01.LZZZZZZZ.jpg" alt="image" /></p>
+
+<p>我们假设你是一个初级程序员, 只懂得一点点的基础知识,
+希望能够用python来做开发. 这篇文档就是为了满足以上目标而写的.</p>
+
+<h2>大纲</h2>
+
+<p>按照这篇文档所指示的任务过一遍, 你就能够做到:</p>
+
+<ul>
+<li>熟悉python语言, 以及学会python的编码方式.</li>
+<li>熟悉python库, 遇到开发任务的时候知道如何去找对应的模块.</li>
+<li>知道如何查找和获取第三方的python库, 以应付开发任务.</li>
+</ul>
+
+
+<h2>学习步骤</h2>
+
+<h2>安装开发环境</h2>
+
+<p>如果你在window下, 去下载pythonxy安装起来, 然后运行python,
+进入python解释环境.</p>
+
+<p>如果你在ubuntu下, 执行: sudo apt-get install python,
+然后在命令行下运行python, 进入python解释环境.</p>
+
+<h2>学习方法</h2>
+
+<p>作为一名成熟的开发人员, 我学习新东西(假设是pyqt)的习惯方式是:</p>
+
+<ul>
+<li>直接用google搜索pyqt的官方网站.</li>
+<li>按照官方网站的说明, 下载pyqt. (如果是用ubuntu,
+看看软件库里面是否有足够新的版本)</li>
+<li>下载过程中, 开始阅读官方网站上面的教程.</li>
+<li>一边看教程, 一遍按照教程使用pyqt.</li>
+<li>如果发现教程不够全面, 用google搜索是否有对应的教学书籍可以看.</li>
+<li>示例学习完毕, 开发一个玩具程序, 用来检验自己是否需要用到的功能.</li>
+</ul>
+
+
+<h2>开始学习python</h2>
+
+<p>我建议你学习的过程也按照上面来, 首先过一遍python官方文档:</p>
+
+<p><a href="http://docs.python.org/tutorial/index.html">http://docs.python.org/tutorial/index.html</a></p>
+
+<p>如果你觉得英文太有难度的话, 去看
+<a href="http://sebug.net/paper/python/">python简明教程</a></p>
+
+<p>或者这里有一个google的python课程:
+<a href="http://code.google.com/edu/languages/google-python-class">http://code.google.com/edu/languages/google-python-class</a>/</p>
+
+<p>然后做 <a href="http://www.pythonchallenge.com">http://www.pythonchallenge.com</a>/
+这个网站上面的题目练练手. 如果卡在某一关太久, 可以看答案(google python
+challenge answer), 做完后看看别人的编码方式和自己有什么区别.</p>
+
+<h2>小项目</h2>
+
+<p>做完一遍后, 你会发现已经熟悉了基本的python开发. 然后做点小项目吧.
+这里是一些题目, 挑感兴趣的去做.</p>
+
+<ul>
+<li>写一个简单的计算器/记账软件/扫雷游戏(用pyqt库做界面)</li>
+<li>写一个聊天室网站(用webpy框架, jquery刷新新的回复)</li>
+<li>写一个爬虫, 获取douban上面所有用户的地点,
+画地点分布的直方图(用lxml解析, 保存数据到sqlite里面去,
+用matplotlib画图)</li>
+</ul>
+
+
+<h2>FAQ</h2>
+
+<p>Q: 遇到了问题, 到哪里求助?</p>
+
+<p>A: 上
+<a href="http://groups.google.com/group/python-cn">http://groups.google.com/group/python-cn</a>
+(需要翻墙) 或者 <a href="http://stackoverflow.com">http://stackoverflow.com</a>
+提问就可以了.</p>
+
+<p>Q: 如何查找python的某个功能?</p>
+
+<p>A: 看官方文档.
+<a href="http://docs.python.org/library/index.html">http://docs.python.org/library/index.html</a></p>
+
+<p>Q: 如何用python完成一个任务(比如写网站)?</p>
+
+<p>A: google: python 写网站, 或者 google: python web development.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1341,154 +1599,6 @@ painters</a> 这本书,
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/how-to-organize-day-time/">如何度过每天的24小时</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-22T11:16:08+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2011</time>
-        
-         | <a href="/blog/how-to-organize-day-time/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天, 某个朋友给我推荐了一本书: 书名是
-<a href="http://book.douban.com/subject/4243207/">悠游度过一天的24小时</a>.</p>
-
-<p>这本书不错. 如果你觉得自己每天虚度光阴, 可以看这本书,
-这本书提供了一些改变的方法, 简单易行.</p>
-
-<p>上周在 <a href="http://www.primesplus.com/">primesplus</a> 里面和他们聊天,
-提到一个问题: 中国的程序员大多没有生活. 每天上班下班两点一线,
-晚上在住的地方宅起, 要么就是一直都钻在技术里面, 长此以往, 人会憋坏的.
-如果你觉得自己就是这样的人, 可以读读这本书.</p>
-
-<p>下面是我整理出来的一些要点, 如果你不想被剧透, 那么就不要往下看了,
-直接去买本来看吧.</p>
-
-<ul>
-<li>我们每个人都拥有同样的时间: 每天24小时</li>
-<li>但是我们一般来说, 都很难利用好这些时间.</li>
-<li>开始前提醒: 这个过程很艰难, 不要期望过高, 要有心理准备,
-不要被失败压垮了.</li>
-<li>一个示例: 人们往往没有利用好每天的时间, 在时间处理上态度不对,
-工作的时候有抵触情绪, 下班后宝贵的自由时间以休息的理由,
-随意消耗掉了.</li>
-<li>除去上班8小时, 休息8小时, 损耗2小时, 人还有大约6小时的自由时间,
-好好利用.</li>
-<li>上下班的时间不要消磨掉, 利用好这段时间.</li>
-<li>上班途中的时间用来锻炼心智, 约束自己的大脑想特定的事情.</li>
-<li>下班途中的时间用来反省.</li>
-<li>下班后承认自己并不累, 好好计划下班后的时间, 过真正充实的生活.</li>
-<li>幸福并非源于肉体或精神上的享乐, 而在于充实自己的理性思考,
-并采取符合自己原则的行为方式.</li>
-<li>诗歌可能是最高形式的文艺形式, 给人以最大的愉悦并予人以最深邃的智慧.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/git/">Git学习总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-07T14:43:14+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
-        
-         | <a href="/blog/git/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://lh5.ggpht.com/_UL5xJ4XsSh8/TO5reHrOWVI/AAAAAAAAAy8/6IufPsBgZQE/GIT-cheatsheet.jpg?imgmax=800" alt="image" /></p>
-
-<p>虽然我的主力版本控制系统是hg, 但是既然在开源社区里面混, git是绕不掉的.
-平时接触到git的项目, 为了能够正常使用不出篓子, 还是要系统地学习一下git.
-这里推荐 <a href="http://git-scm.com/">git官方教程</a>. 基础如何使用就不多说了,
-网上漫天都是, 这里面整理一下使用CVS的一些经验, 绝大多数是从
-<a href="http://www.jeffkit.info/2010/12/885/">其他人</a> 那里抄过来的.
-抄是学习的一大利器, 只要会抄, 什么事情都好办,
-全世界那么多顶级的开源项目, 抄会一个, 吃穿不愁了&#8212;有点离题了.</p>
-
-<p>首先, CVS不是备份工具, 如果你一股脑地把所有修改过的文件commit上去,
-那么还不如去用 <a href="http://www.dropbox.com/">dropbox</a>.
-我们要让版本库里面呈现的东西, 恰如其分地反应出开发流程, 方便流程控制,
-阅读和处理. 那么CVS的使用, 应该符合专业的软件开发流程:</p>
-
-<ul>
-<li>每次提交代码, 应该是完成一项特定的工作, 提交的内容,
-提交者应该能够回溯跟踪.</li>
-<li>代码分为开发版本, 以及发布版本.</li>
-<li>对于重要的阶段, 需要记录下来, 比如不同的发布版本号对应阶段的代码.</li>
-</ul>
-
-
-<p>那么我们在使用的时候应该如何做呢? 根据
-<a href="http://www.kernel.org/pub/software/scm/git/docs/gitworkflows.html">gitworkflows</a>:</p>
-
-<p>拆分变更</p>
-
-<blockquote><p>每次我们修改代码, 可能同时根据无数的需求改了非常多的地方,
-我们在提交的时候, 需要尽量按照逻辑拆分出来, 分别commit它们.
-这样出来的历史才有足够的可读性. 没有可读性我们还记录它们干什么?</p></blockquote>
-
-<p>分支管理</p>
-
-<blockquote><p>我们需要有至少2个分支: 开发分支和发布分支, 平时在开发分支干活,
-需要发布的时候, 提交到发布分支上面去, 并且根据版本加tag. 注意,
-提交到发布分支上面的代码是通过流程保证稳定性的.</p></blockquote>
-
-<p>关于上面的流程管控, 有个神器可以使用: <a href="http://www.jeffkit.info/2010/12/842/">git
-flow</a>,
-这里面的教程看一遍就能够体会到威力了.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -1506,6 +1616,14 @@ flow</a>,
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ubuntu-wordpress/">ubuntu搭建wordpress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/reverse-ssh/">如何从外网访问内网主机</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/i-am-a-atheist/">关于宗教信仰</a>
       </li>
     
@@ -1515,14 +1633,6 @@ flow</a>,
     
       <li class="post">
         <a href="/blog/learn-programming/">从零开始学编程</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/github-dns-issue/">github最近DNS被污染的事情经过以及解法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/obfuscated-openssh/">obfuscated-openssh介绍</a>
       </li>
     
   </ul>

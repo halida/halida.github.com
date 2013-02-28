@@ -394,7 +394,7 @@
     </url>
     <url>
         <loc>http://halida.github.com/blog/rails-ubuntu-install/</loc>
-        <lastmod>2013-02-26T23:00:06+08:00</lastmod>
+        <lastmod>2013-02-28T14:09:35+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/blog/thinking/</loc>
@@ -646,7 +646,15 @@
     </url>
     <url>
         <loc>http://halida.github.com/blog/i-am-a-atheist/</loc>
-        <lastmod>2013-02-27T12:44:01+08:00</lastmod>
+        <lastmod>2013-02-27T12:44:19+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/reverse-ssh/</loc>
+        <lastmod>2013-02-28T11:23:14+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/ubuntu-wordpress/</loc>
+        <lastmod>2013-02-28T13:07:30+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/about/</loc>
@@ -654,10 +662,10 @@
     </url>
     <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2013-02-27T12:44:01+08:00</lastmod>
+        <lastmod>2013-02-28T14:09:35+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2013-02-27T12:44:01+08:00</lastmod>
+        <lastmod>2013-02-28T14:09:35+08:00</lastmod>
     </url>
 </urlset>

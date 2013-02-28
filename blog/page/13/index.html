@@ -9,8 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="安利模式的问题 考虑安利的商业模式,每次交易发生在上线与下线之间,交易的成本是上线在下线身上投入的时间. 如果只是卖商品,直接营销的成本往往很大,而这部分成本是会转嫁给下线的,整个过程不会创造价值,或者整个体系的价值产出为负. 具体分析在这里:
-http://www.impencil.org/? &hellip;">
+  <meta name="description" content="因为工作需要，要在GUI的后台维护一个监控线程，该线程需要和主线程做通讯。为了完成这个需求，需要采用一种线程安全的消息机制。因为我采用PyQt4作为GUI的库，因此，直接使用PyQt4的消息机制成为我考虑的首选。 在PyQt4里面，发出消息采用emit的方式。比如: 1
+2
+3
+4
+# &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +82,484 @@ http://www.impencil.org/? &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/PyQt4-async-message/">PyQt4的异步消息机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T20:37:00+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/PyQt4-async-message/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>因为工作需要，要在GUI的后台维护一个监控线程，该线程需要和主线程做通讯。为了完成这个需求，需要采用一种线程安全的消息机制。因为我采用PyQt4作为GUI的库，因此，直接使用PyQt4的消息机制成为我考虑的首选。</p>
+
+<p>在PyQt4里面，发出消息采用emit的方式。比如:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 新的pythonic的方式</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">setValue</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 旧的</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;setValue(int)&quot;</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是放到多线程里面，会发生什么事情呢？</p>
+
+<p>先解释一下消息处理的原理。我们知道，GUI之所以能够处理消息，是因为GUI主线程在初始化完毕的时候，会运行一个ecec_()方法，在这个方法里面，线程不断地检查消息队列，看是否有新的消息发出来，如果有，就处理它。这就是我们说的：event
+loop。</p>
+
+<p>然后看文档。
+<a href="http://doc.trolltech.com/4.1/threads.html#synchronizing-threads">Qt在多线程下的消息传递机制</a>
+:</p>
+
+<p><img src="http://doc.trolltech.com/4.1/images/threadsandobjects.png" alt="image" />
+里面一段话:</p>
+
+<p>Qt supports three types of signal-slot connections: * With direct
+connections, the slot gets called immediately when the signal is
+emitted. The slot is executed in the thread that emitted the signal
+(which is not necessarily the thread where the receiver object lives).
+* With queued connections, the slot is invoked when control returns to
+the event loop of the thread to which the object belongs. The slot is
+executed in the thread where the receiver object lives. * With auto
+connections (the default), the behavior is the same as with direct
+connections if the signal is emitted in the thread where the receiver
+lives; otherwise, the behavior is that of a queued connection.</p>
+
+<p>也就是说，有3种机制： * 采用直接调用的方式。类似于callback。
+调用者线程直接去执行被调用的方法。 *
+队列方式。调用者线程把消息丢给消息队列，然后就不管它了。被调用者的线程在处理消息队列的时候，就会处理它。
+*
+自动方式（默认）。如果调用者和被调用者是属于一个线程的，系统选择直接调用，不然就采用队列的方式。</p>
+
+<p>而机制的选择，可以在connect方法里面设置type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">bool</span> <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span> <span class="p">(</span><span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">sender</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">signal</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+</span><span class='line'>                       <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那麽，我们可以开始做实验验证这样是否在PyQt4里面行得通了。</p>
+
+<p>测试代码1：测试在单线程下，修改type之后，emit消息是否会立刻执行下一行代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">线程中发消息</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;amp;amp;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
+</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>点击按钮，&#8221;sended!&#8221;要过一段时间才出现在命令行。 把上面的注释部分改为:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>             <span class="n">self</span><span class="p">.</span><span class="n">waitProcess</span><span class="p">,</span> <span class="n">Qt</span><span class="p">.</span><span class="n">QueuedConnection</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再执行一次，点击按钮，&#8221;sended!&#8221;立刻就出现了。</p>
+
+<p>测试代码2：现在转到线程里面:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">线程中发消息</span>
+</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;OK&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>    <span class="c">#app.exec_()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行后，前3秒线程等待，GUI不会卡死。然后线程打印：&#8221;sended..&#8221;，然后GUI卡死3秒，然后GUI显示&#8221;hello!&#8221;。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/PyQt4-skin/">PyQt4的皮肤效果</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T20:27:05+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/PyQt4-skin/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>PyQt4提供了非常好的皮肤机制，可以作出非常炫的效果。其中一个功能就是qss，利用类似css的方式来配置界面。
+文档在这里。 使用方法(顺便分享一下我的qss配置):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="c">/*背景贴图*/</span>
+</span><span class='line'><span class="nt">QWidget</span><span class="p">{</span> <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(res/tex.png)</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QAbstractScrollArea</span><span class="o">,</span><span class="nt">QPushButton</span> <span class="p">{</span> <span class="k">background-image</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*背景色*/</span>
+</span><span class='line'><span class="nt">QWidget</span><span class="p">{</span> <span class="k">background-color</span><span class="o">:</span> <span class="n">bgdColor</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="o">,</span><span class="nt">QSplashScreen</span><span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">None</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*menu*/</span>
+</span><span class='line'><span class="nt">QMenuBar</span> <span class="p">{</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">qlineargradient</span><span class="p">(</span><span class="n">x1</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">y1</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">x2</span><span class="o">:</span><span class="m">0</span><span class="o">,</span> <span class="n">y2</span><span class="o">:</span><span class="m">1</span><span class="o">,</span>
+</span><span class='line'><span class="n">stop</span><span class="o">:</span><span class="m">0</span> <span class="n">lightgray</span><span class="o">,</span> <span class="n">stop</span><span class="o">:</span><span class="m">1</span> <span class="nb">darkgray</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QMenu</span> <span class="p">{</span>
+</span><span class='line'><span class="k">margin</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="c">/* some spacing around the menu */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QMenu</span><span class="o">:</span><span class="nd">:item:selected</span> <span class="p">{</span>
+</span><span class='line'><span class="k">border-color</span><span class="o">:</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">100</span><span class="o">,</span> <span class="m">100</span><span class="o">,</span> <span class="m">100</span><span class="o">,</span> <span class="m">150</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*按钮*/</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="p">{</span>
+</span><span class='line'><span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">outset</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">bgdColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class='line'><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="nd">:checked</span> <span class="p">{</span><span class="k">border-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">}</span>
+</span><span class='line'><span class="c">/*醒目按下的按钮*/</span>
+</span><span class='line'><span class="nt">QPushButton</span><span class="nd">:pressed</span> <span class="p">{</span><span class="k">border-color</span><span class="o">:</span> <span class="nb">green</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*QSlider*/</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove:horizontal</span> <span class="p">{</span> <span class="k">height</span><span class="o">:</span> <span class="m">6px</span><span class="p">;}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:groove:vertical</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span> <span class="m">6px</span><span class="p">;}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle</span> <span class="p">{</span>
+</span><span class='line'><span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="n">borderColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+</span><span class='line'><span class="k">background</span><span class="o">:</span> <span class="n">bgdColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle:horizontal</span> <span class="p">{</span> <span class="k">width</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">-3px</span> <span class="m">0</span> <span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:handle:vertical</span> <span class="p">{</span> <span class="k">height</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">-3px</span> <span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:add-page</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="nt">QSlider</span><span class="o">:</span><span class="nd">:sub-page</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="nb">green</span><span class="p">;}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">/*QTableView*/</span>
+</span><span class='line'><span class="nt">QTableView</span> <span class="p">{</span>
+</span><span class='line'><span class="n">alternate</span><span class="o">-</span><span class="k">background-color</span><span class="o">:</span> <span class="n">darkContentColor</span><span class="p">;</span>
+</span><span class='line'><span class="k">background-color</span><span class="o">:</span> <span class="n">contentColor</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面作为字符串放在DEFAULT_STYLE里面,
+然后具体的颜色在下面的python代码中设置:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#设置style里面的颜色</span>
+</span><span class='line'><span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'><span class="s">&#39;borderColor&#39;</span><span class="p">:</span><span class="s">&#39;gray&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;bgdColor&#39;</span><span class="p">:</span><span class="s">&#39;#FCF6E4&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;contentColor&#39;</span><span class="p">:</span><span class="s">&#39;#E1EDFB&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s">&#39;darkContentColor&#39;</span><span class="p">:</span><span class="s">&#39;#CDE2F8&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">COLOR_MAP</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+</span><span class='line'><span class="n">DEFAULT_STYLE</span> <span class="o">=</span> <span class="n">DEFAULT_STYLE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'><span class="n">app</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">DEFAULT_STYLE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>显示的效果如下：</p>
+
+<p><img src="http://lh5.ggpht.com/_os_zrveP8Ns/TMq9KU_BbTI/AAAAAAAADKw/IUfIQ7_oFjc/s800/screenshot-mainwindow.png" alt="image" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -853,176 +1334,6 @@ rst2s5 --theme-url http://xxx.com/ui/small-white xxx.rst xxx.html
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/qt-compile-speed-up/">Qt编译加速以及使用预编译头</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
-        
-         | <a href="/blog/qt-compile-speed-up/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>方法</h2>
-
-<p>上次讲了如何使用预编译头来加速编译,现在给出一个Qt程序实际的例子,来演示
-预编译头的好处.</p>
-
-<p>我们采用qmake来编译Qt程序,qmake本身支持预编译头,
-文档在这:<a href="http://doc.trolltech.com/3.3/qmake-manual-7.html">http://doc.trolltech.com/3.3/qmake-manual-7.html</a></p>
-
-<p>使用方法很简单,在pro文件里面加上这几行即可:</p>
-
-<pre><code>PRECOMPILED_HEADER = lib.hpp #头文件名
-CONFIG += precompile_header #设置使用预编译头功能
-</code></pre>
-
-<h2>示例</h2>
-
-<p>以下是我测试项目的例子. 文件目录:</p>
-
-<pre><code>halida@halida-desktop:~/temp/build-qt$ ls
-build-qt.pro   lib.hpp    main.cpp   shower.cpp    shower.hpp
-</code></pre>
-
-<p>没有使用预编译头时消耗的时间:</p>
-
-<pre><code>halida@halida-desktop:~/temp/build-qt$ touch *.cpp
-halida@halida-desktop:~/temp/build-qt$ time make&gt;&gt;/dev/null
-real    0m7.292s
-user    0m4.696s
-sys     0m2.340s
-</code></pre>
-
-<p>使用预编译头后消耗的时间:</p>
-
-<pre><code>halida@halida-desktop:~/temp/build-qt$ touch *.cpp
-halida@halida-desktop:~/temp/build-qt$ time make&gt;&gt;/dev/null
-real    0m2.416s
-user    0m1.324s
-sys     0m1.004s
-</code></pre>
-
-<p>很明显,提升了相当多的速度.</p>
-
-<p>例子可以在这里下载:
-<a href="http://linjunhalida.72pines.com/files/2010/09/build-qt.zip">http://linjunhalida.72pines.com/files/2010/09/build-qt.zip</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/libusb/">采用libusb库让PC与USB通讯</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
-        
-         | <a href="/blog/libusb/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>需求</h2>
-
-<p>作为设备开发者, 一般需要让设备与上位机PC通讯,
-我们往往考虑采用以下几种接口: rs232, USB, ethernet.</p>
-
-<p>现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
-USB大多成为我们的首选. 对于数据偏少的应用,
-我们可以利用USB虚拟串口的方式来完成这样的任务, 虚拟串口的驱动和实例,
-对于下位机来说也非常常见. 有个问题:
-很多应用无法用虚拟串口的方式来得到满足, 只能按照USB的方式来解决问题.
-这个时候, 我们只好针对USB进行编程. 对于复杂的驱动编程,
-大多数程序员往往望而却步. 不过总有其他简单的方法解决问题. 这里,
-我们介绍一个USB通讯库: libusb.</p>
-
-<h2>介绍</h2>
-
-<p>libusb是一个针对usb通讯的库. 使用它, 你不需要知道操作系统的细节,
-你只需要对USB有足够的了解即可. 它也不需要你写驱动,
-所有的工作都可以在用户态完成. 使用方法很简单, 这里有一个示例:
-<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples</a>
-, 是不是很简单?</p>
-
-<h2>原理</h2>
-
-<p>libusb自己带有一个内核驱动, 名字叫libusb0.sys,
-放在WINDOWSSYSTEM32DRIVERS里面. 用户程序调用libusb0.dll,
-dll会把任务交由驱动来完成. 这样保证用户态就能够完成USB通讯的作业.</p>
-
-<p>具体做了什么, 可以通过下载项目的源文件来了解, 等我有时间的时候再看看吧.</p>
-
-<h2>安装方法</h2>
-
-<p>libusb现在有好几个版本. 主页面在这里:
-<a href="http://www.libusb.org">http://www.libusb.org</a>/</p>
-
-<ul>
-<li>因为我们一般是进行工程应用, 选择相对稳定的版本: libusb-0.1.</li>
-<li>平台在windows下的话, 我们采用libusb-win32: <a href="http://www.libusb.org/wiki/libusb-win32">http://www.libusb.org/wiki/libusb-win32</a></li>
-<li>linux下一般已经添加到源里面去了, 查找libusb即可.</li>
-</ul>
-
-
-<p>windows下安装方法: <a href="http://www.libusb.org/wiki/libusb-win32#Installation">http://www.libusb.org/wiki/libusb-win32#Installation</a></p>
-
-<p>里面有2种安装方式, Filter Driver Installation 和 Device Driver
-Installation, 前面一个可以说是开发环境, 后面可以说是发布驱动本身.
-我们因为是做系统, 选择前面一个方式, 省得麻烦.</p>
-
-<h2>使用</h2>
-
-<p>这里有比较详细的文档:
-<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1040,6 +1351,14 @@ Installation, 前面一个可以说是开发环境, 后面可以说是发布驱�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ubuntu-wordpress/">ubuntu搭建wordpress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/reverse-ssh/">如何从外网访问内网主机</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/i-am-a-atheist/">关于宗教信仰</a>
       </li>
     
@@ -1049,14 +1368,6 @@ Installation, 前面一个可以说是开发环境, 后面可以说是发布驱�
     
       <li class="post">
         <a href="/blog/learn-programming/">从零开始学编程</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/github-dns-issue/">github最近DNS被污染的事情经过以及解法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/obfuscated-openssh/">obfuscated-openssh介绍</a>
       </li>
     
   </ul>

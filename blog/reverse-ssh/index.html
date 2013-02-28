@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>hujs活动整理和总结2 - 网络寻租</title>
+  <title>如何从外网访问内网主机 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="第二天 第二天的演讲： James Halliday， 87年的， browserling 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。 &hellip;">
+  <meta name="description" content="很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。 假设： A主机（$A_IP）：我们内网需要被访问的主机。
+B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/hujs-2/">
+  <link rel="canonical" href="http://halida.github.com/blog/reverse-ssh/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hujs活动整理和总结2</h1>
+      <h1 class="entry-title">如何从外网访问内网主机</h1>
     
     
       <p class="meta">
@@ -98,7 +98,7 @@
   
 
 
-<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,55 +107,35 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://i.imgur.com/vAQgj.jpg" alt="image" /></p>
+<div class="entry-content"><p><img src="http://i.imgur.com/Ay4f5YX.jpg" alt="image" /></p>
 
-<h2>第二天</h2>
+<p>很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。</p>
 
-<p>第二天的演讲：</p>
-
-<p><a href="https://github.com/substack">James Halliday</a>， 87年的， <a href="https://browserling.com/">browserling</a> 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。
-这个项目非常有用， 而他肢体语言给人的感觉， 和我以前遇到的一些年轻的技术天才也很类似。</p>
-
-<p>下面是node-webkit的当前开发和维护者<a href="https://github.com/zcbenz">小型笨蛋/赵成</a>， 现在他在Intel专职做这个项目。
-基本上是把node整合到webkit里面， 让js能够通过node的API访问本地资源， 然后提供一个打包的工具， 做成客户端。
-现在用到它的一些项目是把html5的游戏本地化。 我觉得， 优势是跨平台发布应用程序， 以后有这样的需求可以考虑用它。 当然如果是复杂UI客户端， 我觉得还是用有很多强大控件的Qt比较好。</p>
-
-<p>然后是JEFFSU介绍的如何用node.js来做服务器监控平台系统的。 算是一个nodejs的实际应用案例。 因为用到了长连接broadcast之类的东西。</p>
-
-<p>然后是来自网易的谢骋超/圈圈套圈圈讲的NODE.JS游戏服务器开发， 他们team应该是做一个原型验证， 看看nodejs是否适合在游戏服务器开发上面应用。
-这个应该算是node做的比较大的项目了吧， 效果也很不错， 能够支持同一个场景上千玩家同时在线。 看来以后会兴起一波用nodejs架设游戏服务器的潮流了。</p>
-
-<p>然后进入下午场。下午场的几个主题， 我没有认真听， 内容上面也没有什么好说的了。
-在白天场结束后， 需要统计最后一天hackthon参加的人数。 尽管有Glenn在台上拼命激励大家来参加， 结果实际来参加的人还是比较少。
-我感觉， 如果是国外开发者的话， 基本上都是全部参加的。 国内没有流行这样的文化， 不过我觉得会越来越好的， 只是时间问题。</p>
-
-<p>还有一个晚上的party活动， 在<a href="http://factual.com">factual</a>他们的公司场地里面进行。</p>
-
-<h2>晚上party</h2>
-
-<p>晚上的party， 有准备给我们小食， BBQ， 和啤酒， 然后就是大家随意聊天。 我感觉非常好，
-和来自github的一位员工， 应该是<a href="https://github.com/vmg">vmg</a>吧， 交换了关于中国程序员为什么不乐于分享的一些看法，
-问了James他怎么把url贴到浏览器地址栏里面的， 以及和各位做技术的人聊各种各样技术人感兴趣的事情。</p>
-
-<h2>hackthon</h2>
-
-<p>最后一天是全天的hackthon， 我本来想参加， 结果有其他事情， 只能过来看看就走了。 也没有什么好多说的， 和其他hackthon也差不多。</p>
-
-<h2>总结</h2>
-
-<p>这几天我觉得自己的收获有以下几点：</p>
+<p>假设：</p>
 
 <ul>
-<li>对nodejs在业界的使用有了一定的了解， 看起来已经有很多人在用它了， 也有很多部署到生产环境的例子。</li>
-<li>了解了nodejs的特性和适用场景， 以后在长连接， 高吞吐性能的领域， 它将是我的第一选择。</li>
-<li>认识了不少做node的人和公司。</li>
-<li>在party上面和外国的开发者用英语交流， 增加了我对于英语口语使用的信心。</li>
-<li>体验了国际水平的活动组织， 演讲技巧， 主持技巧。 可以作为素材借鉴。</li>
+<li>A主机（$A_IP）：我们内网需要被访问的主机。</li>
+<li>B主机（$B_IP）：有一个公网IP的主机，可以是购买的VPS。</li>
+<li>C主机（$C_IP）：需要访问A主机的电脑，比如我们随身的笔记本或者手机。</li>
 </ul>
 
 
-<p>总之， 对于我来说， 参加这几天的会议是非常值得的。</p>
+<p>首先我们需要把A主机的ssh链接到B主机上面：</p>
+
+<pre><code>autossh -M 2132 $B_IP -N -R 6333:localhost:22
+</code></pre>
+
+<p>我们用autossh来保证A主机的ssh一直保持连接。这个命令把A主机的ssh端口绑定到B主机的6333端口上面。</p>
+
+<p>然后我们需要把B主机的6333端口暴露到公网，工具采用的是万能的端口接口工具socat：</p>
+
+<pre><code>socat TCP-LISTEN:6335,fork TCP:localhost:6333
+</code></pre>
+
+<p>这样在公网的C主机就可以通过B主机的6335端口访问到A主机了：</p>
+
+<pre><code>ssh $B_IP -p 6335
+</code></pre>
 </div>
 
 
@@ -178,7 +158,7 @@
   
 
 
-<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
       
 
 
@@ -186,7 +166,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/hujs-2/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/hujs-2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/reverse-ssh/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/reverse-ssh/" >Tweet</a>
   
   
   
@@ -195,10 +175,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/hujs-1/" title="Previous Post: hujs活动整理和总结1">&laquo; hujs活动整理和总结1</a>
+        <a class="basic-alignment left" href="/blog/i-am-a-atheist/" title="Previous Post: 关于宗教信仰">&laquo; 关于宗教信仰</a>
       
       
-        <a class="basic-alignment right" href="/blog/coffeescript-class/" title="Next Post: coffeescript里面的类机制">coffeescript里面的类机制 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/ubuntu-wordpress/" title="Next Post: ubuntu搭建wordpress">ubuntu搭建wordpress &raquo;</a>
       
     </p>
   </footer>
@@ -319,8 +299,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/hujs-2/';
-        var disqus_url = 'http://halida.github.com/blog/hujs-2/';
+        var disqus_identifier = 'http://halida.github.com/blog/reverse-ssh/';
+        var disqus_url = 'http://halida.github.com/blog/reverse-ssh/';
         var disqus_script = 'embed.js';
       
     (function () {
