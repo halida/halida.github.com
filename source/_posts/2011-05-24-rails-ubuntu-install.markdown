@@ -99,7 +99,7 @@ mysql默认编码是latin, 我们要改成utf8, 修改/etc/mysql/my.cnf,
     [client]
     default-character-set=utf8
     [mysqld]
-    character-set-server = utf8
+    character-set-server=utf8
 
 设置完后需要重启mysql:
 
@@ -119,7 +119,7 @@ sudo dpkg-reconfigure mysql-server
 
 进入命令行后, 我们需要
 
-```bash
+```sh
 # 创建一个数据库
 create database test;
 # 建立对应的mysql的用户
