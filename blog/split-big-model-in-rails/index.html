@@ -5,15 +5,27 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>shpaml介绍 - 网络寻租</title>
+  <title>rails里面拆分大的model" - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="不知道大家是否都写过html或者xml, 里面尖括号真是既然写又难看,
-这里推荐给大家一个非常好用的工具:
-shpaml. shpaml 是借鉴
-haml (就是上面那个图片啦) 的一个工具,
-可以极大地简化html/xml的编写工作. 并且不像haml那么重量级. &hellip;">
+  <meta name="description" content="有的时候，rails里面一个model的工作太多，在一个文件里面都放不下了，于是我需要拆分出不同的模块。我的拆分方法是这样的： user.rb里面： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+class User &lt; ActiveRecord::Base &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +34,7 @@ haml (就是上面那个图片啦) 的一个工具,
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/shpaml/">
+  <link rel="canonical" href="http://halida.github.com/blog/split-big-model-in-rails/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -85,7 +97,7 @@ haml (就是上面那个图片啦) 的一个工具,
   
   <header>
     
-      <h1 class="entry-title">Shpaml介绍</h1>
+      <h1 class="entry-title">Rails里面拆分大的model"</h1>
     
     
       <p class="meta">
@@ -101,7 +113,7 @@ haml (就是上面那个图片啦) 的一个工具,
   
 
 
-<time datetime="2011-02-15T16:15:51+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2011</time>
+<time datetime="2013-03-04T22:07:00+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -110,23 +122,9 @@ haml (就是上面那个图片啦) 的一个工具,
   </header>
 
 
-<div class="entry-content"><p><img src="http://www.rubyinside.com/wp-content/uploads/2007/03/haml.jpg" alt="image" /></p>
+<div class="entry-content"><p>有的时候，rails里面一个model的工作太多，在一个文件里面都放不下了，于是我需要拆分出不同的模块。我的拆分方法是这样的：</p>
 
-<p>不知道大家是否都写过html或者xml, 里面尖括号真是既然写又难看,
-这里推荐给大家一个非常好用的工具:
-<a href="http://shpaml.webfactional.com/">shpaml</a>.</p>
-
-<p><a href="http://shpaml.webfactional.com/">shpaml</a> 是借鉴
-<a href="http://haml-lang.com/">haml</a> (就是上面那个图片啦) 的一个工具,
-可以极大地简化html/xml的编写工作. 并且不像haml那么重量级.</p>
-
-<p>shpaml的生成工具只是一个简单的python文件, 你只需要在
-<a href="http://shpaml.webfactional.com/shpaml_py">这里</a> 下载即可.
-整个文件只有365行!</p>
-
-<h2>简单尝试一下</h2>
-
-<p>我们来看一个实际的例子. 比如我们需要写下面的html代码:</p>
+<p>user.rb里面：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -144,82 +142,67 @@ haml (就是上面那个图片啦) 的一个工具,
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;top-nav&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;top-nav-items&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;hr</span> <span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        @2010 linjunhalida, all right reserved
-</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">has_module</span> <span class="nb">name</span>
+</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;</span>
+</span><span class='line'><span class="s2">    define_method :</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> do</span>
+</span><span class='line'><span class="s2">      @</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> ||= User</span><span class="si">#{</span><span class="nb">name</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">camelize</span><span class="si">}</span><span class="s2">.new(self)</span>
+</span><span class='line'><span class="s2">    end</span>
+</span><span class='line'><span class="s2">    &quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:account</span>
+</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:displayer</span>
+</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:privacy</span>
+</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:message</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>即使能够利用工具来自动生成很多文本, 上面的代码也非常难以阅读.
-但是用shpaml的方式就不一样了</p>
+<p>然后对应的职责模块：</p>
 
-<pre><code>html
-  body
-    #top-nav
-      #top-nav-items
-    &gt; hr
-
-    #wrapper
-      #header
-      #content
-      #sidebar
-      #footer
-        @2010 linjunhalida, all right reserved
-</code></pre>
-
-<p>是不是感觉一下清爽很多? 写起来也不那么废手指了?</p>
-
-<p>具体语法, 直接查阅
-<a href="http://shpaml.webfactional.com/tutorial/1">shpaml官方教程</a> , 很简单的,
-半小时搞定.</p>
-
-<h2>生成html代码</h2>
-
-<p>那么接下来我们如何把上面的文本生成html代码呢? 先保存成一个文件: xxx.shp,
-然后运行</p>
-
-<pre><code>python shpaml.py xxx.shp &gt; xxx.html
-</code></pre>
-
-<p>shpaml.py在 `这里`_ 下载.</p>
-
-<p>打开xxx.html, 是不是和上面的html一模一样? 其他生成方法, 可以见
-<a href="http://shpaml.webfactional.com/source_code">shpaml源码页面</a>.</p>
-
-<h2>结论</h2>
-
-<ul>
-<li>shpaml采用缩进的方式来表示层级的递进, 这个方法和python的方法一致,
-对于python程序员来说应该会很亲切.</li>
-<li>shpaml用python写成, 整个代码只在一个文件里面,
-感兴趣的同学可以学习学习. 它也非常容易嵌入到其他web框架中去.</li>
-<li>同样的, 如果你发现一个数据源存在很多的冗余信息(就像上面的html/xml),
-可以仿照shpaml的方法, 来实现一个上层的模板语言.</li>
-</ul>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserDisplayer</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span> <span class="n">user</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">address</span>
+</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">city</span><span class="si">}#{</span><span class="s1">&#39;, &#39;</span> <span class="k">unless</span> <span class="vi">@user</span><span class="o">.</span><span class="n">city</span><span class="o">.</span><span class="n">blank?</span> <span class="ow">or</span> <span class="vi">@user</span><span class="o">.</span><span class="n">country</span><span class="o">.</span><span class="n">blank?</span><span class="si">}#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">country</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>希望你和我一样, 喜欢上shpaml.</p>
+<p>然后调用的方式：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span> <span class="mi">5</span>
+</span><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">displayer</span><span class="o">.</span><span class="n">address</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当用到对应模块的时候，才会加载该模块。</p>
+
+<p>原先我考虑过采用concerns，但是看起来只是把代码移动到另外的地方去，
+当需要调试的时候很不方便，不知道代码放到哪里了。所以不觉得好用。</p>
+
+<p>大家有什么看法？</p>
 </div>
 
 
@@ -242,15 +225,21 @@ haml (就是上面那个图片啦) 的一个工具,
   
 
 
-<time datetime="2011-02-15T16:15:51+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2011</time>
+<time datetime="2013-03-04T22:07:00+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/shpaml/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/shpaml/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/split-big-model-in-rails/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/split-big-model-in-rails/" >Tweet</a>
   
   
   
@@ -259,10 +248,8 @@ haml (就是上面那个图片啦) 的一个工具,
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/read-rss-as-email/" title="Previous Post: 如何把rss当作邮件来阅读">&laquo; 如何把rss当作邮件来阅读</a>
+        <a class="basic-alignment left" href="/blog/ubuntu-wordpress/" title="Previous Post: ubuntu搭建wordpress">&laquo; ubuntu搭建wordpress</a>
       
-      
-        <a class="basic-alignment right" href="/blog/shpaml-source-code/" title="Next Post: shpaml源码分析">shpaml源码分析 &raquo;</a>
       
     </p>
   </footer>
@@ -383,8 +370,8 @@ haml (就是上面那个图片啦) 的一个工具,
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/shpaml/';
-        var disqus_url = 'http://halida.github.com/blog/shpaml/';
+        var disqus_identifier = 'http://halida.github.com/blog/split-big-model-in-rails/';
+        var disqus_url = 'http://halida.github.com/blog/split-big-model-in-rails/';
         var disqus_script = 'embed.js';
       
     (function () {
