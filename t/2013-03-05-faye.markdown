@@ -1,0 +1,144 @@
+---
+layout: post
+title: "用faye做长连接消息通讯"
+date: 2013-03-05 16:05
+comments: true
+categories: 
+---
+
+![image](http://faye.jcoglan.com/stylesheets/faye-logo.gif)
+
+网站开发的模型大多是client端主动的，主动过来一个get/post请求，然后服务器端再返回结果。
+很多时候我们需要换用服务端push的模型，比如实现聊天室，实时通知用户有新的消息等等。
+针对前一种我们可以用Rails，后面一种我们可以用[Faye](http://faye.jcoglan.com/)
+
+# 原理
+    
+
+# 使用方法
+
+## 服务端
+
+创建`faye.ru`：
+
+```ruby
+require 'faye'
+
+bayeux = Faye::RackAdapter.new(:mount => '/faye', :timeout => 25)
+bayeux.listen(9292)
+```
+
+跑起来：
+
+```sh
+rakeup faye.ru
+```
+
+## 浏览器端
+
+加载对应的js脚本：
+
+```html
+<script type="text/javascript" 
+        src="http://localhost:8000/faye/client.js">
+        </script>
+```
+
+创建对象：
+
+```html
+<script type="text/javascript">
+    var client = new Faye.Client('http://localhost:8000/faye');
+</script>
+```
+
+发送和接收消息：
+
+```js
+client.publish('/foo', {text: 'Hi there'});
+var subscription = client.subscribe('/foo', function(message) {
+  // handle message
+});
+```
+
+也可以用`http POST`来进行消息的发送，我主要用这种方式来实现传统服务器server和faye的通讯：
+
+```sh
+curl http://localhost:9292/faye -d 'message={"channel":"/messages/new", "data":"hello"}'
+```
+
+# 注意事项
+
+- 网络故障 http://faye.jcoglan.com/browser/transport.html
+
+# 实践例子
+
+## 聊天室
+
+基本的操作就是加入聊天室，发送消息，以及实时监控新的消息产生。
+
+页面(haml)：
+
+```haml
+#messages
+%p
+  %input#user_name{type: 'text', value: 'nobody'}
+  %input#message{type: 'text'}
+  %input#send_message{type: 'submit', value: 'Send'}
+```
+
+脚本(coffee)：
+
+```coffee
+window.chatroom = {}
+client = new Faye.Client('http://localhost:8000/faye')
+chatroom.join_room = (room_id)->
+    chatroom.room_id = room_id
+    client.subscribe("/chatroom/#{room_id}", (data)->
+        new_message = $('<div />')
+        new_message.text("from #{data.username}: #{data.text}")
+        $('#messages').append(new_message)
+        
+    $('#send_message').click ->
+        text = $('#message').val()
+        username = $('#user_name').val()
+        client.publish("/chatroom/#{room_id}", {username: username, text: text})
+
+chatroom.join_room('public')
+```
+
+## 私信聊天
+
+因为私信聊天需要限制只有follow的用户才可以聊天，我们需要给服务器加上一个限制：
+
+```ruby
+class ServerAuth
+  def incoming(message, callback)
+    # Let non-subscribe messages through
+    unless message['channel'] == '/meta/subscribe'
+      return callback.call(message)
+    end
+
+    # Get subscribed channel and auth token
+    subscription = message['subscription']
+    msg_token    = message['ext'] && message['ext']['authToken']
+
+    # Find the right token for the channel
+    registry = JSON.parse(File.read('./tokens.json'))
+    token    = registry[subscription]
+
+    # Add an error if the tokens don't match
+    if token != msg_token
+      message['error'] = 'Invalid subscription auth token'
+    end
+
+    # Call the server back now we're done
+    callback.call(message)
+  end
+end
+
+bayeux.add_extension(ServerAuth.new)
+```
+
+## 服务器广播通知
+

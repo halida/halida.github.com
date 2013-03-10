@@ -1,6 +1,6 @@
 ---
 layout: post
-title: rails里面拆分大的model"
+title: rails里面拆分大的model
 date: 2013-03-04 22:07
 comments: true
 categories: rails
