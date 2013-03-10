@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-03-04T22:12:54+08:00</updated>
+  <updated>2013-03-10T19:29:12+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -14,7 +14,116 @@
 
   
   <entry>
-    <title type="html"><![CDATA[rails里面拆分大的model"]]></title>
+    <title type="html"><![CDATA[display image after it is downloaded]]></title>
+    <link href="http://halida.github.com/blog/display-image-after-it-is-downloaded/"/>
+    <updated>2013-03-10T18:40:00+08:00</updated>
+    <id>http://halida.github.com/blog/display-image-after-it-is-downloaded</id>
+    <content type="html"><![CDATA[<p>It is very annoying when you see a image is loading in a webpage:</p>
+
+<p><img src="http://i.imgur.com/CPyoOWx.png" alt="image" /></p>
+
+<p>Lots of website support this kind of effect to get rid of this.
+when the image is loading, it is displaying a &#8220;loading&#8221; effect, like this:</p>
+
+<p><img src="http://i.imgur.com/m76L8U5.png" alt="image" /></p>
+
+<p>So how can we implement it to our website? The method is simple:</p>
+
+<ol>
+<li>Display a loading gif, and hide the image.</li>
+<li>After image loaded, hide gif, and display image.</li>
+</ol>
+
+
+<p>We can use JQuery <code>load</code> method <a href="api.jquery.com/load/">here</a> to add a callback to do the things in step 2 above.
+Use this html:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;loading_image&quot;</span> <span class="na">data-src=</span><span class="s">&quot;/images/demo.png&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;resources&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;image_loader&quot;</span> <span class="na">src=</span><span class="s">&quot;loader.gif&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>add run <code>init_loading_image</code> javascript list below.
+It is written in <a href="http://coffeescript.org/">coffeescript</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nv">init_loading_image = </span><span class="nf">()-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.loading_image&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">self = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span><span class='line'>        <span class="nv">loader = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.resources .image_loader&#39;</span><span class="p">).</span><span class="nx">clone</span><span class="p">()</span>
+</span><span class='line'>        <span class="nx">loader</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">load</span> <span class="o">-&gt;</span>
+</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">prev</span><span class="p">().</span><span class="nx">hide</span><span class="p">()</span>
+</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;show&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_loading_image</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For each <code>.loading_image</code>, place a loader gif in front of it.
+I set the image to opacity 0.0, so the image is downloading, and user will not see this image.
+after image loaded, hide the gif, and show the image.</p>
+
+<p>The css is list below. I&#8217;m using <a href="http://sass-lang.com/">sass</a> + <a href="http://compass-style.org/">compass</a> for clearer css:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.resources</span>
+</span><span class='line'>  <span class="nt">display</span><span class="o">:</span> <span class="nt">none</span>
+</span><span class='line'><span class="nc">.loading_image</span>
+</span><span class='line'>  <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">0</span><span class="nc">.0</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="nc">.show</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">1</span><span class="nc">.0</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">transition-property</span><span class="o">(</span><span class="nt">opacity</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">transition-duration</span><span class="o">(</span><span class="nt">0</span><span class="nc">.3s</span><span class="o">)</span>
+</span><span class='line'><span class="nc">.image_loader</span>
+</span><span class='line'>  <span class="nt">position</span><span class="o">:</span> <span class="nt">absolute</span>
+</span><span class='line'>  <span class="nt">top</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
+</span><span class='line'>  <span class="nt">left</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
+</span><span class='line'>  <span class="nt">margin-top</span><span class="o">:</span> <span class="nt">-6px</span>
+</span><span class='line'>  <span class="nt">margin-left</span><span class="o">:</span> <span class="nt">-22px</span>
+</span><span class='line'>  <span class="nt">width</span><span class="o">:</span> <span class="nt">43px</span>
+</span><span class='line'>  <span class="nt">height</span><span class="o">:</span> <span class="nt">11px</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Very simple process, you can see <a href="http://jsfiddle.net/linjunhalida/kU2VU/2/">the demo here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rails里面拆分大的model]]></title>
     <link href="http://halida.github.com/blog/split-big-model-in-rails/"/>
     <updated>2013-03-04T22:07:00+08:00</updated>
     <id>http://halida.github.com/blog/split-big-model-in-rails</id>
@@ -2008,63 +2117,6 @@ console里面执行：<code>People.prototype.constructor</code>， 返回的是�
 
 
 <p>继承父类的时候， 会拷贝出所有的父类方法， 在子类定义的时候， 如果定义了类方法， 就会覆盖父类的类方法。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[hujs活动整理和总结2]]></title>
-    <link href="http://halida.github.com/blog/hujs-2/"/>
-    <updated>2012-09-16T23:34:00+08:00</updated>
-    <id>http://halida.github.com/blog/hujs-2</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/vAQgj.jpg" alt="image" /></p>
-
-<h2>第二天</h2>
-
-<p>第二天的演讲：</p>
-
-<p><a href="https://github.com/substack">James Halliday</a>， 87年的， <a href="https://browserling.com/">browserling</a> 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。
-这个项目非常有用， 而他肢体语言给人的感觉， 和我以前遇到的一些年轻的技术天才也很类似。</p>
-
-<p>下面是node-webkit的当前开发和维护者<a href="https://github.com/zcbenz">小型笨蛋/赵成</a>， 现在他在Intel专职做这个项目。
-基本上是把node整合到webkit里面， 让js能够通过node的API访问本地资源， 然后提供一个打包的工具， 做成客户端。
-现在用到它的一些项目是把html5的游戏本地化。 我觉得， 优势是跨平台发布应用程序， 以后有这样的需求可以考虑用它。 当然如果是复杂UI客户端， 我觉得还是用有很多强大控件的Qt比较好。</p>
-
-<p>然后是JEFFSU介绍的如何用node.js来做服务器监控平台系统的。 算是一个nodejs的实际应用案例。 因为用到了长连接broadcast之类的东西。</p>
-
-<p>然后是来自网易的谢骋超/圈圈套圈圈讲的NODE.JS游戏服务器开发， 他们team应该是做一个原型验证， 看看nodejs是否适合在游戏服务器开发上面应用。
-这个应该算是node做的比较大的项目了吧， 效果也很不错， 能够支持同一个场景上千玩家同时在线。 看来以后会兴起一波用nodejs架设游戏服务器的潮流了。</p>
-
-<p>然后进入下午场。下午场的几个主题， 我没有认真听， 内容上面也没有什么好说的了。
-在白天场结束后， 需要统计最后一天hackthon参加的人数。 尽管有Glenn在台上拼命激励大家来参加， 结果实际来参加的人还是比较少。
-我感觉， 如果是国外开发者的话， 基本上都是全部参加的。 国内没有流行这样的文化， 不过我觉得会越来越好的， 只是时间问题。</p>
-
-<p>还有一个晚上的party活动， 在<a href="http://factual.com">factual</a>他们的公司场地里面进行。</p>
-
-<h2>晚上party</h2>
-
-<p>晚上的party， 有准备给我们小食， BBQ， 和啤酒， 然后就是大家随意聊天。 我感觉非常好，
-和来自github的一位员工， 应该是<a href="https://github.com/vmg">vmg</a>吧， 交换了关于中国程序员为什么不乐于分享的一些看法，
-问了James他怎么把url贴到浏览器地址栏里面的， 以及和各位做技术的人聊各种各样技术人感兴趣的事情。</p>
-
-<h2>hackthon</h2>
-
-<p>最后一天是全天的hackthon， 我本来想参加， 结果有其他事情， 只能过来看看就走了。 也没有什么好多说的， 和其他hackthon也差不多。</p>
-
-<h2>总结</h2>
-
-<p>这几天我觉得自己的收获有以下几点：</p>
-
-<ul>
-<li>对nodejs在业界的使用有了一定的了解， 看起来已经有很多人在用它了， 也有很多部署到生产环境的例子。</li>
-<li>了解了nodejs的特性和适用场景， 以后在长连接， 高吞吐性能的领域， 它将是我的第一选择。</li>
-<li>认识了不少做node的人和公司。</li>
-<li>在party上面和外国的开发者用英语交流， 增加了我对于英语口语使用的信心。</li>
-<li>体验了国际水平的活动组织， 演讲技巧， 主持技巧。 可以作为素材借鉴。</li>
-</ul>
-
-
-<p>总之， 对于我来说， 参加这几天的会议是非常值得的。</p>
 ]]></content>
   </entry>
   

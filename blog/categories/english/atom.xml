@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-03-04T22:12:54+08:00</updated>
+  <updated>2013-03-10T19:29:12+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[display image after it is downloaded]]></title>
+    <link href="http://halida.github.com/blog/display-image-after-it-is-downloaded/"/>
+    <updated>2013-03-10T18:40:00+08:00</updated>
+    <id>http://halida.github.com/blog/display-image-after-it-is-downloaded</id>
+    <content type="html"><![CDATA[<p>It is very annoying when you see a image is loading in a webpage:</p>
+
+<p><img src="http://i.imgur.com/CPyoOWx.png" alt="image" /></p>
+
+<p>Lots of website support this kind of effect to get rid of this.
+when the image is loading, it is displaying a "loading" effect, like this:</p>
+
+<p><img src="http://i.imgur.com/m76L8U5.png" alt="image" /></p>
+
+<p>So how can we implement it to our website? The method is simple:</p>
+
+<ol>
+<li>Display a loading gif, and hide the image.</li>
+<li>After image loaded, hide gif, and display image.</li>
+</ol>
+
+
+<p>We can use JQuery <code>load</code> method <a href="api.jquery.com/load/">here</a> to add a callback to do the things in step 2 above.
+Use this html:</p>
+
+<p>```html
+<img class="loading_image" data-src="/images/demo.png">
+...</p>
+
+<div class="resources">
+  <img class="image_loader" src="loader.gif">
+</div>
+
+
+<p>```</p>
+
+<p>add run <code>init_loading_image</code> javascript list below.
+It is written in <a href="http://coffeescript.org/">coffeescript</a>:</p>
+
+<p>```coffeescript
+window.init_loading_image = ()-></p>
+
+<pre><code>$('.loading_image').each -&gt;
+    self = $(this)
+    loader = $('.resources .image_loader').clone()
+    loader.insertBefore(self)
+    self.load -&gt;
+        self.prev().hide()
+        self.addClass('show')
+    self.attr('src', self.data('src'))
+</code></pre>
+
+<p>$(init_loading_image)
+```</p>
+
+<p>For each <code>.loading_image</code>, place a loader gif in front of it.
+I set the image to opacity 0.0, so the image is downloading, and user will not see this image.
+after image loaded, hide the gif, and show the image.</p>
+
+<p>The css is list below. I'm using <a href="http://sass-lang.com/">sass</a> + <a href="http://compass-style.org/">compass</a> for clearer css:</p>
+
+<p>```css
+.resources
+  display: none
+.loading_image
+  +opacity(0.0)
+  &amp;.show</p>
+
+<pre><code>+opacity(1.0)
++transition-property(opacity)
++transition-duration(0.3s)
+</code></pre>
+
+<p>.image_loader
+  position: absolute
+  top: 50%
+  left: 50%
+  margin-top: -6px
+  margin-left: -22px
+  width: 43px
+  height: 11px
+```</p>
+
+<p>Very simple process, you can see <a href="http://jsfiddle.net/linjunhalida/kU2VU/2/">the demo here</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[English Matters]]></title>
