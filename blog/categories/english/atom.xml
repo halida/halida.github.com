@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-03-10T19:29:12+08:00</updated>
+  <updated>2013-03-17T11:40:02+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
+    <link href="http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm/"/>
+    <updated>2013-03-17T11:31:00+08:00</updated>
+    <id>http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/b0F7F9a.png" alt="image" /></p>
+
+<p>According to the <a href="http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/">NEWS</a>, ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.</p>
+
+<p>And here is the method about how to upgrade ruby under rvm:</p>
+
+<pre><code>rvm get head
+rvm install 2.0.0
+rvm use 2.0.0
+</code></pre>
+
+<p>Happy hacking, and keep fun~</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[display image after it is downloaded]]></title>
