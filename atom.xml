@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-03-17T11:40:02+08:00</updated>
+  <updated>2013-03-24T19:19:48+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[给Rails加上https支持]]></title>
+    <link href="http://halida.github.com/blog/using-https-for-rails/"/>
+    <updated>2013-03-24T18:46:00+08:00</updated>
+    <id>http://halida.github.com/blog/using-https-for-rails</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/4mClj73.jpg" alt="image" /></p>
+
+<p>https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。</p>
+
+<p>首先，假设你的rails已经跑起来了，在<code>http://yourserver.com</code>，服务器是ubuntu，本地的访问方式是<code>127.0.0.1:8787</code>，那么你需要利用<code>nginx</code>来提供https的服务。</p>
+
+<p>首先安装<code>nginx</code>和<code>openssl</code>：</p>
+
+<pre><code>sudo apt-get install nginx openssl
+</code></pre>
+
+<p>生成服务器的秘钥公钥：</p>
+
+<pre><code>openssl req -new -nodes -keyout server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+</code></pre>
+
+<p>生成的几个文件解释：</p>
+
+<ul>
+<li><code>server.key</code> 服务器的私钥。</li>
+<li><code>server.csr</code> (certificate signing request) https证书签名请求。</li>
+<li><code>server.crt</code> 生成的服务器证书。</li>
+</ul>
+
+
+<p>然后有这些文件，我们可以配置nginx服务了。</p>
+
+<p>生成nginx的配置文件：</p>
+
+<pre><code>sudo touch /etc/nginx/sites-available/yourserver
+sudo ln -s /etc/nginx/sites-available/yourserver /etc/nginx/sites-enabled
+sudo vi /etc/nginx/sites-available/yourserver
+</code></pre>
+
+<p>里面的内容：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>upstream unicorn {
+</span><span class='line'>  server 127.0.0.1:8787 fail_timeout=0;
+</span><span class='line'>}
+</span><span class='line'>server {
+</span><span class='line'>  listen       443;
+</span><span class='line'>  server_name  yourserver.com;
+</span><span class='line'>    
+</span><span class='line'>  ssl                  on;
+</span><span class='line'>  ssl_certificate      yourpath/server.crt;
+</span><span class='line'>  ssl_certificate_key  yourpath/server.key;
+</span><span class='line'>    
+</span><span class='line'>  ssl_session_timeout  5m;
+</span><span class='line'>    
+</span><span class='line'>  ssl_protocols  SSLv2 SSLv3 TLSv1;
+</span><span class='line'>  ssl_ciphers  HIGH:!aNULL:!MD5;
+</span><span class='line'>  ssl_prefer_server_ciphers   on;
+</span><span class='line'>    
+</span><span class='line'>  location / {
+</span><span class='line'>      proxy_set_header Host $host;
+</span><span class='line'>      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span><span class='line'>      proxy_set_header X-Forwarded-Proto https;
+</span><span class='line'>      proxy_redirect off;
+</span><span class='line'>      proxy_pass http://localserver;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>需要修改里面的<code>server_name，yourpath</code>。</p>
+
+<p>然后重新启动nginx:</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p>如果没有报错，那么你就可以通过<code>https://yourserver.com</code>来访问你的网站了。</p>
+
+<p>不过，浏览器会阻止你继续访问，或者需要你的确认。
+浏览器会保存一份可信网站的列表，你的服务器加密是自己生成的，不在里面。
+如果你的网站是商用的，最好去注册一下。<a href="https://www.name.com/ssl">这里</a>有一个指引。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/357-adding-ssl?view=asciicast">railscast</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
@@ -1699,109 +1815,6 @@ Maybe it is also a good option for you.</p>
 
 <p>我觉得roguelike有点像是人生， 各种人不同的初始条件， 有限的时间， 随机的事件和无数的抉择， 多样的玩法。
 不过游戏中会有一个大Boss需要干掉， 会有happy ending/bad ending， 但是人生没有， 一直进行下去， 直到人生的终点。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[coffeescript]]></title>
-    <link href="http://halida.github.com/blog/coffeescript/"/>
-    <updated>2012-09-24T11:01:00+08:00</updated>
-    <id>http://halida.github.com/blog/coffeescript</id>
-    <content type="html"><![CDATA[<p><img src="http://coffeescript.org/documentation/images/logo.png" alt="image" /></p>
-
-<h2>什么是coffeescript?</h2>
-
-<p>我们知道javascript是一门有历史的语言， 在被创造出来的时候， 它只是浏览器的一个附属物， 没有预期能够那么流行，
-拥有一些的设计缺陷， 缺少很多现代语言必须的特性。 为了弥补这些的缺陷， 我们有jQuery， 各种js的库，
-javascript语言本身也非常灵活， 开发者可以做很多扩展。</p>
-
-<p>但是库的方式并不能解决所有的问题， 我们还需要更重的解决方案。
-coffeescript是能够编译成javascript的一门小的语言， 它的目的是为了能够让大家以更好的方式来写javascript。</p>
-
-<p>简单的说， 就是你采用coffeescript的写法：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Assignment:</span>
-</span><span class='line'><span class="n">number</span>   <span class="o">=</span> <span class="mi">42</span>
-</span><span class='line'><span class="n">opposite</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Conditions:</span>
-</span><span class='line'><span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span> <span class="k">if</span> <span class="n">opposite</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Functions:</span>
-</span><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>coffeescript的工具帮助把上面的代码编译成js：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">opposite</span><span class="p">,</span> <span class="nx">square</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">number</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">opposite</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">opposite</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>具体的语法还是去看<a href="http://coffeescript.org/">官方网站</a>， 这里我就不多说了。</p>
-
-<h2>优点和缺点</h2>
-
-<p>它解决的问题主要是：
-- javascript语言本身是模仿java的语法， 带有很多冗余， coffeescript借鉴了其他一些现代语言的语法， 让代码变得更简洁清晰。
-- javascript本身有设计缺陷， 比如全局变量的问题， coffeescript自动把变量变成局部， 减少开发错误。
-- javascript本身缺少一些重要的特性， 比如类机制， cofeescript提供这样的机制。</p>
-
-<p>写完coffeescript， 可以通过它提供的一个工具， 转换成javascript， 而转换出来的javascript和coffeescript基本上是一一对应的，
-语法也很简单， 会javascript的人看懂不难。</p>
-
-<p>总体上面来说， 使用coffeescript带来的好处是： 增加生产力， 减少代码缺陷， 增加代码的可读性，
-付出的代价是需要建立一整套的编译机制， 以及开发者需要熟悉coffeescript这门语言， 以及项目必须依赖coffeescript。</p>
-
-<h2>结论</h2>
-
-<p>针对coffeescript的使用， 赞同和反对者都有， 具体的意见：</p>
-
-<p>赞同者的意见比较好理解。 因为coffeescript带来的好处很多（上面列出来的）， 付出的代价也没有多少。
-甚至哪天你不想用了， 也可以直接把它丢掉， 编译出来的javascript也是可以继续维护的。</p>
-
-<p>反对者的意见基本上是从项目的角度来考虑，
-一个是写javascript不只是程序员， 可能是设计师， 需要让所有人都学会coffeescript， 而这个是有成本的。
-还有就是项目代码一致性， 原先javascript的项目， 如果加上了coffeescript的代码， 就会比较混乱。
-以及有人并不喜欢coffeescript里面的一些实现， 比如类机制。</p>
-
-<p>我个人倾向使用cofeescript， 现在我基本不直接写javascript了。
-反对的意见我觉得对于普通的开发者来说不重要，
-而它的优点是如此地显著， 以至于我会推荐所有的javascript开发者去使用它。</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-03-17T11:40:02+08:00</updated>
+  <updated>2013-03-24T19:19:48+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[给Rails加上https支持]]></title>
+    <link href="http://halida.github.com/blog/using-https-for-rails/"/>
+    <updated>2013-03-24T18:46:00+08:00</updated>
+    <id>http://halida.github.com/blog/using-https-for-rails</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/4mClj73.jpg" alt="image" /></p>
+
+<p>https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。</p>
+
+<p>首先，假设你的rails已经跑起来了，在<code>http://yourserver.com</code>，服务器是ubuntu，本地的访问方式是<code>127.0.0.1:8787</code>，那么你需要利用<code>nginx</code>来提供https的服务。</p>
+
+<p>首先安装<code>nginx</code>和<code>openssl</code>：</p>
+
+<pre><code>sudo apt-get install nginx openssl
+</code></pre>
+
+<p>生成服务器的秘钥公钥：</p>
+
+<pre><code>openssl req -new -nodes -keyout server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+</code></pre>
+
+<p>生成的几个文件解释：</p>
+
+<ul>
+<li><code>server.key</code> 服务器的私钥。</li>
+<li><code>server.csr</code> (certificate signing request) https证书签名请求。</li>
+<li><code>server.crt</code> 生成的服务器证书。</li>
+</ul>
+
+
+<p>然后有这些文件，我们可以配置nginx服务了。</p>
+
+<p>生成nginx的配置文件：</p>
+
+<pre><code>sudo touch /etc/nginx/sites-available/yourserver
+sudo ln -s /etc/nginx/sites-available/yourserver /etc/nginx/sites-enabled
+sudo vi /etc/nginx/sites-available/yourserver
+</code></pre>
+
+<p>里面的内容：</p>
+
+<p>```
+upstream unicorn {
+  server 127.0.0.1:8787 fail_timeout=0;
+}
+server {
+  listen       443;
+  server_name  yourserver.com;</p>
+
+<p>  ssl                  on;
+  ssl_certificate      yourpath/server.crt;
+  ssl_certificate_key  yourpath/server.key;</p>
+
+<p>  ssl_session_timeout  5m;</p>
+
+<p>  ssl_protocols  SSLv2 SSLv3 TLSv1;
+  ssl_ciphers  HIGH:!aNULL:!MD5;
+  ssl_prefer_server_ciphers   on;</p>
+
+<p>  location / {</p>
+
+<pre><code>  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_redirect off;
+  proxy_pass http://localserver;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>需要修改里面的<code>server_name，yourpath</code>。</p>
+
+<p>然后重新启动nginx:</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p>如果没有报错，那么你就可以通过<code>https://yourserver.com</code>来访问你的网站了。</p>
+
+<p>不过，浏览器会阻止你继续访问，或者需要你的确认。
+浏览器会保存一份可信网站的列表，你的服务器加密是自己生成的，不在里面。
+如果你的网站是商用的，最好去注册一下。<a href="https://www.name.com/ssl">这里</a>有一个指引。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/357-adding-ssl?view=asciicast">railscast</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
