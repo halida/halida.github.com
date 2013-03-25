@@ -1,7 +1,7 @@
 rake=bundle exec rake
 
 watch:
-	$(rake) atch
+	$(rake) watch
 deploy:
 	$(rake) generate
 	$(rake) deploy
