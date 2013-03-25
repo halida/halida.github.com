@@ -1,8 +1,12 @@
+rake=bundle exec rake
+
+watch:
+	$(rake) atch
 deploy:
-	bundle exec rake generate
-	bundle exec rake deploy
+	$(rake) generate
+	$(rake) deploy
 
 new:
-	bundle exec rake "new_post[xxx]"
+	$(rake) "new_post[xxx]"
 preview:
-	bundle exec rake preview
+	$(rake) preview
