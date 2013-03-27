@@ -103,9 +103,9 @@ mysql默认编码是latin, 我们要改成utf8, 修改/etc/mysql/my.cnf,
 
 设置完后需要重启mysql:
 
-..code-block:: bash
-
-> sudo service mysql restart
+```bash
+sudo service mysql restart
+```
 
 然后我们重置mysql root密码
 
