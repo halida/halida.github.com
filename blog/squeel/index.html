@@ -5,12 +5,16 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>utf8介绍 - 网络寻租</title>
+  <title>squeel介绍 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下: 什么是UCS? 我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set, 它是关于所有字符编码的标准. 简单地说, &hellip;">
+  <meta name="description" content="squeel是Rails下面一个处理复杂sql查询的框架，
+具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。 为什么要用它？ 平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如： 1
+2
+3
+4
+Person.where( &#39;(name LIKE &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/utf8/">
+  <link rel="canonical" href="http://halida.github.com/blog/squeel/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +86,7 @@
   
   <header>
     
-      <h1 class="entry-title">Utf8介绍</h1>
+      <h1 class="entry-title">Squeel介绍</h1>
     
     
       <p class="meta">
@@ -98,7 +102,7 @@
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2013-04-02T11:44:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,105 +111,80 @@
   </header>
 
 
-<div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
+<div class="entry-content"><p><img src="http://i.imgur.com/yxqRwG5.jpg" alt="image" /></p>
 
-<h2>什么是UCS?</h2>
+<p><a href="https://github.com/ernie/squeel">squeel</a>是Rails下面一个处理复杂sql查询的框架，
+具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。</p>
 
-<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set,</p>
+<h2>为什么要用它？</h2>
 
-<p>它是关于所有字符编码的标准. 简单地说,
-为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
-每个字符都指代单独的一个数字做标识.</p>
-
-<h2>什么是UTF-8?</h2>
-
-<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
-所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
-方便解析和除错做了优化. 具体表示方式如下:</p>
-
-<ul>
-<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
-<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
-第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
-<li>以此类推&#8230;</li>
-</ul>
-
-
-<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
-
-<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
-U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
-U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
-U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-</code></pre>
-
-<p>同时, 长的表示方式不能涵盖短的表示方式,
-所以下面的范围是错误的(可以快速排除错误):</p>
-
-<pre><code>1100000x (10xxxxxx)
-11100000 100xxxxx (10xxxxxx)
-11110000 1000xxxx (10xxxxxx 10xxxxxx)
-11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
-11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
-</code></pre>
-
-<p>我们来看具体的例子(python代码):</p>
+<p>平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
-</span><span class='line'><span class="err">©</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
-</span><span class='line'><span class="err">≠</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
-</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
-</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;(name LIKE ? AND salary &lt; ?) OR (name LIKE ? AND salary &gt; ?)&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;Ernie%&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">,</span> <span class="mi">100000</span>
+</span><span class='line'><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样的写法不是很好，因为：</p>
+
+<ul>
+<li>里面的sql是只针对一个数据库的，不能做到数据库的切换。</li>
+<li>里面的sql在ruby里面是字符串，一个是可读性差，一个是不能进行语法上面的检查，只能通过单元测试来保证。</li>
+<li>写这样语句的时候，需要切换成sql的思路，写完之后再切换回来。</li>
+<li>遇到复杂sql的时候，不容易拆分问题，只能通过大段长度的sql来处理。</li>
+</ul>
+
+
+<p>采用squeel，就可以变成这些的写法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">{(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Ernie%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="mi">50000</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">)}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>原理</h2>
+
+<p>squeel使用的方法是传一个block给where，然后这个block会被修改作用域，在这个作用域里面，
+各种操作符和变量都会被转义，变成Node对象，然后形成一个抽象语法树，最后通过底层的<a href="https://github.com/rails/arel">arel</a>变成真正执行的sql。</p>
+
+<p>具体代码比较重要的是<code>dsl.rb</code>里面的<code>eval</code>，<code>method_missing</code>，<code>stub.rb</code>，<code>visitor.rb</code>。</p>
+
+<p>我思考了一下，这种方法应该是最简洁和干净的，语法是采用ruby的方式，魔法的部分都被包裹在block里面，和现有的功能无缝衔接。</p>
+
+<h2>使用心得</h2>
+
+<p>如果明白原理，使用它没有什么太多的问题，需要注意的是，
+一定要看一遍log里面生成的sql，确认是自己期望的结构。</p>
+
+<p>还有就是，squeel和原有系统切割得比较好，只有一点需要注意：
+针对<code>User.where(name: :aaa)</code>里面把symbol当做value的状况，squeel会转变成：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">users</span> <span class="k">where</span> <span class="n">users</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">users</span><span class="p">.</span><span class="n">aaa</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一个特性，如果你不期望这样的话，需要改成<code>where(name: :aaa.to_s)</code>。也可以关闭，具体看squeel的文档。</p>
+
+<p>在我用的过程中，遇到几个问题：</p>
+
+<ul>
+<li>我直接用<code>or</code>和<code>and</code>，结果发现按照文档应该是用<code>|</code>和<code>&amp;</code>，使用任何东西之前还是需要认真看一遍文档。</li>
+<li>复杂查询条件下面，如果用到了<code>|</code>和<code>&amp;</code>，为了保证是按照自己期望的优先级分割，需要用括号来明确界定，比如<code>where{(name == 'aaa' | name == 'bbb') &amp; (level == 1)}</code></li>
+<li>上面提到的symbol当做value的bug。</li>
+<li>因为使用了作用域切换，对象属性等就不能访问了，比如<code>where{name == @user.name}</code>，需要改成<code>where{name == my{@user.name}}</code></li>
+</ul>
 
 
 <h2>结论</h2>
 
-<p>现在还没有什么心得, 总之, 了解了上面的概念,
-才能处理好平时遇到的字符编码问题.</p>
-
-<p>参考资料: -
-<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
+<p>考虑一下是否需要采用squeel：它的学习成本应该只需要一个小时，性能问题可以通过cache来解决，可以无缝衔接，收益是更清晰，更一致，更好用的代码。</p>
 </div>
 
 
@@ -228,7 +207,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2013-04-02T11:44:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2013</time>
       
 
 
@@ -236,7 +215,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/utf8/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/utf8/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/squeel/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/squeel/" >Tweet</a>
   
   
   
@@ -245,10 +224,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/how-to-learn-python/" title="Previous Post: 如何学习python">&laquo; 如何学习python</a>
+        <a class="basic-alignment left" href="/blog/try-gitlab/" title="Previous Post: 试用gitlab">&laquo; 试用gitlab</a>
       
-      
-        <a class="basic-alignment right" href="/blog/gmail-cannot-use/" title="Next Post: gmail不能用了">gmail不能用了 &raquo;</a>
       
     </p>
   </footer>
@@ -369,8 +346,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/utf8/';
-        var disqus_url = 'http://halida.github.com/blog/utf8/';
+        var disqus_identifier = 'http://halida.github.com/blog/squeel/';
+        var disqus_url = 'http://halida.github.com/blog/squeel/';
         var disqus_script = 'embed.js';
       
     (function () {
