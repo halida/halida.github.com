@@ -1,0 +1,74 @@
+---
+layout: post
+title: "squeel介绍"
+date: 2013-04-02 11:44
+comments: true
+categories: 
+---
+
+![image](http://i.imgur.com/yxqRwG5.jpg)
+
+[squeel](https://github.com/ernie/squeel)是Rails下面一个处理复杂sql查询的框架，
+具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。
+
+为什么要用它？
+---------------------
+
+平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如：
+
+```ruby
+Person.where(
+  '(name LIKE ? AND salary < ?) OR (name LIKE ? AND salary > ?)',
+  'Ernie%', 50000, 'Joe%', 100000
+)
+```
+
+这样的写法不是很好，因为：
+
+- 里面的sql是只针对一个数据库的，不能做到数据库的切换。
+- 里面的sql在ruby里面是字符串，一个是可读性差，一个是不能进行语法上面的检查，只能通过单元测试来保证。
+- 写这样语句的时候，需要切换成sql的思路，写完之后再切换回来。
+- 遇到复杂sql的时候，不容易拆分问题，只能通过大段长度的sql来处理。
+
+采用squeel，就可以变成这些的写法：
+
+```ruby
+Person.where{(name =~ 'Ernie%') & (salary < 50000) | (name =~ 'Joe%') & (salary > 100000)}
+```
+
+原理
+---------------------
+
+squeel使用的方法是传一个block给where，然后这个block会被修改作用域，在这个作用域里面，
+各种操作符和变量都会被转义，变成Node对象，然后形成一个抽象语法树，最后通过底层的[arel](https://github.com/rails/arel)变成真正执行的sql。
+
+具体代码比较重要的是`dsl.rb`里面的`eval`，`method_missing`，`stub.rb`，`visitor.rb`。
+
+我思考了一下，这种方法应该是最简洁和干净的，语法是采用ruby的方式，魔法的部分都被包裹在block里面，和现有的功能无缝衔接。
+
+使用心得
+---------------------
+
+如果明白原理，使用它没有什么太多的问题，需要注意的是，
+一定要看一遍log里面生成的sql，确认是自己期望的结构。
+
+还有就是，squeel和原有系统切割得比较好，只有一点需要注意：
+针对`User.where(name: :aaa)`里面把symbol当做value的状况，squeel会转变成：
+
+```sql
+select * from users where users.name == users.aaa
+```
+
+这是一个特性，如果你不期望这样的话，需要改成`where(name: :aaa.to_s)`。也可以关闭，具体看squeel的文档。
+
+在我用的过程中，遇到几个问题：
+
+- 我直接用`or`和`and`，结果发现按照文档应该是用`|`和`&`，使用任何东西之前还是需要认真看一遍文档。
+- 复杂查询条件下面，如果用到了`|`和`&`，为了保证是按照自己期望的优先级分割，需要用括号来明确界定，比如`where{(name == 'aaa' | name == 'bbb') & (level == 1)}`
+- 上面提到的symbol当做value的bug。
+- 因为使用了作用域切换，对象属性等就不能访问了，比如`where{name == @user.name}`，需要改成`where{name == my{@user.name}}`
+
+结论
+---------------------
+
+考虑一下是否需要采用squeel：它的学习成本应该只需要一个小时，性能问题可以通过cache来解决，可以无缝衔接，收益是更清晰，更一致，更好用的代码。
