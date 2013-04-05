@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-04-02T12:57:35+08:00</updated>
+  <updated>2013-04-05T15:25:50+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[mosh介绍]]></title>
+    <link href="http://halida.github.com/blog/mosh/"/>
+    <updated>2013-04-05T15:06:00+08:00</updated>
+    <id>http://halida.github.com/blog/mosh</id>
+    <content type="html"><![CDATA[<p><img src="http://mosh.mit.edu/mosh.png" alt="image" /></p>
+
+<p>这年头做技术没有人不用ssh的吧，然后ssh使用起来还是很不爽的，
+远程服务器慢的时候反应慢，ssh有的时候断掉要重新连。。。</p>
+
+<p><a href="http://mosh.mit.edu/">mosh</a>是ssh的替代方案，用来解决慢速网络和移动网络的问题，具体上来说：</p>
+
+<ul>
+<li>连上一台服务器后，不管你切换什么网络，或者网络断掉，或者机器休眠又醒过来，连接都能够一直保持。</li>
+<li>缓存输入输出，当连接慢的时候，屏幕上面显示的响应还是很快。</li>
+</ul>
+
+
+<p>我<strong>强烈</strong>建议大家都去用它。</p>
+
+<h2>原理</h2>
+
+<p>mosh它实现了一套自有的状态同步协议SSP：</p>
+
+<ul>
+<li>底层采用UDP，client和网络解耦合，</li>
+<li>内部client和server都维护到屏幕和输入的状态，根据状态发送diff/patch。</li>
+<li>再在上层加上一个预测模块，根据用户输入先在本地显示预期的输出结果，收到远程服务器返回的屏幕数据，再更新。</li>
+</ul>
+
+
+<p>作者同时也提出，现在的应用往往没有针对移动作优化，如果一个用户切换了网络（比如正在移动中），
+那么tcp连接断掉会出现各种问题，在这种场景下，SSP这种解决方案会很有用处。</p>
+
+<p>建议大家可以看看mosh首页的视频，作者介绍得很充分。</p>
+
+<h2>使用</h2>
+
+<p>大家去看<a href="http://mosh.mit.edu/">首页的介绍</a>就好。这里整理一些我觉得需要提到的：</p>
+
+<p>指定ssh参数，比如你的ssh端口不是22：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mosh <span class="nv">$server</span> --ssh<span class="o">=</span><span class="s1">&#39;ssh -p 2222&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当你在网络断开的时候，关掉了mosh的进程，远程服务器上面对应的server进程会一直存在，
+这个时候重新连上去的时候，就会提示你。这个时候你需要手动kill掉这个进程，
+具体见<a href="https://github.com/keithw/mosh/issues/403">issue报告</a>。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[squeel介绍]]></title>
@@ -1888,31 +1941,6 @@ postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要
 
 
 <p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[尝试站着工作]]></title>
-    <link href="http://halida.github.com/blog/standing-at-work/"/>
-    <updated>2012-10-21T11:57:00+08:00</updated>
-    <id>http://halida.github.com/blog/standing-at-work</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/CSNCr.jpg" alt="image" /></p>
-
-<p>大多数人每天上班的时候， 基本都是坐在座位上面， 面对电脑工作。 久坐， 往往会带来一些腰部和颈部的疾病，
-我在最近的几个月里面， 尝试了站立工作。 上面就是我的工作台设置。 就是把一个高度合适的座位放到台面上来而已。
-我能够找到刚好配起来的家具， 如果你找不到的话， 可以看<a href="http://www.douban.com/note/226194410/">这个解决方案</a>。</p>
-
-<p>尝试下来发现一些东西:</p>
-
-<ul>
-<li>站立工作会更消耗精力一些， 很多时候不太容易集中精神。 毕竟站立不能像坐着的时候那样放松。</li>
-<li>颈部和腰部完全没有不适的感觉。 但是可能是我键盘高度位置有问题， 手腕部位还是会有疼痛。</li>
-<li>站立给膝盖造成了很大的压力， 有不适。 以及长期站立容易造成小腿静脉曲张， 我现在是隔段时间坐下抬高小腿休息一会。</li>
-</ul>
-
-
-<p>现在我还是在用台式机， 如果我买了笔记本的话， 我可以很方便地在站立和坐着两种工作方式之间切换。
-个人建议大家可以尝试一段时间站立工作， 对工作环境进行调节是提升工作舒适度以及工作效率的好办法。</p>
 ]]></content>
   </entry>
   
