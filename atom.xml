@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-04-05T16:03:03+08:00</updated>
+  <updated>2013-04-08T09:15:32+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[关于独立游戏]]></title>
+    <link href="http://halida.github.com/blog/indie-games/"/>
+    <updated>2013-04-08T08:54:00+08:00</updated>
+    <id>http://halida.github.com/blog/indie-games</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/etBZ9lM.jpg" alt="image" /></p>
+
+<p>我是一个游戏爱好者。从初中起我就在玩电脑游戏，一直持续到现在。初中到大学阶段我一直是以PC游戏为主，最近几年我渐渐转移到了独立游戏上面。</p>
+
+<h2>为什么我喜欢独立游戏</h2>
+
+<ul>
+<li>我喜欢去接触各种新的领域，厌烦没有新意的东西。在独立游戏领域，会有更多人尝试新的游戏性，设计性的东西出来。</li>
+<li>独立游戏一般不会是大制作，游戏占用的硬盘空间不会很大，容易下载容易保存。</li>
+<li>独立游戏价格一般不会很高，我能够承受得起，并且能够购买相当数量的游戏。</li>
+</ul>
+
+
+<h2>我玩的一些独立游戏</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Roguelike">roguelike</a> 其实是一类游戏，我玩过很久的有：<a href="http://www.adom.de">ADOM</a>，<a href="http://www.nethack.org/">nethack</a>，<a href="http://crawl.develz.org/wordpress/">stonesoup</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/cortex-command/">Cortex Command</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/minecraft/">minecraft</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mosh介绍]]></title>
@@ -1849,100 +1878,6 @@ cp wp-config-sample.php wp-config.php
 <p>经过这几天的实际使用，感觉上手飞快，没有什么需要适应的地方，整体上很舒服。OSX操作系统是基于BSD的，从linux切换过来基本只需要熟悉目录结构。安装开发环境消耗了不少时间，主要是homebrew，rails，emacs，最好都整好了。然后就是感觉台式机买的有点亏，完全可以直接入mbp，但是时间点的话不对，也没有办法。</p>
 
 <p>rmbp MC212报价在我购买了之后<a href="http://www.appletuan.com/t/2553">又跌了200元</a>，算是小亏，这个时间点其实很难把握，既然买了东西，沉没成本不是成本，以后就不要关注这个价格了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[postfix架构初探]]></title>
-    <link href="http://halida.github.com/blog/postfix/"/>
-    <updated>2012-10-27T23:57:00+08:00</updated>
-    <id>http://halida.github.com/blog/postfix</id>
-    <content type="html"><![CDATA[<p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
-
-<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
-我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
-在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
-根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
-
-<h2>什么是postfix</h2>
-
-<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
-postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
-
-<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
-
-<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
-
-<ul>
-<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
-<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
-</ul>
-
-
-<h2>如何配置</h2>
-
-<p>我发现<a href="https://help.ubuntu.com/community/Postfix">ubuntu的配置文档</a>已经非常全了， 可以安装上面来配置。
-邮件系统的用户和密码， 默认是采用unix的用户和密码， 但是很多时候我们的邮件系统是和真正的系统用户分开的，
-这个时候我们需要<a href="https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto">设置Virtual Mailbox</a>，
-postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要另外安装dovecot， 前面的教程里面有具体的安装方法。</p>
-
-<h2>邮件流程</h2>
-
-<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
-
-<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
-
-<p>外面的服务器会通过smtp发送邮件， postfix服务器会响应, 然后最后保存到本地的邮件目录存放地上面。</p>
-
-<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
-
-<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
-
-<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
-
-<p><strong>如何验证用户</strong></p>
-
-<p>devocot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
-
-<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
-
-<ul>
-<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
-<li>postfix配置目录在<code>/etc/postfix</code></li>
-<li>dovecot配置目录<code>/etc/dovecot</code></li>
-<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
-<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
-<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
-</ul>
-
-
-<h2>更进一步的需求</h2>
-
-<p>前面做的事情只是比较基本的一些， 如果要成为生产环境， 还是需要一些其他的事情：</p>
-
-<ul>
-<li>用户管理系统</li>
-<li>spam过滤</li>
-<li>保证自己不被当作spam</li>
-</ul>
-
-
-<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
-
-<h2>2012-10-26问题整理</h2>
-
-<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
-花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
-
-<ul>
-<li>不是很懂postfix， 看文档</li>
-<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
-<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
-<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
-</ul>
-
-
-<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
 ]]></content>
   </entry>
   
