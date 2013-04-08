@@ -226,6 +226,28 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h2>安装脚本</h2>
+
+<p>为了方便使用，我整理了安装脚本：</p>
+
+<p>服务器端：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_server.sh -O - | bash
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>客户端：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_client.sh -O - | bash
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h2>最后</h2>
 
 <p>虽然包混淆能够让别人不知道我们采用的是ssh，但是流量分析还是可以做的，这样还是有很大可能性被发现是在翻墙，从而把服务器干掉。

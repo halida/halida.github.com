@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-04-08T09:15:32+08:00</updated>
+  <updated>2013-04-08T15:15:22+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -1571,6 +1571,28 @@ cp wp-config-sample.php wp-config.php
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 执行ssh tunnel</span>
 </span><span class='line'>./ssh -D 7070 your-username@yourserver.com  -N -p 2200 -zZ xxx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>安装脚本</h2>
+
+<p>为了方便使用，我整理了安装脚本：</p>
+
+<p>服务器端：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_server.sh -O - | bash
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>客户端：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_client.sh -O - | bash
 </span></code></pre></td></tr></table></div></figure>
 
 
