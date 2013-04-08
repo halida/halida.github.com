@@ -95,6 +95,25 @@ sudo `pwd`/sshd -f ./sshd_config
 ./ssh -D 7070 your-username@yourserver.com  -N -p 2200 -zZ xxx
 ```
 
+安装脚本
+---------------------
+
+为了方便使用，我整理了安装脚本：
+
+服务器端：
+
+```bash
+sudo su
+wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_server.sh -O - | bash
+```
+
+客户端：
+
+```bash
+sudo su
+wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_client.sh -O - | bash
+```
+
 最后
 ---------------------
 
