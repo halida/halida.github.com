@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>如何从外网访问内网主机 - 网络寻租</title>
+  <title>手机远程收听电脑声音 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。 假设： A主机（$A_IP）：我们内网需要被访问的主机。
-B主机（$B_IP）：有一个公网IP的主机 &hellip;">
+  <meta name="description" content="我现在笔记本的声音都通过耳机输出，耳机有几个不好的地方，就是每次我离开电脑去上厕所或者干什么事情的时候，都要把耳机拔出来，非常不方便，
+我想如果能够把声音换到手机上面，这样挺不错的。我的电脑是rMBP，手机是google galaxy手机。 我搜索到了一些解决方案： rspeakers &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/reverse-ssh/">
+  <link rel="canonical" href="http://halida.github.com/blog/remote-sound/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +82,7 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   
   <header>
     
-      <h1 class="entry-title">如何从外网访问内网主机</h1>
+      <h1 class="entry-title">手机远程收听电脑声音</h1>
     
     
       <p class="meta">
@@ -98,7 +98,7 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   
 
 
-<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+<time datetime="2013-05-09T12:48:00+08:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,35 +107,24 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   </header>
 
 
-<div class="entry-content"><p><img src="http://i.imgur.com/Ay4f5YX.jpg" alt="image" /></p>
+<div class="entry-content"><p><img src="http://i.imgur.com/yoVM3Gd.png" alt="image" /></p>
 
-<p>很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。</p>
+<p>我现在笔记本的声音都通过耳机输出，耳机有几个不好的地方，就是每次我离开电脑去上厕所或者干什么事情的时候，都要把耳机拔出来，非常不方便，
+我想如果能够把声音换到手机上面，这样挺不错的。我的电脑是rMBP，手机是google galaxy手机。</p>
 
-<p>假设：</p>
+<p>我搜索到了一些解决方案：</p>
 
 <ul>
-<li>A主机（$A_IP）：我们内网需要被访问的主机。</li>
-<li>B主机（$B_IP）：有一个公网IP的主机，可以是购买的VPS。</li>
-<li>C主机（$C_IP）：需要访问A主机的电脑，比如我们随身的笔记本或者手机。</li>
+<li><a href="https://play.google.com/store/apps/details?id=com.boxxymays.rSpeakers&amp;hl=en">rspeakers</a> 只支持PC端。</li>
+<li><a href="http://scientific-soft.com/mobile/index.php/menu-iremote">iRemote</a> 看起来很粗糙的样子，没有测试。</li>
+<li><a href="www.rogueamoeba.com/airfoil">Airfoil</a> 多平台通用，很不错。</li>
+<li><a href="http://osxdaily.com/2012/02/17/airplay-mirroring-mac-os-x-10-8-mountain-lion/">air mirror</a> + <a href="https://play.google.com/store/apps/details?id=com.mk.iPlayer.Audio&amp;feature=search_result#?t=W251bGwsMSwyLDEsImNvbS5tay5pUGxheWVyLkF1ZGlvIl0.">iPlay AirPlay</a> 用osx的airplay，然后再加上一个收费的android应用，可用。</li>
 </ul>
 
 
-<p>首先我们需要把A主机的ssh链接到B主机上面：</p>
-
-<pre><code>autossh -M 2132 $B_IP -N -R 6333:localhost:22
-</code></pre>
-
-<p>我们用autossh来保证A主机的ssh一直保持连接。这个命令把A主机的ssh端口绑定到B主机的6333端口上面。</p>
-
-<p>然后我们需要把B主机的6333端口暴露到公网，工具采用的是万能的端口接口工具socat：</p>
-
-<pre><code>socat TCP-LISTEN:6335,fork TCP:localhost:6333
-</code></pre>
-
-<p>这样在公网的C主机就可以通过B主机的6335端口访问到A主机了：</p>
-
-<pre><code>ssh $B_IP -p 6335
-</code></pre>
+<p>我测试了Airfoil和iPlay的方案，都可以用，Airfoil如果要获取系统声音，需要重新启动电脑比较麻烦。并且价格也比较贵，iPlay的方案看起来比较适合我。
+不过如果你是其他操作系统或者希望更多特性的话，Airfoil比较好。
+不过最后我一个方案都没有用成，因为声音同步需要带宽100KB的上下行，我的无线路由器撑不住了。。</p>
 </div>
 
 
@@ -158,7 +147,7 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   
 
 
-<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+<time datetime="2013-05-09T12:48:00+08:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
       
 
 
@@ -166,7 +155,7 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/reverse-ssh/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/reverse-ssh/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/remote-sound/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/remote-sound/" >Tweet</a>
   
   
   
@@ -175,10 +164,8 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/i-am-a-atheist/" title="Previous Post: 关于宗教信仰">&laquo; 关于宗教信仰</a>
+        <a class="basic-alignment left" href="/blog/indie-games/" title="Previous Post: 关于独立游戏">&laquo; 关于独立游戏</a>
       
-      
-        <a class="basic-alignment right" href="/blog/ubuntu-wordpress/" title="Next Post: ubuntu搭建wordpress">ubuntu搭建wordpress &raquo;</a>
       
     </p>
   </footer>
@@ -300,8 +287,8 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/reverse-ssh/';
-        var disqus_url = 'http://halida.github.com/blog/reverse-ssh/';
+        var disqus_identifier = 'http://halida.github.com/blog/remote-sound/';
+        var disqus_url = 'http://halida.github.com/blog/remote-sound/';
         var disqus_script = 'embed.js';
       
     (function () {
