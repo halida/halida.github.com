@@ -6,18 +6,18 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/Cpbai.jpg)
+{% img /images/posts/Cpbai.jpg %}
 
 这个周末是GDC China 2012会议的时间，本来我想去参加，但是一看票价上千块，不由望而却步。
 不过18号有开放部分的展台，我就过来看看了。地点是在陆家嘴的上海会议中心。我下午2点多的时候过来。直接上到5楼的独立游戏展台。
 
-![image](http://i.imgur.com/uv5fk.jpg)
+{% img /images/posts/uv5fk.jpg %}
 
 这里面是很多参展的独立游戏，我基本上试玩了一圈，和他们交流了很久。 具体游戏的列表在 [这里](http://www.gdcchina.cn/events/igf)
 
 ## 独立游戏试玩
 
-![image](http://i.imgur.com/ysqHu.jpg)
+{% img /images/posts/ysqHu.jpg %}
 
 首先一款位图类型的游戏UNCLE GO，感觉很一般，游戏方式倒是挺多种多样的。没有留图。
 
@@ -25,16 +25,16 @@ categories:
 
 然后是一个韩国人做的的回合策略游戏[Army and Strategy](http://www.piedpipersent.com/blogs/?page_id=17&lang=en)，开发团队5个人。我玩了很久，提了很多的问题和很多的改进意见。
 
-![image](http://i.imgur.com/yPdnO.jpg)
+{% img /images/posts/yPdnO.jpg %}
 
 游戏还是大地图，区块进攻防御，回合制的。特色是各种扑克牌类型的人，以及特殊的战斗模式。
 战斗的话在各个将军之间进行。每个将军可以带几个兵。我推荐他们去看看[dominions3](http://www.shrapnelgames.com/Illwinter/DOM3/DOM3_page.html)，一款超级复杂的骨灰级别游戏。
 
-![image](http://i.imgur.com/9o4Ekh.jpg)
+{% img /images/posts/9o4Ekh.jpg %}
 
 然后是一个新加坡学生团体的游戏Blockhead。特性是移动方块，改变重力，我和他们的程序聊了一下关于游戏实现的一些问题。
 
-![image](http://i.imgur.com/hdDinh.jpg)
+{% img /images/posts/hdDinh.jpg %}
 
 我问了一下游戏引擎是怎么实现的。他主要介绍的部分是在游戏主循环里面，游戏逻辑，碰撞检测的部分。
 还有就是3D渲染如何进行。基本上还是我了解的传三角形矩阵给GPU。
@@ -42,33 +42,33 @@ categories:
 
 然后是一个典型的独立游戏团队，一个程序，一个美工。
 
-![image](http://i.imgur.com/8Q6Ww.jpg)
+{% img /images/posts/8Q6Ww.jpg %}
 
 他们做的[飞刀](http://forums.toucharcade.com/showthread.php?threadid=151156)这款游戏不错，的确是职业级别的游戏。不过我还是觉得没有特别突出的地方，比较中规中矩。
 
-![image](http://i.imgur.com/rNS5p.jpg)
+{% img /images/posts/rNS5p.jpg %}
 
-![image](http://i.imgur.com/k2Ao5h.jpg)
+{% img /images/posts/k2Ao5h.jpg %}
 
 在看这个游戏的过程中，有遇到椰岛游戏的[devvi](http://weibo.com/devvi)，看了他拿出来一个索尼新出来的强力四核主机，里面一款游戏，改变重力方向，大场景沙盒，效果还是很不错的，可惜没有留图。
 
 和屌丝伞兵的逆袭的人扯了一下游戏性的问题。他们说这个游戏是免费放出来玩的。我看了一下，还是走游戏内商店的方式。感觉美工设计比较差，游戏性的话一般。反正我是死的比较快的。。
 
-![image](http://i.imgur.com/elmvW.jpg)
+{% img /images/posts/elmvW.jpg %}
 
 后面发现有大牌在。 [Dustforce](http://dustforce.com/)。介绍的人是从美国飞过来的，主要做的是音效。他全程指导我玩这款游戏，可惜我上手比较慢。
 
-![image](http://i.imgur.com/iV71rh.jpg)
+{% img /images/posts/iV71rh.jpg %}
 
 这款游戏是hardcore方向的，需要非常强力的操作能力。游戏内有排名，一些玩家玩的真的很辛苦。关于游戏本身，其中有说道角色动画很多，美工画了三千多帧。
 给我展示了一些牛逼玩家打通关的视频。
 
-![image](http://i.imgur.com/2W50Jh.jpg)
+{% img /images/posts/2W50Jh.jpg %}
 
 然后是一款学生作品，来自四川美术学院的魔豆校园，里面采用了大块的手绘场景，效果非常好。不过游戏引擎采用的是现成的。
 但是手绘背景这点就足够吸引眼球了。不过其他的不期待了。后来也有听到关于四川美术学院的名声，看起来是个好学校。
 
-![image](http://i.imgur.com/T218lh.jpg)
+{% img /images/posts/T218lh.jpg %}
 
 ## 三楼厂商展厅
 
@@ -76,26 +76,26 @@ categories:
 
 发现比较好的一个是动作捕捉系统。询问了一下技术细节。他们是通过惯性陀螺仪来判断移动，通过算法来处理数据。
 
-![image](http://i.imgur.com/cLzYxh.jpg)
+{% img /images/posts/cLzYxh.jpg %}
 
 工作人员和我说，算法的难度主要是在快速移动的时候判断距离。现在的精度是能够做到毫米级别的。
 我问了一下价格，是在二十万到七十万左右。我问具体成本，他说是软件成本。我问硬件成本，他说老板才知道。我看估计也是在万级别的吧。
 
 这个是真人美女演示。
 
-![image](http://i.imgur.com/SdJq0h.jpg)
+{% img /images/posts/SdJq0h.jpg %}
 
-![image](http://i.imgur.com/9SWAnh.jpg)
+{% img /images/posts/9SWAnh.jpg %}
 
 然后是另外一家做声音效果软件的。我试听了一下，没有感觉到效果。工作人员说主要还是针对开发者来用，测试声音效果，类似于debuger之类的工具。
 
-![image](http://i.imgur.com/Lv01Nh.jpg)
+{% img /images/posts/Lv01Nh.jpg %}
 
 ## 独立游戏party
 
 晚上去独立游戏party。地点在Arcade酒吧，空间比较小，人很多。
 
-![image](http://i.imgur.com/ePaVth.jpg)
+{% img /images/posts/ePaVth.jpg %}
 
 试玩了最近出来的那个比较酷的概念性质游戏，就是模拟hack进一个系统，恢复破碎的文件的，感觉很伤害眼睛。
 

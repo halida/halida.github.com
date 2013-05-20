@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/yxqRwG5.jpg)
+{% img /images/posts/yxqRwG5.jpg %}
 
 [squeel](https://github.com/ernie/squeel)是Rails下面一个处理复杂sql查询的框架，
 具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。

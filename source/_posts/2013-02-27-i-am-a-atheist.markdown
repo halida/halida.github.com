@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/ArJcjAP.png)
+{% img /images/posts/ArJcjAP.png %}
 
 每个有基本好奇心的人，都会在人生的某个时候，考虑人生观世界观这种问题，
 这个时候，他会去思考，去探索世界上其他人的解决方案，这个时候，他会正视宗教，

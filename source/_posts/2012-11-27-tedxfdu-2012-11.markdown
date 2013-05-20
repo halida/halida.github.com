@@ -6,13 +6,13 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/sEUpi.jpg)
+{% img /images/posts/sEUpi.jpg %}
 
 上周日，我去参加了[TEDxFDU](http://tedxfdu.com/)的活动，我原先参加过一次，感觉气氛不错，所以这次我也报名了。
 
 地点是在江湾体育场的创智天地，我到了现场的时候，发现是用到了7号楼的大会议室，看到有那么多人参加，不由觉得很遗憾。这次的形式是大会性质的，我更希望是讨论和交流性质，因为如果要看好的讲演，网络上面有很多，但是好的讨论比较难获得。并且我周末过来，也有恢复社交能力的期望在。
 
-![image](http://i.imgur.com/SIfq6.jpg)
+{% img /images/posts/SIfq6.jpg %}
 
 不过除了这个遗憾以外，这个活动还是非常好的。讲者的内容和演讲素质都不错，参加非常值得。这里稍微整理一些我觉得有意思的讲者和内容。
 

@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/aM4KX.jpg)
+{% img /images/posts/aM4KX.jpg %}
 
 缘由
 --------------------

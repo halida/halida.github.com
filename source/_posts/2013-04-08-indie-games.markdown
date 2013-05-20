@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/etBZ9lM.jpg)
+{% img /images/posts/etBZ9lM.jpg %}
 
 我是一个游戏爱好者。从初中起我就在玩电脑游戏，一直持续到现在。初中到大学阶段我一直是以PC游戏为主，最近几年我渐渐转移到了独立游戏上面。
 

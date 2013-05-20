@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/yoVM3Gd.png)
+{% img /images/posts/yoVM3Gd.png %}
 
 我现在笔记本的声音都通过耳机输出，耳机有几个不好的地方，就是每次我离开电脑去上厕所或者干什么事情的时候，都要把耳机拔出来，非常不方便，
 我想如果能够把声音换到手机上面，这样挺不错的。我的电脑是rMBP，手机是google galaxy手机。

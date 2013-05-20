@@ -8,7 +8,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/hYztb.png)
+{% img /images/posts/hYztb.png %}
 
 什么是unicorn?
 ------------------------------
@@ -41,7 +41,7 @@ unicorn详细配置
 
 一般来说， 按照这个架构方式:
 
-![image](http://i.imgur.com/s6dth.png)
+{% img /images/posts/s6dth.png %}
 nginx负责端口映射， 从80端口映射到本地unix socket,
 然后unicorn按照daemon方式执行。
 

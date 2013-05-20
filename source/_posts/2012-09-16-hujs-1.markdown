@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/amxpah.jpg)
+{% img /images/posts/amxpah.jpg %}
 
 我当了一回250
 ----------------------------
@@ -36,7 +36,7 @@ nodejs我已经听说过了很久， 也略微尝试过， 不过没有深入接
 演讲的内容非常熟练， knockout和Azure的使用一步步说过来， 是讲师的素质了。 
 讲的非常清楚， 过程非常的顺， 我想从这点可以学习一下。 估计这样的演讲他都进行了不知道多少次了。
 
-![image](http://i.imgur.com/tM9dMh.jpg)
+{% img /images/posts/tM9dMh.jpg %}
 
 第三个演讲是盛大的程劭非/寒冬WINTER， 讲的是ECMAScript5， 我觉得这些东西都是可以网上找到文档， 以及加入的东西也没有什么我不熟悉的就没有多听。
 
@@ -48,7 +48,7 @@ debug过程还是很有借鉴意义的。
 下面一个是来自Github的Vicent Marti， 来自西班牙， 因为签证问题没有办法过来， 就做了一个介绍视频给我们， 远程skype做其他解说。
 讲的是github的[hubot](http://hubot.github.com/)， 基本上就是一个聊天室机器人， 只是这个机器人可以做各种有意思的扩展功能。
 
-![image](http://i.imgur.com/GQojzh.jpg)
+{% img /images/posts/GQojzh.jpg %}
 
 然后是中午饭了。 饭量比较少让我诟病， 赶到外面去又买了点蛋糕垫肚子。
 

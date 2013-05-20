@@ -6,7 +6,7 @@ comments: true
 categories: game
 ---
 
-![image](http://i.imgur.com/bkIoK.jpg)
+{% img /images/posts/bkIoK.jpg %}
 
 很早以前， 我就是一个电脑游戏玩家了， 初中时期的魔兽一代， 毁灭公爵， 赤壁； 到高中的博得之门， 星际， 半条命， 再到大学的魔兽争霸， 无冬之夜；
 新的游戏， 符合我的喜好， 再加上能够在我的PC上面跑起来， 我都会拿来玩一遍。
@@ -38,11 +38,11 @@ Roguelike游戏画面：
 
 实际的游戏画面：
 
-![image](http://i.imgur.com/pcy5f.png)
+{% img /images/posts/pcy5f.png %}
 
 大地图：
 
-![image](http://i.imgur.com/WfZrb.png)
+{% img /images/posts/WfZrb.png %}
 
 FTL和传统的roguelike游戏相比， 内容上面完全改变了， 但是roguelike的核心精神得到了保留。
 游戏的过程中， 一旦失败， 存档就不复存在， 没有拯救的机会，

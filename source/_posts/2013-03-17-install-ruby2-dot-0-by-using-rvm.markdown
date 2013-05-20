@@ -6,7 +6,7 @@ comments: true
 categories: english ruby rails
 ---
 
-![image](http://i.imgur.com/b0F7F9a.png)
+{% img /images/posts/b0F7F9a.png %}
 
 According to the [NEWS](http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/), ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.
 

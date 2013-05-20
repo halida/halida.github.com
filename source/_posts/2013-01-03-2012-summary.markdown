@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/vN7Gw.jpg)
+{% img /images/posts/vN7Gw.jpg %}
 
 自从有了文字，人能够脱离大脑记忆的束缚，记录下更多内容，保留更多经验，能够积累，演进，不再重复过去的错误。
 保留文字记忆的文明，才能获得发展的机会，历史可鉴。文字是人类文明大厦的奠基石这一说不为过。

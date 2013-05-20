@@ -6,7 +6,7 @@ comments: true
 categories: rails
 ---
 
-![image](http://i.imgur.com/4mClj73.jpg)
+{% img /images/posts/4mClj73.jpg %}
 
 https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。
 

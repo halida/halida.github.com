@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/vAQgj.jpg)
+{% img /images/posts/vAQgj.jpg %}
 
 第二天
 -----------------------------

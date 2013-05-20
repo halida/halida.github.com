@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/d9K68.jpg)
+{% img /images/posts/d9K68.jpg %}
 
 我计划购买笔记本电脑已经有很长一段时间了。最近终于赶着苹果最近的发布会，入手了新出来的[rmbp MD212](http://www.okhqb.com/detail/1000323769.html)，花费了我一万多一点。买来后花费了一段时间的安装和掌握，感觉还是非常顺手的。
 
@@ -34,7 +34,7 @@ categories:
 
 ## 选择rmbp MD212的理由
 
-![image](http://i.imgur.com/54kP2.jpg)
+{% img /images/posts/54kP2.jpg %}
 
 既然确定了要点，那么下面就是具体选型的问题了。
 

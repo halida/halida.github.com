@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/Ay4f5YX.jpg)
+{% img /images/posts/Ay4f5YX.jpg %}
 
 很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。
 

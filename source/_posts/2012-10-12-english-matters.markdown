@@ -6,7 +6,7 @@ comments: true
 categories: english
 ---
 
-![image](http://i.imgur.com/fD9By.jpg)
+{% img /images/posts/fD9By.jpg %}
 
 This is the first time I'm blogging in English here, 
 And from now on, I will keep on doing it regularly.

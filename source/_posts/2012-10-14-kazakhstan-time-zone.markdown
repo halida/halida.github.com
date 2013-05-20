@@ -5,7 +5,7 @@ date: 2012-10-14 22:56
 comments: true
 categories: life
 ---
-![image](http://i.imgur.com/rQmBc.png)
+{% img /images/posts/rQmBc.png %}
 
 我一直认为， 尝试新事物， 是一个具有完全行为能力的人应该具有的习惯。 不管是接触新的东西， 或者是对自己现有生活的调整，
 不仅可以给生活增加调剂， 也是对现有生活的优化， 有的时候， 因此获得更多的机会， 或者获得一个新的角度来重新审视自己的生活。

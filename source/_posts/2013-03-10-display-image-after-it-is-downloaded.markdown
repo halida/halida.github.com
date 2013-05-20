@@ -8,12 +8,12 @@ categories: english
 
 It is very annoying when you see a image is loading in a webpage:
 
-![image](http://i.imgur.com/CPyoOWx.png)
+{% img /images/posts/CPyoOWx.png %}
 
 Lots of website support this kind of effect to get rid of this.
 when the image is loading, it is displaying a "loading" effect, like this:
 
-![image](http://i.imgur.com/m76L8U5.png)
+{% img /images/posts/m76L8U5.png %}
 
 So how can we implement it to our website? The method is simple:
 

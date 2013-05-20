@@ -24,7 +24,7 @@ categories:
 一个漂亮的
 [显示工具](http://www.bay12forums.com/smf/index.php?topic=43260.0):
 
-![image](http://i.imgur.com/WT0jH.png)
+{% img /images/posts/WT0jH.png %}
 ![image](http://i481.photobucket.com/albums/rr172/nil2008/screenshot1.jpg)
 这个工具可以在linux下面用cmake编译,但是我没有编译成功, 摸索中.
 

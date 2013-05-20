@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/9MBJLOd.jpg)
+{% img /images/posts/9MBJLOd.jpg %}
 
 缘由
 -------------------------------
@@ -42,7 +42,7 @@ Github原本只是放源码，但是之后它们又多出来可以发布内容�
 第二个返回了 3 个 ip。（这个是对的）
 这个就是 dns 污染。
 
-![image](http://i.imgur.com/WHzaoTc.png)
+{% img /images/posts/WHzaoTc.png %}
 
 解法
 -------------------------------

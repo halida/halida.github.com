@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/2ntGD.jpg)
+{% img /images/posts/2ntGD.jpg %}
 
 博客已然数月没有更新了，作为博客的主人我很惭愧，现在改头换面重新开张，在此我小小地列一下来龙去脉。
 

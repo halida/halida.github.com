@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-![image](http://i.imgur.com/CSNCr.jpg)
+{% img /images/posts/CSNCr.jpg %}
 
 大多数人每天上班的时候， 基本都是坐在座位上面， 面对电脑工作。 久坐， 往往会带来一些腰部和颈部的疾病，
 我在最近的几个月里面， 尝试了站立工作。 上面就是我的工作台设置。 就是把一个高度合适的座位放到台面上来而已。
