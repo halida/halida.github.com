@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-{% img images/posts/debug-rails-autolink.jpg %}
+{% img /images/posts/debug-rails-autolink.jpg %}
 
 今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：
 
