@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-05-14T23:19:15+08:00</updated>
+  <updated>2013-05-20T23:31:37+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/debug-rails-autolink/"/>
     <updated>2013-05-09T22:03:00+08:00</updated>
     <id>http://halida.github.com/blog/debug-rails-autolink</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/GIQYpux.jpg" alt="image" /></p>
+    <content type="html"><![CDATA[<p><img src="https://raw.github.com/halida/halida.github.com/source/source/images/posts/debug-rails-autolink.jpg" alt="image" /></p>
 
 <p>今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：</p>
 
