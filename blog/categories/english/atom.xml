@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-05-20T23:45:18+08:00</updated>
+  <updated>2013-05-21T00:18:57+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm/"/>
     <updated>2013-03-17T11:31:00+08:00</updated>
     <id>http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/b0F7F9a.png" alt="image" /></p>
+    <content type="html"><![CDATA[<p><img src="/images/posts/b0F7F9a.png"></p>
 
 <p>According to the <a href="http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/">NEWS</a>, ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.</p>
 
@@ -40,12 +40,12 @@ rvm use 2.0.0
     <id>http://halida.github.com/blog/display-image-after-it-is-downloaded</id>
     <content type="html"><![CDATA[<p>It is very annoying when you see a image is loading in a webpage:</p>
 
-<p><img src="http://i.imgur.com/CPyoOWx.png" alt="image" /></p>
+<p><img src="/images/posts/CPyoOWx.png"></p>
 
 <p>Lots of website support this kind of effect to get rid of this.
 when the image is loading, it is displaying a "loading" effect, like this:</p>
 
-<p><img src="http://i.imgur.com/m76L8U5.png" alt="image" /></p>
+<p><img src="/images/posts/m76L8U5.png"></p>
 
 <p>So how can we implement it to our website? The method is simple:</p>
 
@@ -125,7 +125,7 @@ after image loaded, hide the gif, and show the image.</p>
     <link href="http://halida.github.com/blog/english-matters/"/>
     <updated>2012-10-12T15:07:00+08:00</updated>
     <id>http://halida.github.com/blog/english-matters</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/fD9By.jpg" alt="image" /></p>
+    <content type="html"><![CDATA[<p><img src="/images/posts/fD9By.jpg"></p>
 
 <p>This is the first time I'm blogging in English here,
 And from now on, I will keep on doing it regularly.</p>
