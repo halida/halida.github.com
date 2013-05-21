@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-05-21T00:38:59+08:00</updated>
+  <updated>2013-05-21T15:34:05+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[命令行下使用全局代理]]></title>
+    <link href="http://halida.github.com/blog/commandline-proxy/"/>
+    <updated>2013-05-21T15:15:00+08:00</updated>
+    <id>http://halida.github.com/blog/commandline-proxy</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/wlogo.png"></p>
+
+<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
+
+<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
+
+<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
+
+<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
+
+<p>首先需要跑一个socks5 proxy，使用：</p>
+
+<pre><code>$ ssh -fN -D 4321 some.example.com
+</code></pre>
+
+<p>然后设置参数执行命令就好了：</p>
+
+<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[调试rails autolink]]></title>
@@ -1770,39 +1797,6 @@ cp wp-config-sample.php wp-config.php
 <p>期望的结果就是，到了2013年的年底，在网站开发上面我能够游刃有余，有拿得出手的网站作品来体现自己的专业能力。
 外语流利到能够进入外企工作。身体健康，上身有曲线。找到一个聊得来的对象。钢琴能够弹简单的作品以达到装逼的目的。
 这个属于可计划的部分，非可计划的部分就是变成更好的人。这个需要遇到事情，思考，决断，冲破枷锁。养成新的好习惯。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[TEDxFDU 2012年11月 活动总结]]></title>
-    <link href="http://halida.github.com/blog/tedxfdu-2012-11/"/>
-    <updated>2012-11-27T10:51:00+08:00</updated>
-    <id>http://halida.github.com/blog/tedxfdu-2012-11</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/sEUpi.jpg"></p>
-
-<p>上周日，我去参加了<a href="http://tedxfdu.com/">TEDxFDU</a>的活动，我原先参加过一次，感觉气氛不错，所以这次我也报名了。</p>
-
-<p>地点是在江湾体育场的创智天地，我到了现场的时候，发现是用到了7号楼的大会议室，看到有那么多人参加，不由觉得很遗憾。这次的形式是大会性质的，我更希望是讨论和交流性质，因为如果要看好的讲演，网络上面有很多，但是好的讨论比较难获得。并且我周末过来，也有恢复社交能力的期望在。</p>
-
-<p><img src="http://halida.github.com/images/posts/SIfq6.jpg"></p>
-
-<p>不过除了这个遗憾以外，这个活动还是非常好的。讲者的内容和演讲素质都不错，参加非常值得。这里稍微整理一些我觉得有意思的讲者和内容。</p>
-
-<p>新闻学的兰启昌。讲了一些我也非常认同的重点。<strong>事实不等于真相</strong>。记者的专业主义，在于三个独立。<strong>独立于资本</strong>，<strong>独立于权力</strong>，<strong>独立于民粹</strong>。我觉得现在民粹盛行，是值得警惕的地方。我觉得如果一句话你听起来感觉很舒服很解气，那么你应该提高警惕心，因为这句话往往是为了迎合你创造出来了，可能离真相很远。</p>
-
-<p>社会学的沈老师。讲了一些关于社会性别的内容。比如文化强加给人的限制。男生应该是怎么样的，女生应该是怎么样的。社会对女性的压力（现在大家慢慢认识到了这一点，并且有了反思），有说社会对男性的压力更大。因为普遍观念上，只有成功的男性才受欢迎。这点我觉得是需要着重提出来的地方。</p>
-
-<p>艺术设计的卞雅文。提醒了我，关于艺术的要点在于用心去体验，用心去生活。然后就是我觉得大学生就可以变得很成熟很有气质，让我觉得非常有压力。</p>
-
-<p>艺术教育的龚金平老师。他主要提出来的是<strong>志在必得，不如顺势而为</strong>，指出是<strong>现代性早期的自信</strong>，因为现在其实是一个后现代的社会，重点是在人与人之间发生，而人是复杂的，不能期待能够获得一个既定的结果。如果目标既定，要么是满足了目标后的空虚，要么是实现不了目标的沮丧。我觉得这个也是一个非常重要的经验。</p>
-
-<p>生命技术的丁琦亮。只有18岁，就进入了主流的科学领域。不知道是怎么能够在这个年龄就能进入到这个层次的。有提到科学人员的社会责任。我觉得中国现在普通群众的科学素养非常低，科学领域人士应该有必要出来传播科学理念。</p>
-
-<p>最后是广告学的庾里翔。算是压轴的吧。分享了一些他有感触的摄影艺术家和作品，以及他的探索过程。对我来说有一定冲击，因为又是一个比我高领域的年轻人。</p>
-
-<h2>总结</h2>
-
-<p>这次活动的内容对我来说都不是新的，但是讲者演讲的能力非常不错，一定事先准备了很久。然后里面很多非常优秀的年轻人，他们有目标，有想法，有能力，当然也有资源。世界会在他们的工作下会变得更好。比较之下让我感到很有压力，希望我能够调整到和他们一样的状态。</p>
 ]]></content>
   </entry>
   

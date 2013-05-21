@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>hujs活动整理和总结2 - 网络寻租</title>
+  <title>命令行下使用全局代理 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="第二天 第二天的演讲： James Halliday， 87年的， browserling 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。 &hellip;">
+  <meta name="description" content="最近Bitbucket的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。 询问了友邻之后，有几个工具浮出水面：tsocks以及proxychains。 调研了一下tsocks，2002年就不再更新了，osx下面编译没有成功， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/hujs-2/">
+  <link rel="canonical" href="http://halida.github.com/blog/commandline-proxy/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hujs活动整理和总结2</h1>
+      <h1 class="entry-title">命令行下使用全局代理</h1>
     
     
       <p class="meta">
@@ -98,7 +97,7 @@
   
 
 
-<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,55 +106,25 @@
   </header>
 
 
-<div class="entry-content"><p><img src="/images/posts/vAQgj.jpg"></p>
+<div class="entry-content"><p><img src="/images/posts/wlogo.png"></p>
 
-<h2>第二天</h2>
+<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
 
-<p>第二天的演讲：</p>
+<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
 
-<p><a href="https://github.com/substack">James Halliday</a>， 87年的， <a href="https://browserling.com/">browserling</a> 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。
-这个项目非常有用， 而他肢体语言给人的感觉， 和我以前遇到的一些年轻的技术天才也很类似。</p>
+<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
 
-<p>下面是node-webkit的当前开发和维护者<a href="https://github.com/zcbenz">小型笨蛋/赵成</a>， 现在他在Intel专职做这个项目。
-基本上是把node整合到webkit里面， 让js能够通过node的API访问本地资源， 然后提供一个打包的工具， 做成客户端。
-现在用到它的一些项目是把html5的游戏本地化。 我觉得， 优势是跨平台发布应用程序， 以后有这样的需求可以考虑用它。 当然如果是复杂UI客户端， 我觉得还是用有很多强大控件的Qt比较好。</p>
+<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
 
-<p>然后是JEFFSU介绍的如何用node.js来做服务器监控平台系统的。 算是一个nodejs的实际应用案例。 因为用到了长连接broadcast之类的东西。</p>
+<p>首先需要跑一个socks5 proxy，使用：</p>
 
-<p>然后是来自网易的谢骋超/圈圈套圈圈讲的NODE.JS游戏服务器开发， 他们team应该是做一个原型验证， 看看nodejs是否适合在游戏服务器开发上面应用。
-这个应该算是node做的比较大的项目了吧， 效果也很不错， 能够支持同一个场景上千玩家同时在线。 看来以后会兴起一波用nodejs架设游戏服务器的潮流了。</p>
+<pre><code>$ ssh -fN -D 4321 some.example.com
+</code></pre>
 
-<p>然后进入下午场。下午场的几个主题， 我没有认真听， 内容上面也没有什么好说的了。
-在白天场结束后， 需要统计最后一天hackthon参加的人数。 尽管有Glenn在台上拼命激励大家来参加， 结果实际来参加的人还是比较少。
-我感觉， 如果是国外开发者的话， 基本上都是全部参加的。 国内没有流行这样的文化， 不过我觉得会越来越好的， 只是时间问题。</p>
+<p>然后设置参数执行命令就好了：</p>
 
-<p>还有一个晚上的party活动， 在<a href="http://factual.com">factual</a>他们的公司场地里面进行。</p>
-
-<h2>晚上party</h2>
-
-<p>晚上的party， 有准备给我们小食， BBQ， 和啤酒， 然后就是大家随意聊天。 我感觉非常好，
-和来自github的一位员工， 应该是<a href="https://github.com/vmg">vmg</a>吧， 交换了关于中国程序员为什么不乐于分享的一些看法，
-问了James他怎么把url贴到浏览器地址栏里面的， 以及和各位做技术的人聊各种各样技术人感兴趣的事情。</p>
-
-<h2>hackthon</h2>
-
-<p>最后一天是全天的hackthon， 我本来想参加， 结果有其他事情， 只能过来看看就走了。 也没有什么好多说的， 和其他hackthon也差不多。</p>
-
-<h2>总结</h2>
-
-<p>这几天我觉得自己的收获有以下几点：</p>
-
-<ul>
-<li>对nodejs在业界的使用有了一定的了解， 看起来已经有很多人在用它了， 也有很多部署到生产环境的例子。</li>
-<li>了解了nodejs的特性和适用场景， 以后在长连接， 高吞吐性能的领域， 它将是我的第一选择。</li>
-<li>认识了不少做node的人和公司。</li>
-<li>在party上面和外国的开发者用英语交流， 增加了我对于英语口语使用的信心。</li>
-<li>体验了国际水平的活动组织， 演讲技巧， 主持技巧。 可以作为素材借鉴。</li>
-</ul>
-
-
-<p>总之， 对于我来说， 参加这几天的会议是非常值得的。</p>
+<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
+</code></pre>
 </div>
 
 
@@ -178,7 +147,7 @@
   
 
 
-<time datetime="2012-09-16T23:34:00+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2012</time>
+<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
       
 
 
@@ -186,7 +155,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/hujs-2/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/hujs-2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/commandline-proxy/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/commandline-proxy/" >Tweet</a>
   
   
   
@@ -195,10 +164,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/hujs-1/" title="Previous Post: hujs活动整理和总结1">&laquo; hujs活动整理和总结1</a>
+        <a class="basic-alignment left" href="/blog/debug-rails-autolink/" title="Previous Post: 调试rails autolink">&laquo; 调试rails autolink</a>
       
-      
-        <a class="basic-alignment right" href="/blog/coffeescript-class/" title="Next Post: coffeescript里面的类机制">coffeescript里面的类机制 &raquo;</a>
       
     </p>
   </footer>
@@ -320,8 +287,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/hujs-2/';
-        var disqus_url = 'http://halida.github.com/blog/hujs-2/';
+        var disqus_identifier = 'http://halida.github.com/blog/commandline-proxy/';
+        var disqus_url = 'http://halida.github.com/blog/commandline-proxy/';
         var disqus_script = 'embed.js';
       
     (function () {

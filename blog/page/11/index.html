@@ -9,11 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="很久以前就耳闻 hackers and
-painters 这本书,
-终于在今年过年期间, 抽空看完了. 这本书有点像是杂文集,
-里面的内容遥相呼应, 但又独立成章. 里面的核心思想: 黑客更像是艺术家, 而不是工程师或者科学家.
-编程工具对于黑客而言, 像是画笔对于画家, 掌握了工具, &hellip;">
+  <meta name="description" content="HTTP是什么就不说了, 大家都知道.
+这篇文章对HTTP实现方式的相关内容做一个整理, 满足大家的窥私欲望. 用户如何利用HTTP 先不管HTTP下面是如何实现的, 我们看看上层: 对于用户而言,
+HTTP的使用很简单: 打开一个浏览器, 输入网址, 比如:
+http://www. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +81,180 @@ painters 这本书,
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/http-intro/">Http_介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-09T10:46:21+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2011</time>
+        
+         | <a href="/blog/http-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://perl.apache.org/docs/2.0/user/handlers/http_cycle.gif" alt="image" /></p>
+
+<p>HTTP是什么就不说了, 大家都知道.
+这篇文章对HTTP实现方式的相关内容做一个整理, 满足大家的窥私欲望.</p>
+
+<h2>用户如何利用HTTP</h2>
+
+<p>先不管HTTP下面是如何实现的, 我们看看上层: 对于用户而言,
+HTTP的使用很简单: 打开一个浏览器, 输入网址, 比如:
+<a href="http://www.example.com">http://www.example.com</a>, 然后按回车,
+浏览器就打开了一个界面. 整体工作逻辑就是</p>
+
+<pre><code>发出网址(URL) --&gt; 服务器传回网站内容 --&gt; 浏览器显示界面
+</code></pre>
+
+<p>我们理清接口(不用去管浏览器渲染的部分):</p>
+
+<p>输入
+  ~ 用户给本地的一个程序URL信息</p>
+
+<p>输出
+  ~ 服务器返回状态, 以及HTML内容</p>
+
+<h2>HTTP通讯过程</h2>
+
+<p>HTTP是如何实现上面的目标的呢? HTTP直接利用TCP连接, 并且通讯模式很简单,
+客户端发出一个请求, 服务器给出一个响应. 并且这个通讯过程是纯文本的.</p>
+
+<p>我们看一个实际的例子, 通过telnet来直接看看HTTP是如何通讯的:</p>
+
+<p>首先连接目标服务器, 80端口是HTTP协议的默认端口.</p>
+
+<pre><code>halida@halida-desktop:~$ telnet tonycode.com 80
+Trying 67.205.49.228...
+Connected to tonycode.com.
+Escape character is '^]'.
+</code></pre>
+
+<p>telnet连接上之后, 我们发出请求.</p>
+
+<pre><code>GET / HTTP/1.1
+Host: tonycode.com
+</code></pre>
+
+<p>&#8220;GET&#8221;是HTTP请求的方法, &#8220;/&#8221;是获取资源的目录,
+&#8220;HTTP/1.1&#8221;标示采用的是什么HTTP协议版本. &#8220;Host&#8221;行代表的是HTTP header,
+请求附带的一些其他信息. cookie, 页面缓存等. 具体可见: `HTTP headers`</p>
+
+<p>最后输入2行回车, 表示请求内容发送完毕.</p>
+
+<p>下面是接收到的内容</p>
+
+<pre><code>HTTP/1.1 200 OK
+</code></pre>
+
+<p>200是状态码, 表示&#8230;就是上面的OK, 请求处理完成.</p>
+
+<pre><code>Date: Wed, 09 Feb 2011 01:06:45 GMT
+Server: Apache
+Last-Modified: Wed, 21 Apr 2010 15:49:54 GMT
+ETag: "71de2eb-bce-484c1252b6c80"
+Accept-Ranges: bytes
+Content-Length: 3022
+Vary: Accept-Encoding
+Content-Type: text/html
+</code></pre>
+
+<p>然后就是返回的一串 `HTTP header`, 里面含有返回内容的信息等.</p>
+
+<p>最后是正文了, 就是我们喜闻乐见的HTML文档了(太长就不显示出来了)</p>
+
+<pre><code>&lt;!DOCTYPE html&gt; ...
+</code></pre>
+
+<p>整体过程就是那么简单. 更多的细节在 `HTTP` wiki文档.</p>
+
+<h2>状态码</h2>
+
+<p>不是每次请求都是200 OK的, 这里面列出一些常见的状态码:</p>
+
+<p>200 OK
+  ~ 没什么好说的.</p>
+
+<p>400 Bad Request
+  ~ 请求有问题.</p>
+
+<p>404 Not Found
+  ~ 最常见的错误, 无法在服务器上找到对应的资源.</p>
+
+<p>403 Forbidden
+  ~ 服务器禁止访问此资源.</p>
+
+<p>其他的见: <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">status code
+wiki页面</a></p>
+
+<h2>连接状态</h2>
+
+<p>HTTP/0.9, HTTP/1.0都是请求/响应后立刻断开,
+HTTP/1.1里面可以同一个TCP连接使用多次,
+以减小多次重复连接带来的资源消耗和延迟.</p>
+
+<h2>cookies</h2>
+
+<p>HTTP协议本身是无状态的, 一个请求一个响应, 就是那么简单.
+但是很多时候我们需要记录状态, 比如用户登录等功能. 一般比较常用的是采用
+<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> 的方式实现.</p>
+
+<p>简单点说, 当客户端发出一个请求后, 服务器返回的HTTP header里面会带有一个</p>
+
+<pre><code>Set-Cookie: name=value; name2=value2
+</code></pre>
+
+<p>的段, 然后客户端会把这个字符段缓存下来, 下次请求的时候,
+就会在自己的header里面带上</p>
+
+<pre><code>Cookie: name=value; name2=value2
+</code></pre>
+
+<p>就是这么简单. 其他一些技术细节, 比如cookie的作用时间和范围, 见
+<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> wiki介绍.</p>
+
+<h2>HTTPS</h2>
+
+<p>HTTP本身是明文的, 非常不安全. 为了解决这方面的问题, 就有了HTTPS.</p>
+
+<p>简单地说, HTTPS和HTTP的区别在于, 不是使用TCP作为连接方式,
+而是采用SSL的方式来做连接, 上层应用层是没有多少变化的,
+传输的时候数据做了加密, 以及连接到服务器的时候,
+会有一套验证机制保证服务器是真正的服务器.</p>
+
+<p>具体还是见 `HTTPS` 的wiki界面.</p>
+
+<h2>结论</h2>
+
+<p>HTTP协议很简单优雅, 或许是这样的简单优雅才承载起来一个庞大的web世界.
+对它的掌握是web程序员必备的基础,
+之后才能更好地理解在此之上的很多精妙应用.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -732,130 +905,6 @@ chapter:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/sphinx-intro/">Sphinx介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-19T19:17:22+08:00" pubdate data-updated="true">Dec 19<span>th</span>, 2010</time>
-        
-         | <a href="/blog/sphinx-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>什么是sphinx?</h2>
-
-<p><img src="http://www.crystalinks.com/sphinx.jpg" alt="image" /></p>
-
-<h2>它有什么特性?</h2>
-
-<ul>
-<li>python文档所使用的系统</li>
-<li>输出HTML, LaTeX, manual pages, 纯文本..</li>
-<li>层级结构, 内链</li>
-<li>自动索引</li>
-<li>语法高亮</li>
-<li>扩展: graphivz, docstrings, 等等..</li>
-</ul>
-
-
-<h2>让我们开始尝试一下</h2>
-
-<p>安装
-  ~ easy_install -U Sphinx</p>
-
-<p>教程
-  ~ <a href="http://sphinx.pocoo.org/tutorial.html">http://sphinx.pocoo.org/tutorial.html</a></p>
-
-<h2>创建一个项目</h2>
-
-<pre><code>sphinx-quickstart
-</code></pre>
-
-<h2>目录</h2>
-
-<pre><code>$ find
-.
-./Makefile               # 工具帮我们生成的makefile
-./build                  # 生成文档后放置的目录
-./source                 # 文档源码的位置
-./source/index.rst       # 文档的入口
-./source/conf.py         # 项目的一些设置, 上面quickstart设置的部分内容可以在里面修改
-./source/_static         # 静态文档存放目录
-./source/_templates      # 模板存放目录
-</code></pre>
-
-<h2>开写哈</h2>
-
-<pre><code>Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-# 我们在这里加内容
-intro
-tutorial
-</code></pre>
-
-<h2>文档对象</h2>
-
-<pre><code>.. py:function:: enumerate(sequence[, start=0])
-
-Return an iterator that yields tuples of an index and an item of the
-*sequence*. (And so on.)
-
-这里是连接 :py:func:`enumerate`
-</code></pre>
-
-<h2>自动导入代码中的文档</h2>
-
-<pre><code>.. autofunction:: io.open
-
-.. automodule:: io
-   :members:
-</code></pre>
-
-<h2>生成我们需要的格式</h2>
-
-<p>sphinx-build</p>
-
-<pre><code>$ sphinx-build -b html sourcedir builddir
-</code></pre>
-
-<p>make</p>
-
-<pre><code>$ make html
-</code></pre>
-
-<h2>资源</h2>
-
-<p>官方文档 <a href="http://sphinx.pocoo.org">http://sphinx.pocoo.org</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -873,6 +922,10 @@ Return an iterator that yields tuples of an index and an item of the
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/commandline-proxy/">命令行下使用全局代理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/debug-rails-autolink/">调试rails autolink</a>
       </li>
     
@@ -886,10 +939,6 @@ Return an iterator that yields tuples of an index and an item of the
     
       <li class="post">
         <a href="/blog/mosh/">mosh介绍</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/squeel/">squeel介绍</a>
       </li>
     
   </ul>
