@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-05-21T15:34:05+08:00</updated>
+  <updated>2013-05-21T20:49:58+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,156 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[提升电子邮件的送达率]]></title>
+    <link href="http://halida.github.com/blog/reliable-email-delivery/"/>
+    <updated>2013-05-21T19:15:00+08:00</updated>
+    <id>http://halida.github.com/blog/reliable-email-delivery</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/email.jpg"></p>
+
+<p>现在大多数网站都会发送各种各样的邮件，保证邮件送达率至关重要，这里整理一下我调研的一些结果。</p>
+
+<p>要让邮件正常到达用户的收件箱，需要保证几点：</p>
+
+<ul>
+<li>让收件方验证邮件来源是非伪造的，需要设置<code>PTR</code>，<code>SPF</code>，<code>DKIM</code>。</li>
+<li>让收件方认可发送者是可靠的。</li>
+</ul>
+
+
+<h2>如何让收件方验证邮件来源是非伪造的</h2>
+
+<h3>PTR</h3>
+
+<p>ptr是<a href="http://en.wikipedia.org/wiki/List_of_DNS_record_types">DNS记录的一种类型</a>，有一个用途在于反方向从IP推导到域名，比如：</p>
+
+<pre><code>dig -x 203.208.36.17
+</code></pre>
+
+<p>把DNS的<code>MX</code>类型记录指向到你邮件服务器的地址一般就可以了。</p>
+
+<h3>SPF</h3>
+
+<p>SPF(<a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>)这是一套电子邮件验证系统，通过在DNS记录中添加一个TXT类型的记录，指定谁有权以域名的名义发送邮件。如果你没有设置这条记录，很容易就被当做非法邮件spam掉。</p>
+
+<p>这里是<a href="http://www.zytrax.com/books/dns/ch9/spf.html">配置方法</a>，以及一个简单的例子：</p>
+
+<pre><code>v=spf1 a mx ptr include:spf.mtasv.net ~all
+</code></pre>
+
+<p>这一行主要说明spf.mtasv.net(<a href="https://postmarkapp.com/">postmark</a>，一个邮件发送服务商)代发的邮件是被认可的。</p>
+
+<p>如果你域名挂靠在<a href="http://bluehost.com">bluehost</a>上面，这里是<a href="http://www.mail-tester.com/spf/bluehost#create-spf-record">对应的设置方法</a>。</p>
+
+<p>设置完毕，等待生效后，可以通过这种方式验证是否设置成功：</p>
+
+<pre><code>dig txt your-domain.com
+</code></pre>
+
+<p>返回的信息需要带有你设置的SPF记录。</p>
+
+<h3>DKIM</h3>
+
+<p>邮件本身是纯文本，协议也没有防止伪造的部分，在发送的过程中很容易被篡改，
+DKIM(<a href="http://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail</a>)
+对邮件用私钥加密，同时公钥信息放在域名DNS上面，这样收件方就可以验证邮件的真实性。</p>
+
+<p>如果你用<code>ubuntu</code>以及<code>postfix</code>，这里是<a href="https://help.ubuntu.com/community/Postfix/DKIM">设置教程</a>，以及一个简略的安装过程整理：</p>
+
+<ul>
+<li>安装<code>opendkim</code> <code>sudo aptitude install opendkim</code></li>
+<li>设置 <code>/etc/opendkim.conf</code></li>
+<li>告诉<code>postfix</code>采用<code>opendkim</code>，设置<code>/etc/postfix/main.cf</code></li>
+<li>启动和重启对应的服务。</li>
+</ul>
+
+
+<p>原理很简单，运行<code>opendkim</code>进程服务器，然后<code>postfix</code>把它当做一个过滤器来用，设置完成之后，对于所有的邮件，都会加上一个<code>DKIM-Signature</code>，一个具体的例子：</p>
+
+<pre><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.net; s=brisbane;
+c=relaxed/simple; q=dns/txt; l=1234; t=1117574938; x=1118006938;
+h=from:to:subject:date:keywords:keywords;
+bh=MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=;
+b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
+</code></pre>
+
+<p>一些参数的含义：</p>
+
+<ul>
+<li><code>b</code>：具体的数字签名。</li>
+<li><code>bh</code>：body hash。</li>
+<li><code>d</code>：签名的域名。</li>
+<li><code>s</code>：selector。一个域名可能有多个邮件发送服务器，需要用一个selector来区分。</li>
+</ul>
+
+
+<p>然后接收方就会去检查<code>brisbane._domainkey.example.net</code>的DNS记录，你可以通过这种方式来查看是否它设置正确：</p>
+
+<pre><code>dig txt brisbane._domainkey.example.net
+</code></pre>
+
+<p>内容格式是<code>k=rsa\; p=MIGfMA0GCSqGSIb3DQEBA...</code>。</p>
+
+<h3>检查是否设置成功</h3>
+
+<p>发送一封邮件到gmail里面，这样检查信息：</p>
+
+<p><img src="http://halida.github.com/images/posts/gmail_sign.png"></p>
+
+<p>出现<code>mailed-by</code>表示你SPF设置正确了，出现<code>signed-by</code>表示你DKIM设置正确了。</p>
+
+<h2>让收件方认可发送者是可靠的</h2>
+
+<p>上面是一些技术上面的部分，同时还需要在内容上面以及行为上面让收件方认可你：</p>
+
+<ul>
+<li>收件人需要认可邮件内容。你发送的东西对于用户是有信息含量的，如果用户看到你的邮件就标注spam，再多的设置也没有用。</li>
+<li>邮件中带有退订链接。当用户不想收到你的邮件的时候，可以点击退订，防止用户直接把你spam掉。</li>
+<li>控制发送频率。各个邮箱提供商会检查来自一个IP的邮件投递速率，如果你发送速度过于频繁，也容易进黑名单。</li>
+</ul>
+
+
+<h2>第三方的服务</h2>
+
+<p>设置了上面的这些东西，你的邮件还是有可能被spam，以及你也不清楚到底邮件的到达率有多少，我建议针对商业的网站，还是需要采用一些第三方的邮件发送服务。这里推荐几个：</p>
+
+<ul>
+<li><a href="http://www.mailgun.com/">mailgun</a></li>
+<li><a href="postmarkapp.com">postmark</a></li>
+<li>搜狐的<a href="http://sendcloud.sohu.com/">sendcloud</a></li>
+</ul>
+
+
+<p>采用了这些第三方服务之后，你需要对应地更新<code>SPF</code>和<code>DKIM</code>。
+同时如果可能，尽量选择独立IP的服务，这样不会因为其他人发spam影响到你的邮件送达率。</p>
+
+<p>mailgun和postmark都会<a href="http://www.quora.com/Why-are-Mailgun-and-Postmark-so-much-more-expensive-than-Sendgrid-and-AWS-SES">想办法保证你的邮件送达</a>，
+因此价格也比其他的邮件服务商要贵，但是还是物有所值的。</p>
+
+<p>mailgun带有<a href="http://documentation.mailgun.com/api-campaigns.html">campaign服务</a>，
+你可以设置一个campaign，然后发送带有这个campaign ID的邮件，之后会统计出送达率，开启率，链接点击率等信息给你。</p>
+
+<p>还有就是针对国内垃圾邮件乱飞的状况，很多国内的邮箱服务商会比较严格，造成国外的第三方邮件发送服务不好用的状况，比如：</p>
+
+<ul>
+<li>mailgun发到QQ邮箱，新浪邮箱里面会被spam掉。</li>
+<li>postmark和mailgun都发不了邮件到tom邮箱里面。</li>
+</ul>
+
+
+<p>需要注意一下。</p>
+
+<h2>引用资料以及工具</h2>
+
+<ul>
+<li><a href="http://aplawrence.com/Blog/B961.html">PTR为什么重要</a></li>
+<li><a href="https://idndx.com/2012/04/07/how-to-increase-your-email-delivery-rate/">中文资料</a></li>
+<li><a href="http://mxtoolbox.com/SuperTool.aspx?action=blacklist">检查是否进黑名单</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[命令行下使用全局代理]]></title>
@@ -1714,89 +1864,6 @@ cp wp-config-sample.php wp-config.php
 <p>虽然包混淆能够让别人不知道我们采用的是ssh，但是流量分析还是可以做的，这样还是有很大可能性被发现是在翻墙，从而把服务器干掉。
 还有就是如果以后采用了白名单制度，那么再怎么弄都没有办法了，因为只有特定外网才能访问。不过这种状况不太可能发生。
 这样矛与盾的斗争还会一直进行下去，直到中国人获得自由的那一天到来。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[2012总结与2013计划]]></title>
-    <link href="http://halida.github.com/blog/2012-summary/"/>
-    <updated>2013-01-03T09:29:00+08:00</updated>
-    <id>http://halida.github.com/blog/2012-summary</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/vN7Gw.jpg"></p>
-
-<p>自从有了文字，人能够脱离大脑记忆的束缚，记录下更多内容，保留更多经验，能够积累，演进，不再重复过去的错误。
-保留文字记忆的文明，才能获得发展的机会，历史可鉴。文字是人类文明大厦的奠基石这一说不为过。</p>
-
-<p>作为个人，处在这急速变化的时代，去年的事情模糊淡忘，几年就仿佛隔代一般，回顾影像记录，带给我们的是许多惊奇。
-若不在记忆可辨的时候留下文字痕迹，若干年后回想过去，要么仿佛身处黑洞一般无从触摸，要么记忆被蒙上一层光晕，得到的是美化或者丑化的怪物。
-忘记历史就意味着背叛，对个人也是一样。</p>
-
-<h2>2012年总结与回顾</h2>
-
-<p>去年看起来有些特殊，玛雅人历法的终结，数个独裁政府的倒掉，名人的逝去，业界风起云涌。
-但是从更长期的眼光来看，可能中国领导换届才会在历史上留下最深刻的一笔。
-国家大事如同窗外狂风暴雨，激烈而无从可控。让我们回到窗内的个人琐事吧。</p>
-
-<p>今年我是我离开原先公司，全职加入GuruDigger的第一个年度。
-也是我从偏远的嘉定，来到市区的第一个年度。
-在这一年里，因为地点变更，生活更为丰富多彩了起来。
-地理上面的方便性，以及弥补小团队开发引发的社交退化，我长期参加<a href="http://ghostunix.org/blog/?p=393">Hacking Thursday的活动</a>。
-然后去得多的是shanghai on rails周二的聚会。
-2012年对于上海来说，也是一个技术大会非常多的年份，
-我主要参加的是：<a href="http://blog.linjunhalida.com/blog/hujs-1/">hujs大会</a>，python大会，<a href="http://blog.linjunhalida.com/blog/hackthon-in-may/">黑客马拉松活动</a>等等。</p>
-
-<p>除去和我技术本职相关的活动以外，我也积极拓展其他的领域，
-比如统计学聚会，视角读书会，<a href="http://blog.linjunhalida.com/blog/tedxfdu-2012-11/">TED大会</a>，星期天读书会，社会学读书会，<a href="http://blog.linjunhalida.com/blog/gdc-china-2012/">GDC China</a>。
-除了大会，我还去了一些定期的活动，比如星期天下午的<a href="http://blog.linjunhalida.com/blog/people-square-english-corner/">人民公园英语角</a>，星期六下午红房子星巴克的沙发客聚会。
-然后还有一说的就是年底上海马拉松也跑了6公里健身跑。
-旅游上面，因为各种机会，我去了南京，以及和上海大学的学弟学妹去了崇明骑行。</p>
-
-<p>参与这些活动，无法说清楚短期的收益是什么，长期潜移默化的改变也无迹可循，
-而我觉得最大的感触就是，积极参与，而不是被动接收，才是能够带来更大感受。</p>
-
-<p>回到本职工作上面来。这一年我做的事情没有大的变化，主要还是Rails和前端。
-感觉技术上面没有阶段性的成绩，无非是ruby和js以及调整html/css变得更熟练了一些。
-对计算机领域的理解并没有增进，对如何设计本身更是没有心得。值得检讨。</p>
-
-<p>找对象方面，极大地扩展了人际圈，可以说是认识了很多的人吧。
-但是没有任何实质上面的进展。大多数的人也只是一面之缘，没有任何后续活动了。</p>
-
-<p>总体上面来讲，这一年的我和过去一年的我有区别，有长进，
-但是内化的核心性格特征改变不大，依旧内向顽固疯狂懦弱（正反意思理解皆可），但是多了一些的觉悟和控制。
-行为方式，做事方式上面有了调整，但是还是没有大的变化，
-如果没有借助外力或者内省加以变化的话，我的未来是可以预测的悲惨。</p>
-
-<h2>2013年计划与目标</h2>
-
-<p>在这个变化的时代里面，目标可能顺势而变，但是方向是一定要定下来的。
-失去了方向，人生会变得随波逐流，失去意义。
-主要目标是，我希望成为一个顶尖的开发者，开发出能够改变世界的program。
-还有一个并驾齐驱的目标就是感受和领略各个领域的智慧和美丽。
-这个目标看似简单，但是可能比前一个目标还需要付出更多：爬得更高，走得更远才能看到更美的风景。</p>
-
-<p>然后现实的部分，就是成家立业。找个能够一起进行人生旅途的对象，从事一份能够支撑上海生活水平的工作。
-这算是近期几年必须完成的目标吧。
-我考虑到中国现在的环境，以及我现在从事的互联网行业本质上也算是服务业的部分，
-觉得自己还是走向全球市场比较好，毕竟外国人愿意出钱，更靠谱，市场也更健康。
-而找对象上面，需要进行更多实质性的操作，时间对我是不利的。</p>
-
-<p>目标需要细化到执行层面，不然只是空头支票。虽然我们知道，一年定下来的目标，最后做到的往往很少，
-但是计划总是要做的。没有执行到位的计划比完全没有计划要好。那么具体到2013年需要完成的事情：</p>
-
-<ul>
-<li>技术上面构建核心竞争力。成为一个靠谱的网站开发工程师。考虑到前端变化率大以及领域局限的问题，我还是着重巩固后端以及设计上面的能力。
-具体到实务上面就是：多做多练多看多思考多总结。能做的事情就是增加番茄时间上面的投入，以及做事情的时候多思考。现在可以做的事情太多了，
-从手头上面的事情开始做是明确优先级的解法。每个月都要练习设计和制作一个网站。</li>
-<li>英语能够达到口语交流和日常交互写作顺畅的程度。具体做的事情就是：找交互性质的教材，然后背诵和练习，要求每周都和外国人对话一次。对话之前先想好要说什么。</li>
-<li>保证健康。继续坚持每周跑步的习惯，加上缺失的力量训练的部分。开始做俯卧撑和仰卧起坐。时间安排是在番茄时间的间隔。</li>
-<li>找对象进入实质阶段。寻找好目标，做好执行计划。不保证成功，但是要保证做到位。</li>
-<li>重新开始坚持钢琴。时间安排在失去集中力的时候。</li>
-</ul>
-
-
-<p>期望的结果就是，到了2013年的年底，在网站开发上面我能够游刃有余，有拿得出手的网站作品来体现自己的专业能力。
-外语流利到能够进入外企工作。身体健康，上身有曲线。找到一个聊得来的对象。钢琴能够弹简单的作品以达到装逼的目的。
-这个属于可计划的部分，非可计划的部分就是变成更好的人。这个需要遇到事情，思考，决断，冲破枷锁。养成新的好习惯。</p>
 ]]></content>
   </entry>
   
