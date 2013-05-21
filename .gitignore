@@ -13,3 +13,4 @@ _deploy/
 vendor
 node_modules
 *~
+.#*
