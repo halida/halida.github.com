@@ -7,7 +7,7 @@ sharing: true
 footer: true
 ---
 
-![image](http://i.imgur.com/Q4sKXg3.jpg)
+{% img /images/posts/Q4sKXg3.jpg %}
 
 我是一个程序员, 我希望能够持续提升自己的技能和智慧，
 能够以我的方式改变这个世界。
