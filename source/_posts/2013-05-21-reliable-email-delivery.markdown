@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "提升电子邮件的送达率"
+title: "保证电子邮件的送达率"
 date: 2013-05-21 19:15
 comments: true
 categories: 
