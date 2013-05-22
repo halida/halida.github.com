@@ -9,8 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="python和ruby的区别 python经常被拿来和ruby做比较, 他们都是动态脚本语言,
-在应用场景上面也非常相似. 我们听到的, 它们之间广为认知的区别是: python ~ &#8220;There should be one - and preferably only one - &hellip;">
+  <meta name="description" content="好吧, 昨天看了一下ruby, 今天就要来看看ruby on rails了. 哲学 DRY: 不写重复的东西
+约定取代设置: rails假定了你要做的事情, 而不是你自己设置一切.
+REST方式. 教程 这里是一篇
+rails教程,
+按照上面的指示做一遍, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +82,138 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ruby-on-rails-head-first/">Ruby_on_rails初探</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-11T11:46:08+08:00" pubdate data-updated="true">Feb 11<span>th</span>, 2011</time>
+        
+         | <a href="/blog/ruby-on-rails-head-first/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://www.webaxes.com/wp-content/uploads/2010/06/ruby-on-rails.jpg" alt="image" /></p>
+
+<p>好吧, 昨天看了一下ruby, 今天就要来看看ruby on rails了.</p>
+
+<h2>哲学</h2>
+
+<ul>
+<li>DRY: 不写重复的东西</li>
+<li>约定取代设置: rails假定了你要做的事情, 而不是你自己设置一切.</li>
+<li>REST方式.</li>
+</ul>
+
+
+<h2>教程</h2>
+
+<p>这里是一篇
+<a href="http://guides.rubyonrails.org/getting_started.html#guide-assumptions">rails教程</a>,
+按照上面的指示做一遍, 就对rails的思路和哲学有了一定了解了,
+这里就不再重复.</p>
+
+<h2>整体架构</h2>
+
+<p><img src="http://dedicatedwebserverhosting.co.uk/Images/Tools%20for%20Ruby%20on%20Rails-2.png" alt="image" />
+如上图, rails采用MVC架构. 进来的http请求,
+交由Dispatcher分发给(设置文件是app/routes.rb)对应的controller(app/controller下面),
+然后controller把数据交给view(app/views)渲染返回.</p>
+
+<h2>特性</h2>
+
+<h2>自动代码生成</h2>
+
+<p>rails3里面可以用命令直接生成大量代码</p>
+
+<pre><code>rails generate controller home index
+rails generate scaffold Post name:string title:string content:text
+</code></pre>
+
+<p>运行之后生成了一堆文件. 节省了工作, 但是对于有洁癖的人来说, 会很不舒服.</p>
+
+<h2>快捷方式</h2>
+
+<p>rails提供了很多快捷方式以减少代码量, 比如对数据做验证:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span>  <span class="ss">:presence</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:presence</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">:length</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:minimum</span> <span class="o">=&gt;</span> <span class="mi">5</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>比如访问权限控制:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">before_filter</span> <span class="ss">:authenticate</span><span class="p">,</span> <span class="ss">:except</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># GET /posts</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这些看起来是ruby的哲学, 减少了代码量的同时,
+把复杂度隐藏到framework里面了, 不好说是好事还是坏事.</p>
+
+<h2>结论</h2>
+
+<p>按照上面的教程走了一遍, 个人感觉:</p>
+
+<ul>
+<li>它注重快速开发, 用最少的代码来生成最多的功能.</li>
+<li>ruby on rails采用命令来生成大量代码, 我个人非常不喜欢, 因为不够简洁.
+但是对于快速开发, 这个方式节省了大量的编码工作.</li>
+<li>它假设了一条最好的方式来做开发, 并鼓励开发者走这条道路.</li>
+<li>个人觉得, 适合一次又一次地开发同类型的网站.</li>
+</ul>
+
+
+<p>上面只是对rails的初探, 很不完全, 也不深入. 如果有机会开发过一个项目,
+可能有更深刻的体会. 但是还有其他的很多事情在等着我&#8230; 这个就先放下吧.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1013,62 +1148,6 @@ chapter:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/words/">箴言</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-21T21:25:52+08:00" pubdate data-updated="true">Dec 21<span>st</span>, 2010</time>
-        
-         | <a href="/blog/words/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这里收集了一些我的语录, 以及我转述其他人的语录(会注明,
-大多数不记得转述谁的了), 如果一股读者味道不要怪我.
-如果我没有按照我说的话做也不要怪我. 我也只是一个心灵脆弱的人.</p>
-
-<p>新的东西添加在前面:</p>
-
-<ul>
-<li>如果一个人活得和别人一样, 那么他给这个世界带来了什么信息量呢?</li>
-<li>编程的快乐, 本质上是创造的快乐: 你以自己的方式完成了工作,
-工作本身刻有你自己的烙印.</li>
-<li>婚姻是一个合约, 任何超过十年的合约, 在这个时代都是带有巨大风险的.
-但是什么时候我们能够有渐进的婚姻呢?</li>
-<li>人活着需要的东西其实很少, 即使你在大城市里面, 即使你工资不多.</li>
-<li>精神上的乐趣比物质上的乐趣更有持久性.</li>
-<li>人工作的目标是需要工作的时间越来越少, 而不是越来越多. (转述)</li>
-<li>人活着本身没有意义, 如果你产生了这样的问题,
-那么期望的结果是不会再问这个问题了. (转述维特根斯坦)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -1086,6 +1165,10 @@ chapter:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/email-css/">如何写邮件样式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/reliable-email-delivery/">保证电子邮件的送达率</a>
       </li>
     
@@ -1099,10 +1182,6 @@ chapter:
     
       <li class="post">
         <a href="/blog/remote-sound/">手机远程收听电脑声音</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/indie-games/">关于独立游戏</a>
       </li>
     
   </ul>

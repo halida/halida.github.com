@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-05-21T21:20:00+08:00</updated>
+  <updated>2013-05-22T10:05:25+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何写邮件样式]]></title>
+    <link href="http://halida.github.com/blog/email-css/"/>
+    <updated>2013-05-21T21:29:00+08:00</updated>
+    <id>http://halida.github.com/blog/email-css</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/email_css.jpg"></p>
+
+<p>最近一段时间都在写邮件的样式，以及测试邮件在各种邮箱中的展示效果，搞得焦头烂额，痛定思痛，在这里整理获得的一些撞墙经验吧。</p>
+
+<h2>基本的原则</h2>
+
+<h3>用table来控制架构</h3>
+
+<p>虽然现在css已经进化到<a href="http://www.hongkiat.com/blog/coding-graphics-with-css3/">可以用来画画的地步</a>，
+但是各种邮箱客户端往往各自为政，你调试得非常完美的邮件，在用户那边，被客户端蹂躏得惨不忍睹。
+我们还是需要退而求其次，找一个各种客户端都支持得非常好的布局方案：利用<code>table</code>来布局。</p>
+
+<p>用table的方式安排页面各个元素的方法，有着悠久的历史，虽然不优雅，但是能够解决问题。
+删除掉各种在web端应用广泛的<code>float</code>，<code>position</code>吧，勇敢回归<code>table</code>。</p>
+
+<h3>inline css样式</h3>
+
+<p>邮件中带有css外链？邮件中含有<code>&lt;style&gt;</code>区块？很抱歉，在<code>Gmail</code>以及各种在线邮箱客户端中，
+它们都会被当做嫌疑分子，有杀错没漏过地一律干掉。唯一可以通行的就只有嵌入在tag中的<code>style</code>属性了。
+不过不要紧，你不需要手写这些，现在有很多第三方的工具来帮助你自动生成，比如<a href="https://github.com/alexdunae/premailer">premailer</a>。</p>
+
+<h3>注意可用的css样式</h3>
+
+<p>虽然<code>style</code>可以通行，但是广大客户端为了显示正常，还会过滤掉一些影响大局稳定的css属性，
+比如Gmail就会杀掉<code>position: absolute</code>的样式，hotmail看<code>float</code>不顺眼。</p>
+
+<p>还有就是客户端应用程序的邮件显示渲染系统一般进行了客制化，邮件的样式还是最好还是限制在css1/css2标准里面安全一些。</p>
+
+<p>有一个<a href="http://www.campaignmonitor.com/css/">各个客户端的css支持表格</a>，聊胜于无。</p>
+
+<h3>text模式和html模式</h3>
+
+<p><a href="http://webmarketingtoday.com/articles/html-email-multi/">按照需要</a>，
+一封邮件可以同时提供<code>text</code>和<code>html</code>两份，用户可以选择自己喜欢的看。
+如果你的用户期望看到<code>text</code>格式的邮件，最好提供一份。</p>
+
+<h3>显示图片和非显示图片</h3>
+
+<p>因为安全因素考虑，大多数邮件客户端都不默认显示邮件的图片，需要用户手动确认。
+所以你的邮件必须要能够在这种情况下面显示得不至于太寒碜。</p>
+
+<h2>各种需要处理状况</h2>
+
+<p>上面这些都是总览，这里整理一些其他额外需要注意的状况。</p>
+
+<p>gmail会根据你的文字宽度给你添加<code>&lt;wbr&gt;</code>的标签强制换行。我最后采用<code>table</code>布局的方式解决了这个问题。</p>
+
+<p>不同平台下的不同浏览器会采用不同的字体。所以你也页面不要根据开发环境的字体预设宽度。</p>
+
+<p>有些android手机（比如我的galaxy nexus）gmail客户端会限制页面的宽度，有些文字段落会压缩掉宽度，没有找到解决办法。</p>
+
+<h2>测试</h2>
+
+<p>邮件显示效果的测试，我觉得是最烦的一件事情了。维度太多。需要测试的有：</p>
+
+<ul>
+<li>不同的邮件客户端，thunderbird，outlook，foxmail，它们还有不同的版本。</li>
+<li>不同的在线邮箱在不同浏览器下面展示的效果。维度大概是在线邮箱系统数量乘以浏览器数量了。</li>
+<li>不同操作系统。主要是字体影响比较大。</li>
+<li>多平台，各种手机客户端，平板设备。现在是移动时代，很多人有在移动设备上读邮件的习惯。</li>
+</ul>
+
+
+<p>全部测试一遍很不现实，只能根据用户特征把主流的一些环境测试一下。</p>
+
+<h2>经验</h2>
+
+<p>花费了那么多时间，这里整理一下主要的经验以供借鉴：</p>
+
+<p>如果简单的邮件，只是改一份文件就好，如果模块复杂，还是需要根据区块拆分一下。
+也可以用一些预处理的工具来让文件变得更易读。
+我是用haml，sass，以及rails的render partial功能来把复杂邮件模块化的。</p>
+
+<p>因为邮件需要不断地调整，最好养成完成一个部分的改动后就<code>git commit</code>一下，或者至少<code>git add</code>变动，
+因为很容易在改动中造成错误。</p>
+
+<p>要进行流程控制，每次修改完毕后都过一遍测试，总是会出现一个环境改动正确了，其他环境又出现展示问题的状况。</p>
+
+<h2>资料</h2>
+
+<ul>
+<li><a href="http://www.reachcustomersonline.com/how-to-code-html-email-newsletters-all-new-version/">详细的如何写邮件样式的教程</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[保证电子邮件的送达率]]></title>
@@ -1709,161 +1801,6 @@ cp wp-config-sample.php wp-config.php
 <p>Github被封，对于程序员整体来说是损害，但对于能够打破这个封锁的程序员来说却也是利好：又可以在竞争中筛掉一批竞争者了。
 政府可以随意限制我们的权利，对于中国人整体上面是非常严重的伤害，现代中国还在像以前一样闭关锁国，为了维持一个非正义政权的统治。
 我对中国的未来不是很看好。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[obfuscated-openssh介绍]]></title>
-    <link href="http://halida.github.com/blog/obfuscated-openssh/"/>
-    <updated>2013-01-17T22:58:00+08:00</updated>
-    <id>http://halida.github.com/blog/obfuscated-openssh</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/aM4KX.jpg"></p>
-
-<h2>缘由</h2>
-
-<p>我一直采用的翻墙方法是这样的，我在linode上面买了一台vps，然后这台vps上面跑了pptp，openvpn，然后我连接VPN翻墙。</p>
-
-<p>十八大来临的时候，pptp，openvpn都不太好用了，我只好采用ssh SOCK5的方式来翻墙。</p>
-
-<p>但是前几天，GFW好像又升级了，识别到我的ssh的主要用途是翻墙，然后把我的ssh端口给封掉了。这下就麻烦了。我在网络上面搜索，发现切换端口后，还会把整个服务器给封掉。</p>
-
-<p>他们封锁的逻辑是这样的：识别到ssh的协议，然后对协议的流量进行机器识别的分析，当发现疑似采用ssh翻墙的时候，就下黑手。</p>
-
-<p>我考虑了各种解决方案，最后还是选择了采用 <a href="https://github.com/brl/obfuscated-openssh">obfuscated-openssh</a>。</p>
-
-<h2>介绍</h2>
-
-<p>虽然ssh的内容本身是加密传输的，但是ssh协议本身带有明显的包头特征，因此，DPI可以分析得出采用的协议是ssh，然后就可以根据流量状况来判断到底是做什么类型的操作，从而以此为依据搞鬼。</p>
-
-<p>那么反制措施就很简单，把包头混淆掉就可以了。 obfuscated-openssh就是做这样的事情的。在它<a href="https://github.com/brl/obfuscated-openssh">Github项目主页</a>上面的介绍如下：</p>
-
-<p>首先发送含有一个神秘magic key的数据包，magic key前面是一定数量的随机数作为seed，后面也跟着一个长度，然后是这个长度数量的随机数，如下图：</p>
-
-<pre><code>[     16 byte random seed           ][  magic  ][ plength ][ .. plength bytes of random padding ... ]
-|___________________________________||______________________________________________________________|
-                |                                                   |
-            Plaintext                                Encrypted with key derived from seed 
-</code></pre>
-
-<p>这样保证第三方在不知道magic key的前提下，完全分析不出有用的数据从哪里开始，从而不知道协议是什么。</p>
-
-<p>获取了random seed之后，加上一个只有服务器和客户端知道的密码，来生成解密后续内容的钥匙，然后服务器和客户端就可以继续通讯了，对于中间的窃听者而言，是不能获知协议类型的。</p>
-
-<h2>安装和使用</h2>
-
-<p>在ubuntu机器上面编译的方法：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 下载</span>
-</span><span class='line'>git clone git://github.com/brl/obfuscated-openssh.git
-</span><span class='line'><span class="c"># 移动到目录下面</span>
-</span><span class='line'><span class="nb">cd </span>obfuscated-openssh
-</span><span class='line'><span class="c"># 准备编译环境</span>
-</span><span class='line'>sudo apt-get build-dep openssh
-</span><span class='line'><span class="c"># 编译</span>
-</span><span class='line'>./configure; make
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>服务器端需要做的配置，首先修改sshd_config，里面几个重要参数：</p>
-
-<ul>
-<li>ObfuscatedPort 设置成需要服务的端口</li>
-<li>ObfuscateKeyword 只有服务器和客户端知道的密码</li>
-</ul>
-
-
-<p>一个具体的示例：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ObfuscatedPort 2200
-</span><span class='line'>ObfuscateKeyword xxx
-</span><span class='line'>
-</span><span class='line'>Port 2201
-</span><span class='line'>Protocol 2
-</span><span class='line'>
-</span><span class='line'>HostKey /home/crawler/sources/obfuscated-openssh/ssh_host_rsa_key
-</span><span class='line'>
-</span><span class='line'>RSAAuthentication yes
-</span><span class='line'>PubkeyAuthentication yes
-</span><span class='line'>
-</span><span class='line'>Subsystem       sftp    /usr/libexec/sftp-server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>因为不要和系统的sshd冲突，需要生成一个新的rsa_key，安装和执行的代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 生成秘钥:</span>
-</span><span class='line'>ssh-keygen    <span class="c"># ssh_host_rsa_key</span>
-</span><span class='line'><span class="c"># 创建/var/temp</span>
-</span><span class='line'>sudo mkdir /var/temp
-</span><span class='line'>sudo mkdir /var/empty
-</span><span class='line'><span class="c"># sudo执行服务sshd:</span>
-</span><span class='line'>sudo <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/sshd -f ./sshd_config
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后客户端也是需要编译的，执行的方式：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 执行ssh tunnel</span>
-</span><span class='line'>./ssh -D 7070 your-username@yourserver.com  -N -p 2200 -zZ xxx
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>安装脚本</h2>
-
-<p>为了方便使用，我整理了安装脚本：</p>
-
-<p>服务器端：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
-</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_server.sh -O - | bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>客户端：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
-</span><span class='line'>wget --no-check-certificate https://github.com/halida/install_script/raw/master/obsh_client.sh -O - | bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>最后</h2>
-
-<p>虽然包混淆能够让别人不知道我们采用的是ssh，但是流量分析还是可以做的，这样还是有很大可能性被发现是在翻墙，从而把服务器干掉。
-还有就是如果以后采用了白名单制度，那么再怎么弄都没有办法了，因为只有特定外网才能访问。不过这种状况不太可能发生。
-这样矛与盾的斗争还会一直进行下去，直到中国人获得自由的那一天到来。</p>
 ]]></content>
   </entry>
   
