@@ -9,7 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="缘由 我一直采用的翻墙方法是这样的，我在linode上面买了一台vps，然后这台vps上面跑了pptp，openvpn，然后我连接VPN翻墙。 十八大来临的时候，pptp，openvpn都不太好用了，我只好采用ssh SOCK5的方式来翻墙。 但是前几天，GFW好像又升级了， &hellip;">
+  <meta name="description" content="缘由 最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +80,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/github-dns-issue/">github最近DNS被污染的事情经过以及解法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T22:45:00+08:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/github-dns-issue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/9MBJLOd.jpg"></p>
+
+<h2>缘由</h2>
+
+<p>最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为，
+进而上头发了命令封锁掉了Github。</p>
+
+<p>根据我们国家防火墙的行为特征，我预期到只要满足一定条件的网站一定会被封锁：</p>
+
+<ul>
+<li>用户能够自由发布内容的网站，这个内容可以是中文，可以是各种敏感信息。</li>
+<li>这个网站大到了一定规模。</li>
+</ul>
+
+
+<p>Github原本只是放源码，但是之后它们又多出来可以发布内容的功能，满足了我的预期条件，我认为它们被封只是时间问题。
+原本我以为会是因为一些发布在Github上面的博客，哪成想竟然会是这样的原因。
+预期一件事情一定会发生，但是却预期不到发生时候的诱因，这应该是混沌科学领域的知识和智慧吧。</p>
+
+<h2>封锁策略</h2>
+
+<p>在shlug里面，Jiajun Wang介绍了封锁的方法(全文转载)：</p>
+
+<p>简单地说，由于 DNS 一般使用 <a href="http://tools.ietf.org/html/rfc1035">UDP协议</a>，
+只要在某个节点发现你查询某某网站，然后造一个假的回应包并在真正的包返回之前给你就行了，
+然后假的包里面只要把实际的IP改成另外一个IP就行。</p>
+
+<p>给你看个 wireshark 抓包应该清晰易懂。运行的命令是：</p>
+
+<pre><code>dig @8.8.8.8 twitter.com
+</code></pre>
+
+<p>可以看到实际上有两个返回，第一个返回的 ip 是 59.24.3.173
+第二个返回了 3 个 ip。（这个是对的）
+这个就是 dns 污染。</p>
+
+<p><img src="/images/posts/WHzaoTc.png"></p>
+
+<h2>解法</h2>
+
+<p>Github被封锁后，极大地影响到我们程序员的日常工作，包括Github上面放的开源版本库的访问，oh-my-zsh的更新，更严重的是homebrew的使用。
+全局翻墙算是一个解决方案，但是依赖很多，也有不方便的地方。
+这里我建议采用的是：<a href="http://dnscrypt.org/">dnscrypt</a>，让DNS都走安全的加密通道，以及采用opendns作为dns服务提供商。
+使用方法也很简单，下载对应的客户端，安装即可。</p>
+
+<h2>结论</h2>
+
+<p>Github被封，对于程序员整体来说是损害，但对于能够打破这个封锁的程序员来说却也是利好：又可以在竞争中筛掉一批竞争者了。
+政府可以随意限制我们的权利，对于中国人整体上面是非常严重的伤害，现代中国还在像以前一样闭关锁国，为了维持一个非正义政权的统治。
+我对中国的未来不是很看好。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -987,94 +1078,6 @@ Maybe it is also a good option for you.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ftl/">FTL游戏评测</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-05T16:05:00+08:00" pubdate data-updated="true">Oct 5<span>th</span>, 2012</time>
-        
-         | <a href="/blog/ftl/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/bkIoK.jpg"></p>
-
-<p>很早以前， 我就是一个电脑游戏玩家了， 初中时期的魔兽一代， 毁灭公爵， 赤壁； 到高中的博得之门， 星际， 半条命， 再到大学的魔兽争霸， 无冬之夜；
-新的游戏， 符合我的喜好， 再加上能够在我的PC上面跑起来， 我都会拿来玩一遍。
-游戏给我开启了无数想象的门， 沉迷在多种多样的游戏世界里面， 我度过了人生的前半阶段。</p>
-
-<p>工作之后， 玩游戏成为了一种奢侈， 投入在上面的时间和精力机会成本很大，
-于是乎我不再去玩一些比如辐射3之类的大游戏， 转移到独立游戏（Inide Game）阵营中去了。
-和大游戏比起来， 独立游戏制作成本小， 无法再奢侈地在图像特效等细节上面烧钱， 这样的局限带来的就是游戏会专注在交互， 创新上面，
-带来和传统游戏不一样的体验。 加上购买花费少， 容量不大下载方便等游戏， 我选择成为一个独立游戏迷， 经常去尝试各种新的游戏。</p>
-
-<p>FTL就是其中的一个。 它是位于上海的两个外国人开发的游戏， 在<a href="http://www.kickstarter.com/projects/64409699/ftl-faster-than-light">kickstarter上面</a>募款阶段就吸引了不少眼球。
-购买费用是10美元， 并不低， 反复抉择之后， 我还是出了这个价钱。</p>
-
-<p>这款游戏， 介绍说是 spaceship simulation roguelike-like，<br/>
-我稍微解释一下<a href="http://en.wikipedia.org/wiki/Roguelike">roguelike</a>，
-目标一般是玩家为了消灭一个大Boss， 进入到一个随机的地下城中， 不同房间会遇到不同的敌人和事件， 最后要么死亡要么通关。
-这类游戏好玩的地方在于， 随机的关卡， 丰富的游戏玩法， 以及只有一次生命的刺激感。
-它已经有几十年的历史， 直到现在还是很有生命力。 经常会有许多<a href="http://en.wikipedia.org/wiki/Roguelike">新的这类游戏出现</a>。
-但是由于游戏采用ACSII的界面， 采用非直觉的操作， 需要掌握的复杂规则和游戏世界背景（这个算是卖点！），
-普通玩家往往望而却步， 但是一旦喜欢上， 可能成为一辈子的爱好。</p>
-
-<p>Roguelike游戏画面：</p>
-
-<p><img src="http://3.bp.blogspot.com/-Bw7ZYDVQF1k/UFyh6sIwASI/AAAAAAAAAcM/T5uf_lcfuGY/s1600/doomrl.gif" alt="image" /></p>
-
-<p>回到FTL。 实际的游戏方式混合了策略和即时， 玩法解释起来比较麻烦， 因为没有什么同类的模式。 可以去看官方网站上面的<a href="http://www.ftlgame.com/">视频介绍</a>， 或者下面的一个walkthrough：</p>
-
-<iframe width="560" height="315" src="http://www.youtube.com/embed/nSvxjNvPYBw" frameborder="0" allowfullscreen></iframe>
-
-
-<p>实际的游戏画面：</p>
-
-<p><img src="/images/posts/pcy5f.png"></p>
-
-<p>大地图：</p>
-
-<p><img src="/images/posts/WfZrb.png"></p>
-
-<p>FTL和传统的roguelike游戏相比， 内容上面完全改变了， 但是roguelike的核心精神得到了保留。
-游戏的过程中， 一旦失败， 存档就不复存在， 没有拯救的机会，
-飞船有限的燃料， 随时间推进的敌方进攻， 让游戏保证了持续的紧张感。
-玩家需要在游戏过程中通过各种选择来build自己的飞船， 而选择本身是有限和随机的， 每次游戏都会完全不同。
-战斗过程中是即时制加上随时暂停， 刺激又不至于手忙脚乱。</p>
-
-<p>总体来说， 这款游戏没有明显的瑕疵， 通关一次需要3个小时左右， 并且可以采用不同玩法多次重复通关， 算是值回售价。
-不过游戏内容上面还是增加更多的东西， 比如更多的装备， 更多的随机事件； 一些内容的提示， 比如船员信息上面做的不够好；
-通关之后有点意犹未尽， 消灭一个Boss作为普通游戏来说还好， 但是对于骨灰玩家来说还需要更多的挑战。</p>
-
-<p>我觉得roguelike有点像是人生， 各种人不同的初始条件， 有限的时间， 随机的事件和无数的抉择， 多样的玩法。
-不过游戏中会有一个大Boss需要干掉， 会有happy ending/bad ending， 但是人生没有， 一直进行下去， 直到人生的终点。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1092,6 +1095,10 @@ Maybe it is also a good option for you.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/email-css/">如何写邮件样式</a>
       </li>
     
@@ -1105,10 +1112,6 @@ Maybe it is also a good option for you.</p>
     
       <li class="post">
         <a href="/blog/debug-rails-autolink/">调试rails autolink</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/remote-sound/">手机远程收听电脑声音</a>
       </li>
     
   </ul>
