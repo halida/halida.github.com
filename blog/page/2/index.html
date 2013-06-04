@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="Pow是一个神奇的东西，原先你需要跑一个服务器应用，你可能需要在命令行下面执行一个命令，以及你自己需要时刻监控到这个程序的运行。但是有了POW，你需要做的事情只是做一个ln软链接就可以了。对了，它只能在OSX下面使用。 安装： 1
-curl get.pow.cx | sh 删除： 1
-curl &hellip;">
+  <meta name="description" content="今天我试着安装了一下gitlab，它是一个开源的类似github的系统，
+利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。 安装过程 按照文档进行，我中间走了一些弯路： 安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,77 @@ curl &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/try-gitlab/">试用gitlab</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-27T12:10:00+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/try-gitlab/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://gitlab.org/images/gitlab_hq.png" alt="image" /></p>
+
+<p>今天我试着安装了一下<a href="http://gitlab.org/">gitlab</a>，它是一个开源的类似github的系统，
+利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。</p>
+
+<h2>安装过程</h2>
+
+<p>按照<a href="https://github.com/gitlabhq/gitlabhq/blob/5-0-stable/doc/install/installation.md">文档</a>进行，我中间走了一些弯路：</p>
+
+<ul>
+<li>安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby，后来发现不对，必须安装成系统的版本，不然服务起不起来。</li>
+<li>postgres用户gitlab不能登陆，后来搜索了一下，发现<a href="http://blog.deliciousrobots.com/2011/12/13/get-postgres-working-on-ubuntu-or-linux-mint/">需要修改权限</a></li>
+</ul>
+
+
+<p>其他过程比较顺利，基本按照教程来就可以了。</p>
+
+<h2>架构</h2>
+
+<p>其实整体系统还是比较简单的，安装了一个系统服务，后面主要是把gitlab当做一个rails应用来跑，后台启动了一个sidekiq。</p>
+
+<p>针对git的部分，分离出来了git-shell，其实就是在系统里面安装了一个shell，用户用git连过来的时候，就用这个shell来进行版本库的操作，它是调用rails网站服务器的API来做权限管控之类的事情。</p>
+
+<h2>试用感觉</h2>
+
+<p>因为我只是试用一下，没有用于生产，只是稍微浏览了一下功能。
+github有的功能它都有，还加上了用户管理，群组管理，查看系统日志等功能。
+功能上面感觉还是够用的。</p>
+
+<p>关于这个项目的架构思路，我觉得还是挺好的。
+网站的部分归网站，git的部分归git，中间通过API来通讯。
+git-shell的方式减少另外跑一个服务的成本，对于小用户群的环境来说可以，
+但是不是很适应用户数量过多的状况，但是场景不多，问题不大。
+不过需要安装系统的ruby环境倒是挺麻烦的，希望他们以后针对这个问题提出改进方案。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1454,91 +1524,6 @@ cp wp-config-sample.php wp-config.php
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/learn-programming/">从零开始学编程</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-23T15:40:00+08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2013</time>
-        
-         | <a href="/blog/learn-programming/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="https://dl.dropbox.com/u/1167873/blog/KRDG0Sq.png" alt="image" /></p>
-
-<p>很多人想学习如何编程，我这里整理一下资料，被问到的时候可以直接丢这个地址。
-这里是一个学习过程简介，目标是针对想正正经经把编程学好的人，
-其他学习动力学习方向什么的不讨论。</p>
-
-<p>步骤整理：</p>
-
-<ul>
-<li>掌握学习和编程的环境linux。</li>
-<li>学会一门简单的语言python。</li>
-<li>用python开始做点小东西。</li>
-</ul>
-
-
-<p>首先我们编程的开发和生成环境一般是在linux下面，不懂什么是linux没有关系，
-看几本书：<a href="http://www.amazon.com/gp/product/1593274254">1</a>，
-<a href="http://www.amazon.com/gp/product/0672336243">2</a>。</p>
-
-<p>新手可以先不把自己的操作系统干掉，用虚拟机软件安装linux。这里推荐Virutalbox。
-使用教程在<a href="http://www.psychocats.net/ubuntu/virtualbox">这里</a>。</p>
-
-<p>适应和环境以及看完这几本书以后，就可以开始学习写代码了：</p>
-
-<p>我这里推荐python，它是一门很简单易学的语言，并且用途也非常广。
-这里推荐<a href="http://learnpythonthehardway.org/book/">一本书</a>，
-以及<a href="http://docs.python.org/2/tutorial/index.html">官方教程</a>。</p>
-
-<p>到这里，你已经会使用一门语言了，但是语言本身不能实现具体的东西，看你的兴趣，是想写一个图形化工具，还是做一个小网站？</p>
-
-<p>如果想写图形化工具的话，你可以用一个图形化的库Tk，<a href="http://www.tkdocs.com/tutorial/index.html">这里是书籍</a>，
-或者写一个网站，这里是<a href="http://openclassroom.stanford.edu/MainFolder/CoursePage.php?course=WebApplications">一个教程</a>。</p>
-
-<p>上面是整体的过程，如果在中间遇到问题应该如何解决呢？</p>
-
-<ul>
-<li>首先是查对应东西的文档。一般来说，技术都有官方网站，官方文档，以及官方教程。一般来说，里面都会清楚所有步骤，以及常见问题的解法。</li>
-<li>然后是google。你遇到的问题大多数其他人都遇到了。用英文把自己遇到的问题描述清楚。</li>
-<li>再然后是请教社区。所有技术领域，都会有对应的技术社区，用你google的技术找到这个技术的官方网站以及官方社区，然后用英语把自己的问题描述清楚。</li>
-<li>如果是编程领域的问题，比如一个程序出现问题不知道怎么解决，你也可以去<a href="http://stackoverflow.com/">技术问答社区Stackoverflow</a>里面询问。</li>
-</ul>
-
-
-<p>到这里你基本上算是会编程了，不过离能够掌握还差很远，你需要懂得计算机基础，算法，软件工程，以及很多其他的东西。。
-不过这又是另外一个教程里面的事情了。</p>
-
-<p>最后总结一下学会编程的要点：学会google，加入社区，多想多练。
-编程这门技术是所有人都能够掌握的，你需要的是信心和努力，当然还有一定程度的英文阅读能力。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1556,6 +1541,10 @@ cp wp-config-sample.php wp-config.php
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a>
       </li>
     
@@ -1569,10 +1558,6 @@ cp wp-config-sample.php wp-config.php
     
       <li class="post">
         <a href="/blog/commandline-proxy/">命令行下使用全局代理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/debug-rails-autolink/">调试rails autolink</a>
       </li>
     
   </ul>
