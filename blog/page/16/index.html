@@ -9,16 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="注意事项 为了统一,docstring的注释用 """ """
-不要硬性说返回什么,因为无法确定.要表示会返回什么.
-class的docstring要与上下分离开来,表示单独的一个部分.
-override重载和extend扩展要注明
-fill-paragraph断行 实例 1
-2
-3
-4
-5
-6 &hellip;">
+  <meta name="description" content="问题 在c/c++里面,如果一个xxx.c要暴露出接口给其他文件的话,一般是提供一个xxx.h的文件作为接口,然后其他文件会把xxx.h文件包含进自己里面去,这样就可以知道xxx.c提供了什么. 但是会出现这样的问题,如果一个xxx.h文件被包含了N次,那么项目在编译的时候, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,6 +78,111 @@ fill-paragraph断行 实例 1
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/how-to-use-pre-compiled-header/">如何使用预编译头以及预编译头的原理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/how-to-use-pre-compiled-header/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>问题</h2>
+
+<p>在c/c++里面,如果一个xxx.c要暴露出接口给其他文件的话,一般是提供一个xxx.h的文件作为接口,然后其他文件会把xxx.h文件包含进自己里面去,这样就可以知道xxx.c提供了什么.</p>
+
+<p>但是会出现这样的问题,如果一个xxx.h文件被包含了N次,那么项目在编译的时候,会把这部分的代码重复编译N次,当这个xxx.h文件非常大的时候,编译速度就很慢了.比如xxx.h代表了一个库.(Qt,
+windows等)</p>
+
+<h2>解法</h2>
+
+<p>为了解决这个问题,我们可以先把头文件编译好,然后再包含到其他文件里面去.这样,每个引用了该头文件的源文件就不需要再次编译这部分了.</p>
+
+<h2>示例</h2>
+
+<p>来自:
+<a href="http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc">http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc</a></p>
+
+<p>建立以下文件:</p>
+
+<p>stdafx.h:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;string&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>a.cpp:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &quot;stdafx.h&quot;</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Hi&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编译和执行命令:</p>
+
+<pre><code>g++ -c stdafx.h -o stdafx.h.gch
+g++ a.cpp
+./a.out
+</code></pre>
+
+<p>删除了stdafx.h文件之后,执行g++ a.cpp照样编译成功.</p>
+
+<p>实现的原理很简单:</p>
+
+<ul>
+<li>首先把一个stdafx.h头文件,编译成stdafx.h.gch.</li>
+<li>当执行<code>g++ a.cpp</code>的时候,g++编译器会先去找stdafx.h.gch， 把它包含进来.这样就节省了编译时间.</li>
+</ul>
+
+
+<p>如果stdafx.h被很多源文件引用,节省的编译时间是很可观的.</p>
+
+<h2>结论</h2>
+
+<p>利用预编译头文件,可以很明显地感觉到编译速度的提升.建议大家尝试一下.</p>
+
+<p>还有一个有点相关的问题,如果修改了一个用到很多的头文件,就需要把所有用到这个头文件的源文件编译一遍,基本上等于重新编译了.所以,尽量少修改这种头文件.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -647,59 +743,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/how-to-learn-API/">如何学习API</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-01T22:08:26+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2009</time>
-        
-         | <a href="/blog/how-to-learn-API/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在网络上面看了很多文档，都是要用到的时候，随便看一遍，然后拷贝一下代码的。</p>
-
-<p>在实际的使用过程中，发现这样的方式很没有效率，经常写着写着，就发现不知道API怎么调用了——这样的过程在开发过程中，非常经常地出现。</p>
-
-<p>我以前认为，在开发前通读一遍，甚至实际把所有的API写一遍，是很困难的，因为很无聊，也很难记忆，也很耗时间。</p>
-
-<p>但是“认为”这样考虑事情，完全不是科学的分析方法。如果我要分析什么方法学习API最快，首先需要找几个难度，长度差不多的API，然后统计学习时间，以及统计实际开发过程中损耗的时间，最后要review代码，看看代码的质量如何。</p>
-
-<p>做一个初略的统计：</p>
-
-<p>只是看API：对于python 处理 ini
-格式文件的API，我阅读通读时花了16分钟，现在已经记忆不深了。</p>
-
-<p>如果要写代码的话，大致能够记得怎么写，要用到哪些API（需要把文档开着），以及需要的注意事项。</p>
-
-<p>而随便看看文档就继续写代码的耗时——不需要去测量，因为这样的代码含有质量缺陷，不可接受。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/17/">&larr; Older</a>
@@ -717,6 +760,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/recommander-similar-items/">如何实现推荐类似文章功能</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a>
       </li>
     
@@ -730,10 +777,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/reliable-email-delivery/">保证电子邮件的送达率</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/commandline-proxy/">命令行下使用全局代理</a>
       </li>
     
   </ul>
