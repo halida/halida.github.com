@@ -4,7 +4,7 @@
   <title><![CDATA[Category: game | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/game/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-06-13T22:13:57+08:00</updated>
+  <updated>2013-07-18T16:09:50+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/ftl/"/>
     <updated>2012-10-05T16:05:00+08:00</updated>
     <id>http://halida.github.com/blog/ftl</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/bkIoK.jpg"></p>
+    <content type="html"><![CDATA[<p>{% img /images/posts/bkIoK.jpg %}</p>
 
 <p>很早以前， 我就是一个电脑游戏玩家了， 初中时期的魔兽一代， 毁灭公爵， 赤壁； 到高中的博得之门， 星际， 半条命， 再到大学的魔兽争霸， 无冬之夜；
 新的游戏， 符合我的喜好， 再加上能够在我的PC上面跑起来， 我都会拿来玩一遍。
@@ -51,11 +51,11 @@
 
 <p>实际的游戏画面：</p>
 
-<p><img src="/images/posts/pcy5f.png"></p>
+<p>{% img /images/posts/pcy5f.png %}</p>
 
 <p>大地图：</p>
 
-<p><img src="/images/posts/WfZrb.png"></p>
+<p>{% img /images/posts/WfZrb.png %}</p>
 
 <p>FTL和传统的roguelike游戏相比， 内容上面完全改变了， 但是roguelike的核心精神得到了保留。
 游戏的过程中， 一旦失败， 存档就不复存在， 没有拯救的机会，

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-06-13T22:13:57+08:00</updated>
+  <updated>2013-07-18T16:09:50+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/recommander-similar-items/"/>
     <updated>2013-06-13T20:31:00+08:00</updated>
     <id>http://halida.github.com/blog/recommander-similar-items</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/recommander-similar-items.jpg"></p>
+    <content type="html"><![CDATA[<p>{% img /images/posts/recommander-similar-items.jpg %}</p>
 
 <p>我最近在调整我们网站<a href="http://gurudigger.com">GuruDigger</a>的类似文章推荐功能。
 原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
@@ -117,7 +117,7 @@ end
 <p>我采用<a href="http://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>的方式给文章中所有词算好一个权重。
 关于tf-idf的介绍，可见<a href="http://www.ruanyifeng.com/blog/2013/03/tf-idf.html">这里</a>。</p>
 
-<p><img src="/images/posts/tf-idf.png"></p>
+<p>{% img /images/posts/tf-idf.png %}</p>
 
 <p>我采用的是一个叫<a href="https://github.com/reddavis/TF-IDF">tf_idf</a>的Gem，
 同时我把文章title，tag等也当做词加入进文章内容中。为了表示title和tag的重要性，
@@ -146,7 +146,7 @@ end
 这种方法叫<a href="http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html">余弦相似度</a>。
 按照<a href="en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
 
-<p><img src="/images/posts/cosine-similarity.png"></p>
+<p>{% img /images/posts/cosine-similarity.png %}</p>
 
 <p>实现起来很简单：</p>
 
@@ -359,7 +359,7 @@ fi
     <link href="http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm/"/>
     <updated>2013-03-17T11:31:00+08:00</updated>
     <id>http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/b0F7F9a.png"></p>
+    <content type="html"><![CDATA[<p>{% img /images/posts/b0F7F9a.png %}</p>
 
 <p>According to the <a href="http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/">NEWS</a>, ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.</p>
 
