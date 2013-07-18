@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "网站如何支持视网膜屏幕设备"
+title: "如何支持视网膜屏幕"
 date: 2013-07-18 15:42
 comments: true
 categories: frontend
