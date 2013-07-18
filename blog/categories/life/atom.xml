@@ -4,7 +4,7 @@
   <title><![CDATA[Category: life | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/life/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-07-18T16:09:50+08:00</updated>
+  <updated>2013-07-18T16:12:20+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -18,7 +18,7 @@
     <link href="http://halida.github.com/blog/kazakhstan-time-zone/"/>
     <updated>2012-10-14T22:56:00+08:00</updated>
     <id>http://halida.github.com/blog/kazakhstan-time-zone</id>
-    <content type="html"><![CDATA[<p>{% img /images/posts/rQmBc.png %}</p>
+    <content type="html"><![CDATA[<p><img src="/images/posts/rQmBc.png"></p>
 
 <p>我一直认为， 尝试新事物， 是一个具有完全行为能力的人应该具有的习惯。 不管是接触新的东西， 或者是对自己现有生活的调整，
 不仅可以给生活增加调剂， 也是对现有生活的优化， 有的时候， 因此获得更多的机会， 或者获得一个新的角度来重新审视自己的生活。</p>
