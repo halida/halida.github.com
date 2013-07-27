@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="大多数人每天上班的时候， 基本都是坐在座位上面， 面对电脑工作。 久坐， 往往会带来一些腰部和颈部的疾病，
-我在最近的几个月里面， 尝试了站立工作。 上面就是我的工作台设置。 就是把一个高度合适的座位放到台面上来而已。
-我能够找到刚好配起来的家具， 如果你找不到的话， 可以看这个解决方案。 &hellip;">
+  <meta name="description" content="最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,129 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/postfix/">Postfix架构初探</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-27T23:57:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
+        
+         | <a href="/blog/postfix/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
+
+<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
+
+<h2>什么是postfix</h2>
+
+<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
+
+<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
+
+<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
+
+<ul>
+<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
+<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
+</ul>
+
+
+<h2>如何配置</h2>
+
+<p>我发现<a href="https://help.ubuntu.com/community/Postfix">ubuntu的配置文档</a>已经非常全了， 可以安装上面来配置。
+邮件系统的用户和密码， 默认是采用unix的用户和密码， 但是很多时候我们的邮件系统是和真正的系统用户分开的，
+这个时候我们需要<a href="https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto">设置Virtual Mailbox</a>，
+postfix里面不包含针对邮件客户端的pop3/imap服务器， 所以需要另外安装dovecot， 前面的教程里面有具体的安装方法。</p>
+
+<h2>邮件流程</h2>
+
+<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
+
+<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
+
+<p>外面的服务器会通过smtp发送邮件， postfix服务器会响应, 然后最后保存到本地的邮件目录存放地上面。</p>
+
+<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
+
+<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
+
+<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
+
+<p><strong>如何验证用户</strong></p>
+
+<p>devocot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
+
+<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
+
+<ul>
+<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
+<li>postfix配置目录在<code>/etc/postfix</code></li>
+<li>dovecot配置目录<code>/etc/dovecot</code></li>
+<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
+<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
+<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
+</ul>
+
+
+<h2>更进一步的需求</h2>
+
+<p>前面做的事情只是比较基本的一些， 如果要成为生产环境， 还是需要一些其他的事情：</p>
+
+<ul>
+<li>用户管理系统</li>
+<li>spam过滤</li>
+<li>保证自己不被当作spam</li>
+</ul>
+
+
+<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
+
+<h2>2012-10-26问题整理</h2>
+
+<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
+
+<ul>
+<li>不是很懂postfix， 看文档</li>
+<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
+<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
+<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
+</ul>
+
+
+<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1161,106 +1284,6 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/you-can-be-happy/">你想要多快乐，就能多快乐</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-10T10:50:00+08:00" pubdate data-updated="true">Sep 10<span>th</span>, 2012</time>
-        
-         | <a href="/blog/you-can-be-happy/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.cavstheblog.com/wp-content/uploads/2012/03/happy-sad.jpeg" alt="image" /></p>
-
-<p>我们每个人都有开心和沮丧的时候。</p>
-
-<p>工资涨了， 和朋友一起去外面玩， 很久没有见面的老朋友来拜访， 遇到这些事情， 我们会开心；</p>
-
-<p>丢失了手机， 被老板或父母教训， 不小心摔坏了心爱的杯子， 遇到这些事情， 我们会沮丧；</p>
-
-<p>我们总是想让自己更开心一些， 但是生活中往往那些让你郁闷的事情发生的更多一些，
-要不然就是平平淡淡， 上学放学， 上班下班， 吃饭睡觉。</p>
-
-<p>不过在我们身边， 往往有一类人， 他们的生活不是很好， 或许一直都混得很惨，
-读书掉车尾， 工作天天被老板骂， 或者在街上摆小摊，
-不过他们一直保留着笑容， 好像天天都很快乐， 情绪一直很high，
-不像我们大多数， 摆着一副 “我很烦， 不要来惹我“的表情。</p>
-
-<p>他们到底用了什么魔法？ 能够在生活不如意的时候， 保持快乐？</p>
-
-<p>抱着这样的疑问， 你可能上前去问： “请问你， 为什么这么快乐呢？”</p>
-
-<p>她可能给出一些匪夷所思解答： “因为今天天空云彩很漂亮啊～”</p>
-
-<p>你可能又问： “但是今天你又被老板骂耶。。”</p>
-
-<p>她可能好像一点都不在意的样子： “又不是第一天了， 都习惯啦。。”</p>
-
-<p>这个时候， 你估计只有摇摇头, 摆摆手， 当她脑子里缺根筋了。</p>
-
-<p>不过且慢， 我们需要的是快乐， 如果我们可以模拟这样的状况， 那么我们不就掌握了快乐的诀窍吗？</p>
-
-<p>假如， 我们遇到不开心的事情， 可以摆摆手把问题撇到一边， 说， “生活总是会遇到不开心的事情啦～”；</p>
-
-<p>假如， 我们可以因为各种小事而兴奋半天： “今天又是一个大晴天耶！”；</p>
-
-<p>那么我们应该要更快乐的吧。</p>
-
-<p>不过大家可能会说： “遇到这样那样的事情， 怎么可能摆摆手就过去了嘛， 还有这些无关紧要的事情， 我怎么可能开心得起来。。”</p>
-
-<p>但是有人就能够开心得起来， 那么， 我们是否可以怀疑一下：</p>
-
-<p>事情发生了也就发生了， 可能是好事也是坏事。但是因为我们的认知状况不同， 会产生完全不一样的情感反应！</p>
-
-<p>也就是说， 我们可以通过改变自己对事物的解读方式， 改变我们的情感反应， <strong>我们自己的情感， 是可以被自己操控的</strong>！</p>
-
-<p>从理论上， 我们可以做到， 想让自己多快乐， 就能多快乐， 不需要改变周围的事物， 只是改变自己的认知， 来达到让自己更快乐的目的。</p>
-
-<p>我们每天辛苦工作， 休息日还要加班， 很多时候为了更好的房子， 更好的服装， 可以去更多的地方玩， 这些的目的， 都是为了让我们更快乐，
-但是每个人的能力不同， 我们认为自己需要的物质条件， 可能永远都无法获得， 我们可能永远都没有办法在居住的城市里面买到一套房子。</p>
-
-<p>但是如果我们只需要改变自己对事物的看法， 就能获得快乐， 那么就完全可以放下辛苦工作， 只赚一点点生活费， 也能生活得很快乐了。</p>
-
-<p>那么我们可以尝试一下， 遇到事情， 用能够给自己带来快乐的方式解读：</p>
-
-<p><strong>被老板骂， 很开心</strong>， 因为： “老板关心我的工作， 而不是把我炒鱿鱼， 还来教训我， 这是一个多么好的反思自己工作方式的机会呀～”</p>
-
-<p><strong>丢了手机， 很开心</strong>， 因为： “还好遇到的是小偷， 如果硬抢， 那么我丢的可不一定只是手机了， 可能手也没有了。。”</p>
-
-<p><strong>不小心摔坏了心爱的杯子， 很开心</strong>， 因为： “旧的不去， 新的不来， 我有机会用到更喜欢的杯子了！”</p>
-
-<p>听起来很阿Q， 但是我们获得了快乐的能力， 可以不在执着于一些我们不真正需要的东西了， 因为我们能够让自己， 想要多快乐， 就能多快乐！</p>
-
-<p>恩， 还没有完， 我们是否可以进一步想想, 这样我们也能够想让自己多不快乐， 就多不快乐，
-为什么要这样呢？ 因为<strong>情感只是我们的工具</strong>（待续）。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1278,6 +1301,10 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/nested-set-model/">nested set model介绍</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/website-support-retina-device/">如何支持视网膜屏幕</a>
       </li>
     
@@ -1291,10 +1318,6 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
     
       <li class="post">
         <a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/email-css/">如何写邮件样式</a>
       </li>
     
   </ul>
