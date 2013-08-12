@@ -262,17 +262,17 @@ ruby代码实现：</p>
 <p>移动一个节点比较复杂，因为要把范围内的子项也一起移动走。
 操作基本上就是把节点范围内的所有项目（包括自己）移动到目标位置，
 然后把目标位置和当前位置之间的所有项目也更新到应该对应的位置上面。
-具体实现比较复杂，你可以去看<a href="https://github.com/collectiveidea/awesome_nested_set/blob/master/lib/awesome_nested_set/move.rb">awesome_nested_set的具体实现</a></p>
+具体实现比较复杂，你可以去看<a href="https://github.com/collectiveidea/awesome_nested_set/blob/master/lib/awesome_nested_set/move.rb">awesome_nested_set的具体实现</a>。</p>
 
 <p>其他的操作非常简单就不给出示例了。</p>
 
 <h2>结论</h2>
 
 <p>采用nested set model可以很方便地实现树状结构，
-具有很好的查询效率。不过在添加项目和移动项目上面带有很大的代价。
-如果项目非常多，操作就不是很经济了。
-我在想，应该有好的算法能够支持移动和添加节点，
-至少让复杂度控制在O(log N)访问里面，不知道大家是否知道有这样的算法？</p>
+具有很好的查询效率。不过在添加项目和移动项目上面有比较大的代价。
+如果项目非常多，操作可能就不是很经济了。
+我在想，应该有好的算法能够让每次更新的项目变得最少，
+不知道大家是否知道有这样的算法？</p>
 
 <h2>使用到的工具和库</h2>
 
@@ -330,6 +330,8 @@ ruby代码实现：</p>
         <a class="basic-alignment left" href="/blog/website-support-retina-device/" title="Previous Post: 如何支持视网膜屏幕">&laquo; 如何支持视网膜屏幕</a>
       
       
+        <a class="basic-alignment right" href="/blog/website-cache/" title="Next Post: 网站cache机制">网站cache机制 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -349,6 +351,10 @@ ruby代码实现：</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/website-cache/">网站cache机制</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/nested-set-model/">nested set model介绍</a>
       </li>
     
@@ -362,10 +368,6 @@ ruby代码实现：</p>
     
       <li class="post">
         <a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a>
       </li>
     
   </ul>

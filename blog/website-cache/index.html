@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>关于宗教信仰 - 网络寻租</title>
+  <title>网站cache机制 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="每个有基本好奇心的人，都会在人生的某个时候，考虑人生观世界观这种问题，
-这个时候，他会去思考，去探索世界上其他人的解决方案，这个时候，他会正视宗教，
-正视信仰，正视神是否存在。 每个人可能有不同的思考方式，有不同的探索过程，乃至不同的结论。
-结论本身可能不是那么重要，探索过程， &hellip;">
+  <meta name="description" content="在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
+我在这里整理一下自己在网站开发中使用cache的思路。 首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
+中间经过了很多的层级， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/i-am-a-atheist/">
+  <link rel="canonical" href="http://halida.github.com/blog/website-cache/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">关于宗教信仰</h1>
+      <h1 class="entry-title">网站cache机制</h1>
     
     
       <p class="meta">
@@ -100,7 +99,7 @@
   
 
 
-<time datetime="2013-02-27T11:37:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time>
+<time datetime="2013-08-11T19:45:00+08:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,85 +108,101 @@
   </header>
 
 
-<div class="entry-content"><p><img src="/images/posts/ArJcjAP.png"></p>
+<div class="entry-content"><p><img src="/images/posts/cache.jpeg"></p>
 
-<p>每个有基本好奇心的人，都会在人生的某个时候，考虑人生观世界观这种问题，
-这个时候，他会去思考，去探索世界上其他人的解决方案，这个时候，他会正视宗教，
-正视信仰，正视神是否存在。</p>
+<p>在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
+我在这里整理一下自己在网站开发中使用cache的思路。</p>
 
-<p>每个人可能有不同的思考方式，有不同的探索过程，乃至不同的结论。
-结论本身可能不是那么重要，探索过程，乃至个人对这些问题的明确，
-有可能是最重要的。</p>
+<p>首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
+中间经过了很多的层级，按照用户端到服务器端的距离，可以分为：</p>
 
-<h2>我与宗教信仰</h2>
+<ul>
+<li>用户端：用户在浏览器上面进行一个操作。</li>
+<li>http通讯：浏览器根据用户操作，发起一个http请求并收到来自服务器的回复。</li>
+<li>页面渲染：网站服务器根据请求渲染页面返回用户。</li>
+<li>数据model：根据请求生成的对象模型和业务模型。</li>
+<li>数据库查询：服务器上面缓存的数据，提供数据持久化和访问服务。</li>
+</ul>
 
-<p>最早望向宗教信仰，在我记忆中，可能需要回溯到初中高中，那个时候的晚上，
-我在写家庭作业的同时，未免无聊，我会开启收音机，收听不知道是来自哪个角落的频道。
-有的时候，我会收到一个宗教频道，在每天晚上，有时会放一些宗教的歌曲，
-有时会朗读一本<a href="http://zh.wikipedia.org/wiki/%E5%A4%A9%E8%B7%AF%E6%AD%B7%E7%A8%8B">天路历程</a>的书。
-那个时候，我感受到宗教对心灵的抚慰，我也有尝试“和神沟通”，但是一直以来，
-并没有什么超自然的造物来回应我。</p>
 
-<p>经过了大学阶段，工作阶段，我逐渐接触了世界上面其它的宗教，佛教，伊斯兰教，
-知道了新耶稣的教派竟然有如此之多，也感受了不少的教堂活动。
-一直以来，我对于他们的理解都是感受层面的，模模糊糊始终没有彻底明白它们做的是什么，
-神是否存在？是否人有灵？是否有死后的世界？我不确定有，但是也没有确定没有。</p>
+<p><img src="/images/posts/website_model.png"></p>
 
-<p>直到最近，我跟踪方舟子的文章之后，发现他早期写了大量批判宗教的文章，
-阅读了<a href="http://www.xys.org/fang/religion.html">这些文章</a>，
-我才脱离了这层层的迷雾，从更高层的地方看到了全貌。
-原先我以为，含有某种我不了解的神秘事务的宗教，包括基督教，包括伊斯兰教，甚至包括佛教，
-背后的神秘其实不存在。圣经中我无法理解从而感到玄秘的内容，来源于迷信，谬误，宣传目的的修改，
-并没有更高层次的含义；佛教中深不可测的智慧，很多也只是故弄玄虚。</p>
+<p>同时，我们可以发现一些特性和规律：</p>
 
-<p>有的时候，从一个方向上面了解事物，你看到的是混沌复杂，搞不清状况；
-但是换了一个角度，换了一个方向，你会发现事情一下就明朗起来，复杂的东西变得简单，
-无法理解的东西变得可以理解，玄妙的东西看起来其实就那么回事。</p>
+<ul>
+<li>用户的访问符合2/8原理，大部分的访问集中在局部的功能和页面上面。</li>
+<li>上层访问下层资源的频率，也大致符合2/8原理。</li>
+<li>用户的响应时间取决于一次请求的深度。</li>
+</ul>
 
-<h2>为什么我不相信神？</h2>
 
-<p>是否有神这个问题，如果我们纯粹以哲学思考的角度来看，可能没有什么结论。
-但是如果我们把它当做一个科学问题来思考，我们可以很容易地得到结论：神并不存在。</p>
+<p>我们可以根据这些特性，利用cache机制来优化整体访问延迟时间，以及优化服务器性能。</p>
 
-<p>从近代开始，当人们认识到理性，不再预设神存在，而是认真地去寻找神存在的证据。
-但是直到现在，我们还是没有办法找到任何证据，能够支持一个拥有无上威能的智慧的存在。
-有人会说神不在干预人世，但是根据奥卡姆剃刀，这些的神存在与否都没有意义。</p>
+<h2>方法和注意点</h2>
 
-<p>人是不容易接受现实的，但是当正视了现实的时候，人才能获得成长。
-当正视神不存在这个现实了之后，我们可以发现，我们能够开始理解宗教了。</p>
+<h3>短接</h3>
 
-<h2>宗教的意义</h2>
+<p>针对每个请求，越在上层返回，请求处理消耗的时间越少。所以如果要尽量提升性能，就要尽量短接请求。
+我们可以用cache，预测结果，拆分请求的方式来减少反应时间。</p>
 
-<p>明确了神不存在，那么我们可以把宗教当做是人的造物来理解。
-宗教故事并不代表更高存在给人类的授意，而是迷信，神话，小说的混合，
-宗教组织存在必然满足经济政治规律，宗教活动满足人们的一些社会精神文化需要。</p>
+<ul>
+<li>cache：如果下面层级的数据没有更新，可以缓存这部分的数据，下次请求进来的时候返回，消除下层操作的时间成本和性能消耗。</li>
+<li>预测结果：针对结果确定的请求，可以先返回结果，后进行操作。
+比如浏览器端用户点击关注按钮，可以先更新页面，然后ajax发起请求；服务器端直接返回成功的结果，后台异步再进行处理。</li>
+<li>拆分请求：如果一个请求有多步操作，那么可以先返回快的操作，然后再返回慢的操作。
+比如先返回外框页面，通过ajax获得内部耗时区块信息；或者服务端多线程渲染不同的区块，最后合并返回给用户。</li>
+</ul>
 
-<p>神不存在，宗教是人的造物，这样是解释宗教的最好的理论了。</p>
 
-<h2>结论</h2>
+<p>针对不同层级的cache短接方法：</p>
 
-<p>经过了这些学习和思考，我可以说我是一个理性无神论者了。
-我可以和信仰宗教的人交流，知道他或者她是什么类型的信仰者，
-我可以和任何人来进行宗教的讨论，并且提出我的观点和针对这些观点的推理，
-最重要的是，我对自己和这个世界的理解更为深入了。</p>
+<ul>
+<li>用户端：用js缓存数据，用户点击的时候，渲染对应的区块。</li>
+<li>http：如果用户已经请求过这个页面，而这个页面也没有更改过，可以利用<a href="http://www.mobify.com/blog/beginners-guide-to-http-cache-headers/">http的cache机制</a>只返回http头，基本不消耗服务器资源以及砍掉服务器准备数据和渲染时间。</li>
+<li>页面渲染：如果页面其中一个区块的数据没有变更，直接返回上次渲染的页面。</li>
+<li>数据model和数据库查询：同上，数据没有变更，就可以返回上次生成的对象。</li>
+</ul>
 
-<h2>FAQ</h2>
 
-<p>还有一些我觉得值得提一下的东西，整理成FAQ。</p>
+<h3>平衡</h3>
 
-<p>不信神是一个结论，重要的是理性和批判性思考，如果这个世界真有神的话，
-思考的结论就是信神的存在。但是遵不遵从这个神的道，又是另外一回事了。</p>
+<p>在进行cache设计的时候，我们需要平衡好开发成本，系统复杂度，性能，以及资源消耗，
+要对做的事情，带来什么样的后果和收益心中有数，针对不同的策略进行权衡。</p>
 
-<p>不信神和宗教不影响欣赏宗教造物，圣诞节我会去教堂，以及有兴趣的时候也会参与礼拜活动。</p>
+<ul>
+<li><p>页面渲染：如果一个页面包含有静态的部分和动态的部分，可以把他们拆分开来，缓存静态的部分，节省这部分的渲染时间。
+但是如果这两块页面混杂起来，需要花费一些心思，比如用js来动态合并。由此给前端带来一定的复杂度。这部分的复杂度会带来更多的bug，更高的测试成本，以及未来改动更加困难。</p></li>
+<li><p>caceh机制需要考虑过期的方式。如何应对嵌套cache？如果cache内部是根据多个对象渲染的，
+是基于推还是基于拉的方式让cache过期？rails在这方面有<a href="https://github.com/rails/cache_digests">比较成熟的解决方案</a>。</p></li>
+</ul>
 
-<p>不信神并不代表没有信仰，每个人心目中都有一个“天堂”的定义和一个“地狱”的定义。
-远离地狱，走向天堂是信仰的主要组成部分。</p>
 
-<p>万物有灵其实也是错的。椅子并不会有情绪。当然你可以定义一个情绪的概念出来。</p>
+<h3>降维</h3>
 
-<p>为了融入社区而接受宗教信仰这个事情比较恶心。</p>
+<p>如果cache的数据维度过多，会造成cache爆炸。比如说页面需要根据语言，用户，国家等来生成，各维护一个版本的cache的话就有点多了，需要想办法降低维度：</p>
 
-<p>佛教其实也没有那么玄乎，不要把它想得太复杂。人总是需要有一个地方拜一拜。</p>
+<ul>
+<li>合并重复的数据，比如合并一些重复的国家和语言。</li>
+<li>拆分静态和动态的数据，比如前端js动态更新页面来做多国语言和跟用户有关的内容。不过也需要权衡由此带来的复杂度。</li>
+</ul>
+
+
+<p>同时也要考虑这些手段带来的复杂度是否能够把控。</p>
+
+<h3>热点优化</h3>
+
+<p>2/8原理：在消耗资源多的地方使力。比如在网站首页，列表的前几页等经常访问到的页面花大功夫，
+而不要太花时间去优化很少被访问到的地方。</p>
+
+<h3>ORM cache</h3>
+
+<p>csdn robbin<a href="http://robbinfan.com/blog/38/orm-cache-sumup">针对ORM cache优化</a>非常有心得，可以学习一下。</p>
+
+<h3>cache服务器</h3>
+
+<p>cache的实现方式，可以用文件，内存，或者单独的cache服务器。
+如果服务端采用多个进程来服务，最好采用一个cache服务器，
+这样不会出现每个进程各自维护一份同样内容cache的状况。</p>
 </div>
 
 
@@ -210,7 +225,7 @@
   
 
 
-<time datetime="2013-02-27T11:37:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time>
+<time datetime="2013-08-11T19:45:00+08:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
       
 
 
@@ -218,7 +233,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/i-am-a-atheist/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/i-am-a-atheist/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/website-cache/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/website-cache/" >Tweet</a>
   
   
   
@@ -227,10 +242,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/god-as-service/" title="Previous Post: 进程监控遇到的麻烦事">&laquo; 进程监控遇到的麻烦事</a>
+        <a class="basic-alignment left" href="/blog/nested-set-model/" title="Previous Post: nested set model介绍">&laquo; nested set model介绍</a>
       
-      
-        <a class="basic-alignment right" href="/blog/reverse-ssh/" title="Next Post: 如何从外网访问内网主机">如何从外网访问内网主机 &raquo;</a>
       
     </p>
   </footer>
@@ -352,8 +365,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/i-am-a-atheist/';
-        var disqus_url = 'http://halida.github.com/blog/i-am-a-atheist/';
+        var disqus_identifier = 'http://halida.github.com/blog/website-cache/';
+        var disqus_url = 'http://halida.github.com/blog/website-cache/';
         var disqus_script = 'embed.js';
       
     (function () {
