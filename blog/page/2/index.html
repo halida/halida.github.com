@@ -9,7 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如： 我今天发现一个好的网站，它是：www.dreamore.com 而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。 我今天发现一个好的网站，它是：www. &hellip;">
+  <meta name="description" content="最近Bitbucket的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。 询问了友邻之后，有几个工具浮出水面：tsocks以及proxychains。 调研了一下tsocks，2002年就不再更新了，osx下面编译没有成功， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/commandline-proxy/">命令行下使用全局代理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/commandline-proxy/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/wlogo.png"></p>
+
+<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
+
+<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
+
+<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
+
+<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
+
+<p>首先需要跑一个socks5 proxy，使用：</p>
+
+<pre><code>$ ssh -fN -D 4321 some.example.com
+</code></pre>
+
+<p>然后设置参数执行命令就好了：</p>
+
+<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -877,144 +933,6 @@ rvm use 2.0.0
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/display-image-after-it-is-downloaded/">Display Image After It Is Downloaded</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-10T18:40:00+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2013</time>
-        
-         | <a href="/blog/display-image-after-it-is-downloaded/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It is very annoying when you see a image is loading in a webpage:</p>
-
-<p><img src="/images/posts/CPyoOWx.png"></p>
-
-<p>Lots of website support this kind of effect to get rid of this.
-when the image is loading, it is displaying a &#8220;loading&#8221; effect, like this:</p>
-
-<p><img src="/images/posts/m76L8U5.png"></p>
-
-<p>So how can we implement it to our website? The method is simple:</p>
-
-<ol>
-<li>Display a loading gif, and hide the image.</li>
-<li>After image loaded, hide gif, and display image.</li>
-</ol>
-
-
-<p>We can use JQuery <code>load</code> method <a href="api.jquery.com/load/">here</a> to add a callback to do the things in step 2 above.
-Use this html:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;loading_image&quot;</span> <span class="na">data-src=</span><span class="s">&quot;/images/demo.png&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>...
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;resources&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;image_loader&quot;</span> <span class="na">src=</span><span class="s">&quot;loader.gif&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>add run <code>init_loading_image</code> javascript list below.
-It is written in <a href="http://coffeescript.org/">coffeescript</a>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nv">init_loading_image = </span><span class="nf">()-&gt;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.loading_image&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nv">self = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-</span><span class='line'>        <span class="nv">loader = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.resources .image_loader&#39;</span><span class="p">).</span><span class="nx">clone</span><span class="p">()</span>
-</span><span class='line'>        <span class="nx">loader</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">load</span> <span class="o">-&gt;</span>
-</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">prev</span><span class="p">().</span><span class="nx">hide</span><span class="p">()</span>
-</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;show&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">))</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_loading_image</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For each <code>.loading_image</code>, place a loader gif in front of it.
-I set the image to opacity 0.0, so the image is downloading, and user will not see this image.
-after image loaded, hide the gif, and show the image.</p>
-
-<p>The css is list below. I&#8217;m using <a href="http://sass-lang.com/">sass</a> + <a href="http://compass-style.org/">compass</a> for clearer css:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.resources</span>
-</span><span class='line'>  <span class="nt">display</span><span class="o">:</span> <span class="nt">none</span>
-</span><span class='line'><span class="nc">.loading_image</span>
-</span><span class='line'>  <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">0</span><span class="nc">.0</span><span class="o">)</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="nc">.show</span>
-</span><span class='line'>    <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">1</span><span class="nc">.0</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">+</span><span class="nt">transition-property</span><span class="o">(</span><span class="nt">opacity</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">+</span><span class="nt">transition-duration</span><span class="o">(</span><span class="nt">0</span><span class="nc">.3s</span><span class="o">)</span>
-</span><span class='line'><span class="nc">.image_loader</span>
-</span><span class='line'>  <span class="nt">position</span><span class="o">:</span> <span class="nt">absolute</span>
-</span><span class='line'>  <span class="nt">top</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
-</span><span class='line'>  <span class="nt">left</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
-</span><span class='line'>  <span class="nt">margin-top</span><span class="o">:</span> <span class="nt">-6px</span>
-</span><span class='line'>  <span class="nt">margin-left</span><span class="o">:</span> <span class="nt">-22px</span>
-</span><span class='line'>  <span class="nt">width</span><span class="o">:</span> <span class="nt">43px</span>
-</span><span class='line'>  <span class="nt">height</span><span class="o">:</span> <span class="nt">11px</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Very simple process, you can see <a href="http://jsfiddle.net/linjunhalida/kU2VU/2/">the demo here</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1032,6 +950,10 @@ after image loaded, hide the gif, and show the image.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/css-two-column/">css实现双栏同等高度</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/js-controller/">一种简单的前端框架写法</a>
       </li>
     
@@ -1045,10 +967,6 @@ after image loaded, hide the gif, and show the image.</p>
     
       <li class="post">
         <a href="/blog/website-support-retina-device/">如何支持视网膜屏幕</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/recommander-similar-items/">如何实现推荐类似文章功能</a>
       </li>
     
   </ul>

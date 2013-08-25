@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>福利社会为什么要不得 - 网络寻租</title>
+  <title>css实现双栏同等高度 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="一个人交税小于福利所得，得到利益。 一个人交税大于福利所得，得到损害。 人趋利避害。 长此以往，懒人越来越多，税收越来越少，社会破产。
-">
+  <meta name="description" content="问题 我们用css做双栏的方法，一般是通过边栏float: right，
+或者position: absolute; right: 0; top: 0来实现的。 但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/why-big-govenment-is-bad/">
+  <link rel="canonical" href="http://halida.github.com/blog/css-two-column/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">福利社会为什么要不得</h1>
+      <h1 class="entry-title">Css实现双栏同等高度</h1>
     
     
       <p class="meta">
@@ -98,7 +99,7 @@
   
 
 
-<time datetime="2008-02-15T22:08:26+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
+<time datetime="2013-08-25T08:05:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,13 +108,47 @@
   </header>
 
 
-<div class="entry-content"><p>一个人交税小于福利所得，得到利益。</p>
+<div class="entry-content"><h1>问题</h1>
 
-<p>一个人交税大于福利所得，得到损害。</p>
+<p>我们用css做双栏的方法，一般是通过边栏<code>float: right</code>，
+或者<code>position: absolute; right: 0; top: 0</code>来实现的。</p>
 
-<p>人趋利避害。</p>
+<p>但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色，还是用右栏的背景色就很难说了，
+因为如果用左栏颜色，右栏高度不够的时候颜色不对；用右栏颜色，左栏高度不够的时候颜色不对。</p>
 
-<p>长此以往，懒人越来越多，税收越来越少，社会破产。</p>
+<p>如图所示：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1JEqmNAwmnBN4ZxW6Mw_--qMD4F5yaNoUwBDYv0C0uRQ/pub?w=600&amp;h=720"></p>
+
+<p>那么我们应该怎么解决这个问题呢？解法很巧妙，采用下面的布局：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1TfJHqsQmOBuV9rDg9eF5A2VX9yjOO8tUYBQDm0mcB_Y/pub?w=600&amp;h=720"></p>
+
+<p>继承关系：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.L1
+</span><span class='line'>  .L2
+</span><span class='line'>    .L3l
+</span><span class='line'>    .L3r
+</span><span class='line'>    .clearfix</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，L2的高度是L3l和L3r中长的那个的高度，
+L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上面，
+这样无论左右栏的高度如何变化，左右栏的颜色都是正确的。</p>
+
+<p>示例代码如下：</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+
 </div>
 
 
@@ -136,15 +171,21 @@
   
 
 
-<time datetime="2008-02-15T22:08:26+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
+<time datetime="2013-08-25T08:05:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/frontend/'>frontend</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/why-big-govenment-is-bad/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/why-big-govenment-is-bad/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/css-two-column/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/css-two-column/" >Tweet</a>
   
   
   
@@ -153,10 +194,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/why-ask-why/" title="Previous Post: 为什么要问为什么">&laquo; 为什么要问为什么</a>
+        <a class="basic-alignment left" href="/blog/js-controller/" title="Previous Post: 一种简单的前端框架写法">&laquo; 一种简单的前端框架写法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/why-govenment-fails/" title="Next Post: 为什么政府没有效率">为什么政府没有效率 &raquo;</a>
       
     </p>
   </footer>
@@ -278,8 +317,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/why-big-govenment-is-bad/';
-        var disqus_url = 'http://halida.github.com/blog/why-big-govenment-is-bad/';
+        var disqus_identifier = 'http://halida.github.com/blog/css-two-column/';
+        var disqus_url = 'http://halida.github.com/blog/css-two-column/';
         var disqus_script = 'embed.js';
       
     (function () {
