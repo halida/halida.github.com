@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-08-25T09:09:32+08:00</updated>
+  <updated>2013-08-26T19:48:38+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[项目计划预估]]></title>
+    <link href="http://halida.github.com/blog/project-time-spending/"/>
+    <updated>2013-08-26T19:40:00+08:00</updated>
+    <id>http://halida.github.com/blog/project-time-spending</id>
+    <content type="html"><![CDATA[<p>进行一个项目开发项目，我们预期的状况是这样的：</p>
+
+<p><img src="http://halida.github.com/images/posts/2013_08_26_pm_1.jpg"></p>
+
+<p>需要实现一个例程，达到从A到B的一个操作。看起来很完美。</p>
+
+<p>但是实际开工之后却发现变成了这样的状况：</p>
+
+<p><img src="http://halida.github.com/images/posts/2013_08_26_pm_2.jpg"></p>
+
+<p>大量的细节在项目开始的时候没有预估到，比如：</p>
+
+<ul>
+<li>中间过程中出乎意料的复杂度。</li>
+<li>各种发现的例外状况。</li>
+<li>需求变更下的返工。</li>
+</ul>
+
+
+<p>这些状况构成了图片中其他的路径，工期的时间和路径的长度成等比关系。
+然后要把产品做得好，具体的分支细分还会更多。</p>
+
+<p>如果希望更快完成，我们可以尽量砍掉其中的路径：</p>
+
+<p><img src="http://halida.github.com/images/posts/2013_08_26_pm_3.jpg"></p>
+
+<ul>
+<li>开始之前有原型开发，预估到技术复杂度以及预先处理掉；</li>
+<li>例外状况不予接受，或者交给人来处理；</li>
+<li>小规模迭代，应对需求变更；至少尽快处理一个可用版本。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[css实现双栏同等高度]]></title>
@@ -1724,26 +1764,6 @@ sudo vi /etc/nginx/sites-available/yourserver
 <li><a href="http://railscasts.com/episodes/357-adding-ssl?view=asciicast">railscast</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
-    <link href="http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm/"/>
-    <updated>2013-03-17T11:31:00+08:00</updated>
-    <id>http://halida.github.com/blog/install-ruby2-dot-0-by-using-rvm</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/b0F7F9a.png"></p>
-
-<p>According to the <a href="http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/">NEWS</a>, ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.</p>
-
-<p>And here is the method about how to upgrade ruby under rvm:</p>
-
-<pre><code>rvm get head
-rvm install 2.0.0
-rvm use 2.0.0
-</code></pre>
-
-<p>Happy hacking, and keep fun~</p>
 ]]></content>
   </entry>
   
