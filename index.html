@@ -9,9 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="进行一个项目开发项目，我们预期的状况是这样的： 需要实现一个例程，达到从A到B的一个操作。看起来很完美。 但是实际开工之后却发现变成了这样的状况： 大量的细节在项目开始的时候没有预估到，比如： 中间过程中出乎意料的复杂度。
-各种发现的例外状况。
-需求变更下的返工。 这些状况构成了图片中其他的路径， &hellip;">
+  <meta name="description" content="首先解释一下基本的概念。 我们平时上网的时候， 比如访问douban.com， 电脑做的操作是， 首先连接上douban.com的服务器， 然后告诉服务器， 需要获取豆瓣的网页。 然后服务器会返回首页信息， 自己的电脑接收到了之后， 通过浏览器显示出一张网页出来。 但是有的时候， 有些网站的网页（ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +78,120 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pptp-vpn/">如何设置PPTP VPN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-21T10:04:00+08:00" pubdate data-updated="true">Sep 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/pptp-vpn/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>首先解释一下基本的概念。</p>
+
+<p>我们平时上网的时候， 比如访问douban.com， 电脑做的操作是， 首先连接上douban.com的服务器， 然后告诉服务器， 需要获取豆瓣的网页。 然后服务器会返回首页信息， 自己的电脑接收到了之后， 通过浏览器显示出一张网页出来。</p>
+
+<p>但是有的时候， 有些网站的网页（比如twitter）在传输过程中， 会在中间被政府屏蔽， 这样浏览器上面就会显示无法获取内容。</p>
+
+<p>为了解决这个问题， 我们一般的解决方案就是， 利用一台可以获取网站内容的服务器（主要在国外， 不会在中间被政府屏蔽）， 下载好网页， 然后加密一下（这样在中间政府就不知道你这个网页需要屏蔽了）， 传输回自己的电脑。</p>
+
+<p>简单画一下模型：</p>
+
+<p>原先的方式：</p>
+
+<pre><code>网站服务器 &lt; - 政府会在这里审查你看的东西 - &gt; 我的电脑
+</code></pre>
+
+<p>现在的方式：</p>
+
+<pre><code>网站服务器 &lt; - 这里是国外， 政府不审查 - &gt; 中转服务器
+中转服务器 &lt; - 数据加密了， 政府看不懂 - &gt; 我的电脑
+</code></pre>
+
+<p>能够实现这样功能的网络通讯方式有很多种， 这里我们提供一种最容易设置的方式： PPTP VPN。</p>
+
+<p><a href="http://zh.wikipedia.org/wiki/VPN">VPN</a>是一种网络虚拟技术， 简单地说， 就是你的电脑设置了VPN之后， 相当于和提供VPN的服务器在同一个局域网下面了， 你向网络发出的请求， 都通过这台服务器中转， 达到上面我们说需要实现的功能。</p>
+
+<p><a href="http://zh.wikipedia.org/wiki/PPTP">PPTP</a>是一种实现VPN的方法， 具体原理就不多说了， 用它的主要原因是windows电脑都默认带有这种VPN通讯方式， 设置起来方便一些。 不过缺点是容易在中间被干扰， 不是很稳定。</p>
+
+<h2>设置方式</h2>
+
+<p>首先你需要购买或者要到一个PPTP代理服务器的账号和密码，购买的话请自行Google。</p>
+
+<p>选择 开始 -> 控制面板， 点击网络和Internet连接， 在下面的页面点击： 创建一个到您的工作位置的网络连接。</p>
+
+<p><img src="/images/posts/pptp_vpn_1.png"></p>
+
+<p>选择虚拟专用网络连接（Virtual Private Network），</p>
+
+<p><img src="/images/posts/pptp_vpn_2.png"></p>
+
+<p>公司名称随便设置就好。</p>
+
+<p><img src="/images/posts/pptp_vpn_3.png"></p>
+
+<p>主机选择提供VPN服务的主机名称或者IP地址。</p>
+
+<p><img src="/images/posts/pptp_vpn_4.png"></p>
+
+<p>点击完成。</p>
+
+<p><img src="/images/posts/pptp_vpn_5.png"></p>
+
+<p>创建VPN完毕后， 需要设置一下。 回到网络和Internet连接页面， 点击网络连接。</p>
+
+<p><img src="/images/posts/pptp_vpn_6.png"></p>
+
+<p>你会看到刚刚建立的VPN网络， 右键点击属性：</p>
+
+<p><img src="/images/posts/pptp_vpn_7.png"></p>
+
+<p>安全面板， 点击高级， 点击设置， 点击允许这些协议， 扣掉 Microsoft CHAP， 只留下面MS-CHAP2。 一般的linux下面PPTP代理服务器只支持这个。</p>
+
+<p><img src="/images/posts/pptp_vpn_8.png"></p>
+
+<p>现在设置完毕了， 当你需要连接VPN的时候， 进入网络连接页面， 鼠标双击建立的网络。</p>
+
+<p><img src="/images/posts/pptp_vpn_9.png"></p>
+
+<p>会打开输入密码页面， 在这里输入用户名和密码，如果你不希望每次都输入， 勾选下面的保存密码功能：</p>
+
+<p><img src="/images/posts/pptp_vpn_10.png"></p>
+
+<p>如果一切正常， 点击连接之后， 就可以通过服务器访问国外网站了。
+当你连接的时候， 可能会出现问题：</p>
+
+<p><img src="/images/posts/pptp_vpn_11.png"></p>
+
+<p>你可以重新再试几次， 但是如果一直有问题，那么应该是你电脑所在的网络会有一些问题，不支持PPTP VPN， 这个时候我也没有办法， 只能通过更加复杂的方式来翻一下墙， 或者换一个网络再试一下了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1310,127 +1422,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/email-css/">如何写邮件样式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-21T21:29:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
-        
-         | <a href="/blog/email-css/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/email_css.jpg"></p>
-
-<p>最近一段时间都在写邮件的样式，以及测试邮件在各种邮箱中的展示效果，搞得焦头烂额，痛定思痛，在这里整理获得的一些撞墙经验吧。</p>
-
-<h2>基本的原则</h2>
-
-<h3>用table来控制架构</h3>
-
-<p>虽然现在css已经进化到<a href="http://www.hongkiat.com/blog/coding-graphics-with-css3/">可以用来画画的地步</a>，
-但是各种邮箱客户端往往各自为政，你调试得非常完美的邮件，在用户那边，被客户端蹂躏得惨不忍睹。
-我们还是需要退而求其次，找一个各种客户端都支持得非常好的布局方案：利用<code>table</code>来布局。</p>
-
-<p>用table的方式安排页面各个元素的方法，有着悠久的历史，虽然不优雅，但是能够解决问题。
-删除掉各种在web端应用广泛的<code>float</code>，<code>position</code>吧，勇敢回归<code>table</code>。</p>
-
-<h3>inline css样式</h3>
-
-<p>邮件中带有css外链？邮件中含有<code>&lt;style&gt;</code>区块？很抱歉，在<code>Gmail</code>以及各种在线邮箱客户端中，
-它们都会被当做嫌疑分子，有杀错没漏过地一律干掉。唯一可以通行的就只有嵌入在tag中的<code>style</code>属性了。
-不过不要紧，你不需要手写这些，现在有很多第三方的工具来帮助你自动生成，比如<a href="https://github.com/alexdunae/premailer">premailer</a>。</p>
-
-<h3>注意可用的css样式</h3>
-
-<p>虽然<code>style</code>可以通行，但是广大客户端为了显示正常，还会过滤掉一些影响大局稳定的css属性，
-比如Gmail就会杀掉<code>position: absolute</code>的样式，hotmail看<code>float</code>不顺眼。</p>
-
-<p>还有就是客户端应用程序的邮件显示渲染系统一般进行了客制化，邮件的样式还是最好还是限制在css1/css2标准里面安全一些。</p>
-
-<p>有一个<a href="http://www.campaignmonitor.com/css/">各个客户端的css支持表格</a>，聊胜于无。</p>
-
-<h3>text模式和html模式</h3>
-
-<p><a href="http://webmarketingtoday.com/articles/html-email-multi/">按照需要</a>，
-一封邮件可以同时提供<code>text</code>和<code>html</code>两份，用户可以选择自己喜欢的看。
-如果你的用户期望看到<code>text</code>格式的邮件，最好提供一份。</p>
-
-<h3>显示图片和非显示图片</h3>
-
-<p>因为安全因素考虑，大多数邮件客户端都不默认显示邮件的图片，需要用户手动确认。
-所以你的邮件必须要能够在这种情况下面显示得不至于太寒碜。</p>
-
-<h2>各种需要处理状况</h2>
-
-<p>上面这些都是总览，这里整理一些其他额外需要注意的状况。</p>
-
-<p>gmail会根据你的文字宽度给你添加<code>&lt;wbr&gt;</code>的标签强制换行。我最后采用<code>table</code>布局的方式解决了这个问题。</p>
-
-<p>不同平台下的不同浏览器会采用不同的字体。所以你也页面不要根据开发环境的字体预设宽度。</p>
-
-<p>有些android手机（比如我的galaxy nexus）gmail客户端会限制页面的宽度，有些文字段落会压缩掉宽度，没有找到解决办法。</p>
-
-<h2>测试</h2>
-
-<p>邮件显示效果的测试，我觉得是最烦的一件事情了。维度太多。需要测试的有：</p>
-
-<ul>
-<li>不同的邮件客户端，thunderbird，outlook，foxmail，它们还有不同的版本。</li>
-<li>不同的在线邮箱在不同浏览器下面展示的效果。维度大概是在线邮箱系统数量乘以浏览器数量了。</li>
-<li>不同操作系统。主要是字体影响比较大。</li>
-<li>多平台，各种手机客户端，平板设备。现在是移动时代，很多人有在移动设备上读邮件的习惯。</li>
-</ul>
-
-
-<p>全部测试一遍很不现实，只能根据用户特征把主流的一些环境测试一下。</p>
-
-<h2>经验</h2>
-
-<p>花费了那么多时间，这里整理一下主要的经验以供借鉴：</p>
-
-<p>如果简单的邮件，只是改一份文件就好，如果模块复杂，还是需要根据区块拆分一下。
-也可以用一些预处理的工具来让文件变得更易读。
-我是用haml，sass，以及rails的render partial功能来把复杂邮件模块化的。</p>
-
-<p>因为邮件需要不断地调整，最好养成完成一个部分的改动后就<code>git commit</code>一下，或者至少<code>git add</code>变动，
-因为很容易在改动中造成错误。</p>
-
-<p>要进行流程控制，每次修改完毕后都过一遍测试，总是会出现一个环境改动正确了，其他环境又出现展示问题的状况。</p>
-
-<h2>资料</h2>
-
-<ul>
-<li><a href="http://www.reachcustomersonline.com/how-to-code-html-email-newsletters-all-new-version/">详细的如何写邮件样式的教程</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1446,6 +1437,10 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/pptp-vpn/">如何设置PPTP VPN</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/project-time-spending/">项目计划预估</a>
       </li>
     
@@ -1459,10 +1454,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
     
       <li class="post">
         <a href="/blog/website-cache/">网站cache机制</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/nested-set-model/">nested set model介绍</a>
       </li>
     
   </ul>
