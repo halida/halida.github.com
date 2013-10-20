@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-09-21T10:17:07+08:00</updated>
+  <updated>2013-10-20T11:18:12+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,108 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails定制报错页面]]></title>
+    <link href="http://halida.github.com/blog/rails-customize-error-page/"/>
+    <updated>2013-10-20T10:58:00+08:00</updated>
+    <id>http://halida.github.com/blog/rails-customize-error-page</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_10_20_404.jpg"></p>
+
+<h2>需求</h2>
+
+<p>rails的默认报错处理，是返回<code>public/400.html</code>，<code>public/500.html</code>的内容。
+我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。</p>
+
+<p>我们一般希望能够定制：500服务器错误，400地址不存在。</p>
+
+<h2>解决方案</h2>
+
+<p>在你的<code>app/controllers/application_controller.rb</code>的<code>ApplicationController</code>里面用<code>rescue_from</code>捕捉他们，并且只在生产环境这样做：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">Exception</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">500</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>      <span class="no">ExceptionNotifier</span><span class="o">::</span><span class="no">Notifier</span><span class="o">.</span><span class="n">exception_notification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">UnknownController</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>500报错需要能够通知管理员，上面的<code>exception_notification</code>是我利用<a href="https://github.com/smartinez87/exception_notification">exception_notification</a>gem2.6版本中发送报错信息邮件的功能来做到这件事。</p>
+
+<p>然后加上<code>render_error</code>方法，用来渲染报错页面，你可以在这里做定制渲染：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="n">template</span><span class="p">:</span> <span class="s2">&quot;errors/error_</span><span class="si">#{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="s1">&#39;layouts/application&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">render</span> <span class="n">nothing</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还是有一个问题，无法捕捉<code>ActionController::RoutingError</code>和<code>AbstractController::ActionNotFound</code>，需要在<code>config/route.rb</code>里面最后捕捉：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>  <span class="n">match</span> <span class="s1">&#39;*not_found&#39;</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="s1">&#39;errors#error_404&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>加上<code>errors_controller.rb</code>，里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ErrorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">error_404</span>
+</span><span class='line'>    <span class="vi">@not_found_path</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:not_found</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>资源引用：</p>
+
+<ul>
+<li><a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages">http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages</a></li>
+<li><a href="http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404">http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何设置PPTP VPN]]></title>
@@ -1626,113 +1728,6 @@ github有的功能它都有，还加上了用户管理，群组管理，查看�
 git-shell的方式减少另外跑一个服务的成本，对于小用户群的环境来说可以，
 但是不是很适应用户数量过多的状况，但是场景不多，问题不大。
 不过需要安装系统的ruby环境倒是挺麻烦的，希望他们以后针对这个问题提出改进方案。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[pow介绍]]></title>
-    <link href="http://halida.github.com/blog/introduce-pow/"/>
-    <updated>2013-03-24T19:30:00+08:00</updated>
-    <id>http://halida.github.com/blog/introduce-pow</id>
-    <content type="html"><![CDATA[<p><img src="http://pow.cx/images/logo-pow.png" alt="image" /></p>
-
-<p><a href="http://pow.cx/">Pow</a>是一个神奇的东西，原先你需要跑一个服务器应用，你可能需要在命令行下面执行一个命令，以及你自己需要时刻监控到这个程序的运行。但是有了POW，你需要做的事情只是做一个<code>ln</code>软链接就可以了。对了，它只能在OSX下面使用。</p>
-
-<p>安装：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl get.pow.cx | sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>删除：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl get.pow.cx/uninstall.sh | sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果你需要设置一个基于<a href="http://rack.github.com/">Rack</a>的应用，你需要做的是：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> ~/.pow
-</span><span class='line'>ln -s /path/to/myapp
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>就是这么简单。</p>
-
-<h2>原理</h2>
-
-<ul>
-<li>Pow把目录当做Rack应用来执行，目录主要含有<code>config.ru</code>配置文件和<code>public</code>静态文件目录。</li>
-<li>在访问到目录的时候，它自动创建一个worker，最多每个应用2个worker，15分钟没有请求后自动回收。</li>
-</ul>
-
-
-<h2>一些特性整理</h2>
-
-<ul>
-<li>链接到<code>~/.pow</code>里面的目录比如myapp会映射到<code>http://myapp.dev/</code>。</li>
-<li><code>www.myapp.dev</code>这种子域名都会映射到<code>myapp.dev</code>，除非你重新创建一个<code>www.myapp</code>目录。</li>
-<li><code>~/pow</code>多个软链接到同一个目录，只会生成一个worker。</li>
-<li>如果没有<code>myapp</code>，访问<code>myapp.dev</code>会给出提示。</li>
-<li>Pow支持端口转发功能，只要<code>echo 8080 &gt; ~/.pow/proxiedapp</code>，访问<code>proxiedapp.dev</code>就是访问本地端口8080。</li>
-<li>Pow支持只含有<code>public</code>目录，直接serve静态文件。</li>
-<li>重新启动服务：<code>touch tmp/restart.txt</code>，或者直接杀掉进程就好了。会重新加载环境。</li>
-<li>每次访问都重启服务：生成这个文件：<code>tmp/always_restart.txt</code>。但是它不会重新加载环境。</li>
-<li>log放在<code>~/Library/Logs/Pow</code>里面。</li>
-<li>重启Pow：<code>touch ~/.pow/restart.txt</code></li>
-</ul>
-
-
-<h2>设置</h2>
-
-<p>Pow启动前会去执行目录下<code>.powrc</code>和<code>.powenv</code>这2个脚本。</p>
-
-<p>如何设定ruby版本？</p>
-
-<ul>
-<li>用<a href="https://github.com/sstephenson/rbenv">rbenv</a>： <code>rbenv local 1.9.3-p194</code></li>
-<li>用rvm，添加.rvmrc：<code>rvm 1.8.7</code>
-因为rvm需要加载环境变量，你需要修改上面的2个脚本之一：
-<code>sh
-if [ -f "$rvm_path/scripts/rvm" ] &amp;&amp; [ -f ".rvmrc" ]; then
-source "$rvm_path/scripts/rvm"
-source ".rvmrc"
-fi
-</code></li>
-<li>或者直接设置<code>PATH</code>就好了。</li>
-</ul>
-
-
-<h2>FAQ</h2>
-
-<p><strong> 手动设置软链接太烦了，有什么方便的方法？</strong></p>
-
-<p>有的。 <code>gem install powder</code>，cd到你应用的目录，然后执行：</p>
-
-<pre><code>powder link
-</code></pre>
-
-<p>文档在<a href="https://github.com/Rodreegez/powder#readme">这里</a>。</p>
-
-<p><strong>如何让局域网的其他人访问到这个服务？</strong></p>
-
-<p>用<a href="http://xip.io/">xip.io</a>，它是一个把网络地址转换到具体IP的服务，方便进行一些调试。
-比如你的ip是<code>10.0.0.2</code>，用Pow跑的服务是<code>app</code>，那么同一个局域网的人就可以用<code>app.10.0.0.2.xip.io</code>来访问你的服务。</p>
-
-<p><strong>如何让外网的其他人访问到这个服务？</strong></p>
-
-<p>用<a href="https://forwardhq.com/">forward</a>。</p>
-
-<p>资料</p>
-
-<ul>
-<li><a href="http://pow.cx/manual.html">Pow文档</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
