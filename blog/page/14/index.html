@@ -9,9 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="Qt animation framework介绍 传统的GUI界面, 一般是静态的, 按钮就是按钮, 不会到处乱蹦,
-不过现在这个时代, 冷冰冰的界面不是很吸引人. Qt 4.6里面带有新的animation
-framework, 就可以帮助我们完成让界面&#8221;动起来&#8221;的工作 &hellip;">
+  <meta name="description" content="什么是ipython python里面的一个杀手级应用就是它的解释器,
+我们可以利用这个解释器来完成一些日常的工作, 比如计算器, 字符串处理,
+其他计算显示什么的. 但是python本身自带的解释器功能不够强大, 所以有了
+ipython 这个大杀器. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,214 @@ framework, 就可以帮助我们完成让界面&#8221;动起来&#8221;的工作 
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ipython/">Ipython</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-30T13:03:47+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2010</time>
+        
+         | <a href="/blog/ipython/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是ipython</h2>
+
+<p>python里面的一个杀手级应用就是它的解释器,
+我们可以利用这个解释器来完成一些日常的工作, 比如计算器, 字符串处理,
+其他计算显示什么的. 但是python本身自带的解释器功能不够强大, 所以有了
+<a href="http://ipython.scipy.org/moin/">ipython</a> 这个大杀器.
+上面的图片显示的就是ipython的具体效果.</p>
+
+<p>ipython的目标是成为一个全方位的交互性和探索计算的平台,
+它好像是隶属于scipy下面的, 莫非有替代matlab的期望? 对于我们普通人来说,
+它的特性已经足够好到替换掉python自带的那个解释器了. 下面为大家介绍.</p>
+
+<h2>如何安装</h2>
+
+<p>先把ipython装起来吧. ubuntu下面: .. code-block:: sh</p>
+
+<blockquote><p>sudo apt-get install ipython</p></blockquote>
+
+<p>其他系统可以看
+<a href="http://ipython.scipy.org/doc/stable/html/install/install.html#installing-ipython-itself">安装文档</a></p>
+
+<h2>ipython好在哪里?</h2>
+
+<p>列出一些我觉得好用的东西:</p>
+
+<ul>
+<li><p>自动补全:</p>
+
+<p>按下tab键会自动补全当前输入的对象名称.比如:</p></li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>In [1]: os.&lt;tab&gt; # 会自动列出os下面的所有东西
+In [2]: abcd = 12
+In [3]: abc&lt;tab&gt; # 自动补全成abcd
+</code></pre>
+
+<ul>
+<li><p>缓存输入输出:</p>
+
+<p>提示符是In [n]: 的格式, 也就是说, 你可以访问In和Out这2个list,
+获取输入和输出.</p></li>
+<li><p>整合命令行工具:</p>
+
+<p>可以用!ls的方式来执行命令行工具, 甚至可以把结果当作参数来使用:</p></li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>In [4]: out = !ls
+In [5]: for file in out: print file
+
+bin
+temp
+</code></pre>
+
+<ul>
+<li>省略括号</li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>In [6]: s = "hello"
+In [7]: s.replace 'he', 'yi'
+
+'yillo'
+</code></pre>
+
+<ul>
+<li><p>交互式GUI操作</p>
+
+<p>ipython内嵌GUI处理机制,
+使用tk/wxpython/pyqt可以交互式地创建和修改类.
+创建出的对象是可以响应用户输入的, 并且能够实时修改.</p></li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>In [8]: from PyQt4.QtGui import *
+In [9]: dlg = QDialog(); dlg.show()
+In [10]: le = QLineEdit(); lw = QListWidget(); 
+In [11]: l = QVBoxLayout(dlg); l.addWidget(le); l.addWidget(lw)
+</code></pre>
+
+<ul>
+<li><p>帮助系统</p>
+
+<p>对于任何对象s, 都可以用s??, s?的方式来看它的帮助文档.</p></li>
+<li><p>run</p>
+
+<p>可以用</p></li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>In[12]: run xxx.py
+</code></pre>
+
+<blockquote><p>来执行代码.</p></blockquote>
+
+<ul>
+<li><p>sh模式</p>
+
+<p>ipython可以当作shell来使用. 只要执行:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ipython -p sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>具体说明见:
+<a href="http://ipython.scipy.org/doc/stable/html/interactive/shell.html">http://ipython.scipy.org/doc/stable/html/interactive/shell.html</a></p></blockquote>
+
+<p>还有其他的很多很多很多特性, 我不一一列出来了.. 具体可以看
+<a href="http://ipython.scipy.org/doc/stable/html/overview.html#id1">overview</a>,
+以及进入ipython后, 运行:</p>
+
+<pre><code>%quickref
+</code></pre>
+
+<p>来获取介绍信息.</p>
+
+<h2>emacs + ipython</h2>
+
+<p>作为emacs控, 所有东西都要整合到emacs里面去. 根据 <a href="http://www.emacswiki.org/emacs/PythonProgrammingInEmacs#toc10">emacs
+python文档</a>
+, 我只设置了这几行代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">(</span>require <span class="s1">&#39;ipython)</span>
+</span><span class='line'><span class="s1">(global-set-key (kbd &quot;C-; 4&quot;) &#39;</span>py-shell<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不过, 我还装了几个其他东西(ubuntu下面):</p>
+
+<ul>
+<li>ipython</li>
+<li>python-mode</li>
+<li>emacs23</li>
+</ul>
+
+
+<p>安装ipython后, 会自动给你一个配置文件:</p>
+
+<pre><code>/usr/share/emacs/site-lisp/ipython.el 
+</code></pre>
+
+<p>所以只要require它就可以了.</p>
+
+<h2>相关资源</h2>
+
+<ul>
+<li>`ipython`_ 官方网站</li>
+<li><a href="http://ipython.scipy.org/doc/stable/html/">文档</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1450,291 +1659,6 @@ lrelease-qt4 plabel_zh_CN.ts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pyqt-intro/">Pyqt介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-10T08:59:03+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
-        
-         | <a href="/blog/pyqt-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>最强大的GUI库 &#8211; PyQt4</h2>
-
-<p>Authors
-  ~ 机械唯物主义</p>
-
-<pre><code>&lt;[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\&gt;
-</code></pre>
-
-<h2>一个简单的实例</h2>
-
-<ul>
-<li>计算器</li>
-<li>10分钟</li>
-</ul>
-
-
-<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnrsk8C64I/AAAAAAAADMc/TMTjkv1is7k/s800/caculator_ui.png" alt="image" /></p>
-
-<h2>代码</h2>
-
-<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnooDH5dtI/AAAAAAAADLo/KK7FwKekTRo/s800/caculator.JPG" alt="image" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
-</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Caculator</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">Caculator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-</span><span class='line'>        <span class="c">#widgets</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
-</span><span class='line'>        <span class="c">#layouts</span>
-</span><span class='line'>        <span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-</span><span class='line'>        <span class="c">#events</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">caculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">data</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span> <span class="k">return</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">try</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-</span><span class='line'>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
-</span><span class='line'>    <span class="n">Caculator</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>类层级</h2>
-
-<pre><code>QObject
-   |----- QWidget
-             |----- QDialog
-             |----- QLineEdit
-             |----- QListWidget
-</code></pre>
-
-<h2>layout</h2>
-
-<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnoon5j6aI/AAAAAAAADLw/ITJ9fVU9YtE/s800/layout.JPG" alt="image" /></p>
-
-<h2>layout</h2>
-
-<ul>
-<li><p>层级:</p>
-
-<pre><code>QDialog (QVBoxLayout)
-   |----- QLineEdit
-   |----- QListWidget
-</code></pre></li>
-<li><p>代码:</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Signal and Slot in Qt</h2>
-
-<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoo68TzKI/AAAAAAAADL4/jPjbRhwQEI8/s800/signal_and_slot.JPG" alt="image" /></p>
-
-<h2>Qt和PyQt 事件机制区别</h2>
-
-<ul>
-<li>Qt:</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">this</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">(</span><span class="n">leInput</span><span class="p">,</span> <span class="n">SINGAL</span><span class="p">(</span><span class="n">returnPressed</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">caculate</span><span class="p">))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>PyQt:</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>一个复杂的实例: 扫雷</h2>
-
-<ul>
-<li>花费时间: 2个晚上, 基础:2.5小时, 一点点提升:1小时</li>
-<li>扫雷下载: <a href="https://bitbucket.org/linjunhalida/pyqtmine/">pyqtmine</a></li>
-</ul>
-
-
-<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnoooQuryI/AAAAAAAADL0/MLwyt5qromk/s800/pyqtmine.JPG" alt="image" /></p>
-
-<h2>UI designer</h2>
-
-<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoodk5clI/AAAAAAAADLs/cbHdyQCMco8/s800/designer.JPG" alt="image" /></p>
-
-<h2>UI with Code</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">form</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="s">&quot;score.ui&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">ScoreDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">ScoreDlg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Event</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
-</span><span class='line'>        <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-</span><span class='line'>    <span class="n">p</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">sy</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>其他强大特性</h2>
-
-<ul>
-<li>足够多和好用的控件/自定控件/整合到designer中</li>
-<li>webkit/script支持</li>
-<li>强大/方便/快速的绘图控件</li>
-<li>富文本/文本解析</li>
-<li>多国语言支持</li>
-<li>其他第三方控件支持: pyqwt</li>
-</ul>
-
-
-<h2>发布</h2>
-
-<p><a href="http://www.pyinstaller.org/">pyinstaller</a>!</p>
-
-<h2>资源</h2>
-
-<ul>
-<li><p>PyQt安装
-  ~ -   ubuntu:</p>
-
-<pre><code>        sudo apt-get install pyqt4-dev-tools
-
--   windows可以下载一个python包:
-    [pythonxy](http://www.pythonxy.com)
-</code></pre></li>
-<li><p>学习材料
-  ~ -   <a href="http://qt.nokia.com/products/">qt</a> 以及</p>
-
-<pre><code>    [pyqt](http://www.riverbankcomputing.co.uk/software/pyqt/intro)
-    官方网站
--   书籍请google: pyqt book or qt book
-
--   中文资料: [qteverywhere](http://www.qteverywhere.com/)
-</code></pre></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1752,6 +1676,10 @@ lrelease-qt4 plabel_zh_CN.ts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ordinary-or-extraordinary/">牛逼或怂逼</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rails-customize-error-page/">rails定制报错页面</a>
       </li>
     
@@ -1765,10 +1693,6 @@ lrelease-qt4 plabel_zh_CN.ts
     
       <li class="post">
         <a href="/blog/css-two-column/">css实现双栏同等高度</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/js-controller/">一种简单的前端框架写法</a>
       </li>
     
   </ul>
