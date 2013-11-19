@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-10-31T00:42:30+08:00</updated>
+  <updated>2013-11-20T04:37:32+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何让进程后台执行]]></title>
+    <link href="http://halida.github.com/blog/daemonize-process/"/>
+    <updated>2013-11-20T03:51:00+08:00</updated>
+    <id>http://halida.github.com/blog/daemonize-process</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_11_20_daemon.jpg"></p>
+
+<p>很多时候我们需要让一个进程在后台执行。</p>
+
+<h2>终端下面执行命令</h2>
+
+<p>比如我们要执行<code>cmd</code>，可以简单地在命令行运行<code>cmd &amp;</code>。</p>
+
+<p>如果我们希望重定向输出到其他的地方，可以用：</p>
+
+<p><code>cmd 2&gt;&amp;1 &gt; run.log &amp;</code></p>
+
+<p>里面 <code>2&gt;&amp;1</code> 是把<code>stderr</code>重导向到<code>stdout</code>，然后<code>&gt; run.log</code>把<code>stdout</code>重导向到文件。</p>
+
+<p>但是如果关闭当前终端，后台跑的进程还是会被退出掉，这个时候需要<a href="http://libslack.org/daemon/manpages/daemon.1.html">工具</a>：</p>
+
+<p><code>daemon cmd</code></p>
+
+<p>如果你是用ruby写的程序，也可以<a href="https://github.com/ghazel/daemons">有一个Gem</a>来帮你完成这个工作。</p>
+
+<h2>原理</h2>
+
+<p>后台化主要做的事情就是让生成的后台进程不被你的命令行以及调用者影响到，
+具体需要做的步骤如下：</p>
+
+<ul>
+<li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
+<li><code>setsid()</code>让新的进程成为session group leader，因为命令行是和session联系起来的，<code>setsid</code>让新的进程联系不到任何终端，这样就不会被终端影响到。</li>
+<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，和终端完全无关了。</li>
+<li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
+<li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
+<li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
+</ul>
+
+
+<p>示例代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Daemon</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span>
+</span><span class='line'>    <span class="mi">5</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">start</span>
+</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>        <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="no">File</span><span class="o">.</span><span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="vg">$stdin</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stdout</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;s.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stderr</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">run</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">exit</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="nb">exit</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Daemon</span><span class="o">.</span><span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>保存成daemon.rb，然后执行<code>ruby daemon.rb</code>。</p>
+
+<p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
+所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
+
+<p>引用材料：</p>
+
+<ul>
+<li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
+<li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[最简单的搜索引擎]]></title>
@@ -1669,61 +1789,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 <li><a href="http://blog.linjunhalida.com/blog/minecraft/">minecraft</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mosh介绍]]></title>
-    <link href="http://halida.github.com/blog/mosh/"/>
-    <updated>2013-04-05T15:06:00+08:00</updated>
-    <id>http://halida.github.com/blog/mosh</id>
-    <content type="html"><![CDATA[<p><img src="http://mosh.mit.edu/mosh.png" alt="image" /></p>
-
-<p>这年头做技术没有人不用ssh的吧，然后ssh使用起来还是很不爽的，
-远程服务器慢的时候反应慢，ssh有的时候断掉要重新连。。。</p>
-
-<p><a href="http://mosh.mit.edu/">mosh</a>是ssh的替代方案，用来解决慢速网络和移动网络的问题，具体上来说：</p>
-
-<ul>
-<li>连上一台服务器后，不管你切换什么网络，或者网络断掉，或者机器休眠又醒过来，连接都能够一直保持。</li>
-<li>缓存输入输出，当连接慢的时候，屏幕上面显示的响应还是很快。</li>
-</ul>
-
-
-<p>我<strong>强烈</strong>建议大家都去用它。</p>
-
-<h2>原理</h2>
-
-<p>mosh它实现了一套自有的状态同步协议SSP：</p>
-
-<ul>
-<li>底层采用UDP，client和网络解耦合，</li>
-<li>内部client和server都维护到屏幕和输入的状态，根据状态发送diff/patch。</li>
-<li>再在上层加上一个预测模块，根据用户输入先在本地显示预期的输出结果，收到远程服务器返回的屏幕数据，再更新。</li>
-</ul>
-
-
-<p>作者同时也提出，现在的应用往往没有针对移动作优化，如果一个用户切换了网络（比如正在移动中），
-那么tcp连接断掉会出现各种问题，在这种场景下，SSP这种解决方案会很有用处。</p>
-
-<p>建议大家可以看看mosh首页的视频，作者介绍得很充分。</p>
-
-<h2>使用</h2>
-
-<p>大家去看<a href="http://mosh.mit.edu/">首页的介绍</a>就好。这里整理一些我觉得需要提到的：</p>
-
-<p>mosh首先通过ssh连进去，然后开启一个mosh server，端口随机在60000:61000，如果你开了防火墙需要允许这个范围。</p>
-
-<p>指定ssh参数，比如你的ssh端口不是22：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mosh <span class="nv">$server</span> --ssh<span class="o">=</span><span class="s1">&#39;ssh -p 2222&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当你在网络断开的时候，关掉了mosh的进程，远程服务器上面对应的server进程会一直存在，
-这个时候重新连上去的时候，就会提示你。这个时候你需要手动kill掉这个进程，
-具体见<a href="https://github.com/keithw/mosh/issues/403">issue报告</a>。</p>
 ]]></content>
   </entry>
   

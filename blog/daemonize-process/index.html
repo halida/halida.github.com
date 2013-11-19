@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>utf8介绍 - 网络寻租</title>
+  <title>如何让进程后台执行 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下: 什么是UCS? 我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set, 它是关于所有字符编码的标准. 简单地说, &hellip;">
+  <meta name="description" content="很多时候我们需要让一个进程在后台执行。 终端下面执行命令 比如我们要执行cmd，可以简单地在命令行运行cmd &amp;。 如果我们希望重定向输出到其他的地方，可以用： cmd 2&gt;&amp;1 &gt; run.log &amp; 里面 2&gt;&amp;1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/utf8/">
+  <link rel="canonical" href="http://halida.github.com/blog/daemonize-process/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Utf8介绍</h1>
+      <h1 class="entry-title">如何让进程后台执行</h1>
     
     
       <p class="meta">
@@ -98,7 +97,7 @@
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2013-11-20T03:51:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,52 +106,42 @@
   </header>
 
 
-<div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
+<div class="entry-content"><p><img src="/images/posts/2013_11_20_daemon.jpg"></p>
 
-<h2>什么是UCS?</h2>
+<p>很多时候我们需要让一个进程在后台执行。</p>
 
-<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set,</p>
+<h2>终端下面执行命令</h2>
 
-<p>它是关于所有字符编码的标准. 简单地说,
-为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
-每个字符都指代单独的一个数字做标识.</p>
+<p>比如我们要执行<code>cmd</code>，可以简单地在命令行运行<code>cmd &amp;</code>。</p>
 
-<h2>什么是UTF-8?</h2>
+<p>如果我们希望重定向输出到其他的地方，可以用：</p>
 
-<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
-所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
-方便解析和除错做了优化. 具体表示方式如下:</p>
+<p><code>cmd 2&gt;&amp;1 &gt; run.log &amp;</code></p>
+
+<p>里面 <code>2&gt;&amp;1</code> 是把<code>stderr</code>重导向到<code>stdout</code>，然后<code>&gt; run.log</code>把<code>stdout</code>重导向到文件。</p>
+
+<p>但是如果关闭当前终端，后台跑的进程还是会被退出掉，这个时候需要<a href="http://libslack.org/daemon/manpages/daemon.1.html">工具</a>：</p>
+
+<p><code>daemon cmd</code></p>
+
+<p>如果你是用ruby写的程序，也可以<a href="https://github.com/ghazel/daemons">有一个Gem</a>来帮你完成这个工作。</p>
+
+<h2>原理</h2>
+
+<p>后台化主要做的事情就是让生成的后台进程不被你的命令行以及调用者影响到，
+具体需要做的步骤如下：</p>
 
 <ul>
-<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
-<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
-第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
-<li>以此类推&#8230;</li>
+<li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
+<li><code>setsid()</code>让新的进程成为session group leader，因为命令行是和session联系起来的，<code>setsid</code>让新的进程联系不到任何终端，这样就不会被终端影响到。</li>
+<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，和终端完全无关了。</li>
+<li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
+<li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
+<li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
 </ul>
 
 
-<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
-
-<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
-U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
-U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
-U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-</code></pre>
-
-<p>同时, 长的表示方式不能涵盖短的表示方式,
-所以下面的范围是错误的(可以快速排除错误):</p>
-
-<pre><code>1100000x (10xxxxxx)
-11100000 100xxxxx (10xxxxxx)
-11110000 1000xxxx (10xxxxxx 10xxxxxx)
-11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
-11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
-</code></pre>
-
-<p>我们来看具体的例子(python代码):</p>
+<p>示例代码如下：</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -175,37 +164,60 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
-</span><span class='line'><span class="err">©</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Daemon</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span>
+</span><span class='line'>    <span class="mi">5</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">start</span>
+</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>        <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="no">File</span><span class="o">.</span><span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
-</span><span class='line'><span class="err">≠</span>
+</span><span class='line'>        <span class="vg">$stdin</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stdout</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;s.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stderr</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">run</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
-</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
-</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
+</span><span class='line'>        <span class="nb">exit</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="nb">exit</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Daemon</span><span class="o">.</span><span class="n">start</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>结论</h2>
+<p>保存成daemon.rb，然后执行<code>ruby daemon.rb</code>。</p>
 
-<p>现在还没有什么心得, 总之, 了解了上面的概念,
-才能处理好平时遇到的字符编码问题.</p>
+<p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
+所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
 
-<p>参考资料: -
-<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
+<p>引用材料：</p>
+
+<ul>
+<li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
+<li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
+</ul>
+
 </div>
 
 
@@ -228,7 +240,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2013-11-20T03:51:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2013</time>
       
 
 
@@ -236,7 +248,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/utf8/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/utf8/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/daemonize-process/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/daemonize-process/" >Tweet</a>
   
   
   
@@ -245,10 +257,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/how-to-learn-python/" title="Previous Post: 如何学习python">&laquo; 如何学习python</a>
+        <a class="basic-alignment left" href="/blog/boolean-retrieval/" title="Previous Post: 最简单的搜索引擎">&laquo; 最简单的搜索引擎</a>
       
-      
-        <a class="basic-alignment right" href="/blog/gmail-cannot-use/" title="Next Post: gmail不能用了">gmail不能用了 &raquo;</a>
       
     </p>
   </footer>
@@ -370,8 +380,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/utf8/';
-        var disqus_url = 'http://halida.github.com/blog/utf8/';
+        var disqus_identifier = 'http://halida.github.com/blog/daemonize-process/';
+        var disqus_url = 'http://halida.github.com/blog/daemonize-process/';
         var disqus_script = 'embed.js';
       
     (function () {
