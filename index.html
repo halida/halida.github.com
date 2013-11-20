@@ -137,7 +137,7 @@
 <ul>
 <li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
 <li><code>setsid()</code>让新的进程成为session group leader，这样发送给父进程process group的信号就不会影响到子进程。</li>
-<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，和终端完全无关了。</li>
+<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，不会重开终端（PGID和PID不同了）。</li>
 <li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
 <li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
 <li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
