@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-11-20T04:37:32+08:00</updated>
+  <updated>2013-11-20T15:18:51+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -45,7 +45,7 @@
 
 <ul>
 <li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
-<li><code>setsid()</code>让新的进程成为session group leader，因为命令行是和session联系起来的，<code>setsid</code>让新的进程联系不到任何终端，这样就不会被终端影响到。</li>
+<li><code>setsid()</code>让新的进程成为session group leader，这样发送给父进程process group的信号就不会影响到子进程。</li>
 <li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，和终端完全无关了。</li>
 <li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
 <li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
@@ -123,11 +123,17 @@
 <p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
 所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
 
+<p>更新疑问：</p>
+
+<p>有朋友回复，<code>setsid</code>用来设置成新的session和process group，这样就不会被来自父进程的killpg等操作影响，
+还有就是，第二遍fork是让进程不再是process group leader，这样不能重新获得一个终端。这个操作是可选的。</p>
+
 <p>引用材料：</p>
 
 <ul>
 <li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
 <li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
+<li><a href="http://blog.csdn.net/luckyaslan/article/details/9094523">daemon为什么要fork两次</a></li>
 </ul>
 
 ]]></content>
