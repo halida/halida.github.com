@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-11-24T21:57:06+08:00</updated>
+  <updated>2013-11-27T22:55:30+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ruby内存泄露调试方法]]></title>
+    <link href="http://halida.github.com/blog/ruby-memory-leak-debug/"/>
+    <updated>2013-11-27T20:44:00+08:00</updated>
+    <id>http://halida.github.com/blog/ruby-memory-leak-debug</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_11_27_leak.jpg"></p>
+
+<p>只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。</p>
+
+<p>基本思路是这样：等待内存泄露到一定程度，进程的内存里面会大量充斥着没有被释放的对象，
+随机获取内存中的数据，就可以知道是什么对象泄露了，从而定位问题。</p>
+
+<p>我们先开始一个实验。创建文件leak.rb：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="mi">1000000</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;hello&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">while</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个文件生成了太多没有释放的字符串，并且一直处于循环等待状态。</p>
+
+<p>实际的应用程序代码比较多，不是那么明显就能发现内存泄露的代码，需要通过调试寻找线索。</p>
+
+<p>首先我们要编译一个带有debug信息的ruby版本。参数加上<code>-O0 -g</code>，<code>O0</code>是为了防止优化掉一些调试的符号表信息。
+如果你用的是rvm，可以采用下面的脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 清空rvm编译环境参数</span>
+</span><span class='line'><span class="nb">unset </span>rvm_configure_env
+</span><span class='line'>
+</span><span class='line'><span class="c"># 编译一个单独的ruby版本，需要花费一定时间</span>
+</span><span class='line'>rvm install 2.0.0-debug --debug -j 3 -- --enable-shared <span class="nv">optflags</span><span class="o">=</span><span class="s2">&quot;-O0 -ggdb&quot;</span> <span class="nv">debugflags</span><span class="o">=</span><span class="s2">&quot;-ggdb3&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 采用并且检查设置</span>
+</span><span class='line'>rvm use 2.0.0-debug
+</span><span class='line'>ruby -rrbconfig -e <span class="s1">&#39;puts RbConfig::CONFIG[&quot;optflags&quot;]&#39;</span>
+</span><span class='line'><span class="c"># 结果应该带有：-O0 -ggdb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后我们在这个环境中执行程序，实际程序不要忘记安装支持的gem：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ruby leak.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之后，我们需要调试这个程序。如果你在linux下面，请使用<code>gdb</code>，
+如果在OSX下面，请使用编译ruby工具链中的debug工具，
+在我的机器OSX上面是用clang来编译的，所以我采用的是<code>lldb</code>，
+下面的例子以我的机器为准，gdb的命令其实也是一样的。</p>
+
+<p>另外开一个终端，启动<code>lldb</code>，然后连接上跑起来的进程：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">(</span>lldb<span class="o">)</span> attach 77226
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面改成你用<code>ps aux|grep ruby</code>找到的进程号。</p>
+
+<p>attach做的事情就是在你调试进程里面开一个线程，这样就能够获得所有的内存信息，
+同时也不影响程序正常运行（只要你保证线程安全）。</p>
+
+<p>然后我们要知道进程内存消耗状况。在调试环境里面，我们可以执行C语言的函数，
+其中<code>rb_eval_string</code>可以用来直接执行ruby代码。
+我们首先需要做的是用<code>ObjectSpace</code>来遍历和列出所有ruby对象：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;GC.start&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_objs = Hash.new 0&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object {|o| $db_objs[o.class] += 1}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_strs.count&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
+回到执行<code>ruby leak.rb</code>的终端，可以看到打印出来的结果。
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面。</p>
+
+<p>结果如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">=&gt;</span><span class="mi">1005019</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">RubyVM</span><span class="o">::</span><span class="no">InstructionSequence</span><span class="o">=&gt;</span><span class="mi">577</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Hash</span><span class="o">=&gt;</span><span class="mi">28</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>发现String对象出奇地多，应该是内存泄露的主要组成部分。我们采样一下数据，看看是什么样的字符串：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_strs = []&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object.each_with_index {|o, i| $db_strs &lt;&lt; o if o.class == String and i%1000==0}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_strs.sample(10).to_s&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>根据这个信息，我们回到源代码里面，找到对应的部分，思考为什么没有释放这个字符串，从而解决内存泄露的问题。</p>
+
+<p>我们甚至可以利用<code>rb_eval_string</code>来动态修改代码和解决bug，不过在这个例子里面没有办法删除掉造成内存泄露的<code>s</code>对象。如果你发现有方法，还请告诉我。</p>
+
+<p>但是如果内存泄露发生在C语言部分，应该如何发现？这个留到下次再介绍。
+还有就是如何调试生产环境的进程，这个也请等我研究清楚之后再分享给大家。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/">http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/</a></li>
+<li><a href="http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/">http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为什么我要每天写日记]]></title>
@@ -1788,32 +1943,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 
 <p>但是问题并没有完全结束，我必须在以后的版本里面注意到采用了一个客制化的gem，可能会有各种问题出现。未来的地雷需要小心不要踩到。
 这是一个简单的bug处理，上面是我debug的整个过程，体力活，是以为记，大家对于这个过程有什么看法吗？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[手机远程收听电脑声音]]></title>
-    <link href="http://halida.github.com/blog/remote-sound/"/>
-    <updated>2013-05-09T12:48:00+08:00</updated>
-    <id>http://halida.github.com/blog/remote-sound</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/yoVM3Gd.png"></p>
-
-<p>我现在笔记本的声音都通过耳机输出，耳机有几个不好的地方，就是每次我离开电脑去上厕所或者干什么事情的时候，都要把耳机拔出来，非常不方便，
-我想如果能够把声音换到手机上面，这样挺不错的。我的电脑是rMBP，手机是google galaxy手机。</p>
-
-<p>我搜索到了一些解决方案：</p>
-
-<ul>
-<li><a href="https://play.google.com/store/apps/details?id=com.boxxymays.rSpeakers&amp;hl=en">rspeakers</a> 只支持PC端。</li>
-<li><a href="http://scientific-soft.com/mobile/index.php/menu-iremote">iRemote</a> 看起来很粗糙的样子，没有测试。</li>
-<li><a href="www.rogueamoeba.com/airfoil">Airfoil</a> 多平台通用，很不错。</li>
-<li><a href="http://osxdaily.com/2012/02/17/airplay-mirroring-mac-os-x-10-8-mountain-lion/">air mirror</a> + <a href="https://play.google.com/store/apps/details?id=com.mk.iPlayer.Audio&amp;feature=search_result#?t=W251bGwsMSwyLDEsImNvbS5tay5pUGxheWVyLkF1ZGlvIl0.">iPlay AirPlay</a> 用osx的airplay，然后再加上一个收费的android应用，可用。</li>
-</ul>
-
-
-<p>我测试了Airfoil和iPlay的方案，都可以用，Airfoil如果要获取系统声音，需要重新启动电脑比较麻烦。并且价格也比较贵，iPlay的方案看起来比较适合我。
-不过如果你是其他操作系统或者希望更多特性的话，Airfoil比较好。
-不过最后我一个方案都没有用成，因为声音同步需要带宽100KB的上下行，我的无线路由器撑不住了。。</p>
 ]]></content>
   </entry>
   
