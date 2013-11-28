@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-11-27T22:55:30+08:00</updated>
+  <updated>2013-11-28T08:42:09+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ruby内存泄露调试方法]]></title>
+    <title type="html"><![CDATA[ruby内存泄漏调试方法]]></title>
     <link href="http://halida.github.com/blog/ruby-memory-leak-debug/"/>
     <updated>2013-11-27T20:44:00+08:00</updated>
     <id>http://halida.github.com/blog/ruby-memory-leak-debug</id>
