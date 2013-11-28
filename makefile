@@ -2,7 +2,7 @@ rake=bundle exec rake
 
 watch:
 	$(rake) watch
-deploy:
+publish:
 	$(rake) generate
 	$(rake) deploy
 
