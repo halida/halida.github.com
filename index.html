@@ -202,13 +202,18 @@
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;GC.start&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_objs = Hash.new 0&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object {|o| $db_objs[o.class] += 1}&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_strs.count&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_objs.to_s&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
 回到执行<code>ruby leak.rb</code>的终端，可以看到打印出来的结果。
-如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面。</p>
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;File.write(&#39;sys.log&#39;, $db_objs.to_s)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>结果如下：</p>
 
