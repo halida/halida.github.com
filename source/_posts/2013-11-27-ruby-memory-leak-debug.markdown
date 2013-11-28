@@ -76,12 +76,16 @@ attach做的事情就是在你调试进程里面开一个线程，这样就能�
 p rb_eval_string("GC.start")
 p rb_eval_string("$db_objs = Hash.new 0")
 p rb_eval_string("ObjectSpace.each_object {|o| $db_objs[o.class] += 1}")
-p rb_eval_string("puts $db_strs.count")
+p rb_eval_string("puts $db_objs.to_s")
 ```
 
 列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
 回到执行`ruby leak.rb`的终端，可以看到打印出来的结果。
-如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面。
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面：
+
+```ruby
+p rb_eval_string("File.write('sys.log', $db_objs.to_s)")
+```
 
 结果如下：
 
