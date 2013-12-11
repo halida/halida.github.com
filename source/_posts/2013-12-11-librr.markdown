@@ -1,0 +1,87 @@
+---
+layout: post
+title: "librr介绍"
+date: 2013-12-11 19:15
+comments: true
+categories: ruby 开发
+---
+
+{% img /images/posts/2013_12_11_module.jpeg %}
+
+[librr](https://github.com/halida/librr)是我最近离职休息玩的小项目，用处是给本地文档做一个索引，然后想查什么就可以搜索到。
+实现原理很简单，监控文件夹改动，有变化就把文件一行行读取出来，丢给[solr](http://lucene.apache.org/solr/)进行索引。
+
+使用上面首先设置你要索引的文件夹：
+
+    librr add ./gtd
+
+然后等一会让索引完成，就可以搜索数据了：
+
+    librr search emacs
+
+我用它来索引自己的本地文档库，以后考虑索引一些大文件，比如csdn泄漏密码，酒店泄漏信息什么的。
+
+## 架构
+
+因为有文件夹监控，维护搜索进程等功能，librr需要跑一个后台进程，
+一个命令行工具作为后台进程的前端。
+
+后台进程有几个功能：
+
+- 监控文件夹中的文件改动
+- 响应命令行工具的http请求
+- 管理solr进程
+
+可以用多线程或者多进程来做，不过我选择了[eventmachine](https://github.com/eventmachine/eventmachine)，采用异步无阻塞的架构。
+目的一个是熟悉eventmachine，一个是看看异步无阻塞的架构写起来如何。
+
+## 具体细节
+
+### 命令行和后台通讯
+
+命令行参数的解析交给[CmdParser](https://github.com/halida/librr/blob/master/lib/librr/cmd_parser.rb)完成，利用了库[Thor](http://whatisthor.com/)。
+`CmdParser`解析出来的参数交给[CmdClient](https://github.com/halida/librr/blob/master/lib/librr/cmd_client.rb)传递给后台进程。
+如果后台进程没有起来，`CmdClient`会调用[ServerController](https://github.com/halida/librr/blob/master/lib/librr/server_controller.rb)，启动一个后台进程。
+后台进程里面的`CmdServer`模块有一个`CmdServerHandler`，响应命令行过来的http请求，
+通知对应的后台模块处理，返回执行结果。
+
+### 后台架构
+
+[Runner](https://github.com/halida/librr/blob/master/lib/librr/runner.rb)负责启动eventmachine，初始化`Indexer`，`DirMonitor`，`CmdServer`这几个核心模块。
+因为模块初始化是有依赖的，它们的初始化方法`start`都可以传进去一个block，初始化完成后执行，这样可以按照顺序进行初始化。
+
+### 监控文件夹功能
+
+[DirMonitor.get_monitor](https://github.com/halida/librr/blob/master/lib/librr/dir_monitor.rb#L3)会根据当前的操作系统，生成对应的监控对象。
+
+OSX下面的[OsxDirMonitor](https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/osx_dir_monitor.rb)，
+会去跑一个利用系统API [FSEvents](http://en.wikipedia.org/wiki/FSEvents)生成的可执行文件，管道输出获取结果。
+
+linux下面的[LinuxDirMonitor](https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/linux_dir_monitor.rb)
+用基于[linux inotify API](http://en.wikipedia.org/wiki/Inotify)的ruby绑定[rb-inotify](https://github.com/nex3/rb-inotify)。
+因为可以获得一个文件句柄，可以直接丢给eventmachine进行管理。
+
+### 索引和搜索功能
+
+[Indexer](https://github.com/halida/librr/blob/master/lib/librr/indexer.rb)是针对索引和搜索功能的包装，
+内部有一个`SolrManager`来管理solr进程，方式是用`EM.popen`，开启一个新的进程。
+索引文件夹因为用时很长，把逻辑拆成了异步来做，让后台进程能够同时去做其他的事情。
+
+## 经验体会
+
+首先，整个项目耗时比我预期的要多出来很多，一个原因是用到新技术必然会跳无数的坑，
+另一个原因是稍微复杂一些的项目考开发人员的细致程度，一点点的错误就会消耗无数的调试开发时间，
+而我开发的时候并没有进入非常投入的状态。
+
+然后是异步项目，需要把平常顺序执行的操作，用回调拆分得支离破碎，
+这样代码看起来不容易理解，执行异步不容易理清当前代码所在的环境也容易引入bug。
+并且开发模块的时候，要用用回调的方式来考虑问题，如果顺序依赖的话，需要准备对应的完成后事件的callback接口。
+这一块的调试花费了我好些时间。
+
+一个小项目，需要引入那么多正规项目需要有的东西：
+文档，[项目管理](https://github.com/halida/librr/issues)，标准化代码文件结构，[日志系统](https://github.com/halida/librr/blob/master/lib/librr/logger.rb)，
+[测试](https://github.com/halida/librr/tree/master/spec)，功能模块化，[配置管理](https://github.com/halida/librr/blob/master/lib/librr/settings.rb)，[发布方式](https://github.com/halida/librr/blob/master/librr.gemspec)，[多平台支持](https://github.com/halida/librr/tree/master/lib/librr/dir_monitor)。
+真是不容易啊。不过这种代码主要消耗在架构上面的项目写起来真的是非常有成就感。
+
+既然你都看到这里了，那么就试用一下[librr](https://github.com/halida/librr)吧，欢迎[提交issue给我](https://github.com/halida/librr/issues)。
+
