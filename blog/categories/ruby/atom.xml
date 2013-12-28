@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-12-11T20:32:37+08:00</updated>
+  <updated>2013-12-28T19:45:25+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -144,12 +144,12 @@ end
 
 <h1>编译一个单独的ruby版本，需要花费一定时间</h1>
 
-<p>rvm install 2.0.0-debug --debug -j 3 -- --enable-shared optflags="-O0 -ggdb" debugflags="-ggdb3"</p>
+<p>rvm install 2.0.0-debug &mdash;debug -j 3 &mdash; &mdash;enable-shared optflags=&ldquo;-O0 -ggdb&rdquo; debugflags=&ldquo;-ggdb3&rdquo;</p>
 
 <h1>采用并且检查设置</h1>
 
 <p>rvm use 2.0.0-debug
-ruby -rrbconfig -e 'puts RbConfig::CONFIG["optflags"]'</p>
+ruby -rrbconfig -e &lsquo;puts RbConfig::CONFIG[&ldquo;optflags&rdquo;]&rsquo;</p>
 
 <h1>结果应该带有：-O0 -ggdb</h1>
 
@@ -274,7 +274,7 @@ p rb_eval_string("puts $db_strs.sample(10).to_s")
 具体实现采用的库是针对ruby的绑定<a href="https://github.com/pluskid/rmmseg-cpp">rmmseg-cpp</a>。</p>
 
 <p>```ruby
-require 'rmmseg'
+require &lsquo;rmmseg&rsquo;
 RMMSeg::Dictionary.load_dictionaries</p>
 
 <p>def cn_word_split text
@@ -290,7 +290,7 @@ RMMSeg::Dictionary.load_dictionaries</p>
 end</p>
 
 <p>def to_utf8 text
-  String.new(text).force_encoding('utf-8')
+  String.new(text).force_encoding(&lsquo;utf-8&rsquo;)
 end
 ```</p>
 
@@ -301,11 +301,11 @@ end
 
 <p>```ruby
 def stop_words
-  File.read('chinese_stop_words.txt').split.sort
+  File.read(&lsquo;chinese_stop_words.txt&rsquo;).split.sort
 end</p>
 
 <p>def cn_filter_stop_words words
-  (words - stop_words).reject do |word|</p>
+  (words &ndash; stop_words).reject do |word|</p>
 
 <pre><code>stop_words.map do |sw|
   word.include?(sw)
@@ -322,11 +322,11 @@ end
 def cn_tokenize text
   out = text.downcase
   # Strip all HTML
-  out = out.gsub(/&lt;[<sup>&lt;>]+>/,</sup> ' ')
+  out = out.gsub(/&lt;[^&lt;>]+>/, &lsquo; &rsquo;)
   # Strip all number
-  out = out.gsub(/[0-9]+/, ' ')
+  out = out.gsub(/[0-9]+/, &lsquo; &rsquo;)
   # strip all url
-  out = out.gsub(/(http|https):\/\/[<sup>\s]*/,</sup> ' ')</p>
+  out = out.gsub(/(http|https):\/\/[^\s]*/, &lsquo; &rsquo;)</p>
 
 <p>  out = cn_word_split(out)
   out = cn_filter_stop_words(out)
@@ -356,7 +356,7 @@ def pre_token item
   tw * 10 + gw * 5 + dw
 end</p>
 
-<p>require 'tf_idf'</p>
+<p>require &lsquo;tf_idf&rsquo;</p>
 
 <p>def caculate items
   corpus = items.map{|item| pre_token(item)}</p>

@@ -171,7 +171,7 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
 
 <h3>如何通过token和secret让服务器知道自己的？</h3>
 
-<p>用&#8221;HMAC-SHA1&#8221;, &#8220;RSA-SHA1&#8221;, &#8220;PLAINTEXT&#8221;三种方式验证，
+<p>用&#8221;HMAC-SHA1&#8221;, &ldquo;RSA-SHA1&rdquo;, &ldquo;PLAINTEXT&#8221;三种方式验证，
 利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
 
 <h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>
@@ -212,7 +212,7 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/技术/'>技术</a>
+    <a class='category' href='/blog/categories/ji-zhu/'>技术</a>
   
 </span>
 
@@ -254,6 +254,10 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/my-input-method/">关于输入法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/librr/">librr介绍</a>
       </li>
     
@@ -267,10 +271,6 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
     
       <li class="post">
         <a href="/blog/why-write-diary/">为什么我要每天写日记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/daemonize-process/">如何让进程后台执行</a>
       </li>
     
   </ul>
@@ -303,23 +303,6 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
     });
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("linjunhalida", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
-  
 </section>
 
 

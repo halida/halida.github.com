@@ -177,9 +177,9 @@ coffeescript是能够编译成javascript的一门小的语言， 它的目的是
 <h2>优点和缺点</h2>
 
 <p>它解决的问题主要是：
-- javascript语言本身是模仿java的语法， 带有很多冗余， coffeescript借鉴了其他一些现代语言的语法， 让代码变得更简洁清晰。
-- javascript本身有设计缺陷， 比如全局变量的问题， coffeescript自动把变量变成局部， 减少开发错误。
-- javascript本身缺少一些重要的特性， 比如类机制， cofeescript提供这样的机制。</p>
+&ndash; javascript语言本身是模仿java的语法， 带有很多冗余， coffeescript借鉴了其他一些现代语言的语法， 让代码变得更简洁清晰。
+&ndash; javascript本身有设计缺陷， 比如全局变量的问题， coffeescript自动把变量变成局部， 减少开发错误。
+&ndash; javascript本身缺少一些重要的特性， 比如类机制， cofeescript提供这样的机制。</p>
 
 <p>写完coffeescript， 可以通过它提供的一个工具， 转换成javascript， 而转换出来的javascript和coffeescript基本上是一一对应的，
 语法也很简单， 会javascript的人看懂不难。</p>
@@ -265,6 +265,10 @@ coffeescript是能够编译成javascript的一门小的语言， 它的目的是
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/my-input-method/">关于输入法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/librr/">librr介绍</a>
       </li>
     
@@ -278,10 +282,6 @@ coffeescript是能够编译成javascript的一门小的语言， 它的目的是
     
       <li class="post">
         <a href="/blog/why-write-diary/">为什么我要每天写日记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/daemonize-process/">如何让进程后台执行</a>
       </li>
     
   </ul>
@@ -314,23 +314,6 @@ coffeescript是能够编译成javascript的一门小的语言， 它的目的是
     });
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("linjunhalida", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
-  
 </section>
 
 

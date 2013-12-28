@@ -1,10 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://halida.github.com/blog/how-to-publish-program-on-windows/</loc>
-        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
-    </url>
-    <url>
         <loc>http://halida.github.com/blog/do-not-help-poor-people/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
@@ -14,6 +10,10 @@
     </url>
     <url>
         <loc>http://halida.github.com/blog/drug-dealing/</loc>
+        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/how-to-publish-program-on-windows/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -109,6 +109,10 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/TDD/</loc>
+        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/blog/cortex-command/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
@@ -161,11 +165,7 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/can-we-do-this/</loc>
-        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://halida.github.com/blog/amway-to-education/</loc>
+        <loc>http://halida.github.com/blog/PyQt4-async-message/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -173,11 +173,19 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/PyQt4-async-message/</loc>
+        <loc>http://halida.github.com/blog/amway-to-education/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/ways-to-rome/</loc>
+        <loc>http://halida.github.com/blog/can-we-do-this/</loc>
+        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/fair-game/</loc>
+        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/pyqt-publish/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -189,11 +197,7 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/pyqt-publish/</loc>
-        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://halida.github.com/blog/fair-game/</loc>
+        <loc>http://halida.github.com/blog/ways-to-rome/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -233,11 +237,11 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/pyqt-animation-framework/</loc>
+        <loc>http://halida.github.com/blog/ipython/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/ipython/</loc>
+        <loc>http://halida.github.com/blog/pyqt-animation-framework/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -285,11 +289,11 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/shiboken/</loc>
+        <loc>http://halida.github.com/blog/git/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/git/</loc>
+        <loc>http://halida.github.com/blog/shiboken/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
@@ -557,10 +561,6 @@
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
     <url>
-        <loc>http://halida.github.com/blog/TDD/</loc>
-        <lastmod>2013-05-21T00:15:05+08:00</lastmod>
-    </url>
-    <url>
         <loc>http://halida.github.com/blog/hackthon-in-may/</loc>
         <lastmod>2013-05-21T00:15:05+08:00</lastmod>
     </url>
@@ -785,15 +785,19 @@
         <lastmod>2013-12-11T20:31:22+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/my-input-method/</loc>
+        <lastmod>2013-12-28T19:42:20+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/about/</loc>
         <lastmod>2013-05-21T00:38:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2013-12-11T20:31:22+08:00</lastmod>
+        <lastmod>2013-12-28T19:42:20+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2013-12-11T20:31:22+08:00</lastmod>
+        <lastmod>2013-12-28T19:42:20+08:00</lastmod>
     </url>
 </urlset>

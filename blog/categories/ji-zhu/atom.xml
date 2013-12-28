@@ -2,9 +2,9 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 技术 | 网络寻租]]></title>
-  <link href="http://halida.github.com/blog/categories/技术/atom.xml" rel="self"/>
+  <link href="http://halida.github.com/blog/categories/ji-zhu/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-12-11T20:32:37+08:00</updated>
+  <updated>2013-12-28T19:45:25+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -189,7 +189,7 @@ client生成的一个随机字符串， 让服务器记忆， 防止有中间人
 
 <h3>如何通过token和secret让服务器知道自己的？</h3>
 
-<p>用"HMAC-SHA1", "RSA-SHA1", "PLAINTEXT"三种方式验证，
+<p>用"HMAC-SHA1", &ldquo;RSA-SHA1&rdquo;, &ldquo;PLAINTEXT"三种方式验证，
 利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
 
 <h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>

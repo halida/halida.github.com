@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-12-11T20:32:37+08:00</updated>
+  <updated>2013-12-28T19:45:25+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[关于输入法]]></title>
+    <link href="http://halida.github.com/blog/my-input-method/"/>
+    <updated>2013-12-28T18:50:56+08:00</updated>
+    <id>http://halida.github.com/blog/my-input-method</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_12_28_input.jpg"></p>
+
+<p>关于输入法，有几点我觉得可以分享的。</p>
+
+<p><strong>首先是输入法的安全性</strong>。如果你是采用第三方的输入法工具，因为所有你键盘的输入都会经过输入法，
+你的隐私信息，包括行为，密码，帐号，<a href="http://www.zhihu.com/question/20153643">都会被输入法厂商收集</a>。
+你可能觉得他们大厂商，不会专门来对付自己一个普通人，
+但是要利用隐私数据的方法太多了，他们也许不会用这些信息来窃取你的金钱和私密，
+但是私人邮箱收到垃圾邮件，私人手机受到垃圾短信，或者诈骗电话就免不了的了。</p>
+
+<p>我原先是采用搜狗输入法的，最近考虑到这个状况，越想越觉得危险，
+赶紧卸载掉，安装了开源的<a href="https://code.google.com/p/rimeime">rime</a>输入法。</p>
+
+<p><strong>然后是选择什么输入方式</strong>。我是重度的输入法用户，经常在各个地方留言，
+输入的效率很重要。对于普通人来说，思考的方式是采用语音的，拼音输入法更为适合。
+而普通拼音输入法的信息冗余太多，韵母都是固定组合，却要敲击多个按键，比如<code>in</code>，<code>uang</code>等。
+所以我去学习了双拼，学习大概十几分钟，一周的时间就能够熟练掌握，
+按照减少的键盘敲击数量，输入的效率可以提高一倍，强烈建议大家掌握。</p>
+
+<p>双拼怎么学习？<a href="http://www.zrm.com.cn/new/udpn.htm">看半页纸就能学懂</a>，
+选择自然码双拼输入法，练习敲几篇文章，肌肉记忆半个小时就能够学会了。
+我不分平舌音和翘舌音，因此加上了模糊音，不需要记忆<code>zh/ch/sh</code>的键位，学习起来更快一些。</p>
+
+<p>rime不是那么容易设置的，安装之后需要自己调整设置文件。
+安装之后，选择rime输入法，配置菜单里面选择<code>设置</code>，然后会进入一个文件夹，
+修改里面的<code>default.yaml</code>。
+<a href="https://code.google.com/p/rimeime/wiki/UserGuide">这里</a>告诉你如何设置输入法，
+<a href="https://code.google.com/p/rimeime/wiki/CustomizationGuide#DIY_%E8%99%95%E6%96%B9%E9%9B%86">这里</a>告诉你如何做一些细化的配置。
+如果你和我一样采用双拼加上模糊音，需要修改<code>double_pinyin.schema.yaml</code>，
+在<code>algebra:</code>区块(就是具体设置双拼方案的区块)的<code>- erase/^xx$/</code>(重置所有设置)后面加上：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- derive/^([zcs])h/$1/             # zh, ch, sh =&gt; z, c, s
+</span><span class='line'>- derive/^([zcs])([^h])/$1h$2/     # z, c, s =&gt; zh, ch, sh
+</span><span class='line'>- derive/([ei])n$/$1ng/            # en =&gt; eng, in =&gt; ing
+</span><span class='line'>- derive/([eia])ng$/$1n/           # eng =&gt; en, ing =&gt; in, ang =&gt; an</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[librr介绍]]></title>
@@ -572,7 +622,7 @@
 <p>利用这个矩阵进行搜索，只要进行查表工作就可以了。</p>
 
 <p>因为terms的数量远远大于Document数量和长度，这个矩阵是稀疏的。为了节省空间，矩阵可以采用list表示。
-我们给document标示上ID：D1, D2, &#8230;，
+我们给document标示上ID：D1, D2, &hellip;，
 还有，我们也需要记录一下term出现在所有document里面的次数(document frequency)，列在term名字后面，
 缓存用来进行后续的运算。</p>
 
@@ -791,7 +841,7 @@
 
 <p>首先你需要购买或者要到一个PPTP代理服务器的账号和密码，购买的话请自行Google。</p>
 
-<p>选择 开始 -> 控制面板， 点击网络和Internet连接， 在下面的页面点击： 创建一个到您的工作位置的网络连接。</p>
+<p>选择 开始 &ndash;> 控制面板， 点击网络和Internet连接， 在下面的页面点击： 创建一个到您的工作位置的网络连接。</p>
 
 <p><img src="http://halida.github.com/images/posts/pptp_vpn_1.png"></p>
 
@@ -1895,156 +1945,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
 
 <ul>
 <li><a href="http://www.reachcustomersonline.com/how-to-code-html-email-newsletters-all-new-version/">详细的如何写邮件样式的教程</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[保证电子邮件的送达率]]></title>
-    <link href="http://halida.github.com/blog/reliable-email-delivery/"/>
-    <updated>2013-05-21T19:15:00+08:00</updated>
-    <id>http://halida.github.com/blog/reliable-email-delivery</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/email.jpg"></p>
-
-<p>现在大多数网站都会发送各种各样的邮件，保证邮件送达率至关重要，这里整理一下我调研的一些结果。</p>
-
-<p>要让邮件正常到达用户的收件箱，需要保证几点：</p>
-
-<ul>
-<li>让收件方验证邮件来源是非伪造的，需要设置<code>PTR</code>，<code>SPF</code>，<code>DKIM</code>。</li>
-<li>让收件方认可发送者是可靠的。</li>
-</ul>
-
-
-<h2>如何让收件方验证邮件来源是非伪造的</h2>
-
-<h3>PTR</h3>
-
-<p>ptr是<a href="http://en.wikipedia.org/wiki/List_of_DNS_record_types">DNS记录的一种类型</a>，有一个用途在于反方向从IP推导到域名，比如：</p>
-
-<pre><code>dig -x 203.208.36.17
-</code></pre>
-
-<p>把DNS的<code>MX</code>类型记录指向到你邮件服务器的地址一般就可以了。</p>
-
-<h3>SPF</h3>
-
-<p>SPF(<a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>)这是一套电子邮件验证系统，通过在DNS记录中添加一个TXT类型的记录，指定谁有权以域名的名义发送邮件。如果你没有设置这条记录，很容易就被当做非法邮件spam掉。</p>
-
-<p>这里是<a href="http://www.zytrax.com/books/dns/ch9/spf.html">配置方法</a>，以及一个简单的例子：</p>
-
-<pre><code>v=spf1 a mx ptr include:spf.mtasv.net ~all
-</code></pre>
-
-<p>这一行主要说明spf.mtasv.net(<a href="https://postmarkapp.com/">postmark</a>，一个邮件发送服务商)代发的邮件是被认可的。</p>
-
-<p>如果你域名挂靠在<a href="http://bluehost.com">bluehost</a>上面，这里是<a href="http://www.mail-tester.com/spf/bluehost#create-spf-record">对应的设置方法</a>。</p>
-
-<p>设置完毕，等待生效后，可以通过这种方式验证是否设置成功：</p>
-
-<pre><code>dig txt your-domain.com
-</code></pre>
-
-<p>返回的信息需要带有你设置的SPF记录。</p>
-
-<h3>DKIM</h3>
-
-<p>邮件本身是纯文本，协议也没有防止伪造的部分，在发送的过程中很容易被篡改，
-DKIM(<a href="http://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail</a>)
-对邮件用私钥加密，同时公钥信息放在域名DNS上面，这样收件方就可以验证邮件的真实性。</p>
-
-<p>如果你用<code>ubuntu</code>以及<code>postfix</code>，这里是<a href="https://help.ubuntu.com/community/Postfix/DKIM">设置教程</a>，以及一个简略的安装过程整理：</p>
-
-<ul>
-<li>安装<code>opendkim</code> <code>sudo aptitude install opendkim</code></li>
-<li>设置 <code>/etc/opendkim.conf</code></li>
-<li>告诉<code>postfix</code>采用<code>opendkim</code>，设置<code>/etc/postfix/main.cf</code></li>
-<li>启动和重启对应的服务。</li>
-</ul>
-
-
-<p>原理很简单，运行<code>opendkim</code>进程服务器，然后<code>postfix</code>把它当做一个过滤器来用，设置完成之后，对于所有的邮件，都会加上一个<code>DKIM-Signature</code>，一个具体的例子：</p>
-
-<pre><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.net; s=brisbane;
-c=relaxed/simple; q=dns/txt; l=1234; t=1117574938; x=1118006938;
-h=from:to:subject:date:keywords:keywords;
-bh=MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=;
-b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
-</code></pre>
-
-<p>一些参数的含义：</p>
-
-<ul>
-<li><code>b</code>：具体的数字签名。</li>
-<li><code>bh</code>：body hash。</li>
-<li><code>d</code>：签名的域名。</li>
-<li><code>s</code>：selector。一个域名可能有多个邮件发送服务器，需要用一个selector来区分。</li>
-</ul>
-
-
-<p>然后接收方就会去检查<code>brisbane._domainkey.example.net</code>的DNS记录，你可以通过这种方式来查看是否它设置正确：</p>
-
-<pre><code>dig txt brisbane._domainkey.example.net
-</code></pre>
-
-<p>内容格式是<code>k=rsa\; p=MIGfMA0GCSqGSIb3DQEBA...</code>。</p>
-
-<h3>检查是否设置成功</h3>
-
-<p>发送一封邮件到gmail里面，这样检查信息：</p>
-
-<p><img src="http://halida.github.com/images/posts/gmail_sign.png"></p>
-
-<p>出现<code>mailed-by</code>表示你SPF设置正确了，出现<code>signed-by</code>表示你DKIM设置正确了。</p>
-
-<h2>让收件方认可发送者是可靠的</h2>
-
-<p>上面是一些技术上面的部分，同时还需要在内容上面以及行为上面让收件方认可你：</p>
-
-<ul>
-<li>收件人需要认可邮件内容。你发送的东西对于用户是有信息含量的，如果用户看到你的邮件就标注spam，再多的设置也没有用。</li>
-<li>邮件中带有退订链接。当用户不想收到你的邮件的时候，可以点击退订，防止用户直接把你spam掉。</li>
-<li>控制发送频率。各个邮箱提供商会检查来自一个IP的邮件投递速率，如果你发送速度过于频繁，也容易进黑名单。</li>
-</ul>
-
-
-<h2>第三方的服务</h2>
-
-<p>设置了上面的这些东西，你的邮件还是有可能被spam，以及你也不清楚到底邮件的到达率有多少，我建议针对商业的网站，还是需要采用一些第三方的邮件发送服务。这里推荐几个：</p>
-
-<ul>
-<li><a href="http://www.mailgun.com/">mailgun</a></li>
-<li><a href="postmarkapp.com">postmark</a></li>
-<li>搜狐的<a href="http://sendcloud.sohu.com/">sendcloud</a></li>
-</ul>
-
-
-<p>采用了这些第三方服务之后，你需要对应地更新<code>SPF</code>和<code>DKIM</code>。
-同时如果可能，尽量选择独立IP的服务，这样不会因为其他人发spam影响到你的邮件送达率。</p>
-
-<p>mailgun和postmark都会<a href="http://www.quora.com/Why-are-Mailgun-and-Postmark-so-much-more-expensive-than-Sendgrid-and-AWS-SES">想办法保证你的邮件送达</a>，
-因此价格也比其他的邮件服务商要贵，但是还是物有所值的。</p>
-
-<p>mailgun带有<a href="http://documentation.mailgun.com/api-campaigns.html">campaign服务</a>，
-你可以设置一个campaign，然后发送带有这个campaign ID的邮件，之后会统计出送达率，开启率，链接点击率等信息给你。</p>
-
-<p>还有就是针对国内垃圾邮件乱飞的状况，很多国内的邮箱服务商会比较严格，造成国外的第三方邮件发送服务不好用的状况，比如：</p>
-
-<ul>
-<li>mailgun发到QQ邮箱，新浪邮箱里面会被spam掉。</li>
-<li>postmark和mailgun都发不了邮件到tom邮箱里面。</li>
-</ul>
-
-
-<p>需要注意一下。</p>
-
-<h2>引用资料以及工具</h2>
-
-<ul>
-<li><a href="http://aplawrence.com/Blog/B961.html">PTR为什么重要</a></li>
-<li><a href="https://idndx.com/2012/04/07/how-to-increase-your-email-delivery-rate/">中文资料</a></li>
-<li><a href="http://mxtoolbox.com/SuperTool.aspx?action=blacklist">检查是否进黑名单</a></li>
 </ul>
 
 ]]></content>

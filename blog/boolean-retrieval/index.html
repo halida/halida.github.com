@@ -142,7 +142,7 @@
 <p>利用这个矩阵进行搜索，只要进行查表工作就可以了。</p>
 
 <p>因为terms的数量远远大于Document数量和长度，这个矩阵是稀疏的。为了节省空间，矩阵可以采用list表示。
-我们给document标示上ID：D1, D2, &#8230;，
+我们给document标示上ID：D1, D2, &hellip;，
 还有，我们也需要记录一下term出现在所有document里面的次数(document frequency)，列在term名字后面，
 缓存用来进行后续的运算。</p>
 
@@ -245,6 +245,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/my-input-method/">关于输入法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/librr/">librr介绍</a>
       </li>
     
@@ -258,10 +262,6 @@
     
       <li class="post">
         <a href="/blog/why-write-diary/">为什么我要每天写日记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/daemonize-process/">如何让进程后台执行</a>
       </li>
     
   </ul>
@@ -294,23 +294,6 @@
     });
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("linjunhalida", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/linjunhalida" class="twitter-follow-button" data-show-count="false">Follow @linjunhalida</a>
-  
 </section>
 
 
