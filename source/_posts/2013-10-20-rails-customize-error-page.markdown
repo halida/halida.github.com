@@ -73,5 +73,3 @@ class ErrorsController < ApplicationController
 
 - [http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages](http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages)
 - [http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404](http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404)
-
-

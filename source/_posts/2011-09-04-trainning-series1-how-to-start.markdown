@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 训练专题1_如何开始训练

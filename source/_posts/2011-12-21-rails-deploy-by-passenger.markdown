@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: rails_deploy方法之采用passenger

@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 简单python_宣告式编程

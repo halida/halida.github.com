@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Metaprogramming_Ruby学习笔记

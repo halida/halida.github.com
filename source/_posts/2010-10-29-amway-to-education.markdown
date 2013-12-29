@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 安利模式做教育

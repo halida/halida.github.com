@@ -23,5 +23,3 @@ categories:
 然后设置参数执行命令就好了：
 
     $ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
-
-

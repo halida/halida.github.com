@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 從信息的角度來看待軟件開發

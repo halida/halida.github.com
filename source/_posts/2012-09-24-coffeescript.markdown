@@ -80,4 +80,3 @@ square = function(x) {
 我个人倾向使用cofeescript， 现在我基本不直接写javascript了。
 反对的意见我觉得对于普通的开发者来说不重要， 
 而它的优点是如此地显著， 以至于我会推荐所有的javascript开发者去使用它。
-

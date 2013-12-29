@@ -84,4 +84,3 @@ csdn robbin[针对ORM cache优化](http://robbinfan.com/blog/38/orm-cache-sumup)
 cache的实现方式，可以用文件，内存，或者单独的cache服务器。
 如果服务端采用多个进程来服务，最好采用一个cache服务器，
 这样不会出现每个进程各自维护一份同样内容cache的状况。
-

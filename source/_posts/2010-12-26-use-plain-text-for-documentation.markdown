@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 使用纯文本方式写文档

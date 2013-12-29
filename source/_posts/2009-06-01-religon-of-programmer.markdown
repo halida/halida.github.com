@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 軟件工程師的信仰

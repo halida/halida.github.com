@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: pyqt_animation_framework

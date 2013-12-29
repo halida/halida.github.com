@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 电脑是如何实现图形显示的

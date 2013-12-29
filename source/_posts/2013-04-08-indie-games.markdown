@@ -23,4 +23,3 @@ categories:
 - [roguelike](http://en.wikipedia.org/wiki/Roguelike) 其实是一类游戏，我玩过很久的有：[ADOM](http://www.adom.de)，[nethack](http://www.nethack.org/)，[stonesoup](http://crawl.develz.org/wordpress/)
 - [Cortex Command](http://blog.linjunhalida.com/blog/cortex-command/)
 - [minecraft](http://blog.linjunhalida.com/blog/minecraft/)
-

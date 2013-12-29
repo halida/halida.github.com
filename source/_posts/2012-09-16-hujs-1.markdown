@@ -79,4 +79,3 @@ nodejs在长连接的状况下性能非常好， 以前C10K不再成为瓶颈, �
 晚上本来还有一个party， 我有点累就没有去了。
 
 第二天的活动总结在[这里](http://blog.linjunhalida.com/blog/hujs-2/)。
-

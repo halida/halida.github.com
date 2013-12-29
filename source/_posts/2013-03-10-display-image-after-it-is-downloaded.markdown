@@ -73,4 +73,3 @@ The css is list below. I'm using [sass](http://sass-lang.com/) + [compass](http:
 ```
 
 Very simple process, you can see [the demo here](http://jsfiddle.net/linjunhalida/kU2VU/2/).
-

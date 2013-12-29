@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 如何改变一个人

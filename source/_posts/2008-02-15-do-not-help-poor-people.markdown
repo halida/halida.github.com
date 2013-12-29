@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 为什么不要帮助穷人

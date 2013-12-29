@@ -80,4 +80,3 @@ server {
 引用资料：
 
 - [railscast](http://railscasts.com/episodes/357-adding-ssl?view=asciicast)
-    

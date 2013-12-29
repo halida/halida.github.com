@@ -43,7 +43,3 @@ rime不是那么容易设置的，安装之后需要自己调整设置文件。
     - derive/([ei])n$/$1ng/            # en => eng, in => ing
     - derive/([eia])ng$/$1n/           # eng => en, ing => in, ang => an
 ```
-
-
-
-

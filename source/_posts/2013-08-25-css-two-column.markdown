@@ -40,5 +40,3 @@ L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上�
 示例代码如下：
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-
-

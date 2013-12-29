@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: ruby_on_rails

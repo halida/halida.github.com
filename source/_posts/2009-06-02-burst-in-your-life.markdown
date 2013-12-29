@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 生活需要时不时的burst一下

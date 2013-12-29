@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 一天时间用python写门语言

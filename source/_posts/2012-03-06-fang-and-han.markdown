@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 方舟子打韩寒事件我见

@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 黑客马拉松活动小记

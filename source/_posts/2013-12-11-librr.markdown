@@ -84,4 +84,3 @@ linux下面的[LinuxDirMonitor](https://github.com/halida/librr/blob/master/lib/
 真是不容易啊。不过这种代码主要消耗在架构上面的项目写起来真的是非常有成就感。
 
 既然你都看到这里了，那么就试用一下[librr](https://github.com/halida/librr)吧，欢迎[提交issue给我](https://github.com/halida/librr/issues)。
-

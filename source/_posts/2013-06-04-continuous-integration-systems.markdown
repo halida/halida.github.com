@@ -41,7 +41,3 @@ categories:
 [好像是](https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins)比较受欢迎的CI系统，
 安装非常简单，只要下载war文件，然后执行`java -jar jenkins.war`，之后访问8080端口网站即可。
 不过添加测试用例的过程就有点复杂，我还没有深入。看起来jenkins是我需要的东西。(待续)
-
-
-
-

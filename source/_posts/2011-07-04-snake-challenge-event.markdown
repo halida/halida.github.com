@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 宅男们开房的故事_snake_challenge活动总结

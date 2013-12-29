@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: rails ubuntu 下安装

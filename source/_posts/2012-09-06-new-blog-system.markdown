@@ -20,4 +20,3 @@ categories:
 回首已多月，最后我终于下定决心投入时间整顿它们，全部移植到Octopress上去。
 从ReST转移到Markdown耗费了一些功夫，有[Pandoc](http://johnmacfarlane.net/pandoc/)在，工作还算顺利，有些许的格式混乱，容我以后时间充裕时再慢慢调整吧，
 若您看到什么格式混乱的地方，还请包涵，这些我都会在将来的几个月里面慢慢整理完毕的～
-

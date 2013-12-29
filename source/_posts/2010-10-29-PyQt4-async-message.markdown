@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: PyQt4的异步消息机制

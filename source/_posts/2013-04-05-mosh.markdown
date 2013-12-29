@@ -48,4 +48,3 @@ mosh $server --ssh='ssh -p 2222'
 当你在网络断开的时候，关掉了mosh的进程，远程服务器上面对应的server进程会一直存在，
 这个时候重新连上去的时候，就会提示你。这个时候你需要手动kill掉这个进程，
 具体见[issue报告](https://github.com/keithw/mosh/issues/403)。
-

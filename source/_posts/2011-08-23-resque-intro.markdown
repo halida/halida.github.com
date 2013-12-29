@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: resque介绍和分析

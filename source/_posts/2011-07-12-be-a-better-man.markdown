@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: be_a_better_man
