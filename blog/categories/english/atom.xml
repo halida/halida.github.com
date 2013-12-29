@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2013-12-29T12:08:27+08:00</updated>
+  <updated>2013-12-29T15:56:19+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,37 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Too Old to Program]]></title>
+    <link href="http://halida.github.com/blog/too-old-to-program/"/>
+    <updated>2013-12-29T14:10:05+08:00</updated>
+    <id>http://halida.github.com/blog/too-old-to-program</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2013_12_29_title.jpeg"></p>
+
+<p>There is a common myth in China: After programmer turns 30, he is too old to keep programming, need change direction, to management or other domains.</p>
+
+<p>It may not make any sense for the programmers outside of China, there are many talent old programmer out there, still doing great job. But this myth reflect something need to worry about, In short words: <strong>programming is easy to learn, hard to improve</strong>.</p>
+
+<p>With the greatness of internet and hard working of programmers, knows how to programming, is just a matter of time. Dozens of websites tells you how to build a website or GUI tool, thousands of books give you a detailed walk through, from novice to expert. You can create a website on your own, under 1 month, even though has no IT background.</p>
+
+<p>So it bring down the threshold, and for the domain with low requirements, employees there are under heavy competition, easy to be replaced.</p>
+
+<p>And programmer&rsquo;s job brings low benefit. They are isolated inside digital world (some of us forced to be more socialize for keep balance), investment of time on new tech devaluation fast, repeating doing jobs of CURD, domain specific knowledge which cannot scale or be reused, and need lots of brain power to finish the job so leave less energy on self improvement after work.</p>
+
+<p>Then after several years of hard working, programmer may found that he is less competitive with the newbies, and aging issue came out, make old programmer hard to follow new trend, hard to focus the mind on solving coding problems, and it will lead to decrease of the salary income.</p>
+
+<p>There still are some way out:</p>
+
+<p><strong>Tech Management</strong>. People who can lead a tech team is always rare. It require good understanding of programming and problem domain, social skills to communicate with team members with different background, and good control of project schedule.</p>
+
+<p><strong>IT consultant</strong>. With all these years of working, the programmer has deep understanding of the information system, and how business works. Organization need he to maintain and improve the system, he will become part of the system.</p>
+
+<p><strong>CS expert</strong>. Programmer has deep understanding of computer science, and smart enough to solve tech relevant issues which others can&rsquo;t. They can bring great value to the organization, either create core competition, or keep complex system work smoothly.</p>
+
+<p>All these positions are hard to archive, only few of us did. Average forks will remain average, face the hard cold winter.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
