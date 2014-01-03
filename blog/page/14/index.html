@@ -9,10 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这里收集了一些我的语录, 以及我转述其他人的语录(会注明,
-大多数不记得转述谁的了), 如果一股读者味道不要怪我.
-如果我没有按照我说的话做也不要怪我. 我也只是一个心灵脆弱的人. 新的东西添加在前面: 如果一个人活得和别人一样, 那么他给这个世界带来了什么信息量呢?
-编程的快乐, &hellip;">
+  <meta name="description" content="这里面整理了一些零散的开发经验, 方便提醒自己, 以及给其他人灵感. 写代码本质上来讲是把信息量体现在代码上面,
+最好写下来的代码正好反应出项目的信息.
+比如代码本质上是实现一个状态机, 那么就需要写清楚,
+然人一看就知道是状态机(有向图)
+要让代码复杂度反映在代码行数上面. no一行流 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/development-experience/">开发经验</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-23T10:02:28+08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2010</time>
+        
+         | <a href="/blog/development-experience/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里面整理了一些零散的开发经验, 方便提醒自己, 以及给其他人灵感.</p>
+
+<ul>
+<li>写代码本质上来讲是把信息量体现在代码上面,
+最好写下来的代码正好反应出项目的信息.
+比如代码本质上是实现一个状态机, 那么就需要写清楚,
+然人一看就知道是状态机(有向图)</li>
+<li>要让代码复杂度反映在代码行数上面. no一行流</li>
+<li>C语言是lisp的底层抽象?</li>
+<li>C语言每个语句的性能是平衡的, 能够从C代码中看出程序性能消耗?</li>
+<li>python函数边界不做类型检查, 运行时刻再去判断类型, 造成性能下降,
+但是也带来足够强大的抽象能力?</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1821,244 +1873,6 @@ python文档</a>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pyqt-animation-framework/">Pyqt_animation_framework</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-30T09:14:01+08:00" pubdate data-updated="true">Nov 30<span>th</span>, 2010</time>
-        
-         | <a href="/blog/pyqt-animation-framework/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Qt animation framework介绍</h2>
-
-<p>传统的GUI界面, 一般是静态的, 按钮就是按钮, 不会到处乱蹦,
-不过现在这个时代, 冷冰冰的界面不是很吸引人. Qt 4.6里面带有新的animation
-framework, 就可以帮助我们完成让界面&#8221;动起来&#8221;的工作.</p>
-
-<h2>系统架构</h2>
-
-<p><img src="http://doc.qt.nokia.com/4.7/images/animations-architecture.png" alt="image" />
-上面是Qt支持动画的所有类的继承关系列表, 最主要的有几个:</p>
-
-<ul>
-<li><p><a href="http://doc.qt.nokia.com/4.7/qpropertyanimation.html">QPropertyAnimation</a>
-类负责具体的动画效果,
-它可以通过设置QWidget属性(property)的方式来完成动画.</p></li>
-<li><p><a href="http://doc.qt.nokia.com/4.7/qanimationgroup.html">QAnimationGroup</a>,
-用来把不同的动画拼在一起, 实现连续和复杂的动画效果.</p></li>
-</ul>
-
-
-<p>具体我们看实际的代码吧.</p>
-
-<h2>示例1: 一个简单的动画</h2>
-
-<p>正如上面所说的, `QPropertyAnimation`_ 负责动画, 这里一个简单的示例,
-控制一个按钮移动. 代码如下:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 动来动去的按钮</span>
-</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;Button&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">button</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 生成一个动画, 它会修改button的geometry属性</span>
-</span><span class='line'><span class="n">animation</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c"># 动画时间是10秒</span>
-</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setDuration</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
-</span><span class='line'><span class="c"># 开始的位置</span>
-</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setStartValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-</span><span class='line'><span class="c"># 结束的位置</span>
-</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">setEndValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-</span><span class='line'><span class="c"># 开始吧</span>
-</span><span class='line'><span class="n">animation</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>很简单吧? 它默认是以恒定速度运动的, 可以通过设置
-<a href="http://doc.qt.nokia.com/4.7/qvariantanimation.html#easingCurve-prop">easyCurve</a>
-来设置运动的类型, 比如先加速后减速什么的, 很方便.</p>
-
-<h2>示例2: 分组</h2>
-
-<p>上面只是一个普通的动作, 如果我们需要做一组复杂的动作的话, 就要用
-`QAnimationGroup`_ 来组织. 有2种group,
-QParallelAnimationGroup和QtSequentialAnimationGroup, 一个平行动作,
-一个顺序动作. 这个示例设置无数个按钮淡入到窗口中. 上代码:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#生成一堆按钮, 不同的初始位置</span>
-</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">pbs</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
-</span><span class='line'>    <span class="n">pb</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">pb</span><span class="o">.</span><span class="n">move</span><span class="p">((</span><span class="n">i</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span> <span class="o">%</span> <span class="mi">600</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
-</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">pbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pb</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 建立一个平行执行的动作组</span>
-</span><span class='line'><span class="n">ag</span> <span class="o">=</span> <span class="n">QParallelAnimationGroup</span><span class="p">()</span>
-</span><span class='line'><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbs</span><span class="p">:</span>
-</span><span class='line'>    <span class="c"># 对于每个按钮, 都生成一个进入的动作</span>
-</span><span class='line'>    <span class="n">a</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setDuration</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setEasingCurve</span><span class="p">(</span><span class="n">QEasingCurve</span><span class="o">.</span><span class="n">OutQuad</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setStartValue</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">w</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">w</span><span class="o">.</span><span class="n">height</span><span class="p">()))</span>
-</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="n">setEndValue</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">geometry</span><span class="p">())</span>
-</span><span class='line'>    <span class="c"># 添加到组里面去</span>
-</span><span class='line'>    <span class="n">ag</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ag</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>其实简单点说, 只要把要动作的animation添加到group里面, 然后start就好了.</p>
-
-<h2>示例3: 状态机</h2>
-
-<p>Qt本身提供一个状态机的功能, 和animation结合起来,
-可以很方便地完成我们想要的工作. 毕竟, 不同状态的切换,
-才是界面运动的本质. 这个示例演示一个按钮, 点击后会在两个位置之间移动.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">dlg</span> <span class="o">=</span> <span class="n">QDialog</span><span class="p">()</span>
-</span><span class='line'><span class="n">dlg</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;Button&quot;</span><span class="p">,</span> <span class="n">dlg</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们先生成一个状态机</span>
-</span><span class='line'><span class="n">machine</span> <span class="o">=</span> <span class="n">QStateMachine</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 然后给状态机加上几个状态:</span>
-</span><span class='line'><span class="c"># 不同状态下, button的位置是不同的.</span>
-</span><span class='line'><span class="n">state1</span> <span class="o">=</span>  <span class="n">QState</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span>
-</span><span class='line'><span class="n">state1</span><span class="o">.</span><span class="n">assignProperty</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">,</span> <span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-</span><span class='line'><span class="n">state2</span> <span class="o">=</span>  <span class="n">QState</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span>
-</span><span class='line'><span class="n">state2</span><span class="o">.</span><span class="n">assignProperty</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">,</span> <span class="n">QRect</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-</span><span class='line'><span class="n">machine</span><span class="o">.</span><span class="n">setInitialState</span><span class="p">(</span><span class="n">state1</span><span class="p">)</span> <span class="c"># 初始状态是哪个</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 然后, 我们需要设置状态变化的转换方式.</span>
-</span><span class='line'><span class="n">transition1</span> <span class="o">=</span> <span class="n">state1</span><span class="o">.</span><span class="n">addTransition</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">clicked</span><span class="p">,</span> <span class="n">state2</span><span class="p">)</span>
-</span><span class='line'><span class="n">transition2</span> <span class="o">=</span> <span class="n">state2</span><span class="o">.</span><span class="n">addTransition</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">clicked</span><span class="p">,</span> <span class="n">state1</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 把动作加到转换方式里面去</span>
-</span><span class='line'><span class="n">an</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">transition1</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">an</span><span class="p">)</span>
-</span><span class='line'><span class="n">an2</span> <span class="o">=</span> <span class="n">QPropertyAnimation</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">&quot;geometry&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">transition2</span><span class="o">.</span><span class="n">addAnimation</span><span class="p">(</span><span class="n">an2</span><span class="p">)</span>
-</span><span class='line'><span class="c"># 设置完了, 开始吧.</span>
-</span><span class='line'><span class="n">machine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span class='line'><span class="n">dlg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>就是这么简单..</p>
-
-<h2>资源</h2>
-
-<p>如果你安装了Qt4.6以上版本, 可以在assistant-qt4里面搜索the animation
-framework看具体的文档, 也可以看 `在线版本
-&lt;<a href="http://doc.qt.nokia.com/4.7/animation-overview.html">http://doc.qt.nokia.com/4.7/animation-overview.html</a>>`.
-上面的例子都是脱胎于这个文档的.</p>
-
-<p>Qt附带有几个好玩的示例, 在qt example下面的animation目录下面.
-pyqt也是一样.</p>
-
-<p>上面我写的的几个示例代码, 可以在这里下载到:
-<a href="http://bitbucket.org/linjunhalida/code-example/src/tip/animation">http://bitbucket.org/linjunhalida/code-example/src/tip/animation</a>/</p>
-
-<h2>结论</h2>
-
-<p>Qt animation framework已经出来那么久了, 我现在才真正去学习它,
-是有点晚了, 后面的QML都出来的时候, 现在再来看是否有点不合时宜?
-但是看着Qt演变的过程, 还是有意义的. 有时间的话, 我去看看它实现的原理,
-能不能从中借鉴点什么.</p>
-
-<p>PS: pythonxy里面的pyqt还是4.5, 没有带有animation framework, 郁闷.
-不好把功能加到公司项目里面去了.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -2076,6 +1890,10 @@ pyqt也是一样.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/how-to-read-ruby-source-code/">如何阅读ruby源码</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/too-old-to-program/">Too Old to Program</a>
       </li>
     
@@ -2089,10 +1907,6 @@ pyqt也是一样.</p>
     
       <li class="post">
         <a href="/blog/librr-debug-cpu-usage-high/">记一次调试ruby内存问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ruby-memory-leak-debug/">ruby内存泄漏调试方法</a>
       </li>
     
   </ul>
@@ -2146,7 +1960,7 @@ pyqt也是一样.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - 机械唯物主义 -
+  Copyright &copy; 2014 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
