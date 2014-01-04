@@ -2,9 +2,8 @@
 layout: post
 title: 2011年度总结
 date: 2012-01-01 15:40:39 +0800
-
 comments: true
-categories: 
+categories: resolution
 ---
 
 有好几个朋友都写了年度总结, 我想如果没有反思的话就没有成长,

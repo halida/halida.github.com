@@ -3,7 +3,7 @@ layout: post
 title: "2012总结与2013计划"
 date: 2013-01-03 09:29
 comments: true
-categories: 
+categories: resolution
 ---
 
 {% img /images/posts/vN7Gw.jpg %}
