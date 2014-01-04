@@ -9,8 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="需求 rails的默认报错处理，是返回public/400.html，public/500.html的内容。
-我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。 我们一般希望能够定制：500服务器错误，400地址不存在。 解决方案 在你的app/controllers/ &hellip;">
+  <meta name="description" content="不知啥时开始，举目皆是英雄。 他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
+地球跟随他们转动，历史就是他们的故事。 这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
+英雄开创出来的基业，里面一个个坑还要普通人去填的。
+但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +81,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ordinary-or-extraordinary/">牛逼或怂逼</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T19:45:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/ordinary-or-extraordinary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_10_27_tired.jpeg"></p>
+
+<p>不知啥时开始，举目皆是英雄。</p>
+
+<p>他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
+地球跟随他们转动，历史就是他们的故事。</p>
+
+<p>这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
+英雄开创出来的基业，里面一个个坑还要普通人去填的。
+但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住，还有点小玩头。</p>
+
+<p>英雄多了，普通人亦不值钱了，
+那些坑已然都挖好，谁人来站没啥区别，换换也就铲子的事儿，犯不着滴多点油水。
+真要耗油水抢地盘的地方不是蓝海就是红海，战刺刀的不是海盗就是海军陆战队，
+要和他们争，也非得上英雄不可，没超能力的还是靠边站吧。</p>
+
+<p>坑里面油水再少，也算过得下去，一家几口挤个公寓，交齐了月租也能其乐融融，
+本朝政府虽说变扭难养，至少也留口气给你呼吸或者说话，比起上世纪的伟人时代好过活许多，
+外面还有国内外的英雄们开疆扩土，坐着也能等着日子一天天变好。</p>
+
+<p>但人本性还是矫情，自己小日子过得不行，还要发贱探头去外面比，一比就完了。
+举目皆是英雄人英雄事，相较之下生活就粗鄙不堪，连带身边婆娘或汉子也俗气了，着实难过。
+难过也就罢了，落下一病，名为不甘心，
+发起病来容易抛妻弃子背井离乡去当英雄，结果底子弱没有超能力，
+英雄当不成，成了狗熊，连自己的一某三分地都丢了。
+只留得脑壳后面印下三个字：不后悔。</p>
+
+<p>所以咋办？
+要么牛逼，要么怂逼，不上不下还是认怂吧，
+没有超能力就不要戴面罩当英雄，不然脸被打得亲妈都认不出来。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1388,81 +1457,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-04T23:11:00+08:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time>
-        
-         | <a href="/blog/continuous-integration-systems/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/Continuous_Integration.png"></p>
-
-<p>今天打算弄一个<a href="http://en.wikipedia.org/wiki/Continuous_Integration">持续集成</a>系统，
-用来自动化测试我们<a href="http://gurudigger.com/">GuruDigger</a>的代码。选型和测试结果如下。</p>
-
-<h2>gitlab-ci</h2>
-
-<p><a href="http://gitlab.org/">gitlab-ci</a>和GitLab是一起的，安装过程非常复杂，需要创建系统用户等等，我安装失败就没有继续了。</p>
-
-<h2>cruisecontrol.rb</h2>
-
-<p><a href="https://github.com/thoughtworks/cruisecontrol.rb">cruisecontrol.rb</a>是thoughtworks的一个东西，安装还是比较简单的。</p>
-
-<ul>
-<li>首先把源代码下载下来。</li>
-<li>替换gemspec里面的<code>rcov</code>成<code>"simplecov-rcov", '0.2.3'</code>，因为rcov不支持1.9.x之后的版本。</li>
-<li><code>bundle install</code>。</li>
-<li><code>./cruise start</code>启动服务器。</li>
-<li>访问3333端口网站，或者用<code>./cruise</code>命令行进行操作。</li>
-</ul>
-
-
-<p>不过这个项目看起来很老了，也没有什么更新，功能上面看起来也很简单，只是点击跑一下测试显示结果，不是很满足要求。</p>
-
-<h2>travis-ci</h2>
-
-<p><a href="https://travis-ci.org">travis-ci</a>它可以针对github的开源项目免费测试，针对私有项目就没有办法了，可以去<a href="https://github.com/travis-ci/travis-ci">下载安装源码</a>，不过上面说还不稳定不推荐自己折腾。</p>
-
-<h2>cijoe</h2>
-
-<p><a href="https://github.com/defunkt/cijoe">看起来</a>使用比较简单，不过我死活没有跑起来。
-更新也还是2年以前，放弃之。</p>
-
-<h2>jenkins</h2>
-
-<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins">好像是</a>比较受欢迎的CI系统，
-安装非常简单，只要下载war文件，然后执行<code>java -jar jenkins.war</code>，之后访问8080端口网站即可。
-不过添加测试用例的过程就有点复杂，我还没有深入。看起来jenkins是我需要的东西。(待续)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1480,6 +1474,10 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013-summary/">2013总结与2014计划</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-to-read-ruby-source-code/">如何阅读ruby源码</a>
       </li>
     
@@ -1493,10 +1491,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
     
       <li class="post">
         <a href="/blog/librr/">librr介绍</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/librr-debug-cpu-usage-high/">记一次调试ruby内存问题</a>
       </li>
     
   </ul>
