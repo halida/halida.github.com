@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-01-19T21:26:05+08:00</updated>
+  <updated>2014-01-19T22:43:13+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[information sugar]]></title>
+    <link href="http://halida.github.com/blog/information-sugar/"/>
+    <updated>2014-01-19T21:47:34+08:00</updated>
+    <id>http://halida.github.com/blog/information-sugar</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_01_19_sugar.jpeg"></p>
+
+<p>As a blogger for many years, creating new blog post is harder and harder for me.</p>
+
+<p>So why it is harder? Because I consider quality of blog post more now.</p>
+
+<p>To have a high quality blog post, it should have:</p>
+
+<ul>
+<li><strong>High information density</strong>. It should focus on one topic, with enough supportive information.</li>
+<li><strong>Depth</strong>. It should walk through the topic, view all the angles, dig deep into the essence, so reader can have a clear view.</li>
+<li><strong>New content</strong>. We should not discuss something already done.</li>
+<li><strong>Something inspiring</strong>. It can create spark which can enlighten reader&rsquo;s mind.</li>
+</ul>
+
+
+<p>World is filled with noise, and readers face more danger on the thing
+which I call <em>information sugar</em>: it has some value, but the time spending on reading, is more valuable than the value it contains.
+SNS and news sites filled with it, sweat to read, and lots of time wasted without notice.</p>
+
+<p>Creating high quality information need lots of time, focus, hard working, and care.
+I hope I can provide more of it, other than the sweet <em>information sugar</em>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[autoit介绍]]></title>
@@ -1504,191 +1534,6 @@ View就是html的页面，Controller就是针对事件做出的反应。</p>
 <p>cache的实现方式，可以用文件，内存，或者单独的cache服务器。
 如果服务端采用多个进程来服务，最好采用一个cache服务器，
 这样不会出现每个进程各自维护一份同样内容cache的状况。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[nested set model介绍]]></title>
-    <link href="http://halida.github.com/blog/nested-set-model/"/>
-    <updated>2013-07-27T16:15:00+08:00</updated>
-    <id>http://halida.github.com/blog/nested-set-model</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_07_27_tree.jpg"></p>
-
-<h2>问题</h2>
-
-<p>我们很多时候，需要在传统的关系型数据库中间实现树状结构，
-比如说部门层级图，树状留言图等。</p>
-
-<p>一般来说，针对树状结构的操作有：</p>
-
-<ul>
-<li>访问一个节点</li>
-<li>增加一个节点</li>
-<li>删除一个节点及其子项</li>
-<li>移动节点</li>
-<li>遍历一个节点及其子项</li>
-</ul>
-
-
-<p>我们可以常用简单的数据结构实现，记录一个项目的父节点就可以了，比如：</p>
-
-<pre><code>Category: id integer, parent_id: integer, content: string
-</code></pre>
-
-<p>数据就是这样：</p>
-
-<pre><code>ID  |  PARENT_ID | content
- 0  |    null    |   ...  
- 1  |      0     |   ...  
- 2  |      1     |   ...  
- 3  |    null    |   ...  
- 4  |      2     |   ...  
- 5  |      4     |   ...  
-</code></pre>
-
-<p>这样的数据结构下面，遍历节点及其子项的操作需要用到迭代，
-在关系型数据库中，基本上有多少层的子项，就要多少SQL查询，
-为了保证一致性，需要用存储过程来实现这样的遍历，
-一个是麻烦另外一个是也会有性能问题。
-那么有什么好的解决方案呢？</p>
-
-<h2>Nested Set Model</h2>
-
-<p>我们可以换另外一种抽象方式来表示数据，
-假设我们把树状图中的每个节点当做一个集合，父节点集合包含了所有的子节点集合，
-那么我们可以把树转换成一个集合图：</p>
-
-<p><img src="http://halida.github.com/images/posts/2013_07_27_set.jpg"></p>
-
-<p>然后，我们把所有的集合都当做一个数值的范围，父节点集合范围包含了所有子节点集合的范围，
-那么集合图就会变成这样：</p>
-
-<p><img src="http://halida.github.com/images/posts/2013_07_27_set_number.jpg"></p>
-
-<p>这样一个节点可以用范围的两个数值来表示，比如：</p>
-
-<pre><code>ID  |  PARENT_ID |  lft  |  rgt  |  content
- 0  |    null    |   1   |  10   |  ...  
- 1  |      0     |   2   |   9   |  ...  
- 2  |      1     |   3   |   8   |  ...  
- 3  |    null    |  11   |  12   |  ...  
- 4  |      2     |   4   |   7   |  ...  
- 5  |      4     |   5   |   6   |  ...  
-</code></pre>
-
-<p>其中，lft和rgt分别代表范围的左边距和右边距。</p>
-
-<p>这样，我们可以通过这样的SQL来查询一个项目的所有子项：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">child</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span>
-</span><span class='line'>    <span class="n">categories</span> <span class="k">as</span> <span class="n">child</span><span class="p">,</span> <span class="n">categories</span> <span class="k">as</span> <span class="n">parent</span>
-</span><span class='line'><span class="k">where</span>
-</span><span class='line'>    <span class="n">child</span><span class="p">.</span><span class="n">lft</span> <span class="k">between</span> <span class="n">parent</span><span class="p">.</span><span class="n">lft</span> <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">rft</span>
-</span><span class='line'>    <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一行SQL就可以解决问题，非常方便。不过带来的代价是添加和移动上面的复杂度。</p>
-
-<h2>具体实现</h2>
-
-<p>首先是如何初始化一棵树。做法很简单，
-深度优先遍历这棵树，然后按顺序赋值，维护一个当前最大顺序即可。
-ruby代码实现：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">init_tree</span> <span class="n">root_nodes</span>
-</span><span class='line'>  <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">set_value</span> <span class="n">node</span>
-</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">lft</span> <span class="o">=</span> <span class="n">count</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="n">child</span> <span class="k">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span>
-</span><span class='line'>      <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="n">set_value</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">rgt</span> <span class="o">=</span> <span class="n">count</span>
-</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">for</span> <span class="n">root_node</span> <span class="k">in</span> <span class="n">root_nodes</span>
-</span><span class='line'>    <span class="n">set_value</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>添加一个节点，把父节点尾部rgt，以及之后的所有位置统统移后2位即可，
-用一行SQL就可以实现：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">update</span> <span class="n">categories</span> <span class="k">set</span>
-</span><span class='line'>    <span class="n">rgt</span> <span class="o">=</span> <span class="n">rgt</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
-</span><span class='line'>    <span class="n">lft</span> <span class="o">=</span> <span class="n">lft</span> <span class="o">+</span> <span class="mi">2</span>
-</span><span class='line'><span class="k">where</span>
-</span><span class='line'>    <span class="n">lft</span> <span class="o">&gt;</span> <span class="mi">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>移动一个节点比较复杂，因为要把范围内的子项也一起移动走。
-操作基本上就是把节点范围内的所有项目（包括自己）移动到目标位置，
-然后把目标位置和当前位置之间的所有项目也更新到应该对应的位置上面。
-具体实现比较复杂，你可以去看<a href="https://github.com/collectiveidea/awesome_nested_set/blob/master/lib/awesome_nested_set/move.rb">awesome_nested_set的具体实现</a>。</p>
-
-<p>其他的操作非常简单就不给出示例了。</p>
-
-<h2>结论</h2>
-
-<p>采用nested set model可以很方便地实现树状结构，
-具有很好的查询效率。不过在添加项目和移动项目上面有比较大的代价。
-如果项目非常多，操作可能就不是很经济了。
-我在想，应该有好的算法能够让每次更新的项目变得最少，
-不知道大家是否知道有这样的算法？</p>
-
-<h2>使用到的工具和库</h2>
-
-<p>Rails下面有一个Gem叫<a href="https://github.com/collectiveidea/awesome_nested_set">awesome_nested_set</a>来实现这种结构，
-利用它来实现的一个树状评论Gem
-<a href="https://github.com/elight/acts_as_commentable_with_threading">acts_as_commentable_with_threading</a>
-。如果你有兴趣，可以去看看具体的源码。</p>
-
-<h2>引用材料</h2>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Nested_set_model">wikipedia</a></li>
-<li><a href="http://threebit.net/tutorials/nestedset/tutorial1.html">tutorial</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

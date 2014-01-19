@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>给Rails加上https支持 - 网络寻租</title>
+  <title>information sugar - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。 首先，假设你的rails已经跑起来了，在http://yourserver.com，服务器是ubuntu， &hellip;">
+  <meta name="description" content="As a blogger for many years, creating new blog post is harder and harder for me. So why it is harder? Because I consider quality of blog post more &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/using-https-for-rails/">
+  <link rel="canonical" href="http://halida.github.com/blog/information-sugar/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">给Rails加上https支持</h1>
+      <h1 class="entry-title">Information Sugar</h1>
     
     
       <p class="meta">
@@ -97,7 +97,7 @@
   
 
 
-<time datetime="2013-03-24T18:46:00+08:00" pubdate data-updated="true">Mar 24<span>th</span>, 2013</time>
+<time datetime="2014-01-19T21:47:34+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,114 +106,28 @@
   </header>
 
 
-<div class="entry-content"><p><img src="/images/posts/4mClj73.jpg"></p>
+<div class="entry-content"><p><img src="/images/posts/2014_01_19_sugar.jpeg"></p>
 
-<p>https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。</p>
+<p>As a blogger for many years, creating new blog post is harder and harder for me.</p>
 
-<p>首先，假设你的rails已经跑起来了，在<code>http://yourserver.com</code>，服务器是ubuntu，本地的访问方式是<code>127.0.0.1:8787</code>，那么你需要利用<code>nginx</code>来提供https的服务。</p>
+<p>So why it is harder? Because I consider quality of blog post more now.</p>
 
-<p>首先安装<code>nginx</code>和<code>openssl</code>：</p>
-
-<pre><code>sudo apt-get install nginx openssl
-</code></pre>
-
-<p>生成服务器的秘钥公钥：</p>
-
-<pre><code>openssl req -new -nodes -keyout server.key -out server.csr
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-</code></pre>
-
-<p>生成的几个文件解释：</p>
+<p>To have a high quality blog post, it should have:</p>
 
 <ul>
-<li><code>server.key</code> 服务器的私钥。</li>
-<li><code>server.csr</code> (certificate signing request) https证书签名请求。</li>
-<li><code>server.crt</code> 生成的服务器证书。</li>
+<li><strong>High information density</strong>. It should focus on one topic, with enough supportive information.</li>
+<li><strong>Depth</strong>. It should walk through the topic, view all the angles, dig deep into the essence, so reader can have a clear view.</li>
+<li><strong>New content</strong>. We should not discuss something already done.</li>
+<li><strong>Something inspiring</strong>. It can create spark which can enlighten reader&rsquo;s mind.</li>
 </ul>
 
 
-<p>然后有这些文件，我们可以配置nginx服务了。</p>
+<p>World is filled with noise, and readers face more danger on the thing
+which I call <em>information sugar</em>: it has some value, but the time spending on reading, is more valuable than the value it contains.
+SNS and news sites filled with it, sweat to read, and lots of time wasted without notice.</p>
 
-<p>生成nginx的配置文件：</p>
-
-<pre><code>sudo touch /etc/nginx/sites-available/yourserver
-sudo ln -s /etc/nginx/sites-available/yourserver /etc/nginx/sites-enabled
-sudo vi /etc/nginx/sites-available/yourserver
-</code></pre>
-
-<p>里面的内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>upstream unicorn {
-</span><span class='line'>  server 127.0.0.1:8787 fail_timeout=0;
-</span><span class='line'>}
-</span><span class='line'>server {
-</span><span class='line'>  listen       443;
-</span><span class='line'>  server_name  yourserver.com;
-</span><span class='line'>    
-</span><span class='line'>  ssl                  on;
-</span><span class='line'>  ssl_certificate      yourpath/server.crt;
-</span><span class='line'>  ssl_certificate_key  yourpath/server.key;
-</span><span class='line'>    
-</span><span class='line'>  ssl_session_timeout  5m;
-</span><span class='line'>    
-</span><span class='line'>  ssl_protocols  SSLv2 SSLv3 TLSv1;
-</span><span class='line'>  ssl_ciphers  HIGH:!aNULL:!MD5;
-</span><span class='line'>  ssl_prefer_server_ciphers   on;
-</span><span class='line'>    
-</span><span class='line'>  location / {
-</span><span class='line'>      proxy_set_header Host $host;
-</span><span class='line'>      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-</span><span class='line'>      proxy_set_header X-Forwarded-Proto https;
-</span><span class='line'>      proxy_redirect off;
-</span><span class='line'>      proxy_pass http://localserver;
-</span><span class='line'>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>需要修改里面的<code>server_name，yourpath</code>。</p>
-
-<p>然后重新启动nginx:</p>
-
-<pre><code>sudo service nginx restart
-</code></pre>
-
-<p>如果没有报错，那么你就可以通过<code>https://yourserver.com</code>来访问你的网站了。</p>
-
-<p>不过，浏览器会阻止你继续访问，或者需要你的确认。
-浏览器会保存一份可信网站的列表，你的服务器加密是自己生成的，不在里面。
-如果你的网站是商用的，最好去注册一下。<a href="https://www.name.com/ssl">这里</a>有一个指引。</p>
-
-<p>引用资料：</p>
-
-<ul>
-<li><a href="http://railscasts.com/episodes/357-adding-ssl?view=asciicast">railscast</a></li>
-</ul>
-
+<p>Creating high quality information need lots of time, focus, hard working, and care.
+I hope I can provide more of it, other than the sweet <em>information sugar</em>.</p>
 </div>
 
 
@@ -236,12 +150,12 @@ sudo vi /etc/nginx/sites-available/yourserver
   
 
 
-<time datetime="2013-03-24T18:46:00+08:00" pubdate data-updated="true">Mar 24<span>th</span>, 2013</time>
+<time datetime="2014-01-19T21:47:34+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/rails/'>rails</a>
+    <a class='category' href='/blog/categories/english/'>english</a>
   
 </span>
 
@@ -250,7 +164,7 @@ sudo vi /etc/nginx/sites-available/yourserver
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/using-https-for-rails/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/using-https-for-rails/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/information-sugar/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/information-sugar/" >Tweet</a>
   
   
   
@@ -259,10 +173,8 @@ sudo vi /etc/nginx/sites-available/yourserver
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/install-ruby2-dot-0-by-using-rvm/" title="Previous Post: install ruby2.0 by using rvm">&laquo; install ruby2.0 by using rvm</a>
+        <a class="basic-alignment left" href="/blog/introduce-autoit/" title="Previous Post: autoit介绍">&laquo; autoit介绍</a>
       
-      
-        <a class="basic-alignment right" href="/blog/introduce-pow/" title="Next Post: pow介绍">pow介绍 &raquo;</a>
       
     </p>
   </footer>
@@ -367,8 +279,8 @@ sudo vi /etc/nginx/sites-available/yourserver
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/using-https-for-rails/';
-        var disqus_url = 'http://halida.github.com/blog/using-https-for-rails/';
+        var disqus_identifier = 'http://halida.github.com/blog/information-sugar/';
+        var disqus_url = 'http://halida.github.com/blog/information-sugar/';
         var disqus_script = 'embed.js';
       
     (function () {

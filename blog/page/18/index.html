@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是sqlalchemy sqlalchemy是python下面一个专门用来处理sql问题的工具包. 纵览 python里面处理数据库的工具
-模块区分 ">
+  <meta name="description" content="需求 作为设备开发者, 一般需要让设备与上位机PC通讯,
+我们往往考虑采用以下几种接口: rs232, USB, ethernet. 现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
+USB大多成为我们的首选. 对于数据偏少的应用, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/libusb/">采用libusb库让PC与USB通讯</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/libusb/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>需求</h2>
+
+<p>作为设备开发者, 一般需要让设备与上位机PC通讯,
+我们往往考虑采用以下几种接口: rs232, USB, ethernet.</p>
+
+<p>现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
+USB大多成为我们的首选. 对于数据偏少的应用,
+我们可以利用USB虚拟串口的方式来完成这样的任务, 虚拟串口的驱动和实例,
+对于下位机来说也非常常见. 有个问题:
+很多应用无法用虚拟串口的方式来得到满足, 只能按照USB的方式来解决问题.
+这个时候, 我们只好针对USB进行编程. 对于复杂的驱动编程,
+大多数程序员往往望而却步. 不过总有其他简单的方法解决问题. 这里,
+我们介绍一个USB通讯库: libusb.</p>
+
+<h2>介绍</h2>
+
+<p>libusb是一个针对usb通讯的库. 使用它, 你不需要知道操作系统的细节,
+你只需要对USB有足够的了解即可. 它也不需要你写驱动,
+所有的工作都可以在用户态完成. 使用方法很简单, 这里有一个示例:
+<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation#IV.Examples</a>
+, 是不是很简单?</p>
+
+<h2>原理</h2>
+
+<p>libusb自己带有一个内核驱动, 名字叫libusb0.sys,
+放在WINDOWSSYSTEM32DRIVERS里面. 用户程序调用libusb0.dll,
+dll会把任务交由驱动来完成. 这样保证用户态就能够完成USB通讯的作业.</p>
+
+<p>具体做了什么, 可以通过下载项目的源文件来了解, 等我有时间的时候再看看吧.</p>
+
+<h2>安装方法</h2>
+
+<p>libusb现在有好几个版本. 主页面在这里:
+<a href="http://www.libusb.org">http://www.libusb.org</a>/</p>
+
+<ul>
+<li>因为我们一般是进行工程应用, 选择相对稳定的版本: libusb-0.1.</li>
+<li>平台在windows下的话, 我们采用libusb-win32: <a href="http://www.libusb.org/wiki/libusb-win32">http://www.libusb.org/wiki/libusb-win32</a></li>
+<li>linux下一般已经添加到源里面去了, 查找libusb即可.</li>
+</ul>
+
+
+<p>windows下安装方法: <a href="http://www.libusb.org/wiki/libusb-win32#Installation">http://www.libusb.org/wiki/libusb-win32#Installation</a></p>
+
+<p>里面有2种安装方式, Filter Driver Installation 和 Device Driver
+Installation, 前面一个可以说是开发环境, 后面可以说是发布驱动本身.
+我们因为是做系统, 选择前面一个方式, 省得麻烦.</p>
+
+<h2>使用</h2>
+
+<p>这里有比较详细的文档:
+<a href="http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation">http://sourceforge.net/apps/trac/libusb-win32/wiki/libusbwin32_documentation</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -685,56 +775,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/restriction-of-birth-is-bad/">计划生育不好</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-01T22:08:26+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2009</time>
-        
-         | <a href="/blog/restriction-of-birth-is-bad/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>从经济学的角度，如果把人从资源的角度来看：
-1反对对市场的干预（除非为了维护市场本身）
-2从时间上来看，人的价值是不断提高的，限制对人的投资，会损失很多。</p>
-
-<p>从历史的角度，当年人都是靠国家来养，国家养不了，就限制数量。</p>
-
-<p>从消耗资源来看，人的成本，只有粮食是刚性的，其他都可以靠减少平均耗用量来解决。
-现在的科技水平，粮食生产完全不成问题。（穷国饿死人基本上是因为政治）</p>
-
-<p>但是论到解决这个问题，有了既得利益群体，牵扯到政治，那就很难很难了。
-估计最后会因为实际成交价格（生育数量）低于限制的价格（每户1人），造成计划生育名存实亡。
-最后无生育可计划，政府会裁减该机关。(新补充： 或者转型成为促进生育机关，
-继续骗钱)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/19/">&larr; Older</a>
@@ -752,6 +792,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/information-sugar/">information sugar</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/introduce-autoit/">autoit介绍</a>
       </li>
     
@@ -765,10 +809,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/how-to-read-ruby-source-code/">如何阅读ruby源码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/too-old-to-program/">Too Old to Program</a>
       </li>
     
   </ul>
