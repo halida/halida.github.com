@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ruby_on_rails - 网络寻租</title>
+  <title>autoit介绍 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近有项目要用到ruby on rails, 于是下载了书, 看了一段时间. 具体学习方法 根据专家意见, 直接看ruby on rails guide. 学习时间, 连同ruby, 在一周时间. 根据我个人的体会, 也差不多.
-(前提是web程序员) 个人感觉 ror哲学是convention &hellip;">
+  <meta name="description" content="最近回到老家干IT，工作中遇到很多安装无聊软件的事情，为了能够自动化操作，我去寻找了一下类似按键精灵这种自动化工具，被我发现了autoit这个工具兼脚本语言。 简单介绍一下核心逻辑。比如说每次你希望每次打开记事本，都会自动输入一个抬头信息，比如&#8221;author: halida&#8221 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/ruby-on-rails/">
+  <link rel="canonical" href="http://halida.github.com/blog/introduce-autoit/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Ruby_on_rails</h1>
+      <h1 class="entry-title">Autoit介绍</h1>
     
     
       <p class="meta">
@@ -98,7 +97,7 @@
   
 
 
-<time datetime="2011-04-25T13:17:28+08:00" pubdate data-updated="true">Apr 25<span>th</span>, 2011</time>
+<time datetime="2014-01-19T20:47:06+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,35 +106,14 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://www.webaxes.com/wp-content/uploads/2010/06/ruby-on-rails.jpg" alt="image" /></p>
+<div class="entry-content"><p>最近回到老家干IT，工作中遇到很多安装无聊软件的事情，为了能够自动化操作，我去寻找了一下类似按键精灵这种自动化工具，被我发现了<a href="">autoit</a>这个工具兼脚本语言。</p>
 
-<p>最近有项目要用到ruby on rails, 于是下载了书, 看了一段时间.</p>
+<p>简单介绍一下核心逻辑。比如说每次你希望每次打开记事本，都会自动输入一个抬头信息，比如&#8221;author: halida&#8221;，那么你可以写以下的autoit脚本：</p>
 
-<h2>具体学习方法</h2>
-
-<p>根据专家意见, 直接看ruby on rails guide.</p>
-
-<p>学习时间, 连同ruby, 在一周时间. 根据我个人的体会, 也差不多.
-(前提是web程序员)</p>
-
-<h2>个人感觉</h2>
-
-<ul>
-<li>ror哲学是convention over configuration, 就是约定大于配置.
-比如默认约定xxx/是指向xxx/index,
-你直接修改index.html.erb模板文件即可., post xxx/
-会自动指向create方法, 等等..</li>
-<li>大量的生成器. 命令行自动生成view/model等等.</li>
-<li>内嵌功能, 你想要的东西都有, 对于常见的模块, 比如分页, 用户验证,
-管理什么的都有直接的模块可以调用.</li>
-<li>ruby这种魔法语言, 可以让代码量减少到非常低的程度.</li>
-</ul>
-
-
-<p>这样的结果就是, 你写的东西(包括输入的命令)非常地少,
-信息密度和产能非常地高.. 开发愉快, 不伤手指.</p>
-
-<p>再加上这个东西比较容易学(一周), 那么我有一个疑问: 为什么大家不去学ror呢?</p>
+<pre><code>Run('notepad')
+WinWaitActive("xxx", "")
+Send("!N")
+</code></pre>
 </div>
 
 
@@ -158,7 +136,7 @@
   
 
 
-<time datetime="2011-04-25T13:17:28+08:00" pubdate data-updated="true">Apr 25<span>th</span>, 2011</time>
+<time datetime="2014-01-19T20:47:06+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
       
 
 
@@ -166,7 +144,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/ruby-on-rails/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/ruby-on-rails/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/introduce-autoit/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/introduce-autoit/" >Tweet</a>
   
   
   
@@ -175,10 +153,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/trip-in-nanjing/" title="Previous Post: 南京游记">&laquo; 南京游记</a>
+        <a class="basic-alignment left" href="/blog/mobile-html/" title="Previous Post: 针对手机端写网页的方法">&laquo; 针对手机端写网页的方法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/let-it-go/" title="Next Post: 放下的智慧">放下的智慧 &raquo;</a>
       
     </p>
   </footer>
@@ -283,8 +259,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/ruby-on-rails/';
-        var disqus_url = 'http://halida.github.com/blog/ruby-on-rails/';
+        var disqus_identifier = 'http://halida.github.com/blog/introduce-autoit/';
+        var disqus_url = 'http://halida.github.com/blog/introduce-autoit/';
         var disqus_script = 'embed.js';
       
     (function () {
