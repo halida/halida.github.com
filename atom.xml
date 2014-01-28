@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-01-28T09:28:35+08:00</updated>
+  <updated>2014-01-28T16:45:39+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[access类型软件调研]]></title>
+    <link href="http://halida.github.com/blog/access-like-software/"/>
+    <updated>2014-01-28T09:44:48+08:00</updated>
+    <id>http://halida.github.com/blog/access-like-software</id>
+    <content type="html"><![CDATA[<p>最近要找一个微软Access类型的工具，做了一些调研，这里整理一下。</p>
+
+<p>Access类型列表：</p>
+
+<ul>
+<li><a href="http://alternativeto.net/software/microsoft-access/?sort=likes">alternativeto.net网站</a></li>
+<li><a href="http://superuser.com/questions/30776/open-source-alternative-to-filemaker-or-access">stackoverflow的问题</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Desktop_database_application_development_tools">wikipedia</a></li>
+</ul>
+
+
+<p>除了上面的，还顺藤摸瓜挖到一些。这里整理一下：</p>
+
+<h2>kexi</h2>
+
+<p><a href="http://www.calligra.org/kexi/">http://www.calligra.org/kexi/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_kexi1.png">
+<img src="http://halida.github.com/images/posts/2014_01_28_kexi2.png"></p>
+
+<p>是在KDE里面的组件。看起来还好，不过因为和KDE混在一起，不予考虑。</p>
+
+<p>同样也不考虑openoffce和gnome套件里面对应类似Access的软件。</p>
+
+<h2>Portofino</h2>
+
+<p><a href="http://www.manydesigns.com/en/portofino">http://www.manydesigns.com/en/portofino</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_portofino.png"></p>
+
+<p>基于java的，主要还是CMS类型，还是需要编程能力来客制化。</p>
+
+<h2>vfront</h2>
+
+<p><a href="http://www.vfront.org/demo.php">http://www.vfront.org/demo.php</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_vfront.gif"></p>
+
+<p>只是一个修改数据库的前端，不符合要求。</p>
+
+<h2>wavemaker</h2>
+
+<p><a href="http://www.wavemaker.com/product/demos.html">http://www.wavemaker.com/product/demos.html</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_wavemaker.jpg"></p>
+
+<p>基于java，在浏览器里面进行编辑修改。功能好像很强大。</p>
+
+<h2>filemaker</h2>
+
+<p><a href="http://www.filemaker.com/hk/products/overview.html">http://www.filemaker.com/hk/products/overview.html</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_filemaker.png">
+<img src="http://halida.github.com/images/posts/2014_01_28_filemaker2.jpg"></p>
+
+<p>国外主流，比Access份额要大。主要针对的还是苹果平台，手机平板都支持。</p>
+
+<h2>易表/狐表</h2>
+
+<p>易表 <a href="http://www.egrid2000.com/index.html#index">http://www.egrid2000.com/index.html#index</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_egrid.gif"></p>
+
+<p>狐表 <a href="http://www.foxtable.com/">http://www.foxtable.com/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_foxtable.gif"></p>
+
+<p>一家公司前后开发的版本，用表格的形式，我觉得好复杂，产品形态更类似Excel。</p>
+
+<h2>雅奇</h2>
+
+<p><a href="http://www.yqmis.com/">http://www.yqmis.com/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_yq1.png"></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_yq2.png"></p>
+
+<p>Access类型，网站介绍很强大，视频里面介绍的开发方式很顺畅，看起来挺不错，销量好像也大。可惜弄不到试用。价格近千。</p>
+
+<p>对了，首页一个美女自动做讲解。</p>
+
+<h2>搭建之星</h2>
+
+<p><a href="http://www.diylsoft.com/">http://www.diylsoft.com/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_djzx.jpg"></p>
+
+<p>有点粗糙，有免费版本。</p>
+
+<h2>魔方网表</h2>
+
+<p><a href="http://www.magicflu.com/">http://www.magicflu.com/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_mfwb.jpg"></p>
+
+<p>正式版免费，可以网络使用。</p>
+
+<h2>glom</h2>
+
+<p><a href="http://www.glom.org/wiki/index.php?title=Glom">http://www.glom.org/wiki/index.php?title=Glom</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_glom.png"></p>
+
+<p>只有前端，数据库不管，有点简陋。</p>
+
+<h2>camelot</h2>
+
+<p><a href="http://www.python-camelot.com/">http://www.python-camelot.com/</a></p>
+
+<p><img src="http://halida.github.com/images/posts/2014_01_28_camelot.png"></p>
+
+<p>pyqt + sqlalchemy 架构合我的胃口。但是需要写太多的代码了。。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[the meaning of life]]></title>
@@ -1319,146 +1439,6 @@ L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上�
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[一种简单的前端框架写法]]></title>
-    <link href="http://halida.github.com/blog/js-controller/"/>
-    <updated>2013-08-18T00:04:00+08:00</updated>
-    <id>http://halida.github.com/blog/js-controller</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/mvc.png"></p>
-
-<p>现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
-这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。</p>
-
-<p>我们大多数的js操作，都是针对用户事件，做一个具体的反应，
-比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。
-这种用户操作模型已经被研究很多了，通用的抽象方式就是著名的<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC模型</a>。
-我们写js也可以这样抽象隔离，不过一般并不需要抽象出MVC里面的Model。
-View就是html的页面，Controller就是针对事件做出的反应。</p>
-
-<p>我们可以把一个逻辑相关的功能划分成一个Controller类，类里面记录相对应的一个页面区块，
-列出需要监听的事件，把事件绑定到类方法上面，方法里面修改和更新区块中特定的元素。
-一个轻量的前端框架<a href="http://spinejs.com/">Spine</a>，提供了这样的一个Controller类来满足我们的需求。</p>
-
-<h2>例子</h2>
-
-<p>假设我们需要做一个简单的功能，页面上面一个按钮，点击一次按钮，页面上面显示的数量就加一。</p>
-
-<p>页面部分包含了我们需要展示的东西：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;counter&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;click&quot;</span><span class="nt">&gt;</span>Click Me<span class="nt">&lt;/a&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;result&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>对应的javascript（用<a href="http://coffeescript.org/">coffeescript</a>写）：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">CounterController</span> <span class="k">extends</span> <span class="nx">Spine</span><span class="p">.</span><span class="nx">Controller</span>
-</span><span class='line'>    <span class="c1"># 列出我们需要交互的页面元素</span>
-</span><span class='line'>    <span class="nv">elements:</span>
-</span><span class='line'>        <span class="s">&quot;.result&quot;</span><span class="o">:</span> <span class="s">&quot;result&quot;</span>
-</span><span class='line'>    <span class="c1"># 绑定我们关心的事件到on_click</span>
-</span><span class='line'>    <span class="nv">events:</span>
-</span><span class='line'>        <span class="s">&quot;click a.click&quot;</span><span class="o">:</span> <span class="s">&quot;on_click&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">constructor: </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="c1"># 在Controller初始化的时候，会帮你做好上面的事件和元素绑定</span>
-</span><span class='line'>        <span class="k">super</span>
-</span><span class='line'>        <span class="c1"># 初始化变量</span>
-</span><span class='line'>        <span class="vi">@count = </span><span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># 处理事件</span>
-</span><span class='line'>    <span class="nv">on_click: </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nx">@count</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="nx">@update</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># 更新页面</span>
-</span><span class='line'>    <span class="nv">update: </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nx">@result</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">@count</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># 初始化</span>
-</span><span class='line'><span class="k">new</span> <span class="nx">CounterController</span><span class="p">(</span><span class="nv">el: </span><span class="s">&#39;.counter&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我一般会再做一个启动器，这样可以自动挂载，以及限定好作用域不超出对应的区块：</p>
-
-<p>页面修改成：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">data-controller=</span><span class="s">&quot;Counter&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  ...
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>增加代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">init_controllers = </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-controller]&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nx">init_controller</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">init_controller = </span><span class="nf">(obj)-&gt;</span>
-</span><span class='line'>    <span class="nv">controller = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;Controller&quot;</span>
-</span><span class='line'>    <span class="nv">data = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">()</span>
-</span><span class='line'>    <span class="nv">data.el = </span><span class="nx">obj</span>
-</span><span class='line'>    <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">controller</span><span class="p">](</span><span class="nx">data</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_controllers</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>所有常规的js页面操作都可以抽象成一个Controller类，
-按照这样的方法来组织js代码，复杂的js就能管理得井井有条，
-并且只需要引入Spine(几十K左右)，不需要复杂的框架代码和理解。
-当然我们还可以进一步，自动绑定页面元素和数据，比如<a href="http://angularjs.org/">Angularjs</a>。
-不过我个人觉得，普通功能不需要做得那么复杂，用我上面的方法组织就已经OK了。</p>
 ]]></content>
   </entry>
   

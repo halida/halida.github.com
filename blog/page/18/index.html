@@ -9,9 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="方法 上次讲了如何使用预编译头来加速编译,现在给出一个Qt程序实际的例子,来演示
-预编译头的好处. 我们采用qmake来编译Qt程序,qmake本身支持预编译头,
-文档在这:http://doc.trolltech.com/3.3/qmake-manual-7.html 使用方法很简单, &hellip;">
+  <meta name="description" content="题目 TopLanguage论坛里有讨论一个面试题目,内容如下: 有个老的手机短信程序，由于当时的手机CPU，内存都很烂。所以这个短信程序只能记住256条短信，多了就删了。 每个短信有个唯一的ID，在0到255之间。当然用户可能自己删短信，现在我们收到了一个新短信，请分配给它一个唯一的ID。说白了 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +78,133 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/question-of-cell-phone-message-id/">手机分配短讯id的面试题目</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/question-of-cell-phone-message-id/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>题目</h2>
+
+<p>TopLanguage论坛里有讨论一个面试题目,内容如下:</p>
+
+<p>有个老的手机短信程序，由于当时的手机CPU，内存都很烂。所以这个短信程序只能记住256条短信，多了就删了。</p>
+
+<p>每个短信有个唯一的ID，在0到255之间。当然用户可能自己删短信，现在我们收到了一个新短信，请分配给它一个唯一的ID。说白了，就是请你写一个函数:</p>
+
+<pre><code>byte function(byte* ids);
+</code></pre>
+
+<p>该函数接受一个ids数组，返回一个可用的ID，由于手机很破，我要求你的程序尽量快，并少用内存。注意：ids是无序的。</p>
+
+<p>Miro的分析在这里:
+<a href="http://www.cnblogs.com/miloyip/archive/2010/08/31/idalloc_clarify.html">http://www.cnblogs.com/miloyip/archive/2010/08/31/idalloc_clarify.html</a></p>
+
+<h2>我的分析</h2>
+
+<p>我觉得,因为短消息发送的频率很低,那么我们不需要考虑取ID和释放ID的响应速度问题,主要问题放在如何节约空间.那么,最节约空间的是按照比特来存储ID是否使用.</p>
+
+<p>还有就是,重新整理了需求,需要提供一个释放和获取ID的接口.</p>
+
+<h2>解法</h2>
+
+<p>代码如下,没有测过,保证有错:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#define SIZE_COUNT 256/8</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">manager</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">byte</span> <span class="n">map</span><span class="p">[</span><span class="n">SIZE_COUNT</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">byte</span> <span class="n">alloc</span><span class="p">();</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">dealloc</span><span class="p">(</span><span class="n">byte</span> <span class="n">id</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//获取ID    </span>
+</span><span class='line'><span class="n">byte</span> <span class="n">alloc</span><span class="p">(){</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">SIZE_COUNT</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>        <span class="n">byte</span> <span class="n">data</span> <span class="o">=</span> <span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="mi">255</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//全满了</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(((</span><span class="n">data</span> <span class="o">&gt;&gt;</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">//got it!</span>
+</span><span class='line'>                <span class="n">data</span> <span class="o">|=</span> <span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">j</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">i</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="n">j</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//释放ID    </span>
+</span><span class='line'><span class="n">dealloc</span><span class="p">(</span><span class="n">byte</span> <span class="n">id</span><span class="p">){</span>
+</span><span class='line'>    <span class="n">map</span><span class="p">[</span><span class="n">id</span><span class="o">/</span><span class="mi">8</span><span class="p">]</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">id</span> <span class="o">%</span> <span class="mi">8</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>上面的解法速度上还是很慢的,如果ID空间长期处于半饱和,那么每次获取都要循环一遍数组,那么效率无法接受,因此要考虑更复杂的链表方式,但是这样一来空间就不会最小了.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -762,60 +887,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/software-development-information-prospective/">從信息的角度來看待軟件開發</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-04T22:08:26+08:00" pubdate data-updated="true">Jun 4<span>th</span>, 2009</time>
-        
-         | <a href="/blog/software-development-information-prospective/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>個人感覺，程序開發，是一個處理信息的過程。
-一開始，我們什么都不知道，需求也是模糊的。
-在需求分析過程中，我們漸漸能夠看清到底需要完成什么功能。
-但是如何實現這樣的功能，我們還是不了解。
-在設計階段，我們根據需求的內容，嘗試一個個原型，直至找到合適的，或者根據需求</p>
-
-<p>創造出一個。
-事實上，需求的信息量如此之大，可能有很多的原型，才有可能覆蓋住需求的要求。
-之后是裁剪，組合，分割，把需求的信息量，整理成原型的模樣，
-需求的信息處理得清清楚楚，整整齊齊。 最后還要看看有沒有信息遺漏的。
-之后是寫代碼和寫文檔，確保這個過程中，信息沒有變化。</p>
-
-<p>實際中，信息流不是那么清晰的，會有一些正反饋和負反饋，
-信息在傳遞的過程中還會有失真和遺漏，于是傳遞系統就有了冗余和校驗。</p>
-
-<p>一個新視角，可以帶來新的理論和方法，比如用信息處理的方法來指導軟件的設計和開發。
-我想，應該有人在這方面做過研究的。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/19/">&larr; Older</a>
@@ -833,6 +904,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/access-like-software/">access类型软件调研</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/the-meaning-of-life/">the meaning of life</a>
       </li>
     
@@ -846,10 +921,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/mobile-html/">针对手机端写网页的方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-summary/">2013总结与2014计划</a>
       </li>
     
   </ul>
