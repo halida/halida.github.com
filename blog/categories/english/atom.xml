@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-01-28T16:45:39+08:00</updated>
+  <updated>2014-02-06T14:11:02+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[programming chaos]]></title>
+    <link href="http://halida.github.com/blog/programming-chaos/"/>
+    <updated>2014-02-06T14:05:23+08:00</updated>
+    <id>http://halida.github.com/blog/programming-chaos</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2014_02_06.jpeg"></p>
+
+<p>Programming, as a career, face more chaos compare to other professionals.</p>
+
+<p>First, everyone can start programming after several months of study,
+it makes programmers are group of people vary in coding abilities, basic understanding of computer science,
+and engineer training.</p>
+
+<p>Programming as a professional, start only decades ago,
+principle for this domain, like technology, tools, best practice, are still under developing.</p>
+
+<p>And IT industry always changes dramatically,
+that makes programming career path is not as clear as other professionals,
+many job position, like big data analyst, not even exists several years ago.</p>
+
+<p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[the meaning of life]]></title>
@@ -119,93 +143,6 @@ rvm use 2.0.0
 </code></pre>
 
 <p>Happy hacking, and keep fun~</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[display image after it is downloaded]]></title>
-    <link href="http://halida.github.com/blog/display-image-after-it-is-downloaded/"/>
-    <updated>2013-03-10T18:40:00+08:00</updated>
-    <id>http://halida.github.com/blog/display-image-after-it-is-downloaded</id>
-    <content type="html"><![CDATA[<p>It is very annoying when you see a image is loading in a webpage:</p>
-
-<p><img src="/images/posts/CPyoOWx.png"></p>
-
-<p>Lots of website support this kind of effect to get rid of this.
-when the image is loading, it is displaying a &ldquo;loading&rdquo; effect, like this:</p>
-
-<p><img src="/images/posts/m76L8U5.png"></p>
-
-<p>So how can we implement it to our website? The method is simple:</p>
-
-<ol>
-<li>Display a loading gif, and hide the image.</li>
-<li>After image loaded, hide gif, and display image.</li>
-</ol>
-
-
-<p>We can use JQuery <code>load</code> method <a href="api.jquery.com/load/">here</a> to add a callback to do the things in step 2 above.
-Use this html:</p>
-
-<p>```html
-<img class="loading_image" data-src="/images/demo.png">
-&hellip;</p>
-
-<div class="resources">
-  <img class="image_loader" src="loader.gif">
-</div>
-
-
-<p>```</p>
-
-<p>add run <code>init_loading_image</code> javascript list below.
-It is written in <a href="http://coffeescript.org/">coffeescript</a>:</p>
-
-<p>```coffeescript
-window.init_loading_image = ()&ndash;></p>
-
-<pre><code>$('.loading_image').each -&gt;
-    self = $(this)
-    loader = $('.resources .image_loader').clone()
-    loader.insertBefore(self)
-    self.load -&gt;
-        self.prev().hide()
-        self.addClass('show')
-    self.attr('src', self.data('src'))
-</code></pre>
-
-<p>$(init_loading_image)
-```</p>
-
-<p>For each <code>.loading_image</code>, place a loader gif in front of it.
-I set the image to opacity 0.0, so the image is downloading, and user will not see this image.
-after image loaded, hide the gif, and show the image.</p>
-
-<p>The css is list below. I&rsquo;m using <a href="http://sass-lang.com/">sass</a> + <a href="http://compass-style.org/">compass</a> for clearer css:</p>
-
-<p>```css
-.resources
-  display: none
-.loading_image
-  +opacity(0.0)
-  &amp;.show</p>
-
-<pre><code>+opacity(1.0)
-+transition-property(opacity)
-+transition-duration(0.3s)
-</code></pre>
-
-<p>.image_loader
-  position: absolute
-  top: 50%
-  left: 50%
-  margin-top: -6px
-  margin-left: -22px
-  width: 43px
-  height: 11px
-```</p>
-
-<p>Very simple process, you can see <a href="http://jsfiddle.net/linjunhalida/kU2VU/2/">the demo here</a>.</p>
 ]]></content>
   </entry>
   

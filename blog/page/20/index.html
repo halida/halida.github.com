@@ -9,7 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在的自动文档生成系统很多了，今天我介绍一个：sphinx。sphinx是python官方文档所使用的一套很简单的文档自动生成系统。 官方网站： http://sphinx.pocoo.org/index.html 安装方式 ubuntu下面： sudo apt-get install &hellip;">
+  <meta name="description" content="我是一个很初级的程序员，由于工作性质（企业软件一个模块的维护和开发），
+与客户（企业内部使用该系统的员工）谈需求，设计，开发，导入，维护都是我一个人完成。
+需要说的是，需求都是很简单的，做的事情也没有太多的技术含量，无非是设计一个流程。 现在我想要自己真的做一个桌面应用，问题就来了。我不会设计。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +80,91 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/how-to-design/">如何设计</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-04T22:08:26+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2009</time>
+        
+         | <a href="/blog/how-to-design/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我是一个很初级的程序员，由于工作性质（企业软件一个模块的维护和开发），
+与客户（企业内部使用该系统的员工）谈需求，设计，开发，导入，维护都是我一个人完成。
+需要说的是，需求都是很简单的，做的事情也没有太多的技术含量，无非是设计一个流程。</p>
+
+<p>现在我想要自己真的做一个桌面应用，问题就来了。我不会设计。</p>
+
+<p>举个实例，我想要自己做一个GTD软件自己来用，名称为simpleGTD，
+想好了流程（就是GTD的流程了），然后画了几个小图就开工了。</p>
+
+<p>然后自然，开发遇到了一系列问题。</p>
+
+<p>先说一下我的设计吧。</p>
+
+<p>使用语言为python，界面使用PyQt，数据持久化采用sqlite。</p>
+
+<p>思想也很简单，脑袋里面想到的东西都是事件，需要输入到程序里面。</p>
+
+<p>然后程序按照优先级排一个序，我自己就按照优先级来做事。</p>
+
+<p>可以把一个事件删除，计划到某个时刻（到时会自动调到最优先的程度），还有就是拆分成小事件（父子关系）.</p>
+
+<p>我开发方式就是增量式开发，就是写一点看一点，开始就遇到了问题。</p>
+
+<p>原先设计时，打算用到QTreeWidget，用来显示复杂的组织关系，结果，按照文档写了一个类，用来显示sqlite资料，</p>
+
+<p>结果怎么调试都无法正确显示。于是只好修改设计，取消显示组织关系－－－知道了开发前要验证技术风险</p>
+
+<p>然后开始写数据结构，然后就是一大堆的SQL。。。。当然，一大堆的工作，一大堆的bug，</p>
+
+<p>完工变得遥遥无期。继续修改设计，不再使用sqlite,只用python自带的那个pickle。</p>
+
+<p>之后的工作就好过了许多，不过，还是有大量的时间花在了一边运行一边debug上面。</p>
+
+<p>我虽然没有统计，但是至少知道，大量的时间浪费在了调试上面。</p>
+
+<p>最后终于完工了，结果不很满意，但是至少能用。专案放在google code上面。如下：</p>
+
+<p><a href="http://code.google.com/p/smallgtd">http://code.google.com/p/smallgtd</a>/</p>
+
+<p><img src="http://lh5.ggpht.com/_os_zrveP8Ns/SU9BeZiEWUI/AAAAAAAAC4g/AunMpJk4_FY/temp.png" alt="image" /></p>
+
+<p>无论从什么角度上看，都不能说是一个成品，更别说和商业作品相比了，文档什么的更别说。</p>
+
+<p>为什么我不完善？我不知道别人怎么样，我自己的感觉就是，程序编出来后，我再也不想看代码了，有种恶心的感觉。</p>
+
+<p>编完后，我感觉到自己疲惫了，再也不想写程序了，或者说感到自己很无力和无能，无法写出东西出来。</p>
+
+<p>我看了不少书，程序语言和电脑知识上面，感觉自己虽然不是很精通，但是至少该懂的都懂。但是在程序设计和计划管理上面，感到自己万分无力，日常工作中，就算能够应用一些技巧，但是在整体开发上面，我感觉没有办法提高。我应该怎么样才能成为一个能够设计好程序的程序员？我不知道。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -591,50 +678,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/why-big-govenment-is-bad/">福利社会为什么要不得</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-02-15T22:08:26+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
-        
-         | <a href="/blog/why-big-govenment-is-bad/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一个人交税小于福利所得，得到利益。</p>
-
-<p>一个人交税大于福利所得，得到损害。</p>
-
-<p>人趋利避害。</p>
-
-<p>长此以往，懒人越来越多，税收越来越少，社会破产。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -652,6 +695,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/programming-chaos/">programming chaos</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/access-like-software/">access类型软件调研</a>
       </li>
     
@@ -665,10 +712,6 @@
     
       <li class="post">
         <a href="/blog/introduce-autoit/">autoit介绍</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/mobile-html/">针对手机端写网页的方法</a>
       </li>
     
   </ul>
