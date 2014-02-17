@@ -9,8 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是纯文本 我们所说的纯文本, 有几层含义: 任何信息, 都采用文本的方式来展示 我们拒绝任何形式的二进制格式, 拒绝任何形式的私有格式, 我们只支持纯文本. 比如: Word, PPT, Excel, 他们都是只能用微软的工具打开的,
-并且都是二进制的, 不能被文本编辑工具修改. &hellip;">
+  <meta name="description" content="这里收集了一些我的语录, 以及我转述其他人的语录(会注明,
+大多数不记得转述谁的了), 如果一股读者味道不要怪我.
+如果我没有按照我说的话做也不要怪我. 我也只是一个心灵脆弱的人. 新的东西添加在前面: 如果一个人活得和别人一样, 那么他给这个世界带来了什么信息量呢?
+编程的快乐, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +81,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/words/">箴言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-21T21:25:52+08:00" pubdate data-updated="true">Dec 21<span>st</span>, 2010</time>
+        
+         | <a href="/blog/words/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里收集了一些我的语录, 以及我转述其他人的语录(会注明,
+大多数不记得转述谁的了), 如果一股读者味道不要怪我.
+如果我没有按照我说的话做也不要怪我. 我也只是一个心灵脆弱的人.</p>
+
+<p>新的东西添加在前面:</p>
+
+<ul>
+<li>如果一个人活得和别人一样, 那么他给这个世界带来了什么信息量呢?</li>
+<li>编程的快乐, 本质上是创造的快乐: 你以自己的方式完成了工作,
+工作本身刻有你自己的烙印.</li>
+<li>婚姻是一个合约, 任何超过十年的合约, 在这个时代都是带有巨大风险的.
+但是什么时候我们能够有渐进的婚姻呢?</li>
+<li>人活着需要的东西其实很少, 即使你在大城市里面, 即使你工资不多.</li>
+<li>精神上的乐趣比物质上的乐趣更有持久性.</li>
+<li>人工作的目标是需要工作的时间越来越少, 而不是越来越多. (转述)</li>
+<li>人活着本身没有意义, 如果你产生了这样的问题,
+那么期望的结果是不会再问这个问题了. (转述维特根斯坦)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2001,97 +2059,6 @@ pyqt也是一样.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/qwt-intro/">Qwt介绍与使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-27T10:55:37+08:00" pubdate data-updated="true">Nov 27<span>th</span>, 2010</time>
-        
-         | <a href="/blog/qwt-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>什么是Qwt?</h2>
-
-<p><img src="http://qwt.sourceforge.net/plot.png" alt="image" />
-<a href="http://qwt.sourceforge.net/">Qwt</a> 是一个Qt的第三方库,
-它的作用是为了方便一些科学技术相关领域GUI程序的开发.
-它提供了一些好的控件: 2D谱图的绘制,
-示波器等仪器上面有的控件:比如旋钮什么的.</p>
-
-<p>我使用它, 是因为我要画曲线图, 频谱图等一系列科学领域需要展示的东西.
-其实, 任何数据图, 都可以采用Qwt来绘制.
-个人觉得它Qt里面最好用的画谱图工具. 对了, 它的性能很好,
-可以做实时显示数据.</p>
-
-<p>Qwt官方网站上面没有一步步的教程, 但是API的文档很全,
-并且代码库中带有有很多例子可以参考. 因为我现在是采用pyqt做开发,
-所以我使用 <a href="http://pyqwt.sourceforge.net/">pyqwt</a> 这个python下面的绑定.
-上面也有很多示例. 虽然是python的代码, 我想,
-C++程序员照样能够看懂(应该说所有的程序员都应该可以看懂..)</p>
-
-<h2>Qwt架构</h2>
-
-<p>Qwt的架构很简单, 官方文档上面虽然没有说, 但是我整理了一下:</p>
-
-<pre><code>QwtPlot
-   |
-   |------- QwtPlotCurve
-   |
-   |------- QwtPlotCurve
-</code></pre>
-
-<p>QwtPlot就是谱图显示的控件, 任何需要显示的曲线(包括网格什么的),
-都是QwtPlotCurve, 一个QwtPlot上面可以放很多的QwtPlotCurve.</p>
-
-<p>具体职责:</p>
-
-<ul>
-<li><a href="http://qwt.sourceforge.net/class_qwt_plot.html">QwtPlot</a>
-负责坐标的部分, 比如显示的范围, X轴Y轴什么的. 要注意的是,
-它可以有多个X和多个Y, 方便不同Y值的谱图叠在一起.</li>
-<li>QwtPlotCurve负责如何去绘制谱图, 比如画直方图, 网格什么的.
-它还有一个子类:
-<a href="http://qwt.sourceforge.net/class_qwt_plot_marker.html">QwtPlotMarker</a>,
-可以对谱图的特定位置做标记.</li>
-</ul>
-
-
-<h2>上代码</h2>
-
-<p>下面是我的一个实例代码, 内容就是负责画一个直方图, 效果如下:</p>
-
-<p><img src="http://bitbucket.org/linjunhalida/code-example/raw/tip/qwt/barplot.png" alt="image" />
-代码在
-<a href="http://bitbucket.org/linjunhalida/code-example/src/tip/qwt/main.py">这里</a>
-.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -2109,6 +2076,10 @@ C++程序员照样能够看懂(应该说所有的程序员都应该可以看懂.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/factorio/">factorio介绍</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/coj-1132/">解一道算法题</a>
       </li>
     
@@ -2122,10 +2093,6 @@ C++程序员照样能够看懂(应该说所有的程序员都应该可以看懂.
     
       <li class="post">
         <a href="/blog/the-meaning-of-life/">the meaning of life</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/information-sugar/">information sugar</a>
       </li>
     
   </ul>
