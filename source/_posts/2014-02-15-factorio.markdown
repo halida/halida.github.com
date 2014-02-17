@@ -1,0 +1,111 @@
+---
+layout: post
+title: "factorio介绍"
+date: 2014-02-15 17:04:35 +0800
+comments: true
+categories: games
+---
+
+{% img /images/posts/factorio/factorio-logo.png %}
+
+最近发现一个好游戏[factorio](https://www.factorio.com/)，消耗了很多时间在它上面。这里整理一篇介绍。
+
+[factorio](https://www.factorio.com/)是一款集成了资源采集，流水线运输，自动化生产，基地防守的2D游戏。
+玩家在一个自动生成的地图上面，采集资源，合成物品，搭建各种自动化采集，合成，运输的机械。
+
+## 图示
+
+玩家可以采集资源
+
+{% img /images/posts/factorio/mining.gif %}
+
+可以制造自动采集资源的机器
+
+{% img /images/posts/factorio/automining.png %}
+
+
+资源可以通过各种机器，转变成其他产品
+
+{% img /images/posts/factorio/production.png %}
+
+制造生产线
+
+{% img /images/posts/factorio/automing.gif %}
+
+生产线需要电力
+
+{% img /images/posts/factorio/energy.gif %}
+
+复杂的生产线，生产运输带
+
+{% img /images/posts/factorio/production_line.png %}
+
+很多物品需要研究之后使用，研究也需要生产线
+
+{% img /images/posts/factorio/research_line.png %}
+
+9.0版本新增加的石油生产线
+
+{% img /images/posts/factorio/oil_production_line.png %}
+
+一个完整的生产线例子
+
+{% img /images/posts/factorio/full_production_line.png %}
+
+
+## 上手
+
+- [官方网站](https://www.factorio.com/)有demo下载，如果觉得好玩可以去购买正式版。
+- 遇到问题可以去查[wiki页面](http://www.factorioforums.com/wiki/index.php?title=Main_Page)，也可以去[官方论坛](http://www.factorioforums.com/forum/viewtopic.php)。
+- 游戏提供mod支持，如果觉得原版不过瘾，这里有一些[mod](http://www.factorioforums.com/wiki/index.php?title=Mods)可以下载。个人推荐dytech。
+
+## 攻略
+
+- [这里](http://www.factorioforums.com/forum/viewtopic.php?f=8&t=2039)有优化的science-pack生产线设计方案。
+
+## 作弊
+
+按```或者`/`进入控制台模式，然后可以用[这里](http://www.factorioforums.com/wiki/index.php?title=Lua/Game)的命令。
+
+我主要用的是：
+
+- 改变游戏速度：`game.speed=1`
+
+- 获取物品：`game.player.insert{name="iron-plates",count=100}`
+
+一些常用的物品列表：
+
+```
+装备：
+power-armor-mk2
+basic-exoskeleton-equipment
+fusion-reactor-equipment 
+basic-laser-defense-equipment-3
+energy-shield-mk2-equipment
+
+电力：
+substation
+big-electric-pole
+solar-panel
+
+科研：
+lab
+science-pack-1
+science-pack-2
+speed-module-3
+
+原料:
+steel-plate
+
+防御
+laser-turret
+
+robot
+roboport
+construction-robot
+
+敌人
+biter-spawner
+creeper-spawner
+```
+
