@@ -9,11 +9,12 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="好吧, 昨天看了一下ruby, 今天就要来看看ruby on rails了. 哲学 DRY: 不写重复的东西
-约定取代设置: rails假定了你要做的事情, 而不是你自己设置一切.
-REST方式. 教程 这里是一篇
-rails教程,
-按照上面的指示做一遍, &hellip;">
+  <meta name="description" content="根据
+大妈gurudigger里面的idea,
+我研究了一下如何把rss订阅都发送到邮箱中,
+统一采用邮箱来处理每日的rss阅读. 尝试了一下以下工具/网站: http://www.feedmyinbox.com/
+可以订阅站点, 但是只有5个免费站点名额, 并且是每个站点一封邮件.
+http &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +83,130 @@ rails教程,
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/read-rss-as-email/">如何把rss当作邮件来阅读</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-14T16:18:47+08:00" pubdate data-updated="true">Feb 14<span>th</span>, 2011</time>
+        
+         | <a href="/blog/read-rss-as-email/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://freshbump.com/graphics/image_files_480x400/480x400_elisa-strozyk-sebastian-neeb-accordion-cabinet.jpg" alt="image" /></p>
+
+<p>根据
+<a href="http://gurudigger.com/idea/detail?iid=14987">大妈gurudigger里面的idea</a>,
+我研究了一下如何把rss订阅都发送到邮箱中,
+统一采用邮箱来处理每日的rss阅读.</p>
+
+<p>尝试了一下以下工具/网站:</p>
+
+<ul>
+<li><a href="http://www.feedmyinbox.com">http://www.feedmyinbox.com</a>/
+可以订阅站点, 但是只有5个免费站点名额, 并且是每个站点一封邮件.</li>
+<li><a href="http://www.emailrss.cn">http://www.emailrss.cn</a>/ 国内的站点,
+但是不知道效果如何.</li>
+</ul>
+
+
+<p>最后, 我在shlugchat里面发问, 某人推荐我使用
+<a href="http://www.allthingsrss.com/rss2email/">rss2email</a>, 然后一试,
+果然挺好用的.</p>
+
+<p>rss2email会把所有的文章都以分开的邮件发送, 在gmail里面很好做阅读.</p>
+
+<p>安装方法(已经在ubuntu源里面了)</p>
+
+<pre><code>sudo apt-get install rss2email
+</code></pre>
+
+<p>其他系统请见 <a href="http://www.allthingsrss.com/rss2email/">rss2email</a>
+官方网站.</p>
+
+<h2>使用方法</h2>
+
+<p>rss2email的工作目录在 \~/.rss2email里面, 需要先拷贝配置文件</p>
+
+<pre><code>mkdir ~/.rss2email
+cp /usr/share/doc/rss2email/examples/config.py ~/.rss2email/
+</code></pre>
+
+<p>然后, 需要修改config.py, 用来设置发送邮件的一些参数, 重点需要修改的是</p>
+
+<pre><code># 默认是0, 需要改成1, 如果你像我一样采用gmail来发送的.
+SMTP_SEND = 1 
+# gmail的smtp服务器
+SMTP_SERVER = "smtp.gmail.com"
+# gmail需要认证, 所以改成1
+AUTHREQUIRED = 1 
+# 发送的邮箱用户名, 我为了区分专门注册了一个邮箱.
+SMTP_USER = 'linjunhalida.rss.mail'  
+# 密码
+SMTP_PASS = 'xxx'  
+</code></pre>
+
+<p>好了, 我们输入需要接收rss邮件的邮箱</p>
+
+<pre><code>r2e new you@yourdomain.com
+</code></pre>
+
+<p>然后一个一个增加rss源(必须是rss的位置, 而不是网站的名称, 不然抓取不到)</p>
+
+<pre><code>r2e add http://feeds.feedburner.com/allthingsrss/hJBr
+</code></pre>
+
+<p>最后, 我们需要让r2e不发邮件跑一遍, 放弃当前时间点之前的数据</p>
+
+<pre><code>r2e run --no-send
+</code></pre>
+
+<p>现在配置完成了, 每次只要你想看新的内容, 就可以执行以下命令</p>
+
+<pre><code>r2e run
+</code></pre>
+
+<p>我设置了160个源, 运行比较慢. 我把它用crontab来作为后台程序跑了.
+修改/etc/crontab, 添加上</p>
+
+<pre><code>1 * * * * halida /usr/bin/r2e run
+</code></pre>
+
+<p>我设置的是每个小时的第一分钟去抓取, 以我自己的用户名(halida)来跑.</p>
+
+<h2>结论</h2>
+
+<p>更多的内容和介绍, 在:
+<a href="http://www.allthingsrss.com/rss2email/getting-started-with-rss2email">http://www.allthingsrss.com/rss2email/getting-started-with-rss2email</a>/</p>
+
+<p>鉴于现在做这个服务的网站不多, 什么时候我搭建一个服务器来玩玩..</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1097,57 +1222,6 @@ chapter:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/development-experience/">开发经验</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-23T10:02:28+08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2010</time>
-        
-         | <a href="/blog/development-experience/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这里面整理了一些零散的开发经验, 方便提醒自己, 以及给其他人灵感.</p>
-
-<ul>
-<li>写代码本质上来讲是把信息量体现在代码上面,
-最好写下来的代码正好反应出项目的信息.
-比如代码本质上是实现一个状态机, 那么就需要写清楚,
-然人一看就知道是状态机(有向图)</li>
-<li>要让代码复杂度反映在代码行数上面. no一行流</li>
-<li>C语言是lisp的底层抽象?</li>
-<li>C语言每个语句的性能是平衡的, 能够从C代码中看出程序性能消耗?</li>
-<li>python函数边界不做类型检查, 运行时刻再去判断类型, 造成性能下降,
-但是也带来足够强大的抽象能力?</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1165,6 +1239,10 @@ chapter:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/guan-yu-rails/">关于Rails</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/factorio/">factorio介绍</a>
       </li>
     
@@ -1178,10 +1256,6 @@ chapter:
     
       <li class="post">
         <a href="/blog/access-like-software/">access类型软件调研</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/the-meaning-of-life/">the meaning of life</a>
       </li>
     
   </ul>
