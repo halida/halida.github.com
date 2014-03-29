@@ -9,19 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最强大的GUI库 &mdash; PyQt4 Authors ~ 机械唯物主义 &lt;[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\&gt; 一个简单的实例 计算器
-10分钟 代码 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12 &hellip;">
+  <meta name="description" content="什么是reStructuredText? 一种写文档的方式. 简称:
+ReST 简单, 现场学,现场会
+易读
+方便生成html/pdf等其他格式 怎么玩? 不多说, 直接用: http://goo.gl/1jNF4 语法 There should be one&mdash; and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +81,119 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/reStructuredText-intro/">reStructuredText介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-10T15:39:39+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
+        
+         | <a href="/blog/reStructuredText-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是reStructuredText?</h2>
+
+<p>一种写文档的方式. 简称:
+<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></p>
+
+<ul>
+<li>简单, 现场学,现场会</li>
+<li>易读</li>
+<li>方便生成html/pdf等其他格式</li>
+</ul>
+
+
+<h2>怎么玩?</h2>
+
+<p>不多说, 直接用: <a href="http://goo.gl/1jNF4">http://goo.gl/1jNF4</a></p>
+
+<h2>语法</h2>
+
+<p>There should be one&mdash; and preferably only one &mdash;obvious way to do it.</p>
+
+<p>google: rest</p>
+
+<p><a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">http://docutils.sourceforge.net/docs/user/rst/quickstart.html</a>
+<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></p>
+
+<h2>如何生成其他格式</h2>
+
+<p>需要安装docutils</p>
+
+<ul>
+<li><p>html: 有个东西叫rst2html:</p>
+
+<pre><code>rst2html xxx.rst xxx.html
+</code></pre></li>
+<li><p>pdf: 有个东西叫rst2pdf:</p>
+
+<pre><code>rst2pdf xxx.rst
+</code></pre></li>
+<li><p>latex: 有个东西叫rst2latex:</p>
+
+<pre><code>rst2latex --input-encoding=utf-8 --output-encoding=utf-8 xxx.rst &gt;&gt; s.tex
+</code></pre></li>
+</ul>
+
+
+<h2>python code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
+</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">publish_string</span><span class="p">(</span>
+</span><span class='line'>    <span class="n">source</span><span class="o">=</span><span class="s">&quot;doc here&quot;</span>
+</span><span class='line'>    <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;html&#39;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>我用它来干什么?</h2>
+
+<ul>
+<li>写博客</li>
+<li>写文档</li>
+<li>问题: 好像没有支持ReST的网站..</li>
+</ul>
+
+
+<h2>连接</h2>
+
+<ul>
+<li>官方网站:
+<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1796,75 +1900,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/can-we-do-this/">可以这样做吗</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-29T16:37:20+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
-        
-         | <a href="/blog/can-we-do-this/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TMqygkKlBLI/AAAAAAAADKg/1XLcDk3_uk8/s800/out-of-the-box.jpg" alt="image" /></p>
-
-<p>在超市里, 肚子饿了, 直接拿袋食物开封就吃, 但是不要忘了出去的时候付账.</p>
-
-<p>一本书感觉不错/糟糕, 直接通知作者本人, 告诉他哪里不错/糟糕.</p>
-
-<p>走在路上, 发现一个人吸引了自己的注意力, 走上前去告诉他/她,
-你吸引了我,以及为什么吸引我.</p>
-
-<p>不在意亲戚的想法, 做自己想要做的事情, 等做成了, 再通知他们.</p>
-
-<p>路上遇到一个陌生人, 假装认识他, 和他寒暄.</p>
-
-<p>如果已经离开了校园, 找一所大学正在上课的教室进去听课, 提问,
-和其他同学交流.</p>
-
-<p>到一个公司/单位/政府部门, 观察其中的一个人, 去和他交朋友.</p>
-
-<p>每个月把家里重新装饰一遍</p>
-
-<p>没钱买房, 去租一个别墅住一段时间.</p>
-
-<p>工作无聊了就辞职.</p>
-
-<p>让自己领域里面的人知道自己的存在, 如果不是通过实力, 至少通过特立独行.</p>
-
-<p>把自己的一段时间卖给陌生人.</p>
-
-<p>如果想做什么事情, 立刻就去做, 即使是离开自己当前住的地方,
-即使是离开自己当前的工作, 即使自己当前的工作收入不菲</p>
-
-<p>尝试同性爱, 异性爱, 以及嫖妓.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -1882,6 +1917,10 @@ lives; otherwise, the behavior is that of a queued connection.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/view-point/">求视线范围的算法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/pitfalls-of-programming/">pitfalls of programming</a>
       </li>
     
@@ -1895,10 +1934,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
     
       <li class="post">
         <a href="/blog/coj-1132/">解一道算法题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programming-chaos/">programming chaos</a>
       </li>
     
   </ul>
