@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-03-29T15:53:36+08:00</updated>
+  <updated>2014-04-05T19:13:15+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[关于服贸协定]]></title>
+    <link href="http://halida.github.com/blog/fu-mao/"/>
+    <updated>2014-04-05T19:02:35+08:00</updated>
+    <id>http://halida.github.com/blog/fu-mao</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_04_05_taiwan.jpg"></p>
+
+<p>最近台湾因为服贸的事情闹得比较大，一直都没有跟进这件事情。周末花时间看了一下资料。</p>
+
+<p>这里整理一些资料：</p>
+
+<ul>
+<li><a href="http://zh.wikipedia.org/zh/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E6%9C%8D%E5%8B%99%E8%B2%BF%E6%98%93%E5%8D%94%E8%AD%B0">wiki</a></li>
+<li><a href="http://billy3321.github.io/tisa2/">懒人包</a></li>
+<li><a href="http://tw.k7dg.com/%E8%BC%95%E9%AC%86%E5%9C%96%E8%A7%A3%E4%BB%80%E9%BA%BC%E6%98%AF%E6%9C%8D%E8%B2%BF%E5%95%8A/">图解服贸</a></li>
+<li><a href="http://smalltalk.xdite.net/posts/192538-taiwan-the-best-way-out-is-leverage-china">xdite的愤怒</a></li>
+<li><a href="http://chenglap-blog.logdown.com/posts/191906-how-to-face-fumao">服贸对台湾没好处</a></li>
+</ul>
+
+
+<p>看了半天还是没有头绪。这是我的理解：</p>
+
+<ul>
+<li>什么是服贸？大陆和台湾签订的贸易互相开放协议</li>
+<li>源头：台湾政府希望借由这个协定，让台湾经济有起色；大陆希望通过这个协定，满足大国策略的需要</li>
+<li>民众反对原因：</li>
+<li>不满足过程正义：全程黑盒，民众不知道状况，也没有监管。</li>
+<li>服贸协议本身会带来严重的后果：台湾本地会收到很大冲击，甚至可能让台湾香港化。</li>
+</ul>
+
+
+<p>我的看法：首先我还是不了解服贸协议本身，也不了解可能带来的后果。
+网上没有搜索到相关的资料（欢迎大家给出），所以我的看法就是：不置可否。
+请问大家是否有收集到比较好的解释性质的资料？非常感谢。</p>
+
+<p>这个过程还是知道了一些东西，比如台湾这些年发展得不好，年轻人基本台湾认同了。香港不行了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[求视线范围的算法]]></title>
@@ -1277,132 +1316,6 @@ Send("author: halida")
 
 <p>除了每天写日记以外，同样的，也要写周记，月记，年记。
 日记的粒度有点小，还需要更大的时间粒度来做汇总和长期的规划。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何让进程后台执行]]></title>
-    <link href="http://halida.github.com/blog/daemonize-process/"/>
-    <updated>2013-11-20T03:51:00+08:00</updated>
-    <id>http://halida.github.com/blog/daemonize-process</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_11_20_daemon.jpg"></p>
-
-<p>很多时候我们需要让一个进程在后台执行。</p>
-
-<h2>终端下面执行命令</h2>
-
-<p>比如我们要执行<code>cmd</code>，可以简单地在命令行运行<code>cmd &amp;</code>。</p>
-
-<p>如果我们希望重定向输出到其他的地方，可以用：</p>
-
-<p><code>cmd 2&gt;&amp;1 &gt; run.log &amp;</code></p>
-
-<p>里面 <code>2&gt;&amp;1</code> 是把<code>stderr</code>重导向到<code>stdout</code>，然后<code>&gt; run.log</code>把<code>stdout</code>重导向到文件。</p>
-
-<p>但是如果关闭当前终端，后台跑的进程还是会被退出掉，这个时候需要<a href="http://libslack.org/daemon/manpages/daemon.1.html">工具</a>：</p>
-
-<p><code>daemon cmd</code></p>
-
-<p>如果你是用ruby写的程序，也可以<a href="https://github.com/ghazel/daemons">有一个Gem</a>来帮你完成这个工作。</p>
-
-<h2>原理</h2>
-
-<p>后台化主要做的事情就是让生成的后台进程不被你的命令行以及调用者影响到，
-具体需要做的步骤如下：</p>
-
-<ul>
-<li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
-<li><code>setsid()</code>让新的进程成为session group leader，这样发送给父进程process group的信号就不会影响到子进程。</li>
-<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，不会重开终端（PGID和PID不同了）。</li>
-<li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
-<li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
-<li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
-</ul>
-
-
-<p>示例代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Daemon</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span>
-</span><span class='line'>    <span class="mi">5</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
-</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">start</span>
-</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
-</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
-</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
-</span><span class='line'>        <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
-</span><span class='line'>        <span class="no">File</span><span class="o">.</span><span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="vg">$stdin</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="vg">$stdout</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;s.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="vg">$stderr</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">run</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nb">exit</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>      <span class="nb">exit</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Daemon</span><span class="o">.</span><span class="n">start</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>保存成daemon.rb，然后执行<code>ruby daemon.rb</code>。</p>
-
-<p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
-所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
-
-<p>更新疑问：</p>
-
-<p>有朋友回复，<code>setsid</code>用来设置成新的session和process group，这样就不会被来自父进程的killpg等操作影响，
-还有就是，第二遍fork是让进程不再是process group leader，这样不能重新获得一个终端。这个操作是可选的。</p>
-
-<p>引用材料：</p>
-
-<ul>
-<li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
-<li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
-<li><a href="http://blog.csdn.net/luckyaslan/article/details/9094523">daemon为什么要fork两次</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
