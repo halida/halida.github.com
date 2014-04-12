@@ -12,10 +12,6 @@ footer: true
 我是一个程序员, 我希望能够持续提升自己的技能和智慧，
 能够以我的方式改变这个世界。
 
-我现在在做[GuruDigger](http://gurudigger.com)，
-我们的目标是：帮助靠谱的互联网创业产品找到志同道合的创业合作工程师。
-如果你有创业或者加入创业团队的打算，欢迎上我们GuruDigger。
-
 兴趣点
 ======
 
@@ -25,6 +21,7 @@ footer: true
 - 系统: ubuntu/osx, emacs
 - [独立游戏](http://blog.linjunhalida.com/blog/indie-games)
 - 金属，暗潮，古典音乐, 钢琴(荒废中)
+- 定期运动，跑步，器械，爬山
 
 混迹于
 ======
