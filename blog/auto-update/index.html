@@ -5,13 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>自我反省 - 网络寻租</title>
+  <title>自动更新程序功能思考 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现状:
-有一定程度的软件开发经验(2年简单的程序开发经验),基础马马虎虎,看过SICP,CS:APP,
-有失败的项目开发经验. 目标:能够自主开发出创新型的应用.也就是在世上留个脚印. 问题: 1没有足够的动力坚持下去 2年纪也不小了,24 3创新能力不足 解决方案: 1多写垃圾应用. &hellip;">
+  <meta name="description" content="对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。 回到正题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/self-thoughts/">
+  <link rel="canonical" href="http://halida.github.com/blog/auto-update/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">自我反省</h1>
+      <h1 class="entry-title">自动更新程序功能思考</h1>
     
     
       <p class="meta">
@@ -99,7 +101,7 @@
   
 
 
-<time datetime="2009-02-10T22:08:26+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
+<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,21 +110,34 @@
   </header>
 
 
-<div class="entry-content"><p>现状:
-有一定程度的软件开发经验(2年简单的程序开发经验),基础马马虎虎,看过SICP,CS:APP,
-有失败的项目开发经验.</p>
+<div class="entry-content"><p>对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。</p>
 
-<p>目标:能够自主开发出创新型的应用.也就是在世上留个脚印.</p>
+<p>回到正题。这里整理一下windows下面写一个可以自己自动更新的程序需要的考虑。</p>
 
-<p>问题: 1没有足够的动力坚持下去 2年纪也不小了,24 3创新能力不足</p>
+<p>首先，windows下面程序不能自动更新自己，程序开启的时候会锁住程序的可执行文件。
+因此，需要先做一个启动器，通过启动器来负责调用程序和更新程序的事情。
+同时这个启动器必须足够快足够小。我选择的是autoit，
+如果有更多开发资源，最好还是用C++写一个windows原生程序。</p>
 
-<p>解决方案:</p>
+<p>启动器的逻辑是这样，分成检查更新和更新部分。
+用户开启程序，实际是调用启动器的更新部分后再启动程序。
+程序本身运行的时候，再定时监控是否有更新，实际调用启动器的检查更新部分，
+这样关于更新的逻辑都丢给启动器，模块化好一些。</p>
 
-<p>1多写垃圾应用.</p>
+<p>检查更新的逻辑比较简单，会去访问更新服务器上面一个版本文件，
+和本地程序的版本做比较，如果本地更旧，就下载程序到一个new_program目录下面。
+定时检查更新的时候需要随机化检查时间，防止无数客户端同时更新拖垮更新服务器。</p>
 
-<p>2加入一个社区.</p>
+<p>更新部分会在本地判断是否存在new_program目录，有的话就替换掉旧的程序，
+执行安装脚本做一些系统相关的配置，再启动。</p>
 
-<p>3多读书,多思考.</p>
+<p>其中为了防止旧程序开启把旧程序目录锁住，需要关闭旧程序，或者跳过这块的更新。
+启动器本身也要能够被自动更新掉，逻辑上面需要照顾到这个问题。
+启动器对应的一些参数，比如更新服务器地址，更新目录，最好做成配置文件，方便修改。</p>
 </div>
 
 
@@ -145,7 +160,7 @@
   
 
 
-<time datetime="2009-02-10T22:08:26+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
+<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
       
 
 
@@ -153,7 +168,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/self-thoughts/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/self-thoughts/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/auto-update/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/auto-update/" >Tweet</a>
   
   
   
@@ -162,10 +177,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/why-I-use-linux/" title="Previous Post: 为什么我要用linux">&laquo; 为什么我要用linux</a>
+        <a class="basic-alignment left" href="/blog/xiang-qing/" title="Previous Post: 关于相亲活动">&laquo; 关于相亲活动</a>
       
-      
-        <a class="basic-alignment right" href="/blog/sphinx/" title="Next Post: 用sphinx写文档">用sphinx写文档 &raquo;</a>
       
     </p>
   </footer>
@@ -270,8 +283,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/self-thoughts/';
-        var disqus_url = 'http://halida.github.com/blog/self-thoughts/';
+        var disqus_identifier = 'http://halida.github.com/blog/auto-update/';
+        var disqus_url = 'http://halida.github.com/blog/auto-update/';
         var disqus_script = 'embed.js';
       
     (function () {

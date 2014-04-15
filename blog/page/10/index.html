@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这里整理一下设置mongodb访问权限的资料. 我们有通用的方法, 用iptable严格限制访问ip,
-以及mongodb自带的密码验证(key验证等有需求的时候再研究) iptable限制访问资源 服务器完全开放mongodb, 通过iptables来限制访问. 修改/etc/mongo. &hellip;">
+  <meta name="description" content="策略很简单, 就是每天登录到服务器上面, mysqldump下来数据, 压缩,
+round-robin存放到本地即可(简单的根据星期几来保存). 备份方法 执行备份脚本: backup.sh (本项目根目录文件)
+然后会按照星期做round-robin备份. 文件名是备份的星期几. 修改了/etc &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/mysql-backup/">Mysql简单的备份策略</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-16T18:48:59+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
+        
+         | <a href="/blog/mysql-backup/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>策略很简单, 就是每天登录到服务器上面, mysqldump下来数据, 压缩,
+round-robin存放到本地即可(简单的根据星期几来保存).</p>
+
+<h2>备份方法</h2>
+
+<p>执行备份脚本: backup.sh (本项目根目录文件)
+然后会按照星期做round-robin备份. 文件名是备份的星期几.</p>
+
+<p>修改了/etc/crontab, 添加每天早晨3:00执行备份:</p>
+
+<blockquote><p>0 3 * * * user cd \~/backup &amp;&amp; bash backup.sh</p></blockquote>
+
+<h2>backup.sh</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'>ssh user@site.com <span class="s2">&quot;mysqldump -u root -p xxx | gzip &gt; backup.gz&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;get backup.gz&quot;</span> | sftp user@site.com
+</span><span class='line'>mv backup.gz <span class="sb">`</span>date +%a<span class="sb">`</span>.gz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>恢复方法</h2>
+
+<p>不管如何, 需要保存旧的数据库资料. mysqldump.</p>
+
+<p>然后再用mysqlimport恢复即可.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -894,81 +962,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/windows-setup-VPN/">windows下面设置VPN连接</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-15T10:24:12+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2011</time>
-        
-         | <a href="/blog/windows-setup-VPN/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.clickonf5.org/wp-content/uploads/2009/12/InternetAccessVPN_thumb.png" alt="image" /></p>
-
-<h2>什么是VPN</h2>
-
-<p>简单地说, VPN就是, 网络上面一台主机, 建立了一个虚拟的网络.
-然后我们的电脑登录上去, 加入到这个虚拟的网络里面来.
-然后我们就可以利用这个主机做跳板, 访问网站,
-或者同属于这个虚拟网络的电脑.</p>
-
-<p>这样可以让物理上分布在不同地点的电脑, 看起来好像在一个局域网络下面.</p>
-
-<p>一般来说, VPN用来做几件事:</p>
-
-<ul>
-<li>在外网的电脑, 访问一个局域网络, 方便在家办公.</li>
-<li>利用提供服务的主机做跳板, 访问这个主机所在位置的资源.
-就是我们说的翻墙.</li>
-</ul>
-
-
-<h2>windows下面设置方法</h2>
-
-<p>这里有一个教程:
-<a href="http://netfee.ustc.edu.cn/ylxia/help/faq/faq_howtosetupvpn_winxp.htm">http://netfee.ustc.edu.cn/ylxia/help/faq/faq_howtosetupvpn_winxp.htm</a></p>
-
-<p>我也自己整理了一下:</p>
-
-<ul>
-<li>点击控制面板->网络连接,</li>
-<li>左边建立新连接. 下一步, 连接到我的工作网络</li>
-<li>下一步, 虚拟专用网络.</li>
-<li>公司名称随便输入</li>
-<li>设置IP.</li>
-<li>点击完成.</li>
-<li>然后输入用户名和密码.</li>
-<li>然后连接就可以使用了.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -986,6 +979,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/auto-update/">自动更新程序功能思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/xiang-qing/">关于相亲活动</a>
       </li>
     
@@ -999,10 +996,6 @@
     
       <li class="post">
         <a href="/blog/pitfalls-of-programming/">pitfalls of programming</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/guan-yu-rails/">关于Rails</a>
       </li>
     
   </ul>
