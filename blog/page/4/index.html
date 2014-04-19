@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
-我在这里整理一下自己在网站开发中使用cache的思路。 首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
-中间经过了很多的层级， &hellip;">
+  <meta name="description" content="现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
+这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。 我们大多数的js操作，都是针对用户事件，做一个具体的反应，
+比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,175 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/js-controller/">一种简单的前端框架写法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-18T00:04:00+08:00" pubdate data-updated="true">Aug 18<span>th</span>, 2013</time>
+        
+         | <a href="/blog/js-controller/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/mvc.png"></p>
+
+<p>现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
+这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。</p>
+
+<p>我们大多数的js操作，都是针对用户事件，做一个具体的反应，
+比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。
+这种用户操作模型已经被研究很多了，通用的抽象方式就是著名的<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC模型</a>。
+我们写js也可以这样抽象隔离，不过一般并不需要抽象出MVC里面的Model。
+View就是html的页面，Controller就是针对事件做出的反应。</p>
+
+<p>我们可以把一个逻辑相关的功能划分成一个Controller类，类里面记录相对应的一个页面区块，
+列出需要监听的事件，把事件绑定到类方法上面，方法里面修改和更新区块中特定的元素。
+一个轻量的前端框架<a href="http://spinejs.com/">Spine</a>，提供了这样的一个Controller类来满足我们的需求。</p>
+
+<h2>例子</h2>
+
+<p>假设我们需要做一个简单的功能，页面上面一个按钮，点击一次按钮，页面上面显示的数量就加一。</p>
+
+<p>页面部分包含了我们需要展示的东西：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;counter&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;click&quot;</span><span class="nt">&gt;</span>Click Me<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;result&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对应的javascript（用<a href="http://coffeescript.org/">coffeescript</a>写）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">CounterController</span> <span class="k">extends</span> <span class="nx">Spine</span><span class="p">.</span><span class="nx">Controller</span>
+</span><span class='line'>    <span class="c1"># 列出我们需要交互的页面元素</span>
+</span><span class='line'>    <span class="nv">elements:</span>
+</span><span class='line'>        <span class="s">&quot;.result&quot;</span><span class="o">:</span> <span class="s">&quot;result&quot;</span>
+</span><span class='line'>    <span class="c1"># 绑定我们关心的事件到on_click</span>
+</span><span class='line'>    <span class="nv">events:</span>
+</span><span class='line'>        <span class="s">&quot;click a.click&quot;</span><span class="o">:</span> <span class="s">&quot;on_click&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">constructor: </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="c1"># 在Controller初始化的时候，会帮你做好上面的事件和元素绑定</span>
+</span><span class='line'>        <span class="k">super</span>
+</span><span class='line'>        <span class="c1"># 初始化变量</span>
+</span><span class='line'>        <span class="vi">@count = </span><span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 处理事件</span>
+</span><span class='line'>    <span class="nv">on_click: </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nx">@count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="nx">@update</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 更新页面</span>
+</span><span class='line'>    <span class="nv">update: </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nx">@result</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">@count</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 初始化</span>
+</span><span class='line'><span class="k">new</span> <span class="nx">CounterController</span><span class="p">(</span><span class="nv">el: </span><span class="s">&#39;.counter&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我一般会再做一个启动器，这样可以自动挂载，以及限定好作用域不超出对应的区块：</p>
+
+<p>页面修改成：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">data-controller=</span><span class="s">&quot;Counter&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  ...
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>增加代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">init_controllers = </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-controller]&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nx">init_controller</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">init_controller = </span><span class="nf">(obj)-&gt;</span>
+</span><span class='line'>    <span class="nv">controller = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;Controller&quot;</span>
+</span><span class='line'>    <span class="nv">data = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">()</span>
+</span><span class='line'>    <span class="nv">data.el = </span><span class="nx">obj</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">controller</span><span class="p">](</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_controllers</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有常规的js页面操作都可以抽象成一个Controller类，
+按照这样的方法来组织js代码，复杂的js就能管理得井井有条，
+并且只需要引入Spine(几十K左右)，不需要复杂的框架代码和理解。
+当然我们还可以进一步，自动绑定页面元素和数据，比如<a href="http://angularjs.org/">Angularjs</a>。
+不过我个人觉得，普通功能不需要做得那么复杂，用我上面的方法组织就已经OK了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1350,95 +1519,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/debug-rails-autolink/">调试rails Autolink</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-09T22:03:00+08:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
-        
-         | <a href="/blog/debug-rails-autolink/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/debug-rails-autolink.jpg"></p>
-
-<p>今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：</p>
-
-<pre><code>我今天发现一个好的网站，它是：www.dreamore.com
-</code></pre>
-
-<p>而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。</p>
-
-<pre><code>我今天发现一个好的网站，它是：www.dreamore.com。
-</code></pre>
-
-<p>我首先判断一下这个问题是否是一个问题。在使用中，中文的逗号和句号都是参见的分割符，用户会很容易就使用这种方法。我觉得这个问题需要解决。</p>
-
-<p>首先是界定问题。这个很明显是渲染链接出错。我采用的是<code>rails_autolink</code>gem，因为在rails3.2中，原先的<code>autolink</code>功能被移除了。</p>
-
-<p>我下载了它的代码库，找到具体做这件事的文件：<code>lib/rails_autolink/helpers.rb</code>，和对应的位置：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">AUTO_LINK_RE</span> <span class="o">=</span> <span class="sr">%r{</span>
-</span><span class='line'><span class="sr">  (?: ((?:ed2k|ftp|http|https|irc|mailto|news|gopher|nntp|telnet|webcal|xmpp|callto|feed|svn|urn|aim|rsync|tag|ssh|sftp|rtsp|afs|file):)// | www\. )</span>
-</span><span class='line'><span class="sr">  [^\s&lt;]+</span>
-</span><span class='line'><span class="sr">}x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>它是利用正则来找到链接位置，然后替换的。在<code>[^\s&lt;]+</code>里面，没有取消掉中文的分隔符，这样把后面的东西全部匹配掉了。</p>
-
-<p>找到了问题，如何解决呢？我尝试去掉分隔符，把它替换成<code>[^\s&lt;\p{P}]+</code>，但是发现<code>.</code>是应该被匹配到的，也被包含在了<code>\p{P}</code>里面，于是我要细分以下。
-文档中有：</p>
-
-<pre><code>/\p{Pc}/ - 'Punctuation: Connector'
-/\p{Pd}/ - 'Punctuation: Dash'
-/\p{Ps}/ - 'Punctuation: Open'
-/\p{Pe}/ - 'Punctuation: Close'
-/\p{Pi}/ - 'Punctuation: Initial Quote'
-/\p{Pf}/ - 'Punctuation: Final Quote'
-/\p{Po}/ - 'Punctuation: Other'
-</code></pre>
-
-<p>然后我完全不清楚每一个组里面有什么符号，google也找不到解释，这个时候我只能去挖ruby源码了。
-我用<code>find | grep</code>来找<code>Punctuation</code>，被我找到具体的定义位置在：<code>enc/unicode/name2ctype.h</code>里面。英文的句号被分组在<code>Punctuation: Other</code>中。</p>
-
-<p>这条路走不通，我又回头好好思考了一下，我觉得这个需求并不是全局的，只是针对采用中文的用户有效。我放弃做一个全局的方案，然后提交<code>Pull Request</code>，
-改成自己客制化一个repo算了。于是我<code>fork</code>了这个项目，然后把<code>[^\s&lt;]+</code>改成<code>[^\s&lt;，。]+</code>，<code>push</code>上去，<code>Gemfile</code>里面换成<code>gem 'rails_autolink', github: "halida/rails_autolink"</code>，
-发布到服务器上面去，问题解决了。</p>
-
-<p>但是问题并没有完全结束，我必须在以后的版本里面注意到采用了一个客制化的gem，可能会有各种问题出现。未来的地雷需要小心不要踩到。
-这是一个简单的bug处理，上面是我debug的整个过程，体力活，是以为记，大家对于这个过程有什么看法吗？</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1456,6 +1536,10 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/occult/">神秘学</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/auto-update/">自动更新程序功能思考</a>
       </li>
     
@@ -1469,10 +1553,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
     
       <li class="post">
         <a href="/blog/view-point/">求视线范围的算法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/pitfalls-of-programming/">pitfalls of programming</a>
       </li>
     
   </ul>

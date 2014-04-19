@@ -9,7 +9,12 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="很多游戏里面，都有这样的一种设置：当某个随时间积累的值到达一定程度的时候，就可以使用一次很强大的攻击技能。格斗游戏里面叫怒气，设计游戏里面是能量槽。游戏里面的角色，平时攻击可能不怎么样，可是一到这样的时候，攻击力瞬间提高，往往是达到清场或者是致命一击的效果。 其实，游戏里面的很多东西都是来源于生活 &hellip;">
+  <meta name="description" content="個人感覺，程序開發，是一個處理信息的過程。
+一開始，我們什么都不知道，需求也是模糊的。
+在需求分析過程中，我們漸漸能夠看清到底需要完成什么功能。
+但是如何實現這樣的功能，我們還是不了解。
+在設計階段，我們根據需求的內容，嘗試一個個原型，直至找到合適的，或者根據需求 創造出一個。
+事實上， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +83,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/software-development-information-prospective/">從信息的角度來看待軟件開發</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-04T22:08:26+08:00" pubdate data-updated="true">Jun 4<span>th</span>, 2009</time>
+        
+         | <a href="/blog/software-development-information-prospective/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>個人感覺，程序開發，是一個處理信息的過程。
+一開始，我們什么都不知道，需求也是模糊的。
+在需求分析過程中，我們漸漸能夠看清到底需要完成什么功能。
+但是如何實現這樣的功能，我們還是不了解。
+在設計階段，我們根據需求的內容，嘗試一個個原型，直至找到合適的，或者根據需求</p>
+
+<p>創造出一個。
+事實上，需求的信息量如此之大，可能有很多的原型，才有可能覆蓋住需求的要求。
+之后是裁剪，組合，分割，把需求的信息量，整理成原型的模樣，
+需求的信息處理得清清楚楚，整整齊齊。 最后還要看看有沒有信息遺漏的。
+之后是寫代碼和寫文檔，確保這個過程中，信息沒有變化。</p>
+
+<p>實際中，信息流不是那么清晰的，會有一些正反饋和負反饋，
+信息在傳遞的過程中還會有失真和遺漏，于是傳遞系統就有了冗余和校驗。</p>
+
+<p>一個新視角，可以帶來新的理論和方法，比如用信息處理的方法來指導軟件的設計和開發。
+我想，應該有人在這方面做過研究的。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -588,113 +647,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/sphinx/">用sphinx写文档</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-10T22:08:26+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
-        
-         | <a href="/blog/sphinx/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在的自动文档生成系统很多了，今天我介绍一个：sphinx。sphinx是python官方文档所使用的一套很简单的文档自动生成系统。</p>
-
-<p>官方网站： <a href="http://sphinx.pocoo.org/index.html">http://sphinx.pocoo.org/index.html</a></p>
-
-<p><strong>安装方式</strong></p>
-
-<p>ubuntu下面：</p>
-
-<pre><code>sudo apt-get install python-sphinx
-</code></pre>
-
-<p>windows下面：因为我没有装过，不知道sphinx依赖什么，估计很多，很难装。</p>
-
-<p><strong>使用方法</strong></p>
-
-<p>打开命令行，找到你想要建立文档的位置，运行：</p>
-
-<pre><code>sphinx-quickstart
-</code></pre>
-
-<p>这是sphinx一个自带的快速配置工具，一路点回车，除了要你输入project名称的时候。（我就是这样的。。）</p>
-
-<p>然后就会在当前目录下面建立一些文档：</p>
-
-<ul>
-<li>build：自动生成的html，pdf之类都会放到这里。</li>
-<li>makefile：上面设置的时候，对于unix系统，会默认生成makefile，以后要做什么事情，只要make一下就好了。（不要告诉我你不知道什么是make。）</li>
-<li>source：当然是文档源文件目录了呀。</li>
-</ul>
-
-
-<p>source文件夹初始时里面会放这个东西：</p>
-
-<ul>
-<li>conf.py：sphinx-quickstart里面的设置都会放到这里。随便修改吧。</li>
-<li>index.rst：文档的最顶端。</li>
-</ul>
-
-
-<p>写文档：</p>
-
-<p>修改index.rst， 改为：</p>
-
-<pre><code>::
-  ~ 
-</code></pre>
-
-<p>上面增加了一个test的东西。sphinx是把文档当作一个树来看待的，你要加新的东西，需要在原先旧的地方添加你要加的东西的名称，在这个例子是test。现在可以在source目录下新建一个文件：test.rst</p>
-
-<p>内容为：</p>
-
-<pre><code>test
-==== 
-
-这个是一个测试。
-
-* This is a bulleted list.
-* It has two items, the second
-  item uses two lines.
-</code></pre>
-
-<p>回到目录最上层，运行make html，然后就会自动生成html的文档。</p>
-
-<p>再开启 build/html/index.html ，这就是显示的结果，是不是很简单？</p>
-
-<p><img src="http://dl.dropbox.com/u/1167873/images/sphinx.png" alt="image" /></p>
-
-<p>更多的文档在
-<a href="http://sphinx.pocoo.org/contents.html">http://sphinx.pocoo.org/contents.html</a>
-, 以后我会介绍sphinx文档具体怎么写。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -712,6 +664,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/occult/">神秘学</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/auto-update/">自动更新程序功能思考</a>
       </li>
     
@@ -725,10 +681,6 @@
     
       <li class="post">
         <a href="/blog/view-point/">求视线范围的算法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/pitfalls-of-programming/">pitfalls of programming</a>
       </li>
     
   </ul>
