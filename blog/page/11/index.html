@@ -9,10 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我们每个人都有24个小时, 不多也不少. 这些时间及其宝贵.
-到底有多少时间被好好利用了? 我想, 除了少数人, 大家都会觉得应该很少吧.
-比起这个来, 更为严重的状况是: 大家很大程度上已经习惯这样了.
-很多时间消耗掉, 而自己却全无所觉. 回头想想, 某种程度而言, 时间像是金钱, &hellip;">
+  <meta name="description" content="resque resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能,
+来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合. 项目地址在
+https://github.com/defunkt/resque,
+如何使用里面写的很清楚, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,143 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/resque-intro/">Resque介绍和分析</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-23T10:38:25+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time>
+        
+         | <a href="/blog/resque-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="https://a248.e.akamai.net/assets.github.com/img/7744a8503993132e8a14c79be38e3724c6564fa2/687474703a2f2f696d672e736b697463682e636f6d2f32303130303131312d6b6d326635676d747062713233656e70756a6272756a366d676b2e706e67" alt="image" /></p>
+
+<h2>resque</h2>
+
+<p>resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能,
+来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合.</p>
+
+<p>项目地址在
+<a href="https://github.com/defunkt/resque">https://github.com/defunkt/resque</a>,
+如何使用里面写的很清楚, 这里就不多说了. 具体逻辑也没有什么好说的,
+无非是需要调用任务了, 塞任务到队列里面, 然后worker取队列,
+然后把任务做掉.</p>
+
+<p>一些细节:</p>
+
+<p><strong>resque是如何enque的?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">redis</span><span class="o">.</span><span class="n">rpush</span> <span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>presistance如何做?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">encode</span><span class="p">:</span> <span class="no">MultiJson</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>resque是如何取work的?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">decode</span> <span class="n">redis</span><span class="o">.</span><span class="n">lpop</span><span class="p">(</span><span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>resque-scheduler</h2>
+
+<p>resque-scheduler是基于resque的一个计划任务插件, 简单地说,
+就是能够利用它来做一些定时和定时循环的任务. 项目主页:
+<a href="https://github.com/bvandenbos/resque-scheduler">https://github.com/bvandenbos/resque-scheduler</a>,
+使用方法我也不多说了. 项目主页上都有.</p>
+
+<p><strong>resque-scheduler计划的队列如何处理?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># First add this item to the list for this timestamp</span>
+</span><span class='line'><span class="n">redis</span><span class="o">.</span><span class="n">rpush</span><span class="p">(</span><span class="s2">&quot;delayed:</span><span class="si">#{</span><span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Now, add this timestamp to the zsets.  The score and the value are</span>
+</span><span class='line'><span class="c1"># the same since we&#39;ll be querying by timestamp, and we don&#39;t have</span>
+</span><span class='line'><span class="c1"># anything else to store.</span>
+</span><span class='line'><span class="n">redis</span><span class="o">.</span><span class="n">zadd</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>竟然根据每个timestamp做了一个队列.. 计划任务都保存到一个sorted set里面.</p>
+
+<p><strong>scheduler如何检查是否有新的任务?</strong></p>
+
+<p>核心在于这段代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="no">Resque</span><span class="o">.</span><span class="n">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">enqueue_delayed_items_for_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resque_scheduler</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">items</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">zrangebyscore</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="s1">&#39;-inf&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">at_time</span> <span class="o">||</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">timestamp</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">nil?</span> <span class="p">?</span> <span class="kp">nil</span> <span class="p">:</span> <span class="nb">Array</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span> <span class="k">unless</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>enqueue_delayed_items_for_timestamp比较复杂, 就不贴了.</p>
+
+<h2>结论</h2>
+
+<p>基本上resque的逻辑很直观, 和想象中的一样. resque-scheduler就不一样了.
+复杂很多.</p>
+
+<p>我学习他们的示例代码放在:
+<a href="https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque">https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque</a>/</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1837,99 +1974,6 @@ serversocket.close()</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rabbit-fiction/">兔子流</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-13T08:59:57+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
-        
-         | <a href="/blog/rabbit-fiction/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://z.about.com/w/experts/Rabbits-703/2008/12/Weepy-Eyes.jpg" alt="image" /></p>
-
-<p>hello everyone, today I will introduce you an new kind of science
-fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabbit like&rdquo;.</p>
-
-<h2>what is &ldquo;兔子流&rdquo;?</h2>
-
-<p>In the ancient old days, a writer, name as &ldquo;小学生&rdquo;, translate as
-&ldquo;schoolchildren&rdquo;, he write a fiction, name as &ldquo;兔子尾巴&rdquo;, and with this
-characteristic:</p>
-
-<ul>
-<li>main character(young adult male) have super power.</li>
-<li>have no sense of moral.</li>
-<li>enjoy play around the world.</li>
-</ul>
-
-
-<h2>what is the detail?</h2>
-
-<p>for AD&amp;D fans, it is a book about a chaos evil character, how he do the
-dirty things. here are some example:</p>
-
-<ul>
-<li>he kills people for fun.</li>
-<li>he has one or severial girls as toy.</li>
-<li>enjoy the life of doing whatever he wants, if he like something,
-just take it.</li>
-<li>have sick sense of humor and &ldquo;moral&rdquo;, he thinks he is doing
-something good which actually really bad, such as kill raped girl
-only because he think the girl will have a bad life in the future.</li>
-<li>he make social experiment. for maintaining good traffic condition,
-he make laws that driver can hit anything on the road&hellip; even the
-kid.</li>
-<li>no friend, no family, no strong feeling except fearing of death.</li>
-</ul>
-
-
-<h2>examples</h2>
-
-<p>here are some fiction belows to &ldquo;兔子流&rdquo;, and you can google them,
-because it is so evil that no static links I can provide:</p>
-
-<ul>
-<li>兔子尾巴</li>
-<li>人民公敌</li>
-<li>我无恶不作</li>
-<li>兔子流屠龙纪要</li>
-</ul>
-
-
-<h2>conclusion</h2>
-
-<p>&ldquo;兔子流&rdquo; is one of the extrime fiction types I enjoy very much, easy to
-read, and have more fun. currently no new fiction is out, I hope in the
-future there can be more.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -1947,6 +1991,10 @@ future there can be more.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/zhao-dui-xiang/">如何找对象</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/occult/">神秘学</a>
       </li>
     
@@ -1960,10 +2008,6 @@ future there can be more.</p>
     
       <li class="post">
         <a href="/blog/fu-mao/">关于服贸协定</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-point/">求视线范围的算法</a>
       </li>
     
   </ul>

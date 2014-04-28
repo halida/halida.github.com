@@ -9,7 +9,19 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="题目 TopLanguage论坛里有讨论一个面试题目,内容如下: 有个老的手机短信程序，由于当时的手机CPU，内存都很烂。所以这个短信程序只能记住256条短信，多了就删了。 每个短信有个唯一的ID，在0到255之间。当然用户可能自己删短信，现在我们收到了一个新短信，请分配给它一个唯一的ID。说白了 &hellip;">
+  <meta name="description" content="为什么要用S5? 纯文本
+html S5实例 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+&lt;!-- 这是一张slide --&gt;
+&lt;div class=&quot;slide&quot; id=&quot;id1&quot;&gt; &lt;!-- 这是slide的标题 --&gt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +90,145 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rst2s5/">文本方式写幻灯片</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/rst2s5/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>为什么要用S5?</h2>
+
+<ul>
+<li>纯文本</li>
+<li>html</li>
+</ul>
+
+
+<h2>S5实例</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="c">&lt;!-- 这是一张slide --&gt;</span>
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;slide&quot;</span> <span class="na">id=</span><span class="s">&quot;id1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- 这是slide的标题 --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;h1&gt;</span>为什么要用S5?<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- 这是slide的内容 --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span>纯文本<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span>html<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>rst2s5实例</h2>
+
+<p>代码</p>
+
+<pre><code>为什么要用S5?
+================================
+
+* 纯文本
+* html
+</code></pre>
+
+<h2>试用一下</h2>
+
+<p>不多说, <a href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a> : <a href="http://server.linjunhalida.com/tools/rst2s5">http://server.linjunhalida.com/tools/rst2s5</a>/</p>
+
+<h2>本地生成</h2>
+
+<p>need docutils:</p>
+
+<pre><code>rst2s5 xxx.rst xxx.html
+rst2s5 --theme small-white xxx.rst xxx.html
+rst2s5 --theme-url http://xxx.com/ui/small-white xxx.rst xxx.html
+</code></pre>
+
+<h2>如何写rst2s5?</h2>
+
+<ul>
+<li><a href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a></li>
+</ul>
+
+
+<h2>写代码</h2>
+
+<p>代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">overrides</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;theme&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">&#39;theme_url&#39;</span><span class="p">:</span> <span class="s">&#39;/statics/S5/ui/small-white&#39;</span><span class="p">,}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">rst2S5</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">publish_string</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">source</span><span class="o">=</span><span class="n">string</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">settings_overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span>
+</span><span class='line'>        <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;s5&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>资源</h2>
+
+<ul>
+<li><a href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Presentation_software/">slide工具列表</a></li>
+<li><a href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a></li>
+<li><a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">ReST快速入门</a></li>
+<li><a href="http://meyerweb.com/eric/tools/s5/">S5</a></li>
+<li><a href="http://docutils.sourceforge.net/">docutils</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -837,56 +988,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/why-music-touches-people/">音乐为什么能够感染人</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-05T22:08:26+08:00" pubdate data-updated="true">Jun 5<span>th</span>, 2009</time>
-        
-         | <a href="/blog/why-music-touches-people/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>音乐为什么会激发人的情绪？</p>
-
-<p>音乐有什么？特殊的调子，稳定的节奏。</p>
-
-<p>节奏调控肉体，方便整体协调一致。</p>
-
-<p>特殊的调子，则传递出信息，控制人们的情绪。</p>
-
-<p>无论是战争，还是劳动，音乐都是人的好帮手。</p>
-
-<p>可是现在为什么不允许上班的时候听音乐呢？</p>
-
-<p>一边听音乐一边coding效率很高的。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -904,6 +1005,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/zhao-dui-xiang/">如何找对象</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/occult/">神秘学</a>
       </li>
     
@@ -917,10 +1022,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/fu-mao/">关于服贸协定</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/view-point/">求视线范围的算法</a>
       </li>
     
   </ul>
