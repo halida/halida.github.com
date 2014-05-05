@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: games - 网络寻租</title>
+  <title>无偏博弈游戏的解法 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="Category: games">
+  <meta name="description" content="无偏博弈是指这样一种游戏：游戏双方共用棋子，游戏过程没有随机变化，一定会结束在其中一方胜利。
+根据结束状态反推，可以用数学归纳法来证明，这类游戏一定可以确认每个游戏状态是必胜还是必败的。 我们可以构造一种必胜方法，在游戏进行过程中，保证每一步都停留在必胜状态上面。
+可以根据游戏状态维护一个特殊值， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.comblog/categories/games/">
+  <link rel="canonical" href="http://halida.github.com/blog/grundy/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,36 +79,104 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Games</h1>
+    
+      <h1 class="entry-title">无偏博弈游戏的解法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-05T09:24:23+08:00" pubdate data-updated="true">May 5<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>无偏博弈是指这样一种游戏：游戏双方共用棋子，游戏过程没有随机变化，一定会结束在其中一方胜利。
+根据结束状态反推，可以用数学归纳法来证明，这类游戏一定可以确认每个游戏状态是必胜还是必败的。</p>
 
-  
-  <h2>2014</h2>
+<p>我们可以构造一种必胜方法，在游戏进行过程中，保证每一步都停留在必胜状态上面。
+可以根据游戏状态维护一个特殊值，每当这个特殊值不为0的时候，都可以把状态转换到特殊值是0的状态。
+然后游戏一定结束在特殊值是0的状态，如果这个状态是必胜态，那么这种方法一定必胜。
+如果双方都采用这种方法，失去机会维护这个状态的玩家必败。</p>
 
-<article>
-  
-<h1><a href="/blog/factorio/">factorio介绍</a></h1>
-<time datetime="2014-02-15T17:04:35+08:00" pubdate><span class='month'>Feb</span> <span class='day'>15</span> <span class='year'>2014</span></time>
+<p>这个状态我们叫grundy值。构造的算法采用递归。首先获取这个状态可以走到的所有状态的grundy值，
+然后取不属于这些值的最小非负数整数。
+假设状态K的grundy值是n，那么K一定可以转换到grundy值是n-1, n-2, &hellip;, 0的状态。
+证明通过反证法：如果有一个状态t&lt;n不能转换，那么n&lt;=t，产生矛盾。</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/games/'>games</a></span>
-</footer>
+<p>有了grundy值，之后通过维护grundy值来保证转换到必胜态就好了。
+实际做题，通过动态规划来计算一个状态的grundy值，然后通过这个值知道当前状态必胜还是必败。
+状态有的时候会非常多，需要寻找规律，把状态合并起来。</p>
 
-
-</article>
-
+<p>学习资料应用：《挑战程序设计竞赛》中游戏博弈部分</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-05T09:24:23+08:00" pubdate data-updated="true">May 5<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/grundy/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/grundy/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/zhao-dui-xiang/" title="Previous Post: 如何找对象">&laquo; 如何找对象</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -200,7 +270,10 @@
       var disqus_shortname = 'halidasvps';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://halida.github.com/blog/grundy/';
+        var disqus_url = 'http://halida.github.com/blog/grundy/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

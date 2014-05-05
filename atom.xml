@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-04-28T14:39:57+08:00</updated>
+  <updated>2014-05-05T09:27:13+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[无偏博弈游戏的解法]]></title>
+    <link href="http://halida.github.com/blog/grundy/"/>
+    <updated>2014-05-05T09:24:23+08:00</updated>
+    <id>http://halida.github.com/blog/grundy</id>
+    <content type="html"><![CDATA[<p>无偏博弈是指这样一种游戏：游戏双方共用棋子，游戏过程没有随机变化，一定会结束在其中一方胜利。
+根据结束状态反推，可以用数学归纳法来证明，这类游戏一定可以确认每个游戏状态是必胜还是必败的。</p>
+
+<p>我们可以构造一种必胜方法，在游戏进行过程中，保证每一步都停留在必胜状态上面。
+可以根据游戏状态维护一个特殊值，每当这个特殊值不为0的时候，都可以把状态转换到特殊值是0的状态。
+然后游戏一定结束在特殊值是0的状态，如果这个状态是必胜态，那么这种方法一定必胜。
+如果双方都采用这种方法，失去机会维护这个状态的玩家必败。</p>
+
+<p>这个状态我们叫grundy值。构造的算法采用递归。首先获取这个状态可以走到的所有状态的grundy值，
+然后取不属于这些值的最小非负数整数。
+假设状态K的grundy值是n，那么K一定可以转换到grundy值是n-1, n-2, &hellip;, 0的状态。
+证明通过反证法：如果有一个状态t&lt;n不能转换，那么n&lt;=t，产生矛盾。</p>
+
+<p>有了grundy值，之后通过维护grundy值来保证转换到必胜态就好了。
+实际做题，通过动态规划来计算一个状态的grundy值，然后通过这个值知道当前状态必胜还是必败。
+状态有的时候会非常多，需要寻找规律，把状态合并起来。</p>
+
+<p>学习资料应用：《挑战程序设计竞赛》中游戏博弈部分</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何找对象]]></title>
@@ -1050,54 +1076,6 @@ Send("author: halida")
 <p><strong>CS expert</strong>. Programmer has deep understanding of computer science, and smart enough to solve tech relevant issues which others can&rsquo;t. They can bring great value to the organization, either create core competition, or keep complex system work smoothly.</p>
 
 <p>All these positions are hard to archive, only few of us did. Average forks will remain average, face the hard cold winter.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[关于输入法]]></title>
-    <link href="http://halida.github.com/blog/my-input-method/"/>
-    <updated>2013-12-28T18:50:56+08:00</updated>
-    <id>http://halida.github.com/blog/my-input-method</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_12_28_input.jpg"></p>
-
-<p>关于输入法，有几点我觉得可以分享的。</p>
-
-<p><strong>首先是输入法的安全性</strong>。如果你是采用第三方的输入法工具，因为所有你键盘的输入都会经过输入法，
-你的隐私信息，包括行为，密码，帐号，<a href="http://www.zhihu.com/question/20153643">都会被输入法厂商收集</a>。
-你可能觉得他们大厂商，不会专门来对付自己一个普通人，
-但是要利用隐私数据的方法太多了，他们也许不会用这些信息来窃取你的金钱和私密，
-但是私人邮箱收到垃圾邮件，私人手机受到垃圾短信，或者诈骗电话就免不了的了。</p>
-
-<p>我原先是采用搜狗输入法的，最近考虑到这个状况，越想越觉得危险，
-赶紧卸载掉，安装了开源的<a href="https://code.google.com/p/rimeime">rime</a>输入法。</p>
-
-<p><strong>然后是选择什么输入方式</strong>。我是重度的输入法用户，经常在各个地方留言，
-输入的效率很重要。对于普通人来说，思考的方式是采用语音的，拼音输入法更为适合。
-而普通拼音输入法的信息冗余太多，韵母都是固定组合，却要敲击多个按键，比如<code>in</code>，<code>uang</code>等。
-所以我去学习了双拼，学习大概十几分钟，一周的时间就能够熟练掌握，
-按照减少的键盘敲击数量，输入的效率可以提高一倍，强烈建议大家掌握。</p>
-
-<p>双拼怎么学习？<a href="http://www.zrm.com.cn/new/udpn.htm">看半页纸就能学懂</a>，
-选择自然码双拼输入法，练习敲几篇文章，肌肉记忆半个小时就能够学会了。
-我不分平舌音和翘舌音，因此加上了模糊音，不需要记忆<code>zh/ch/sh</code>的键位，学习起来更快一些。</p>
-
-<p>rime不是那么容易设置的，安装之后需要自己调整设置文件。
-安装之后，选择rime输入法，配置菜单里面选择<code>设置</code>，然后会进入一个文件夹，
-修改里面的<code>default.yaml</code>。
-<a href="https://code.google.com/p/rimeime/wiki/UserGuide">这里</a>告诉你如何设置输入法，
-<a href="https://code.google.com/p/rimeime/wiki/CustomizationGuide#DIY_%E8%99%95%E6%96%B9%E9%9B%86">这里</a>告诉你如何做一些细化的配置。
-如果你和我一样采用双拼加上模糊音，需要修改<code>double_pinyin.schema.yaml</code>，
-在<code>algebra:</code>区块(就是具体设置双拼方案的区块)的<code>- erase/^xx$/</code>(重置所有设置)后面加上：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- derive/^([zcs])h/$1/             # zh, ch, sh =&gt; z, c, s
-</span><span class='line'>- derive/^([zcs])([^h])/$1h$2/     # z, c, s =&gt; zh, ch, sh
-</span><span class='line'>- derive/([ei])n$/$1ng/            # en =&gt; eng, in =&gt; ing
-</span><span class='line'>- derive/([eia])ng$/$1n/           # eng =&gt; en, ing =&gt; in, ang =&gt; an</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
