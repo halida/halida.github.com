@@ -51,24 +51,29 @@ categories:
 里面有具体如何使用socket编程的描述.
 
 ```python
-1  import socket
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 14 connectiontoclient, address = serversocket.accept() 15 request =
-> b'' 16 while EOL1 not in request and EOL2 not in request: 17 request
-> += connectiontoclient.recv(1024) 18 print(request.decode()) 19
-> connectiontoclient.send(response) 20 connectiontoclient.close() 21 22
-> serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+   
+connectiontoclient, address = serversocket.accept()
+request = b''
+while EOL1 not in request and EOL2 not in request: 
+    request += connectiontoclient.recv(1024)
+print(request.decode())
+connectiontoclient.send(response)
+connectiontoclient.close()
+
+serversocket.close()
+```
 
 第2个例子, 我们在15行加上了一个循环, 用来循环处理客户端请求,
 直到我们中断这个过程(在命令行下面输入键盘中断, 比如Ctrl-C).
@@ -78,25 +83,31 @@ categories:
 最后的23-24行确保服务器的监听socket最后总是close掉, 即使出现了异常.
 
 ```python
-1  import socket
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 14 try: 15 while True: 16 connectiontoclient, address =
-> serversocket.accept() 17 request = b'' 18 while EOL1 not in request
-> and EOL2 not in request: 19 request += connectiontoclient.recv(1024)
-> 20 print('-'\*40 + 'n' + request.decode()[:-2]) 21
-> connectiontoclient.send(response) 22 connectiontoclient.close() 23
-> finally: 24 serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+
+try: 
+    while True:
+        connectiontoclient, address = serversocket.accept()
+        request = b''
+        while EOL1 not in request and EOL2 not in request:
+            request += connectiontoclient.recv(1024)
+            print('-'\*40 + 'n' + request.decode()[:-2])
+            connectiontoclient.send(response)
+            connectiontoclient.close()
+finally:
+    serversocket.close()
+```
 
 异步socket和linux epoll的优势
 ------------------------------
@@ -194,40 +205,55 @@ poll和epoll. epoll和poll比select性能更好,
 例子3:
 
 ```python
-1  import socket, select
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket, select
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 serversocket.setblocking(0) 14 15 epoll = select.epoll() 16
-> epoll.register(serversocket.fileno(), select.EPOLLIN) 17 18 try: 19
-> connections = {}; requests = {}; responses = {} 20 while True: 21
-> events = epoll.poll(1) 22 for fileno, event in events: 23 if fileno ==
-> serversocket.fileno(): 24 connection, address = serversocket.accept()
-> 25 connection.setblocking(0) 26 epoll.register(connection.fileno(),
-> select.EPOLLIN) 27 connections[connection.fileno()] = connection 28
-> requests[connection.fileno()] = b'' 29 responses[connection.fileno()]
-> = response 30 elif event & select.EPOLLIN: 31 requests[fileno] +=
-> connections[fileno].recv(1024) 32 if EOL1 in requests[fileno] or EOL2
-> in requests[fileno]: 33 epoll.modify(fileno, select.EPOLLOUT) 34
-> print('-'\*40 + 'n' + requests[fileno].decode()[:-2]) 35 elif event &
-> select.EPOLLOUT: 36 byteswritten =
-> connections[fileno].send(responses[fileno]) 37 responses[fileno] =
-> responses[fileno][byteswritten:] 38 if len(responses[fileno]) == 0: 39
-> epoll.modify(fileno, 0) 40
-> connections[fileno].shutdown(socket.SHUT\_RDWR) 41 elif event &
-> select.EPOLLHUP: 42 epoll.unregister(fileno) 43
-> connections[fileno].close() 44 del connections[fileno] 45 finally: 46
-> epoll.unregister(serversocket.fileno()) 47 epoll.close() 48
-> serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+serversocket.setblocking(0)
+
+epoll = select.epoll()
+epoll.register(serversocket.fileno(), select.EPOLLIN)
+
+try:
+   connections = {}; requests = {}; responses = {}
+   while True:
+      events = epoll.poll(1)
+      for fileno, event in events:
+         if fileno == serversocket.fileno():
+            connection, address = serversocket.accept()
+            connection.setblocking(0)
+            epoll.register(connection.fileno(), select.EPOLLIN)
+            connections[connection.fileno()] = connection
+            requests[connection.fileno()] = b''
+            responses[connection.fileno()] = response
+         elif event & select.EPOLLIN:
+            requests[fileno] += connections[fileno].recv(1024)
+            if EOL1 in requests[fileno] or EOL2 in requests[fileno]:
+               epoll.modify(fileno, select.EPOLLOUT)
+               print('-'*40 + '\n' + requests[fileno].decode()[:-2])
+         elif event & select.EPOLLOUT:
+            byteswritten = connections[fileno].send(responses[fileno])
+            responses[fileno] = responses[fileno][byteswritten:]
+            if len(responses[fileno]) == 0:
+               epoll.modify(fileno, 0)
+               connections[fileno].shutdown(socket.SHUT_RDWR)
+         elif event & select.EPOLLHUP:
+            epoll.unregister(fileno)
+            connections[fileno].close()
+            del connections[fileno]
+finally:
+   epoll.unregister(serversocket.fileno())
+   epoll.close()
+   serversocket.close()
+```
 
 epoll有2种模式, 边沿触发(edge-triggered)和状态触发(level-triggered).
 边沿触发模式下, epoll.poll()在读取/写入事件发生的时候只返回一次,
@@ -249,44 +275,67 @@ mask用来设置边沿触发.
 例子4:
 
 ```python
-1  import socket, select
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket, select
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 serversocket.setblocking(0) 14 15 epoll = select.epoll() 16
-> epoll.register(serversocket.fileno(), select.EPOLLIN | select.EPOLLET)
-> 17 18 try: 19 connections = {}; requests = {}; responses = {} 20 while
-> True: 21 events = epoll.poll(1) 22 for fileno, event in events: 23 if
-> fileno == serversocket.fileno(): 24 try: 25 while True: 26 connection,
-> address = serversocket.accept() 27 connection.setblocking(0) 28
-> epoll.register(connection.fileno(), select.EPOLLIN | select.EPOLLET)
-> 29 connections[connection.fileno()] = connection 30
-> requests[connection.fileno()] = b'' 31 responses[connection.fileno()]
-> = response 32 except socket.error: 33 pass 34 elif event &
-> select.EPOLLIN: 35 try: 36 while True: 37 requests[fileno] +=
-> connections[fileno].recv(1024) 38 except socket.error: 39 pass 40 if
-> EOL1 in requests[fileno] or EOL2 in requests[fileno]: 41
-> epoll.modify(fileno, select.EPOLLOUT | select.EPOLLET) 42
-> print('-'\*40 + 'n' + requests[fileno].decode()[:-2]) 43 elif event &
-> select.EPOLLOUT: 44 try: 45 while len(responses[fileno]) \> 0: 46
-> byteswritten = connections[fileno].send(responses[fileno]) 47
-> responses[fileno] = responses[fileno][byteswritten:] 48 except
-> socket.error: 49 pass 50 if len(responses[fileno]) == 0: 51
-> epoll.modify(fileno, select.EPOLLET) 52
-> connections[fileno].shutdown(socket.SHUT\_RDWR) 53 elif event &
-> select.EPOLLHUP: 54 epoll.unregister(fileno) 55
-> connections[fileno].close() 56 del connections[fileno] 57 finally: 58
-> epoll.unregister(serversocket.fileno()) 59 epoll.close() 60
-> serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+serversocket.setblocking(0)
+
+epoll = select.epoll()
+epoll.register(serversocket.fileno(), select.EPOLLIN | select.EPOLLET)
+
+try:
+   connections = {}; requests = {}; responses = {}
+   while True:
+      events = epoll.poll(1)
+      for fileno, event in events:
+         if fileno == serversocket.fileno():
+            try:
+               while True:
+                  connection, address = serversocket.accept()
+                  connection.setblocking(0)
+                  epoll.register(connection.fileno(), select.EPOLLIN | select.EPOLLET)
+                  connections[connection.fileno()] = connection
+                  requests[connection.fileno()] = b''
+                  responses[connection.fileno()] = response
+            except socket.error:
+               pass
+         elif event & select.EPOLLIN:
+            try:
+               while True:
+                  requests[fileno] += connections[fileno].recv(1024)
+            except socket.error:
+               pass
+            if EOL1 in requests[fileno] or EOL2 in requests[fileno]:
+               epoll.modify(fileno, select.EPOLLOUT | select.EPOLLET)
+               print('-'*40 + '\n' + requests[fileno].decode()[:-2])
+         elif event & select.EPOLLOUT:
+            try:
+               while len(responses[fileno]) > 0:
+                  byteswritten = connections[fileno].send(responses[fileno])
+                  responses[fileno] = responses[fileno][byteswritten:]
+            except socket.error:
+               pass
+            if len(responses[fileno]) == 0:
+               epoll.modify(fileno, select.EPOLLET)
+               connections[fileno].shutdown(socket.SHUT_RDWR)
+         elif event & select.EPOLLHUP:
+            epoll.unregister(fileno)
+            connections[fileno].close()
+            del connections[fileno]
+finally:
+   epoll.unregister(serversocket.fileno())
+   epoll.close()
+   serversocket.close()
+```
 
 因为比较类似, 状态触发经常用在转换采用select/poll模式的程序上面,
 边沿触发用在程序员不需要或者不希望操作系统来管理事件状态的场合上面.
@@ -299,64 +348,78 @@ mask用来设置边沿触发.
 
 Listen Backlog Queue Size
 
-> 在1-4的例子中, 12行显示了调用serversocket.listen()方法.
-> 参数是监听等待队列的大小. 它告诉了操作系统, 在python代码accept前,
-> 缓存多少TCP/IP连接在队列中. 每次python代码调用accept()的时候,
-> 一个连接从队列中移除, 为新的连接进来空出一个位置. 如果队列满了,
-> 新的连接自动放弃, 给客户端带来不必要的网络延迟.
-> 一个生产环境下的服务器经常处理几十或者几百的同时连接数,
-> 所以参数不应该设置为1. 比如, 当采用
-> [ab](http://httpd.apache.org/docs/2.0/programs/ab.html)
-> 来对这些测试程序进行并发100个http1.0客户端请求时,
-> 少于50的参数容易造成性能下降.
+在1-4的例子中, 12行显示了调用serversocket.listen()方法.
+参数是监听等待队列的大小. 它告诉了操作系统, 在python代码accept前,
+缓存多少TCP/IP连接在队列中. 每次python代码调用accept()的时候,
+一个连接从队列中移除, 为新的连接进来空出一个位置. 如果队列满了,
+新的连接自动放弃, 给客户端带来不必要的网络延迟.
+一个生产环境下的服务器经常处理几十或者几百的同时连接数,
+所以参数不应该设置为1. 比如, 当采用
+[ab](http://httpd.apache.org/docs/2.0/programs/ab.html)
+来对这些测试程序进行并发100个http1.0客户端请求时,
+少于50的参数容易造成性能下降.
 
 TCP Options
 
-> [TCP\_CORK](http://www.baus.net/on-tcp_cork)
-> 参数可以设置缓存消息直到一起被发送, 这个选项, 在例子5的34和40行,
-> 适合给一个实现 [http/1.1
-> pipelining](http://en.wikipedia.org/wiki/HTTP_pipelining)
-> 的服务器来使用.
+[TCP\_CORK](http://www.baus.net/on-tcp_cork)
+参数可以设置缓存消息直到一起被发送, 这个选项, 在例子5的34和40行,
+适合给一个实现 [http/1.1pipelining](http://en.wikipedia.org/wiki/HTTP_pipelining)
+的服务器来使用.
 
 例子5:
 
 ```python
-1  import socket, select
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket, select
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 serversocket.setblocking(0) 14 15 epoll = select.epoll() 16
-> epoll.register(serversocket.fileno(), select.EPOLLIN) 17 18 try: 19
-> connections = {}; requests = {}; responses = {} 20 while True: 21
-> events = epoll.poll(1) 22 for fileno, event in events: 23 if fileno ==
-> serversocket.fileno(): 24 connection, address = serversocket.accept()
-> 25 connection.setblocking(0) 26 epoll.register(connection.fileno(),
-> select.EPOLLIN) 27 connections[connection.fileno()] = connection 28
-> requests[connection.fileno()] = b'' 29 responses[connection.fileno()]
-> = response 30 elif event & select.EPOLLIN: 31 requests[fileno] +=
-> connections[fileno].recv(1024) 32 if EOL1 in requests[fileno] or EOL2
-> in requests[fileno]: 33 epoll.modify(fileno, select.EPOLLOUT) 34
-> connections[fileno].setsockopt(socket.IPPROTO\_TCP, socket.TCP\_CORK,
-> 1) 35 print('-'\*40 + 'n' + requests[fileno].decode()[:-2]) 36 elif
-> event & select.EPOLLOUT: 37 byteswritten =
-> connections[fileno].send(responses[fileno]) 38 responses[fileno] =
-> responses[fileno][byteswritten:] 39 if len(responses[fileno]) == 0: 40
-> connections[fileno].setsockopt(socket.IPPROTO\_TCP, socket.TCP\_CORK,
-> 0) 41 epoll.modify(fileno, 0) 42
-> connections[fileno].shutdown(socket.SHUT\_RDWR) 43 elif event &
-> select.EPOLLHUP: 44 epoll.unregister(fileno) 45
-> connections[fileno].close() 46 del connections[fileno] 47 finally: 48
-> epoll.unregister(serversocket.fileno()) 49 epoll.close() 50
-> serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+serversocket.setblocking(0)
+
+epoll = select.epoll()
+epoll.register(serversocket.fileno(), select.EPOLLIN)
+
+try:
+   connections = {}; requests = {}; responses = {}
+   while True:
+      events = epoll.poll(1)
+      for fileno, event in events:
+         if fileno == serversocket.fileno():
+            connection, address = serversocket.accept()
+            connection.setblocking(0)
+            epoll.register(connection.fileno(), select.EPOLLIN)
+            connections[connection.fileno()] = connection
+            requests[connection.fileno()] = b''
+            responses[connection.fileno()] = response
+         elif event & select.EPOLLIN:
+            requests[fileno] += connections[fileno].recv(1024)
+            if EOL1 in requests[fileno] or EOL2 in requests[fileno]:
+               epoll.modify(fileno, select.EPOLLOUT)
+               connections[fileno].setsockopt(socket.IPPROTO_TCP, socket.TCP_CORK, 1)
+               print('-'*40 + '\n' + requests[fileno].decode()[:-2])
+         elif event & select.EPOLLOUT:
+            byteswritten = connections[fileno].send(responses[fileno])
+            responses[fileno] = responses[fileno][byteswritten:]
+            if len(responses[fileno]) == 0:
+               connections[fileno].setsockopt(socket.IPPROTO_TCP, socket.TCP_CORK, 0)
+               epoll.modify(fileno, 0)
+               connections[fileno].shutdown(socket.SHUT_RDWR)
+         elif event & select.EPOLLHUP:
+            epoll.unregister(fileno)
+            connections[fileno].close()
+            del connections[fileno]
+finally:
+   epoll.unregister(serversocket.fileno())
+   epoll.close()
+   serversocket.close()
+```
 
 另一方面,
 [TCP\_NODELAY](http://articles.techrepublic.com.com/5100-10878_11-1050878.html)
@@ -369,42 +432,56 @@ TCP Options
 例子6:
 
 ```python
-1  import socket, select
-2
-3  EOL1 = b'\n\n'
-4  EOL2 = b'\n\r\n'
-5  response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
-6  response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
-7  response += b'Hello, world!'
-8
-9  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-```
+import socket, select
 
-> 10 serversocket.setsockopt(socket.SOL\_SOCKET, socket.SO\_REUSEADDR,
-> 1) 11 serversocket.bind(('0.0.0.0', 8080)) 12 serversocket.listen(1)
-> 13 serversocket.setblocking(0) 14
-> serversocket.setsockopt(socket.IPPROTO\_TCP, socket.TCP\_NODELAY, 1)
-> 15 16 epoll = select.epoll() 17 epoll.register(serversocket.fileno(),
-> select.EPOLLIN) 18 19 try: 20 connections = {}; requests = {};
-> responses = {} 21 while True: 22 events = epoll.poll(1) 23 for fileno,
-> event in events: 24 if fileno == serversocket.fileno(): 25 connection,
-> address = serversocket.accept() 26 connection.setblocking(0) 27
-> epoll.register(connection.fileno(), select.EPOLLIN) 28
-> connections[connection.fileno()] = connection 29
-> requests[connection.fileno()] = b'' 30 responses[connection.fileno()]
-> = response 31 elif event & select.EPOLLIN: 32 requests[fileno] +=
-> connections[fileno].recv(1024) 33 if EOL1 in requests[fileno] or EOL2
-> in requests[fileno]: 34 epoll.modify(fileno, select.EPOLLOUT) 35
-> print('-'\*40 + 'n' + requests[fileno].decode()[:-2]) 36 elif event &
-> select.EPOLLOUT: 37 byteswritten =
-> connections[fileno].send(responses[fileno]) 38 responses[fileno] =
-> responses[fileno][byteswritten:] 39 if len(responses[fileno]) == 0: 40
-> epoll.modify(fileno, 0) 41
-> connections[fileno].shutdown(socket.SHUT\_RDWR) 42 elif event &
-> select.EPOLLHUP: 43 epoll.unregister(fileno) 44
-> connections[fileno].close() 45 del connections[fileno] 46 finally: 47
-> epoll.unregister(serversocket.fileno()) 48 epoll.close() 49
-> serversocket.close()
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+serversocket.setblocking(0)
+serversocket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+epoll = select.epoll()
+epoll.register(serversocket.fileno(), select.EPOLLIN)
+
+try:
+   connections = {}; requests = {}; responses = {}
+   while True:
+      events = epoll.poll(1)
+      for fileno, event in events:
+         if fileno == serversocket.fileno():
+            connection, address = serversocket.accept()
+            connection.setblocking(0)
+            epoll.register(connection.fileno(), select.EPOLLIN)
+            connections[connection.fileno()] = connection
+            requests[connection.fileno()] = b''
+            responses[connection.fileno()] = response
+         elif event & select.EPOLLIN:
+            requests[fileno] += connections[fileno].recv(1024)
+            if EOL1 in requests[fileno] or EOL2 in requests[fileno]:
+               epoll.modify(fileno, select.EPOLLOUT)
+               print('-'*40 + '\n' + requests[fileno].decode()[:-2])
+         elif event & select.EPOLLOUT:
+            byteswritten = connections[fileno].send(responses[fileno])
+            responses[fileno] = responses[fileno][byteswritten:]
+            if len(responses[fileno]) == 0:
+               epoll.modify(fileno, 0)
+               connections[fileno].shutdown(socket.SHUT_RDWR)
+         elif event & select.EPOLLHUP:
+            epoll.unregister(fileno)
+            connections[fileno].close()
+            del connections[fileno]
+finally:
+   epoll.unregister(serversocket.fileno())
+   epoll.close()
+   serversocket.close()
+```
 
 源码
 ------------------------------
