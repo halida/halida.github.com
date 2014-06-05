@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-05-21T14:48:34+08:00</updated>
+  <updated>2014-06-05T17:51:29+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[加班语录]]></title>
+    <link href="http://halida.github.com/blog/working-late/"/>
+    <updated>2014-06-05T17:48:36+08:00</updated>
+    <id>http://halida.github.com/blog/working-late</id>
+    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_06_05.jpg"></p>
+
+<ul>
+<li>我已经习惯加班了。</li>
+<li>年轻人不加班怎么行</li>
+<li>不加班做不好事情</li>
+<li>加班是种生活习惯</li>
+<li>反正下班了也是做上班的事情</li>
+<li>有的时候不是想加班，而是不上班就不知道日子怎么过</li>
+<li>不天天加班的人生是不完整的</li>
+<li>10点之前下班不算加班</li>
+<li>为了增加加班时间，我搬到办公桌下面睡觉去了。</li>
+<li>什么是加班？</li>
+<li>工作是生活，加班是乐趣</li>
+<li>有的时候下班了还是要回家，换个地方工作效率更高</li>
+<li>工作是如此地有趣，以至于让人忘记天亮了</li>
+<li>虽然加班很累，比起晚上的无所事事，我还是宁愿加班</li>
+<li>国家规定每天工作8小时你就工作8小时？</li>
+<li>工作让人上瘾</li>
+<li>加班可以让你忘却自己的失败，家庭的不和谐，生活的不如意，并且还有钱拿</li>
+<li>加班让人感觉自己是英雄，独自一人和黑暗作战。</li>
+<li>下班的时候看着路灯映照下的背影，感受到夜晚略带寒冷的气温，更能够体验到自己的存在</li>
+<li>晚上加班是我一天中最快乐的时光，真的在做事情，没有人干扰，安静地独处。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[无偏博弈游戏的解法]]></title>
@@ -1045,37 +1078,6 @@ Send("author: halida")
 </span><span class='line'>returned_pass_block = process_route(...) 
 </span><span class='line'>process_route 里面检查pattern是否匹配，返回对应的block</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Too Old to Program]]></title>
-    <link href="http://halida.github.com/blog/too-old-to-program/"/>
-    <updated>2013-12-29T14:10:05+08:00</updated>
-    <id>http://halida.github.com/blog/too-old-to-program</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2013_12_29_title.jpeg"></p>
-
-<p>There is a common myth in China: After programmer turns 30, he is too old to keep programming, need change direction, to management or other domains.</p>
-
-<p>It may not make any sense for the programmers outside of China, there are many talent old programmer out there, still doing great job. But this myth reflect something need to worry about, In short words: <strong>programming is easy to learn, hard to improve</strong>.</p>
-
-<p>With the greatness of internet and hard working of programmers, knows how to programming, is just a matter of time. Dozens of websites tells you how to build a website or GUI tool, thousands of books give you a detailed walk through, from novice to expert. You can create a website on your own, under 1 month, even though has no IT background.</p>
-
-<p>So it bring down the threshold, and for the domain with low requirements, employees there are under heavy competition, easy to be replaced.</p>
-
-<p>And programmer&rsquo;s job brings low benefit. They are isolated inside digital world (some of us forced to be more socialize for keep balance), investment of time on new tech devaluation fast, repeating doing jobs of CURD, domain specific knowledge which cannot scale or be reused, and need lots of brain power to finish the job so leave less energy on self improvement after work.</p>
-
-<p>Then after several years of hard working, programmer may found that he is less competitive with the newbies, and aging issue came out, make old programmer hard to follow new trend, hard to focus the mind on solving coding problems, and it will lead to decrease of the salary income.</p>
-
-<p>There still are some way out:</p>
-
-<p><strong>Tech Management</strong>. People who can lead a tech team is always rare. It require good understanding of programming and problem domain, social skills to communicate with team members with different background, and good control of project schedule.</p>
-
-<p><strong>IT consultant</strong>. With all these years of working, the programmer has deep understanding of the information system, and how business works. Organization need he to maintain and improve the system, he will become part of the system.</p>
-
-<p><strong>CS expert</strong>. Programmer has deep understanding of computer science, and smart enough to solve tech relevant issues which others can&rsquo;t. They can bring great value to the organization, either create core competition, or keep complex system work smoothly.</p>
-
-<p>All these positions are hard to archive, only few of us did. Average forks will remain average, face the hard cold winter.</p>
 ]]></content>
   </entry>
   
