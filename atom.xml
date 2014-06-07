@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-06-05T17:51:29+08:00</updated>
+  <updated>2014-06-07T11:13:25+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,28 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[大城市快捷美食解决方案]]></title>
+    <link href="http://halida.github.com/blog/fast-food/"/>
+    <updated>2014-06-07T09:27:44+08:00</updated>
+    <id>http://halida.github.com/blog/fast-food</id>
+    <content type="html"><![CDATA[<p>在大城市里面吃饭是一个头疼的问题。首先没有足够的时间做饭：每次做饭都需要花费一个小时，不管是给4个人做，还是一个人做。如果在外面吃，就需要花费很多钱，并且往往需要走很远以及等好久。
+我是一个注重效率的人。我找到了自己的一套解决方案。解决的思路注重效率，金钱以及营养均衡。</p>
+
+<p>首先是早餐。早餐要一个鸡蛋，足够的碳水化合物，以及蔬菜。
+煮鸡蛋需要花费一些时间，一个很方便的解决方案：用微波炉来做。把鸡蛋打在小碗里面，筷子拌匀，用另外一个碗盖着，放到微波炉里面，1分钟即可。可能有一点小爆炸，但是有碗盖着，不会爆出来。
+也可以把鸡蛋打到面包里面，混着面包一起。如果觉得口味不好，可以在搅拌的时候加上一点糖。
+然后是早上的主食。我的主食是日清方便面。方便面之父创立了日清，在所有的方便面里面，日清是我觉得最好吃的，强烈推荐。
+也可以购买冷冻批萨，也可以放很久，我有朋友的冰箱里面都是冷冻批萨，不过价格就贵了一些。</p>
+
+<p>然后是中午和晚上。我的解决方案是找到最近的一家农民餐小食堂。因为是农民餐，分量大，肉多。我一般花费15元或者20元买一份（20元2个鸡腿），然后拆分成2份，分成午餐和晚餐来吃。因为我并不做大体力活，这样的份量刚好八分饱，很健康。
+至于口感的问题，我提供2个解决方案：一个是老干妈调料，非常有效。另外一个是用iPad看电视剧，看得精彩就不觉得口感差了。</p>
+
+<p>我是一个坚持的人，周末坚持按照我的食谱进行，社交活动会去聚餐，然后腻味了会更换伙食，购买全家盒饭或者罗森盒饭。7/11的盒饭也很好吃。
+可能有人觉得这样吃饭太不会享受生活了，对于我来说，吃饭只是满足身体的基本需要，可以投入更多的时间精力到其他方面的享受上面去。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[加班语录]]></title>
@@ -1003,80 +1025,6 @@ Send("author: halida")
 <li>找对象。回到老家见的人就多了，但是质量比较低。我想面100个，总归能够解决问题吧？保持两周相亲一个的节奏。</li>
 <li>钢琴。现在中午有时间了，每天练半小时，明年底应该可以弹简单的乐曲了。</li>
 </ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何阅读ruby源码]]></title>
-    <link href="http://halida.github.com/blog/how-to-read-ruby-source-code/"/>
-    <updated>2014-01-03T19:55:17+08:00</updated>
-    <id>http://halida.github.com/blog/how-to-read-ruby-source-code</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_01_03.jpg"></p>
-
-<p>最近阅读ruby源码非常顺手，这里整理一下阅读心得。</p>
-
-<p>首先，为什么要阅读源码？因为几点：</p>
-
-<ol>
-<li><p>用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
-最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点，不需要浪费那么多的时间。</p></li>
-<li><p>熟悉实现也是一个学习的过程。在看源码的过程中，我对于ruby的使用，如何做架构，都有了更深刻的认识。
-写代码水平靠自己磨练，同时借鉴别人的代码也必不可少。很多知识和技巧自己悟出来就慢了，看别人的东西能够学到更多。</p></li>
-</ol>
-
-
-<p>然后是重点：如何阅读。</p>
-
-<p>读懂代码之前，我们要把项目的文档看一遍，知道如何使用它。
-使用方法是项目的接口，熟悉它们，我们就把“未知”限定在项目的源代码之内，
-对于理解源码有了坚实的基础。</p>
-
-<p>之后我们要熟悉源代码的文件树结构。好的项目的文件安排是模块化的，
-一个文件就是一个系统模块，ruby项目，一般是一个文件一个类。
-这样一个复杂项目，就被切分成一小块一小块人能够理解的部分了。</p>
-
-<p>在这里要停一下，回顾前面看到的文档，列出一些核心的入口，
-然后基于这些入口，对于项目的实现提出一些猜想，
-然后从这些入口出发，寻找对应的函数，一步步顺着方法调用，看对应的代码。</p>
-
-<p>举个实际的例子。
-我看sinatra源码的时候，关注了几个入口：<code>get/post</code>方法，如何被rack调用。
-我会列出猜想：get/post代码应该是记录这些block到一个内部的数据结构中，
-在代码里面，有针对rack做一个接口，调用的时候会去解析http请求，分发到对应的block里面。</p>
-
-<p>然后我开始用<code>find</code>和<code>grep</code>寻找<code>get</code>，遇到函数调用，就用同样的方法一路看过去。
-最后发现<code>get</code>方法实际上是给类创建了一个方法：<code>#{verb} #{path}</code>，然后绑定它。
-和我想的不太一样，并不是用一个数据结构。</p>
-
-<p>然后我又去看rack调用过程，最后弄清楚了如何分发请求，如何调用请求，以及在执行中快速跳出，
-并且学到了<a href="http://ruby-china.org/topics/16349">一个小技巧</a>。</p>
-
-<p>在阅读源码的过程中，我弄清楚了：调用栈，数据结构，类架构，以及验证了阅读代码前的各种猜想，
-通过了解里面一些看不懂的部分，学到了新的知识。整个顺藤摸瓜过程是非常愉快的。</p>
-
-<p>对了，最后还有一点，记得记笔记。研究过程不记录就白研究了，下次你是绝对想不起来的。
-我会把上面跟踪函数调用栈中遇到的核心区块记录下来，整理成一个执行过程文档，
-下次需要的时候直接看这个文档就可以了。这是一个示例（当然只有我自己才看得懂啦）：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>call =&gt; dup.call! 复制自己一份。。
-</span><span class='line'>call!(env) =&gt;
-</span><span class='line'>@request  = Request.new(env)
-</span><span class='line'>@response = Response.new
-</span><span class='line'>invoke { dispatch! } =&gt; route!
-</span><span class='line'>route! =&gt;
-</span><span class='line'>base.routes 遍历
-</span><span class='line'>returned_pass_block = process_route(...) 
-</span><span class='line'>process_route 里面检查pattern是否匹配，返回对应的block</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
   </entry>

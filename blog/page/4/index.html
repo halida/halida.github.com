@@ -9,7 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="首先解释一下基本的概念。 我们平时上网的时候， 比如访问douban.com， 电脑做的操作是， 首先连接上douban.com的服务器， 然后告诉服务器， 需要获取豆瓣的网页。 然后服务器会返回首页信息， 自己的电脑接收到了之后， 通过浏览器显示出一张网页出来。 但是有的时候， 有些网站的网页（ &hellip;">
+  <meta name="description" content="需求 rails的默认报错处理，是返回public/400.html，public/500.html的内容。
+我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。 我们一般希望能够定制：500服务器错误，400地址不存在。 解决方案 在你的app/controllers/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +79,137 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rails-customize-error-page/">Rails定制报错页面</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T10:58:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+         | <a href="/blog/rails-customize-error-page/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_10_20_404.jpg"></p>
+
+<h2>需求</h2>
+
+<p>rails的默认报错处理，是返回<code>public/400.html</code>，<code>public/500.html</code>的内容。
+我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。</p>
+
+<p>我们一般希望能够定制：500服务器错误，400地址不存在。</p>
+
+<h2>解决方案</h2>
+
+<p>在你的<code>app/controllers/application_controller.rb</code>的<code>ApplicationController</code>里面用<code>rescue_from</code>捕捉他们，并且只在生产环境这样做：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">Exception</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">500</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>      <span class="no">ExceptionNotifier</span><span class="o">::</span><span class="no">Notifier</span><span class="o">.</span><span class="n">exception_notification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">UnknownController</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>500报错需要能够通知管理员，上面的<code>exception_notification</code>是我利用<a href="https://github.com/smartinez87/exception_notification">exception_notification</a>gem2.6版本中发送报错信息邮件的功能来做到这件事。</p>
+
+<p>然后加上<code>render_error</code>方法，用来渲染报错页面，你可以在这里做定制渲染：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="n">template</span><span class="p">:</span> <span class="s2">&quot;errors/error_</span><span class="si">#{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="s1">&#39;layouts/application&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">render</span> <span class="n">nothing</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还是有一个问题，无法捕捉<code>ActionController::RoutingError</code>和<code>AbstractController::ActionNotFound</code>，需要在<code>config/route.rb</code>里面最后捕捉：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>  <span class="n">match</span> <span class="s1">&#39;*not_found&#39;</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="s1">&#39;errors#error_404&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>加上<code>errors_controller.rb</code>，里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ErrorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">error_404</span>
+</span><span class='line'>    <span class="vi">@not_found_path</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:not_found</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>资源引用：</p>
+
+<ul>
+<li><a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages">http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages</a></li>
+<li><a href="http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404">http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1331,95 +1463,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-26T22:43:00+08:00" pubdate data-updated="true">May 26<span>th</span>, 2013</time>
-        
-         | <a href="/blog/no-need-real-book-any-more/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/ebook.jpg"></p>
-
-<p>最近，我开始实践完全的书籍电子化方案，渐渐<a href="http://www.douban.com/note/275080812/">把现在手头上拥有的实体书都出掉</a>。
-我认为现在的书籍电子化方案已经非常成熟，留存实体书，对于我来说，已经没有太多实际意义。
-我同时也建议大家评估一下，看看要不要采用这种方案。</p>
-
-<h2>电子书的优点</h2>
-
-<p>首先，电子书<strong>不占空间</strong>。实体书需要书柜放置，如果住在大城市，书柜本身占用面积对应的房价，
-不知道比书本身贵多少倍。书非常笨重，经常搬家的人应该知道在所有的东西里面，
-书籍是单位体积下面最重的。我在电脑里面可以随随便便放上千本书，所占用的硬盘空间可以忽略不计。</p>
-
-<p>电子书<strong>检索非常方便</strong>。当我需要寻找一本电子书的时候，我不需要去在书柜里面一本本翻，
-我只需要利用操作系统的全局搜索功能，输入关键词即可。
-如果我需要在一本书里面找一个我想要寻找的段落，不需要一页页地翻，
-用电子书应用程序内置的搜索就轻松完成目标。</p>
-
-<p>电子书<strong>方便携带</strong>。就算是最小的书，也比我的手机大很多，
-我可以在手机里面放很多本电子书，在任何想看书的时候，都可以打开来看。</p>
-
-<p>电子书<strong>有很好的软件辅助</strong>。可以内嵌字典，可以设置书签，可以拷贝内容，
-比实体书方便很多。</p>
-
-<h2>不足之处</h2>
-
-<p>电子书有这些优点，比较起来也有一些缺点，不过对于我来说问题不大。这里一一说明。</p>
-
-<p>电子书<strong>阅读吃力</strong>。这个应该说是对于电子书最广泛的批评了。很多人偏好实体书也主要是这个原因。
-我现在看电子书有几种方式：在我的<a href="http://blog.linjunhalida.com/blog/new-mac-book-pro/">笔记本rMBP</a>上面，iPad上面，以及我的手机上面。
-在这些平台，我的眼睛没有出现任何问题。rMBP和new iPad采用retina屏幕，看东西非常舒服，
-不会出现其他液晶屏看久了眼睛难受的状况。如果你没有这些设备，我建议你可以考虑买一台。</p>
-
-<p>很多<strong>实体书没有电子版</strong>。这个问题的确不好办，这种状况也只能购买实体书了。
-不过还有另外的解决办法。现在有很多扫描仪可以用，<a href="http://jandan.net/2009/12/12/diy-book-scanner.html">专门扫描全书的设备</a>也有，
-淘宝上面有很多<a href="http://s.taobao.com/search?q=%CA%E9%BC%AE%C9%A8%C3%E8">书籍扫描服务和设备</a>。
-对于我来说，除了新书，基本没有发现找不到电子版的状况。好书一定有很多人需要，很多人需要一般就会有电子版放出来。</p>
-
-<h2>一些经验</h2>
-
-<p>电子书往往有多种格式，比如pdf，epub，mobi等，我比较喜欢epub，因为格式开放，
-同一份电子书文件可以在电脑，手机上面阅读。pdf次之，因为我只能在电脑和iPad上面获得好的展示效果。
-至于其他各种第三方的格式，使用不便我一般不搜集。</p>
-
-<p>如果我听说了一本好书想要下载，我会直接用google搜索那本书的名字+下载，
-一般都会有，主要放出来的地方是新浪爱问，或者各种专业领域论坛。
-我一般看英文书，如果不是教科书和专业书籍（贵死了买不起），
-我会选择直接购买。amazon.com购买英文电子书，卓越亚马逊购买中文电子书。</p>
-
-<p>我会按照类型把书籍整理起来，放到对应的文件夹里面去，而全部的书籍文件夹，
-我会采用dropbox同步，你可以用国内的<a href="https://jianguoyun.com/">坚果云</a>服务。
-这样这些资料不会丢失，并且可以很方便地分享给其他人。
-最好你用一些全局搜索工具监控这个文件夹，方便需要的时候快速检索。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1437,6 +1480,10 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/fast-food/">大城市快捷美食解决方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/working-late/">加班语录</a>
       </li>
     
@@ -1450,10 +1497,6 @@ img加上data-at2x，里面放置了retina图片的地址，然后js只针对所
     
       <li class="post">
         <a href="/blog/occult/">神秘学</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/auto-update/">自动更新程序功能思考</a>
       </li>
     
   </ul>

@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>用shiboken做python绑定 - 网络寻租</title>
+  <title>大城市快捷美食解决方案 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="pyside的项目已经beta了一段时间了,
-它采用的方法是开发一个名为shiboken的绑定生成工具来做处理.
-我们也可以利用这个工具来简化做python绑定的工作. 具体工作流程 上面的图代表了整个体系工作的方法. 用户提供2个信息: 需要绑定的库的头文件, &hellip;">
+  <meta name="description" content="在大城市里面吃饭是一个头疼的问题。首先没有足够的时间做饭：每次做饭都需要花费一个小时，不管是给4个人做，还是一个人做。如果在外面吃，就需要花费很多钱，并且往往需要走很远以及等好久。
+我是一个注重效率的人。我找到了自己的一套解决方案。解决的思路注重效率，金钱以及营养均衡。 首先是早餐。早餐要一个鸡蛋 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/shiboken/">
+  <link rel="canonical" href="http://halida.github.com/blog/fast-food/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">用shiboken做python绑定</h1>
+      <h1 class="entry-title">大城市快捷美食解决方案</h1>
     
     
       <p class="meta">
@@ -99,7 +98,7 @@
   
 
 
-<time datetime="2011-01-07T11:23:31+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
+<time datetime="2014-06-07T09:27:44+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,62 +107,20 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://www.pyside.org/docs/shiboken-0.5.0/_images/generatorworkings.png" alt="image" /></p>
+<div class="entry-content"><p>在大城市里面吃饭是一个头疼的问题。首先没有足够的时间做饭：每次做饭都需要花费一个小时，不管是给4个人做，还是一个人做。如果在外面吃，就需要花费很多钱，并且往往需要走很远以及等好久。
+我是一个注重效率的人。我找到了自己的一套解决方案。解决的思路注重效率，金钱以及营养均衡。</p>
 
-<p>pyside的项目已经beta了一段时间了,
-它采用的方法是开发一个名为shiboken的绑定生成工具来做处理.
-我们也可以利用这个工具来简化做python绑定的工作.</p>
+<p>首先是早餐。早餐要一个鸡蛋，足够的碳水化合物，以及蔬菜。
+煮鸡蛋需要花费一些时间，一个很方便的解决方案：用微波炉来做。把鸡蛋打在小碗里面，筷子拌匀，用另外一个碗盖着，放到微波炉里面，1分钟即可。可能有一点小爆炸，但是有碗盖着，不会爆出来。
+也可以把鸡蛋打到面包里面，混着面包一起。如果觉得口味不好，可以在搅拌的时候加上一点糖。
+然后是早上的主食。我的主食是日清方便面。方便面之父创立了日清，在所有的方便面里面，日清是我觉得最好吃的，强烈推荐。
+也可以购买冷冻批萨，也可以放很久，我有朋友的冰箱里面都是冷冻批萨，不过价格就贵了一些。</p>
 
-<h2>具体工作流程</h2>
+<p>然后是中午和晚上。我的解决方案是找到最近的一家农民餐小食堂。因为是农民餐，分量大，肉多。我一般花费15元或者20元买一份（20元2个鸡腿），然后拆分成2份，分成午餐和晚餐来吃。因为我并不做大体力活，这样的份量刚好八分饱，很健康。
+至于口感的问题，我提供2个解决方案：一个是老干妈调料，非常有效。另外一个是用iPad看电视剧，看得精彩就不觉得口感差了。</p>
 
-<p>上面的图代表了整个体系工作的方法. 用户提供2个信息: 需要绑定的库的头文件,
-以及建立一个需要绑定的库的描述信息文件(xml),
-以及在这个描述文件里面手动对生成内容做一些修改. 如果一切顺利的话,
-只需要在描述文件里面说明需要绑定到python里面的类/枚举等信息即可.</p>
-
-<h2>如何用?</h2>
-
-<p>具体可以见
-<a href="http://developer.qt.nokia.com/wiki/PySide_Binding_Generation_Tutorial">shiboken官方教程</a>,
-走到这一步的同学应该对英文没有压力的吧, 我就不再整理成中文了,
-毕竟作者他们也都不是英语母语的.</p>
-
-<p>一般情况下, 我们只需要直接下载里面附带的示例, 然后修改一番,
-就可以用来给我们自己的库来做绑定了. 我现在就是这样做的.</p>
-
-<h2>如何实现的?</h2>
-
-<p>上面都是具体的做法, 在实际的使用过程中还会遇到各种各样的问题,
-我们可能还需要对shiboken机制有一定的了解.</p>
-
-<h2>编译过程</h2>
-
-<p>我们写了xml描述文件之后, 实际执行的命令是generatorrunner,
-它会按照xml文件, 以及引入的库头文件, 生成wrapper的cpp/h文件. 之后,
-我们把这些文件编译成动态链接库, 这个链接库能够直接被python调用. 如下图:</p>
-
-<pre><code>global.h             generatorrunner                       gcc
-typesystem_foo.xml -------------------&gt; wrapper.h/cpp ---------&gt; libfoo.so
-</code></pre>
-
-<h2>generatorrunner运作机制</h2>
-
-<p>这里是
-<a href="http://www.pyside.org/docs/generatorrunner/overview.html">generator运作机制</a>
-的介绍.</p>
-
-<p><img src="http://www.pyside.org/docs/generatorrunner/_images/bindinggen-development.png" alt="image" />
-如上图, 分成几个模块, api extractor获取头文件的信息,
-typesystem和injected code就是那个xml描述文件.
-shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
-
-<h2>结论</h2>
-
-<p>具体shiboken是如何处理的, 以及为了调试方便, 如何获取中间生成的类信息,
-这个我还需要时间去了解. 他们的作者也是很开放的, 如果发现问题, 可以往:
-<a href="mailto:pyside@lists.openbossa.org">pyside@lists.openbossa.org</a>
-邮件列表上面发邮件提问,
-作者基本上是会给回应的(毕竟他们是nokia雇来做这个事情的).</p>
+<p>我是一个坚持的人，周末坚持按照我的食谱进行，社交活动会去聚餐，然后腻味了会更换伙食，购买全家盒饭或者罗森盒饭。7/11的盒饭也很好吃。
+可能有人觉得这样吃饭太不会享受生活了，对于我来说，吃饭只是满足身体的基本需要，可以投入更多的时间精力到其他方面的享受上面去。</p>
 </div>
 
 
@@ -186,7 +143,7 @@ shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
   
 
 
-<time datetime="2011-01-07T11:23:31+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
+<time datetime="2014-06-07T09:27:44+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2014</time>
       
 
 
@@ -194,7 +151,7 @@ shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/shiboken/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/shiboken/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/fast-food/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/fast-food/" >Tweet</a>
   
   
   
@@ -203,10 +160,8 @@ shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/pysideqwt-open-source/" title="Previous Post: pysideqwt开源经验">&laquo; pysideqwt开源经验</a>
+        <a class="basic-alignment left" href="/blog/working-late/" title="Previous Post: 加班语录">&laquo; 加班语录</a>
       
-      
-        <a class="basic-alignment right" href="/blog/git/" title="Next Post: git学习总结">git学习总结 &raquo;</a>
       
     </p>
   </footer>
@@ -311,8 +266,8 @@ shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/shiboken/';
-        var disqus_url = 'http://halida.github.com/blog/shiboken/';
+        var disqus_identifier = 'http://halida.github.com/blog/fast-food/';
+        var disqus_url = 'http://halida.github.com/blog/fast-food/';
         var disqus_script = 'embed.js';
       
     (function () {
