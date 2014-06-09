@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>如何在windows下面发布程序 - 网络寻租</title>
+  <title>如何减肥 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="程序写好了，如何给其他人使用呢？ 如果是在linux下面，直接把源程序打包一下，然后写一个readme.txt，里面写上编译需要的模块，以及安装的方法就好了，会用linux的人一定会安装的。 不过在windows下面，就没有那么简单了。还是需要做出一个安装程序来的。 &hellip;">
+  <meta name="description" content="减肥第一步，是真正想减肥。
+真正想减肥的意思是，你可以下决心放弃美食，放弃晚上舒服地躺在沙发上面看电视剧。 减肥是全身性的，不能局部减。
+减肥的要义很简单，就是减少能量摄入，增大能量输出。 需要做的事情有几个： 营养均衡保证热量摄入少，以及长时间保持血糖平衡。
+保持全天的血糖平衡， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/how-to-publish-program-on-windows/">
+  <link rel="canonical" href="http://halida.github.com/blog/fitting/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">如何在windows下面发布程序</h1>
+      <h1 class="entry-title">如何减肥</h1>
     
     
       <p class="meta">
@@ -97,7 +100,7 @@
   
 
 
-<time datetime="2008-02-15T21:32:54+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
+<time datetime="2014-06-09T14:03:00+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,54 +109,25 @@
   </header>
 
 
-<div class="entry-content"><p>程序写好了，如何给其他人使用呢？</p>
+<div class="entry-content"><p>减肥第一步，是真正想减肥。
+真正想减肥的意思是，你可以下决心放弃美食，放弃晚上舒服地躺在沙发上面看电视剧。</p>
 
-<p>如果是在linux下面，直接把源程序打包一下，然后写一个readme.txt，里面写上编译需要的模块，以及安装的方法就好了，会用linux的人一定会安装的。</p>
+<p>减肥是全身性的，不能局部减。
+减肥的要义很简单，就是减少能量摄入，增大能量输出。</p>
 
-<p>不过在windows下面，就没有那么简单了。还是需要做出一个安装程序来的。</p>
+<p>需要做的事情有几个：</p>
 
-<p>我看过了一些专门做安装程序的软件，太专业了，没有必要把简单的小程序发布搞复杂。我用的方法是，做一个自解压程序。</p>
+<p>营养均衡保证热量摄入少，以及长时间保持血糖平衡。
+保持全天的血糖平衡，就可以长时间维护好身体的能量消耗等级，保证持续的热量消耗，
+不至于因为血糖少而减低热量消耗等级。
+千万不能饿到肚子，因为饿肚子会减低人的能量消耗水平，反而瘦不下来。</p>
 
-<p>自解压程序可以使用winrar，里面支持这样的功能，做起来也很简单。但是好像winrar是商业版的程序，还是不用它算了。</p>
+<p>还有就是每天保持高能量输出，这样让身体维护一个比较高的热量消耗水平。
+方法是通过每天高强度运动（时间不一定很长，40分钟足够了），
+高强度就是你的心率很高，可以感觉到心跳厉害。
+散步，慢跑效果都不够好，要做一些快速跑跳的全身动作。</p>
 
-<p>我用的程序是7-zip，一个专门用来压缩与解压的程序。</p>
-
-<p>制作自解压程序的方法是:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>7z a -sfx7z.sfx 自解压程序名 需要压缩的文件
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>7-zip还可以用来把一堆文件制作成一个单独的exe文件，方法是用7-zip的制作安装包的功能，选定一个解压后自动运行的程序：</p>
-
-<p>先把文件压缩起来。</p>
-
-<p>再运行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>copy /b 7zS.sfx  config.txt  用7-zip压缩后的文件名 可执行文件名
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>7zS.sfx可以从 <a href="http://prdownloads.sourceforge.net/sevenzip/">7-zip的下载地址</a>
-里面的extra包（比如7z457_extra.7z）里面得到，这是一个7-zip用来做安装程序的模块，
-上面语句的原理是直接把config.txt
-和压缩文件附到这个7zS.sfx后面，就成为一个exe文件了。</p>
-
-<p>config.txt是设置文件，我是这样写的:</p>
-
-<pre><code>;!@Install@!UTF-8!
-Title="rest"
-RunProgram="\dist\rest.exe"
-;!@InstallEnd@!
-</code></pre>
-
-<p>runprogram是解压缩后执行的文件。</p>
-
-<p>这样就生成了一个可执行文件。运行后，经过一个解压的过程后（文件解压在某个不为人知的地方），就自动运行压缩包里面的文件了。运行完毕后会自动删除解压的临时文件。</p>
-
-<p>具体的设置，查看7-zip文档的-sfx部分。</p>
+<p>坚持两个月就会有明显的效果。</p>
 </div>
 
 
@@ -176,7 +150,7 @@ RunProgram="\dist\rest.exe"
   
 
 
-<time datetime="2008-02-15T21:32:54+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
+<time datetime="2014-06-09T14:03:00+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2014</time>
       
 
 
@@ -184,7 +158,7 @@ RunProgram="\dist\rest.exe"
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/how-to-publish-program-on-windows/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/how-to-publish-program-on-windows/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/fitting/" data-via="linjunhalida" data-counturl="http://halida.github.com/blog/fitting/" >Tweet</a>
   
   
   
@@ -193,8 +167,8 @@ RunProgram="\dist\rest.exe"
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/fast-food/" title="Previous Post: 大城市快捷美食解决方案">&laquo; 大城市快捷美食解决方案</a>
       
-        <a class="basic-alignment right" href="/blog/do-not-help-poor-people/" title="Next Post: 为什么不要帮助穷人">为什么不要帮助穷人 &raquo;</a>
       
     </p>
   </footer>
@@ -299,8 +273,8 @@ RunProgram="\dist\rest.exe"
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/how-to-publish-program-on-windows/';
-        var disqus_url = 'http://halida.github.com/blog/how-to-publish-program-on-windows/';
+        var disqus_identifier = 'http://halida.github.com/blog/fitting/';
+        var disqus_url = 'http://halida.github.com/blog/fitting/';
         var disqus_script = 'embed.js';
       
     (function () {

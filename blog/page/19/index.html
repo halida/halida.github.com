@@ -9,9 +9,17 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是dwarf fortress? 一个建设矮人部落的游戏. 随机生成世界地图, 历史, 超级复杂的建设… http://www.bay12games.com/dwarves/screens.html 有人甚至用部落和矮人实现出了一个
-计算机
-(有种3体里面那个人计算机的感觉) 免费的. &hellip;">
+  <meta name="description" content="资源的获取与释放，C语言里面是要让程序员考虑的，比如 1
+2
+3
+4
+5
+6
+void work(){ Buffer b; init(b); do_sth(b); del(&amp;b);
+}; 在C++里面，有raii这样很方便的特性，当离开作用域的时候，自动释放资源，如 1
+2
+3
+4 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +88,111 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/C-RAII/">C语言如何实现RAII</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T14:25:54+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/C-RAII/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>资源的获取与释放，C语言里面是要让程序员考虑的，比如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在C++里面，有raii这样很方便的特性，当离开作用域的时候，自动释放资源，如</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我在想，如何让C支持这样的特性？于是就有了下面这个宏</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#define using(b) \</span>
+</span><span class='line'><span class="cp">for(int i=0; i&lt;2; i++){\</span>
+</span><span class='line'><span class="cp">if (i==0) \</span>
+</span><span class='line'><span class="cp">  { init(b); } \</span>
+</span><span class='line'><span class="cp">else \</span>
+</span><span class='line'><span class="cp">  { if (i==1) \</span>
+</span><span class='line'><span class="cp">    { del(b); \</span>
+</span><span class='line'><span class="cp">      break; \</span>
+</span><span class='line'><span class="cp">    }; \</span>
+</span><span class='line'><span class="cp">  }; </span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">work</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">using</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;working..</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>edit: 被批了，C就按照C的方式干活，RAII交给C++.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -888,80 +1001,6 @@ g++ a.cpp
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/docstring/">Docstring</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
-        
-         | <a href="/blog/docstring/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>注意事项</h2>
-
-<ul>
-<li>为了统一,docstring的注释用 <code>""" """</code></li>
-<li>不要硬性说返回什么,因为无法确定.要表示会返回什么.</li>
-<li>class的docstring要与上下分离开来,表示单独的一个部分.</li>
-<li>override重载和extend扩展要注明</li>
-<li>fill-paragraph断行</li>
-</ul>
-
-
-<h2>实例</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">kos</span>\<span class="n">_root</span><span class="p">():</span>
-</span><span class='line'>  <span class="o">~</span> <span class="s">&quot;&quot;&quot;Return the pathname of the KOS root directory.&quot;&quot;&quot;</span> <span class="k">global</span>
-</span><span class='line'>    \<span class="n">_kos</span>\<span class="n">_root</span> <span class="k">if</span> \<span class="n">_kos</span>\<span class="n">_root</span><span class="p">:</span> <span class="k">return</span> \<span class="n">_kos</span>\<span class="n">_root</span> <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">complex</span><span class="p">(</span><span class="n">real</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">imag</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-</span><span class='line'>  <span class="o">~</span> <span class="s">&quot;&quot;&quot;Form a complex number.</span>
-</span><span class='line'>
-</span><span class='line'><span class="s">    Keyword arguments: real -- the real part (default 0.0) imag -- the</span>
-</span><span class='line'><span class="s">    imaginary part (default 0.0)</span>
-</span><span class='line'>
-</span><span class='line'><span class="s">    &quot;&quot;&quot;</span> <span class="k">if</span> <span class="n">imag</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">real</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span> <span class="k">return</span> <span class="nb">complex</span>\<span class="n">_zero</span> <span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -979,6 +1018,10 @@ g++ a.cpp
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/fitting/">如何减肥</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/fast-food/">大城市快捷美食解决方案</a>
       </li>
     
@@ -992,10 +1035,6 @@ g++ a.cpp
     
       <li class="post">
         <a href="/blog/zhao-dui-xiang/">如何找对象</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/occult/">神秘学</a>
       </li>
     
   </ul>
