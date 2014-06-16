@@ -9,10 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="减肥第一步，是真正想减肥。
-真正想减肥的意思是，你可以下决心放弃美食，放弃晚上舒服地躺在沙发上面看电视剧。 减肥是全身性的，不能局部减。
-减肥的要义很简单，就是减少能量摄入，增大能量输出。 需要做的事情有几个： 营养均衡保证热量摄入少，以及长时间保持血糖平衡。
-保持全天的血糖平衡， &hellip;">
+  <meta name="description" content="Capistrano是一个ruby写的远程服务器自动化和部署工具。 虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点： 多台服务器任务量巨大。
+手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +79,91 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/capistrano/">Capistrano介绍和入门</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-16T10:28:51+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/capistrano/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_06_16_cap.png"></p>
+
+<p><a href="http://capistranorb.com/">Capistrano</a>是一个ruby写的远程服务器自动化和部署工具。</p>
+
+<p>虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点：</p>
+
+<ul>
+<li>多台服务器任务量巨大。</li>
+<li>手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。</li>
+<li>写脚本自动操作不能重用到其他项目里面去。</li>
+</ul>
+
+
+<p>用了自动化工具，可能第一次配置比较复杂，但是配置好了之后，发布工作就简单得只需要执行一个命令，轻松愉快。
+它也有学习复杂，因为有抽象出现问题难以找到原因，造成额外心智负担的问题，
+这个要开发者根据项目大小和类型来做权衡。</p>
+
+<p>看了官方文档，wiki，看了一天都没有看出门道，后来看官方网站上面的文档才慢慢弄懂。</p>
+
+<p>Capistrano的原理是这样：</p>
+
+<ul>
+<li>需要部署的服务器根据角色(role)区分: 比如有app，db，web，然后每个角色可以有多台服务器。</li>
+<li>针对不同角色，设置各类的任务，设置执行一些命令。</li>
+<li>可以根据阶段设置不同的stage，比如staging/production，staging用来本地测试环境的部署，production用来进行生产环境的部署。</li>
+<li>默认的一套发布流程包括了检查服务器环境，更新代码，初始化，上线等各种过程。</li>
+<li>每个过程都提供了钩子，把任务链接到钩子上面，就能够保证部署过程按照期待的状况进行。</li>
+</ul>
+
+
+<p>弄懂如何用cap比较麻烦，我整理了一下如何学习的资料：</p>
+
+<ul>
+<li>首先是去看<a href="http://capistranorb.com/">官方文档</a>，对于基础概念，有一定的了解。</li>
+<li>一定要实际部署一下，可以用本地环境测试，repo_url设置成本地，比如&#8221;user@localhost:/home/user/testapp&#8221;。</li>
+<li>弄清楚发布到服务器上面的文件架构。本地测试部署一次就清楚概念了。</li>
+<li>如果需要自动部署rails，可看<a href="https://ruby-china.org/topics/18616?page=2#replies">别人整理的一份详细文档</a>。</li>
+</ul>
+
+
+<p>然后学习一些原理性质的资料：</p>
+
+<ul>
+<li>弄清楚<a href="http://capistranorb.com/documentation/getting-started/flow/">发布过程和逻辑</a>。</li>
+<li>如何在服务器上面执行代码是用SSHKit库，需要<a href="https://github.com/capistrano/sshkit">看一遍文档</a>。</li>
+<li>看一遍用到的cap相关Gem，包括<a href="https://github.com/capistrano/capistrano/tree/master/lib/capistrano/tasks">capistrano</a>, <a href="https://github.com/capistrano/bundler/blob/master/lib/capistrano/tasks/bundler.cap">capistrano-bundle</a>, <a href="https://github.com/capistrano/rvm/blob/master/lib/capistrano/tasks/rvm.rake">capistrano-rvm</a>, <a href="https://github.com/capistrano/rails/blob/master/lib/capistrano/tasks/">capistrano-rails</a>里面rake是怎么执行的，弄清楚原理。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -666,69 +749,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/view-point/">求视线范围的算法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-29T10:55:02+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
-        
-         | <a href="/blog/view-point/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>前段时间看到<a href="https://back.nothingtohide.cc/">有一个游戏</a>，玩家必须保持自己在监控设备的视线范围内。
-画面上面展示的效果是高亮出监视器的视线范围。如图：</p>
-
-<p><img src="/images/posts/2014_03_30_view.png"></p>
-
-<p>我思考了一下如何做到这点。首先定义问题：
-给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
-（可以用一系列的三角形表示）。</p>
-
-<p>求视线范围的三角形列表，可以从房间所有墙壁的顶点往监控点做视线线段，
-找视线线段和墙壁边的连接中距离监控点最近的点，
-然后可视范围就是这些点和监控点组成的三角形了。</p>
-
-<p>填充三角形，可以用扫描线算法。把三角形根据水平线拆分成2个，
-然后从顶点往下做扫描线，求扫描线和两条边的交点，然后填充里面的区域。
-如下图所示：</p>
-
-<p><img src="/images/posts/2014_03_30_scan.png"></p>
-
-<p>求线段相交点的算法网上搜索一下就可以得到。</p>
-
-<p>估计一下算法复杂度，墙壁边是m(4&lt;m&lt;240)，求交点是m*m，应该是上界。
-常数应该比较大，包括求交点，找出距离监控点最近的点。
-可以优化一下参数，比如变形求交点算法（做垂线），快速找到距离监控点最近的点。</p>
-
-<p>大家想想看有什么更好的解法？</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -744,6 +764,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/capistrano/">capistrano介绍和入门</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/fitting/">如何减肥</a>
       </li>
     
@@ -757,10 +781,6 @@
     
       <li class="post">
         <a href="/blog/grundy/">无偏博弈游戏的解法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/zhao-dui-xiang/">如何找对象</a>
       </li>
     
   </ul>
