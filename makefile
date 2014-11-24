@@ -5,9 +5,12 @@ watch:
 publish:
 	$(rake) generate
 	$(rake) deploy
+push:
+	git add . && git ci -m 'update' && git push
 
+# title="title" make new
 new:
-	$(rake) "new_post[xxx]"
+	bundle exec ruby scripts/newblog.rb
 preview:
 	$(rake) preview
 commit:
