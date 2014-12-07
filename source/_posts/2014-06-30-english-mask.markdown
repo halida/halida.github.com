@@ -3,7 +3,7 @@ layout: post
 title: "country of mask"
 date: 2014-06-30 11:17:21 +0800
 comments: true
-categories: 
+categories: english
 ---
 
 I was thinking, if we all wear masks, we cound decorate ourself as we want,
