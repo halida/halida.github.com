@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-07T09:46:30+08:00</updated>
+  <updated>2014-12-07T10:21:18+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[how to use gem]]></title>
+    <link href="http://halida.github.com/blog/english-gem/"/>
+    <updated>2014-12-07T09:48:29+08:00</updated>
+    <id>http://halida.github.com/blog/english-gem</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
+Gem is flaring, but handle without enough care, it may cut your finger bleeding.
+As a jeweler, I can share some knowledge about it.</p>
+
+<h2>Search</h2>
+
+<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
+or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
+
+<h2>Pick</h2>
+
+<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
+you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
+
+<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
+Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
+Some gem may change rails module, handle them with caution.</p>
+
+<h2>Use</h2>
+
+<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
+
+<p>You must know what you have done, read gem documents, wiki, know how to use it.
+I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
+
+<p>When something bad happens, check the gem project issue page,
+or you can debug it yourself by add log to the gem source code.</p>
+
+<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何使用Gem]]></title>
@@ -931,126 +968,6 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
 <p>And IT industry always changes dramatically, that makes programming career path is not as clear as other professionals, many job positions, like big data analyst, not even existed several years ago.</p>
 
 <p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[access类型软件调研]]></title>
-    <link href="http://halida.github.com/blog/access-like-software/"/>
-    <updated>2014-01-28T09:44:48+08:00</updated>
-    <id>http://halida.github.com/blog/access-like-software</id>
-    <content type="html"><![CDATA[<p>最近要找一个微软Access类型的工具，做了一些调研，这里整理一下。</p>
-
-<p>Access类型列表：</p>
-
-<ul>
-<li><a href="http://alternativeto.net/software/microsoft-access/?sort=likes">alternativeto.net网站</a></li>
-<li><a href="http://superuser.com/questions/30776/open-source-alternative-to-filemaker-or-access">stackoverflow的问题</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Category:Desktop_database_application_development_tools">wikipedia</a></li>
-</ul>
-
-
-<p>除了上面的，还顺藤摸瓜挖到一些。这里整理一下：</p>
-
-<h2>kexi</h2>
-
-<p><a href="http://www.calligra.org/kexi/">http://www.calligra.org/kexi/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_kexi1.png">
-<img src="http://halida.github.com/images/posts/2014_01_28_kexi2.png"></p>
-
-<p>是在KDE里面的组件。看起来还好，不过因为和KDE混在一起，不予考虑。</p>
-
-<p>同样也不考虑openoffce和gnome套件里面对应类似Access的软件。</p>
-
-<h2>Portofino</h2>
-
-<p><a href="http://www.manydesigns.com/en/portofino">http://www.manydesigns.com/en/portofino</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_portofino.png"></p>
-
-<p>基于java的，主要还是CMS类型，还是需要编程能力来客制化。</p>
-
-<h2>vfront</h2>
-
-<p><a href="http://www.vfront.org/demo.php">http://www.vfront.org/demo.php</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_vfront.gif"></p>
-
-<p>只是一个修改数据库的前端，不符合要求。</p>
-
-<h2>wavemaker</h2>
-
-<p><a href="http://www.wavemaker.com/product/demos.html">http://www.wavemaker.com/product/demos.html</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_wavemaker.jpg"></p>
-
-<p>基于java，在浏览器里面进行编辑修改。功能好像很强大。</p>
-
-<h2>filemaker</h2>
-
-<p><a href="http://www.filemaker.com/hk/products/overview.html">http://www.filemaker.com/hk/products/overview.html</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_filemaker.png">
-<img src="http://halida.github.com/images/posts/2014_01_28_filemaker2.jpg"></p>
-
-<p>国外主流，比Access份额要大。主要针对的还是苹果平台，手机平板都支持。</p>
-
-<h2>易表/狐表</h2>
-
-<p>易表 <a href="http://www.egrid2000.com/index.html#index">http://www.egrid2000.com/index.html#index</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_egrid.gif"></p>
-
-<p>狐表 <a href="http://www.foxtable.com/">http://www.foxtable.com/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_foxtable.gif"></p>
-
-<p>一家公司前后开发的版本，用表格的形式，我觉得好复杂，产品形态更类似Excel。</p>
-
-<h2>雅奇</h2>
-
-<p><a href="http://www.yqmis.com/">http://www.yqmis.com/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_yq1.png"></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_yq2.png"></p>
-
-<p>Access类型，网站介绍很强大，视频里面介绍的开发方式很顺畅，看起来挺不错，销量好像也大。可惜弄不到试用。价格近千。</p>
-
-<p>对了，首页一个美女自动做讲解。</p>
-
-<h2>搭建之星</h2>
-
-<p><a href="http://www.diylsoft.com/">http://www.diylsoft.com/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_djzx.jpg"></p>
-
-<p>有点粗糙，有免费版本。</p>
-
-<h2>魔方网表</h2>
-
-<p><a href="http://www.magicflu.com/">http://www.magicflu.com/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_mfwb.jpg"></p>
-
-<p>正式版免费，可以网络使用。</p>
-
-<h2>glom</h2>
-
-<p><a href="http://www.glom.org/wiki/index.php?title=Glom">http://www.glom.org/wiki/index.php?title=Glom</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_glom.png"></p>
-
-<p>只有前端，数据库不管，有点简陋。</p>
-
-<h2>camelot</h2>
-
-<p><a href="http://www.python-camelot.com/">http://www.python-camelot.com/</a></p>
-
-<p><img src="http://halida.github.com/images/posts/2014_01_28_camelot.png"></p>
-
-<p>pyqt + sqlalchemy 架构合我的胃口。但是需要写太多的代码了。。</p>
 ]]></content>
   </entry>
   

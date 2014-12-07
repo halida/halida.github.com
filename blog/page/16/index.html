@@ -9,10 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="昨天, 某个朋友给我推荐了一本书: 书名是
-悠游度过一天的24小时. 这本书不错. 如果你觉得自己每天虚度光阴, 可以看这本书,
-这本书提供了一些改变的方法, 简单易行. 上周在 primesplus 里面和他们聊天,
-提到一个问题: 中国的程序员大多没有生活. 每天上班下班两点一线, &hellip;">
+  <meta name="description" content="很久以前就耳闻 hackers and
+painters 这本书,
+终于在今年过年期间, 抽空看完了. 这本书有点像是杂文集,
+里面的内容遥相呼应, 但又独立成章. 里面的核心思想: 黑客更像是艺术家, 而不是工程师或者科学家.
+编程工具对于黑客而言, 像是画笔对于画家, 掌握了工具, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/hackers-and-painters/">黑客与画家</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-07T18:48:49+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2011</time>
+        
+         | <a href="/blog/hackers-and-painters/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://img3.douban.com/lpic/s4603101.jpg" alt="image" /></p>
+
+<p>很久以前就耳闻 <a href="http://book.douban.com/subject/1395495/">hackers and
+painters</a> 这本书,
+终于在今年过年期间, 抽空看完了. 这本书有点像是杂文集,
+里面的内容遥相呼应, 但又独立成章.</p>
+
+<p>里面的核心思想: 黑客更像是艺术家, 而不是工程师或者科学家.
+编程工具对于黑客而言, 像是画笔对于画家, 掌握了工具,
+不代表能够创作出好的作品出来. 这篇文章可以见
+<a href="http://www.cnblogs.com/leap-abead/articles/762178.html">作者博客</a>
+(<a href="http://www.cnblogs.com/leap-abead/articles/762178.html">中文翻译</a>)
+既然作者已经介绍得很清楚了, 我也不多说了. 我现在的问题是, <a href="http://www.zhihu.com/question/19557234">作为程序员,
+技术能够花时间学到, 但是创造能力很难,
+是否有提升的方法?</a></p>
+
+<p>这本书没有给我带来太多的新知, 可能跟我已经看过很多类似的文章有关吧.
+有人已经
+<a href="http://www.ruanyifeng.com/blog/2009/12/i_will_translate_paul_graham.html">完成翻译工作了</a>,
+但是好像现在还没有上市, 如果你真的像我一样时间很多,
+或者英语阅读水平很好, 可以google一下, 有破解的英文版.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -797,317 +856,6 @@ Return an iterator that yields tuples of an index and an item of the
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/online-update/">程序如何作在线更新</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-17T11:01:49+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2010</time>
-        
-         | <a href="/blog/online-update/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>问题</h2>
-
-<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TQrJ7IXV-_I/AAAAAAAADOU/AFzkVbp1W_8/s800/101118-Caribou-web.jpg" alt="image" /></p>
-
-<p>我们的客户端程序庞大, 笨重, 更为严重的是, 当我们的程序发布给用户之后,
-如果没有问题还好, 遇到了bug, 修改很成问题.
-如何把更新后的程序发布给用户呢? 很多项目在做架构的时候,
-选择采用web方式来绕过这样的问题. 但是很多时候还是非用客户端程序不可.
-如何让客户端程序实现在线更新功能? 这里提供我的一个非常简单的解决方案.</p>
-
-<h2>思路</h2>
-
-<p>更新的业务逻辑很简单. 只需要下面几步:</p>
-
-<ul>
-<li>去某个服务器, 下载一个记录有版本信息的文档.</li>
-<li>与本地程序的版本号做比较, 如果不是最新的, 提示用户更新程序.</li>
-<li>更新程序的方法: 去服务器下载一个压缩包, 解压覆盖本地程序.</li>
-</ul>
-
-
-<p>然后是具体实现上面的逻辑.</p>
-
-<h2>要点</h2>
-
-<ul>
-<li><p>服务器必须能够被客户访问到.</p>
-
-<p>如果是在外网的话, 必须有一个存放更新文件的公共服务器. 我采用 <a href="http://code.google.com">google
-code</a> 存放文件. 一个项目上传文件的限额是2G,
-足够用了. 你也可以选择自己搭建一个http/ftp服务器,
-或者用dropbox(被墙掉了), everbox(现在还不支持共享文件).</p></li>
-<li><p>更新程序. 下载程序后, 需要覆盖当前程序目录, windows下面,
-开启后的程序会加锁执行文件, 所以需要运行另外的一个程序来做更新.
-下面是具体的逻辑.</p></li>
-</ul>
-
-
-<h2>更新程序解决方案</h2>
-
-<p>比如旧程序在dir_a目录下面, 可执行文件是a.exe.
-星号括起来的是当前正在执行的文件.</p>
-
-<pre><code>dir_a: **a.exe**
-</code></pre>
-
-<p>我们把dir_a拷贝出一份, 到dir_backup, 最新的程序保存到dir_backup里面,
-保存为new.tar.gz. 下载完毕后, 我们在dir_b里面建立一个文件,
-叫need_update, 作为标识.</p>
-
-<pre><code>dir_a: **a.exe**
-dir_backup: a.exe, new.tar.gz, need_update
-</code></pre>
-
-<p>用 <a href="http://docs.python.org/library/os.html#os.execl">execl</a>
-(c/c++/python/都可以用类似的函数调用), 关闭当前程序,
-跳到dir_backup环境里面, 执行dir_backup/a.exe.</p>
-
-<pre><code>dir_a: a.exe
-dir_backup: **a.exe**, new.tar.gz, need_update
-</code></pre>
-
-<p>dir_backup/a.exe启动的时候检查当前目录下面是否有need_update, 有的话,
-就解压new.tar.gz, 覆盖dir_a. 这个时候程序已经更新完成了.</p>
-
-<pre><code>dir_a: new.exe
-dir_backup: **a.exe**, new.tar.gz, need_update
-</code></pre>
-
-<p>然后再用 `execl`, 放弃当前程序, 执行dir_a/new.exe.</p>
-
-<pre><code>dir_a: **new.exe**
-dir_backup: a.exe, new.tar.gz, need_update
-</code></pre>
-
-<p>步骤虽然有点复杂, 但是顶用, 也不需要另外加一个更新程序.
-对于python发布出去的代码来说, 一个可执行文件就上M了, 少一个是一个.</p>
-
-<p>下面是实际代码, 因为是从实际项目中挖出来的, 保证不能用.
-都是update.py这一个源文件的:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">qtlib</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">qtlib.download</span> <span class="kn">import</span> <span class="n">download</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">add_config</span><span class="p">,</span> <span class="n">conf</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">tools.progresser</span> <span class="kn">import</span> <span class="n">Progresser</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">tarfile</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">distutils.dir_util</span> <span class="kn">import</span> <span class="n">copy_tree</span>
-</span><span class='line'><span class="n">SERVER</span> <span class="o">=</span> <span class="s">&quot;http://project.googlecode.com/files/&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
-</span><span class='line'>    <span class="sd">&quot;&quot;&quot;具体更新的方法&quot;&quot;&quot;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="n">confirm</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;开始准备更新, 是否继续?&#39;</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># 检查是否有更新</span>
-</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_update</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># 复制program</span>
-</span><span class='line'>    <span class="n">temp_path</span> <span class="o">=</span> <span class="s">&#39;../</span><span class="si">%s</span><span class="s">.backup&#39;</span> <span class="o">%</span> <span class="n">program</span>
-</span><span class='line'>    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_path</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;..&#39;</span><span class="p">,</span> <span class="n">program</span><span class="p">),</span>
-</span><span class='line'>                    <span class="n">temp_path</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># 下载程序</span>
-</span><span class='line'>    <span class="n">tar_file</span> <span class="o">=</span> <span class="n">program</span> <span class="o">+</span> <span class="s">&#39;.tar.gz&#39;</span>
-</span><span class='line'>    <span class="n">local_tar_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_path</span><span class="p">,</span> <span class="n">tar_file</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">with</span> <span class="n">Progresser</span><span class="p">(</span><span class="s">&quot;下载中, 比较忙, 你可以离开位置休息一下..&quot;</span><span class="p">,</span><span class="s">&quot;退出&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">result</span> <span class="o">=</span> <span class="n">download</span><span class="p">(</span><span class="n">SERVER</span> <span class="o">+</span> <span class="n">tar_file</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">local_tar_file</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">stepper</span> <span class="o">=</span> <span class="n">p</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">showMsg</span><span class="p">(</span><span class="s">&quot;无法连接到服务器, 请检查是否连上外部网络!&quot;</span><span class="p">)</span>
-</span><span class='line'>            <span class="k">return</span>
-</span><span class='line'>        <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">showMsg</span><span class="p">(</span><span class="s">&#39;取消下载, 不好意思, 下次还得从头开始下载..&#39;</span><span class="p">)</span>
-</span><span class='line'>            <span class="k">return</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">showMsg</span><span class="p">(</span><span class="s">&#39;下载完成, 现在安装新程序.&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
-</span><span class='line'>    <span class="c"># 解压</span>
-</span><span class='line'>    <span class="n">unzip</span><span class="p">(</span><span class="n">tar_file</span><span class="p">)</span>
-</span><span class='line'>    <span class="c"># 标示一下是新程序</span>
-</span><span class='line'>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;need_update&#39;</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
-</span><span class='line'>    <span class="c"># 执行新程序</span>
-</span><span class='line'>    <span class="n">program_name</span> <span class="o">=</span> <span class="n">program</span><span class="o">+</span><span class="s">&#39;.exe&#39;</span>
-</span><span class='line'>    <span class="n">os</span><span class="o">.</span><span class="n">execl</span><span class="p">(</span><span class="n">program_name</span><span class="p">,</span> <span class="n">program_name</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">check_update</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
-</span><span class='line'>    <span class="sd">&quot;&quot;&quot;检查是否有更新&quot;&quot;&quot;</span>
-</span><span class='line'>    <span class="c"># 下载versions文件</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">download</span><span class="p">(</span><span class="n">SERVER</span><span class="o">+</span><span class="s">&#39;versions&#39;</span><span class="p">,</span> <span class="s">&#39;temp/versions&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">showMsg</span><span class="p">(</span><span class="s">&quot;无法连接到服务器, 请检查是否连上外部网络!&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">return</span> <span class="bp">False</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c"># 读取里面的信息</span>
-</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;temp/versions&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span class='line'>    <span class="c"># 格式是: program + 空格 + 版本号</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
-</span><span class='line'>            <span class="n">new_version</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-</span><span class='line'>            <span class="c"># 把版本号当作浮点来检查</span>
-</span><span class='line'>            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">version</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_version</span><span class="p">):</span>
-</span><span class='line'>                <span class="k">return</span> <span class="bp">True</span>
-</span><span class='line'>            <span class="k">else</span><span class="p">:</span>
-</span><span class='line'>                <span class="n">showMsg</span><span class="p">(</span><span class="s">&quot;程序已经是最新版本: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">version</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">check_finish_update</span><span class="p">():</span>
-</span><span class='line'>    <span class="c"># 检查当前是否是需要更新的临时文件</span>
-</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;need_update&#39;</span><span class="p">):</span>
-</span><span class='line'>        <span class="k">return</span>
-</span><span class='line'>    <span class="c"># 读取程序名称</span>
-</span><span class='line'>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;need_update&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">program</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span class='line'>    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;need_update&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="c"># 然后把新程序复制回去</span>
-</span><span class='line'>    <span class="n">old_path</span> <span class="o">=</span> <span class="s">&#39;../</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">program</span>
-</span><span class='line'>    <span class="n">copy_tree</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">old_path</span><span class="p">)</span>
-</span><span class='line'>    <span class="c"># 执行程序</span>
-</span><span class='line'>    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">old_path</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">program_name</span> <span class="o">=</span> <span class="n">program</span> <span class="o">+</span> <span class="s">&#39;.exe&#39;</span>
-</span><span class='line'>    <span class="n">os</span><span class="o">.</span><span class="n">execl</span><span class="p">(</span><span class="n">program_name</span><span class="p">,</span> <span class="n">program_name</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 加载update.py模块的时候, 判断当前是否为在backup过程中执行的..</span>
-</span><span class='line'><span class="n">check_finish_update</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>其他</h2>
-
-<p>基于上面的更新逻辑, 我们还可以根据需求, 补充一些功能:</p>
-
-<ul>
-<li>启动的时候检查更新. 只需要用threading.Thread(target=check_update,
-&hellip;)来用一个线程跑更新检查就可以了.</li>
-<li>后台更新. 也可以用一个线程跑下载, 下载完毕后, 再通知主线程.</li>
-<li>增量更新, 减少下载时间. 可以考虑用diff之类工具.</li>
-</ul>
-
-
-<p>如果有人觉得这样的更新脚本有价值的话, 可以联系我,
-让我整理出一份不依赖其他模块的代码出来.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/17/">&larr; Older</a>
@@ -1125,6 +873,10 @@ dir_backup: a.exe, new.tar.gz, need_update
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/english-gem/">how to use gem</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/gem/">如何使用Gem</a>
       </li>
     
@@ -1138,10 +890,6 @@ dir_backup: a.exe, new.tar.gz, need_update
     
       <li class="post">
         <a href="/blog/capistrano/">capistrano介绍和入门</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/fitting/">如何减肥</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-07T09:46:30+08:00</updated>
+  <updated>2014-12-07T10:21:18+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[how to use gem]]></title>
+    <link href="http://halida.github.com/blog/english-gem/"/>
+    <updated>2014-12-07T09:48:29+08:00</updated>
+    <id>http://halida.github.com/blog/english-gem</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
+Gem is flaring, but handle without enough care, it may cut your finger bleeding.
+As a jeweler, I can share some knowledge about it.</p>
+
+<h2>Search</h2>
+
+<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
+or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
+
+<h2>Pick</h2>
+
+<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
+you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
+
+<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
+Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
+Some gem may change rails module, handle them with caution.</p>
+
+<h2>Use</h2>
+
+<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
+
+<p>You must know what you have done, read gem documents, wiki, know how to use it.
+I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
+
+<p>When something bad happens, check the gem project issue page,
+or you can debug it yourself by add log to the gem source code.</p>
+
+<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[country of mask]]></title>
+    <link href="http://halida.github.com/blog/english-mask/"/>
+    <updated>2014-06-30T11:17:21+08:00</updated>
+    <id>http://halida.github.com/blog/english-mask</id>
+    <content type="html"><![CDATA[<p>I was thinking, if we all wear masks, we cound decorate ourself as we want,
+present self as we are, to show our true character, without bothered by the nature born face.</p>
+
+<p>Mask is make by ourselves, represented in a way we want to.</p>
+
+<p>You can use this mask:</p>
+
+<p><img src="/images/posts/2014_06_30_two.jpeg"></p>
+
+<p>And that:</p>
+
+<p><img src="/images/posts/2014_06_30_smile.jpg"></p>
+
+<p>So how could it be, for a world like this? Let me illustrate one.</p>
+
+<p>The first question is, how this could be?
+Tradition may come from nowhere and anywhere,
+As if there was a dectator, have some skin conditions maybe coming from syphilis.
+He wear a mask, and force all the others do so.
+Then dectator goes tradition remains.</p>
+
+<p>For public security, all mask must marked with ID which belongs to individual,
+as in the condition same as car number.
+Steal mask is felony, because it is identity thefting and critical privacy violation.
+People only show their face to the relative really close.</p>
+
+<p>Children&rsquo;s mark are labeled with their parents' identity, after they come of age,
+they should create their own. There are mask craftsman who fill people&rsquo;s needs.
+Person with figure choose the best tailor, ordinary may buy a template and customize it by their own.</p>
+
+<p>Soldier&rsquo;s mask are standard by rank, for serious concern, all soldiers tatoo for proventing identity theft.</p>
+
+<p>So how to eat food while wearing a mask? Mask should have a moving part on the mouth area for feeding.
+The way people eat will change, Food are cutting into small pieces for easy deliver.
+Then tools for eating are changed accordingly, with tools to clean mouth.</p>
+
+<p>It is impossible to communicate with face expression,
+and it will not be needed, people use tone and gesture to express the subtle.
+For foreigners, understand the art of tones may be challenging.</p>
+
+<p>There could be mask represents emotion, and those who want represent them,
+include women, noble, actor, will prepare lots of them,
+changing them rapidly in the public.</p>
+
+<p>For finding the perfect wife, people seek according to how beautiful her musk is.
+It repesent her light hand.
+Women will spend lots of time on decorating mask, same as in makeup in our country.</p>
+
+<p>But we know man are nature&rsquo;s slave, seek for pretty, they invite girl for dinner,
+look through the small holes on the mouth, to find the evidence.
+Women has contermeasures by using hand or thin cloth to hide.
+And for the women who feel more comfortable about it, would protent to show more,
+even remove part of the cover on the mask.</p>
+
+<p><img src="/images/posts/2014_06_30_woman.jpg"></p>
+
+<p>There are still diversity around people. Rich one use better mask,
+embeded with jewel, crafted with special treatment.</p>
+
+<p>And there definitly will be a festival about mask, people bring the best mask off,
+Mask crafter are create all kinds of strange mask to promote themself: the biggest one, smallest one, most delicate one.
+It will attract lots of tourists, they will buy masks and bring them home,
+Collector will gether all kinds of rare masks, special or from special people.
+Mask economy, is important for this country.</p>
+
+<p>It will be fun, if there is a country with mask.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[pitfalls of programming]]></title>
@@ -93,67 +204,6 @@ specialized in alter environment with the help of a highly developed organ calle
 Maybe no default meaning, we still can <strong>seek it ourselves</strong>. Without meaning, life is no more than an ordinary animal.
 With meaning, life of roaming turns into life of journey with porpose, great things can be done, ordinary can be extraordinary,
 and life can be meanful.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[information sugar]]></title>
-    <link href="http://halida.github.com/blog/information-sugar/"/>
-    <updated>2014-01-19T21:47:34+08:00</updated>
-    <id>http://halida.github.com/blog/information-sugar</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/2014_01_19_sugar.jpeg"></p>
-
-<p>As a blogger for many years, creating new blog post is harder and harder for me.</p>
-
-<p>So why it is harder? Because I consider quality of blog post more now.</p>
-
-<p>To have a high quality blog post, it should have:</p>
-
-<ul>
-<li><strong>High information density</strong>. It should focus on one topic, with enough supportive information.</li>
-<li><strong>Depth</strong>. It should walk through the topic, view all the angles, dig deep into the essence, so reader can have a clear view.</li>
-<li><strong>New content</strong>. We should not discuss something already done.</li>
-<li><strong>Something inspiring</strong>. It can create spark which can enlighten reader&rsquo;s mind.</li>
-</ul>
-
-
-<p>World is filled with noise, and readers face more danger on the thing
-which I call <em>information sugar</em>: it has some value, but the time spending on reading, is more valuable than the value it contains.
-SNS and news sites filled with it, sweat to read, and lots of time wasted without notice.</p>
-
-<p>Creating high quality information need lots of time, focus, hard working, and care.
-I hope I can provide more of it, other than the sweet <em>information sugar</em>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Too Old to Program]]></title>
-    <link href="http://halida.github.com/blog/too-old-to-program/"/>
-    <updated>2013-12-29T14:10:05+08:00</updated>
-    <id>http://halida.github.com/blog/too-old-to-program</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/2013_12_29_title.jpeg"></p>
-
-<p>There is a common myth in China: After programmer turns 30, he is too old to keep programming, need change direction, to management or other domains.</p>
-
-<p>It may not make any sense for the programmers outside of China, there are many talent old programmer out there, still doing great job. But this myth reflect something need to worry about, In short words: <strong>programming is easy to learn, hard to improve</strong>.</p>
-
-<p>With the greatness of internet and hard working of programmers, knows how to programming, is just a matter of time. Dozens of websites tells you how to build a website or GUI tool, thousands of books give you a detailed walk through, from novice to expert. You can create a website on your own, under 1 month, even though has no IT background.</p>
-
-<p>So it bring down the threshold, and for the domain with low requirements, employees there are under heavy competition, easy to be replaced.</p>
-
-<p>And programmer&rsquo;s job brings low benefit. They are isolated inside digital world (some of us forced to be more socialize for keep balance), investment of time on new tech devaluation fast, repeating doing jobs of CURD, domain specific knowledge which cannot scale or be reused, and need lots of brain power to finish the job so leave less energy on self improvement after work.</p>
-
-<p>Then after several years of hard working, programmer may found that he is less competitive with the newbies, and aging issue came out, make old programmer hard to follow new trend, hard to focus the mind on solving coding problems, and it will lead to decrease of the salary income.</p>
-
-<p>There still are some way out:</p>
-
-<p><strong>Tech Management</strong>. People who can lead a tech team is always rare. It require good understanding of programming and problem domain, social skills to communicate with team members with different background, and good control of project schedule.</p>
-
-<p><strong>IT consultant</strong>. With all these years of working, the programmer has deep understanding of the information system, and how business works. Organization need he to maintain and improve the system, he will become part of the system.</p>
-
-<p><strong>CS expert</strong>. Programmer has deep understanding of computer science, and smart enough to solve tech relevant issues which others can&rsquo;t. They can bring great value to the organization, either create core competition, or keep complex system work smoothly.</p>
-
-<p>All these positions are hard to archive, only few of us did. Average forks will remain average, face the hard cold winter.</p>
 ]]></content>
   </entry>
   
