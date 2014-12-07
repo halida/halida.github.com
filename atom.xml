@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-06-30T10:48:40+08:00</updated>
+  <updated>2014-12-07T09:46:30+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何使用Gem]]></title>
+    <link href="http://halida.github.com/blog/gem/"/>
+    <updated>2014-12-07T09:41:47+08:00</updated>
+    <id>http://halida.github.com/blog/gem</id>
+    <content type="html"><![CDATA[<p>作为rails开发者，无数好用的第三方Gem插件让工作变得更加简单。
+不过东西好用，也还是有一些需要注意的问题。这里整理一下我使用Gem的经验。</p>
+
+<h2>搜索</h2>
+
+<p>第一步是寻找到想要的Gem。最基础的方法是Google搜索，输入想要实现的功能，比如：<code>rails tagging</code>，
+也可以去<a href="https://www.ruby-toolbox.com/">ruby toolbox网站</a>上面根据分类寻找。</p>
+
+<h2>选择</h2>
+
+<p>找到Gem之后，需要选择质量高的Gem，不然会出现各种问题。主要看Github上面是否有很多人Follow，
+以及项目近期是否有足够的更新。</p>
+
+<p>不能随便引入Gem到项目里面，需要从增加的系统复杂度，拓展性，系统稳定性等方面综合考虑。
+除了引入Gem，可以考虑直接拷贝需要的代码文件到项目里面。一些会修改Rails等其他模块的Gem，需要谨慎引入。</p>
+
+<h2>使用</h2>
+
+<p>Gem导入之后，最好要固定版本，这样防止Gem功能变更引入Bug。</p>
+
+<p>选择好了Gem，需要对它有足够的了解。认认真真看一遍文档，wiki，如果文档不清晰，搜索一下使用教程。</p>
+
+<p>我个人偏好把Gem的实现原理弄懂，最好扫一遍源码，这样出现bug或者问题大概有一个方向，
+以及可以学会别人是怎么写ruby的。</p>
+
+<p>当使用Gem的时候出现了问题，可以去项目Github的Issue区块看看有没有人提交类似问题，
+没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
+
+<p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[country of mask]]></title>
+    <link href="http://halida.github.com/blog/english-mask/"/>
+    <updated>2014-06-30T11:17:21+08:00</updated>
+    <id>http://halida.github.com/blog/english-mask</id>
+    <content type="html"><![CDATA[<p>I was thinking, if we all wear masks, we cound decorate ourself as we want,
+present self as we are, to show our true character, without bothered by the nature born face.</p>
+
+<p>Mask is make by ourselves, represented in a way we want to.</p>
+
+<p>You can use this mask:</p>
+
+<p><img src="http://halida.github.com/images/posts/2014_06_30_two.jpeg"></p>
+
+<p>And that:</p>
+
+<p><img src="http://halida.github.com/images/posts/2014_06_30_smile.jpg"></p>
+
+<p>So how could it be, for a world like this? Let me illustrate one.</p>
+
+<p>The first question is, how this could be?
+Tradition may come from nowhere and anywhere,
+As if there was a dectator, have some skin conditions maybe coming from syphilis.
+He wear a mask, and force all the others do so.
+Then dectator goes tradition remains.</p>
+
+<p>For public security, all mask must marked with ID which belongs to individual,
+as in the condition same as car number.
+Steal mask is felony, because it is identity thefting and critical privacy violation.
+People only show their face to the relative really close.</p>
+
+<p>Children&rsquo;s mark are labeled with their parents&#8217; identity, after they come of age,
+they should create their own. There are mask craftsman who fill people&rsquo;s needs.
+Person with figure choose the best tailor, ordinary may buy a template and customize it by their own.</p>
+
+<p>Soldier&rsquo;s mask are standard by rank, for serious concern, all soldiers tatoo for proventing identity theft.</p>
+
+<p>So how to eat food while wearing a mask? Mask should have a moving part on the mouth area for feeding.
+The way people eat will change, Food are cutting into small pieces for easy deliver.
+Then tools for eating are changed accordingly, with tools to clean mouth.</p>
+
+<p>It is impossible to communicate with face expression,
+and it will not be needed, people use tone and gesture to express the subtle.
+For foreigners, understand the art of tones may be challenging.</p>
+
+<p>There could be mask represents emotion, and those who want represent them,
+include women, noble, actor, will prepare lots of them,
+changing them rapidly in the public.</p>
+
+<p>For finding the perfect wife, people seek according to how beautiful her musk is.
+It repesent her light hand.
+Women will spend lots of time on decorating mask, same as in makeup in our country.</p>
+
+<p>But we know man are nature&rsquo;s slave, seek for pretty, they invite girl for dinner,
+look through the small holes on the mouth, to find the evidence.
+Women has contermeasures by using hand or thin cloth to hide.
+And for the women who feel more comfortable about it, would protent to show more,
+even remove part of the cover on the mask.</p>
+
+<p><img src="http://halida.github.com/images/posts/2014_06_30_woman.jpg"></p>
+
+<p>There are still diversity around people. Rich one use better mask,
+embeded with jewel, crafted with special treatment.</p>
+
+<p>And there definitly will be a festival about mask, people bring the best mask off,
+Mask crafter are create all kinds of strange mask to promote themself: the biggest one, smallest one, most delicate one.
+It will attract lots of tourists, they will buy masks and bring them home,
+Collector will gether all kinds of rare masks, special or from special people.
+Mask economy, is important for this country.</p>
+
+<p>It will be fun, if there is a country with mask.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[戴面具的国度]]></title>
@@ -940,64 +1051,6 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
 <p><img src="http://halida.github.com/images/posts/2014_01_28_camelot.png"></p>
 
 <p>pyqt + sqlalchemy 架构合我的胃口。但是需要写太多的代码了。。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[the meaning of life]]></title>
-    <link href="http://halida.github.com/blog/the-meaning-of-life/"/>
-    <updated>2014-01-28T08:15:48+08:00</updated>
-    <id>http://halida.github.com/blog/the-meaning-of-life</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_01_28_life.jpeg"></p>
-
-<p>At some point in the life, we may ask ourselves: <strong>What&rsquo;s the meaning of life?</strong>
-We seek answers from others, from social groups or religion groups, from books written by philosophers.</p>
-
-<p>In the ancient times, philosophers ask bigger question: <strong>What is the meaning of humanity?</strong>
-Someone turns to the obvious answer: <strong>there must be the god, and god creates human for good.</strong>
-The question turns into: <strong>what god wants?</strong> Argument of it was through the history, and bring conflict and war.</p>
-
-<p>Someone asks another question: <strong>If there is god, where is the god?</strong>
-They start to seek the proof, develop system of critical thinking, then the light of rationality shining, expulse the shadow of mysticism.
-And we got science, and we can identify facts, and we found the big discovery of evolution, with the proof of it.
-It turns out either there is no god, or the god is not concern about us,
-human is a kind of random generated chemical compound which can reproduce itself,
-specialized in alter environment with the help of a highly developed organ called brain random generated thousands of thousands years ago.</p>
-
-<p>The big answer of human meanin is unveiled now, If human as a group has no meaning, what about each individual?
-Maybe no default meaning, we still can <strong>seek it ourselves</strong>. Without meaning, life is no more than an ordinary animal.
-With meaning, life of roaming turns into life of journey with porpose, great things can be done, ordinary can be extraordinary,
-and life can be meanful.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[information sugar]]></title>
-    <link href="http://halida.github.com/blog/information-sugar/"/>
-    <updated>2014-01-19T21:47:34+08:00</updated>
-    <id>http://halida.github.com/blog/information-sugar</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_01_19_sugar.jpeg"></p>
-
-<p>As a blogger for many years, creating new blog post is harder and harder for me.</p>
-
-<p>So why it is harder? Because I consider quality of blog post more now.</p>
-
-<p>To have a high quality blog post, it should have:</p>
-
-<ul>
-<li><strong>High information density</strong>. It should focus on one topic, with enough supportive information.</li>
-<li><strong>Depth</strong>. It should walk through the topic, view all the angles, dig deep into the essence, so reader can have a clear view.</li>
-<li><strong>New content</strong>. We should not discuss something already done.</li>
-<li><strong>Something inspiring</strong>. It can create spark which can enlighten reader&rsquo;s mind.</li>
-</ul>
-
-
-<p>World is filled with noise, and readers face more danger on the thing
-which I call <em>information sugar</em>: it has some value, but the time spending on reading, is more valuable than the value it contains.
-SNS and news sites filled with it, sweat to read, and lots of time wasted without notice.</p>
-
-<p>Creating high quality information need lots of time, focus, hard working, and care.
-I hope I can provide more of it, other than the sweet <em>information sugar</em>.</p>
 ]]></content>
   </entry>
   

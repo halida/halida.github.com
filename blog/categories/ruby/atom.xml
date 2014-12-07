@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-06-30T10:48:40+08:00</updated>
+  <updated>2014-12-07T09:46:30+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何使用Gem]]></title>
+    <link href="http://halida.github.com/blog/gem/"/>
+    <updated>2014-12-07T09:41:47+08:00</updated>
+    <id>http://halida.github.com/blog/gem</id>
+    <content type="html"><![CDATA[<p>作为rails开发者，无数好用的第三方Gem插件让工作变得更加简单。
+不过东西好用，也还是有一些需要注意的问题。这里整理一下我使用Gem的经验。</p>
+
+<h2>搜索</h2>
+
+<p>第一步是寻找到想要的Gem。最基础的方法是Google搜索，输入想要实现的功能，比如：<code>rails tagging</code>，
+也可以去<a href="https://www.ruby-toolbox.com/">ruby toolbox网站</a>上面根据分类寻找。</p>
+
+<h2>选择</h2>
+
+<p>找到Gem之后，需要选择质量高的Gem，不然会出现各种问题。主要看Github上面是否有很多人Follow，
+以及项目近期是否有足够的更新。</p>
+
+<p>不能随便引入Gem到项目里面，需要从增加的系统复杂度，拓展性，系统稳定性等方面综合考虑。
+除了引入Gem，可以考虑直接拷贝需要的代码文件到项目里面。一些会修改Rails等其他模块的Gem，需要谨慎引入。</p>
+
+<h2>使用</h2>
+
+<p>Gem导入之后，最好要固定版本，这样防止Gem功能变更引入Bug。</p>
+
+<p>选择好了Gem，需要对它有足够的了解。认认真真看一遍文档，wiki，如果文档不清晰，搜索一下使用教程。</p>
+
+<p>我个人偏好把Gem的实现原理弄懂，最好扫一遍源码，这样出现bug或者问题大概有一个方向，
+以及可以学会别人是怎么写ruby的。</p>
+
+<p>当使用Gem的时候出现了问题，可以去项目Github的Issue区块看看有没有人提交类似问题，
+没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
+
+<p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[capistrano介绍和入门]]></title>
@@ -487,48 +524,6 @@ end
 <p>关于推荐准确率，瓶颈主要在关键词获取，现在的方案中，分数比较高的词很多还是会不准确，
 如果要提升的话，可能要用更多数据输入过滤掉更多的词，或者通过语义分析只提取名词，
 不过现在得到的结果还行，优化的问题等真正需要面对的时候再说，先去做其它一些更重要的事情吧。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[试用gitlab]]></title>
-    <link href="http://halida.github.com/blog/try-gitlab/"/>
-    <updated>2013-03-27T12:10:00+08:00</updated>
-    <id>http://halida.github.com/blog/try-gitlab</id>
-    <content type="html"><![CDATA[<p><img src="http://gitlab.org/images/gitlab_hq.png" alt="image" /></p>
-
-<p>今天我试着安装了一下<a href="http://gitlab.org/">gitlab</a>，它是一个开源的类似github的系统，
-利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。</p>
-
-<h2>安装过程</h2>
-
-<p>按照<a href="https://github.com/gitlabhq/gitlabhq/blob/5-0-stable/doc/install/installation.md">文档</a>进行，我中间走了一些弯路：</p>
-
-<ul>
-<li>安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby，后来发现不对，必须安装成系统的版本，不然服务起不起来。</li>
-<li>postgres用户gitlab不能登陆，后来搜索了一下，发现<a href="http://blog.deliciousrobots.com/2011/12/13/get-postgres-working-on-ubuntu-or-linux-mint/">需要修改权限</a></li>
-</ul>
-
-
-<p>其他过程比较顺利，基本按照教程来就可以了。</p>
-
-<h2>架构</h2>
-
-<p>其实整体系统还是比较简单的，安装了一个系统服务，后面主要是把gitlab当做一个rails应用来跑，后台启动了一个sidekiq。</p>
-
-<p>针对git的部分，分离出来了git-shell，其实就是在系统里面安装了一个shell，用户用git连过来的时候，就用这个shell来进行版本库的操作，它是调用rails网站服务器的API来做权限管控之类的事情。</p>
-
-<h2>试用感觉</h2>
-
-<p>因为我只是试用一下，没有用于生产，只是稍微浏览了一下功能。
-github有的功能它都有，还加上了用户管理，群组管理，查看系统日志等功能。
-功能上面感觉还是够用的。</p>
-
-<p>关于这个项目的架构思路，我觉得还是挺好的。
-网站的部分归网站，git的部分归git，中间通过API来通讯。
-git-shell的方式减少另外跑一个服务的成本，对于小用户群的环境来说可以，
-但是不是很适应用户数量过多的状况，但是场景不多，问题不大。
-不过需要安装系统的ruby环境倒是挺麻烦的，希望他们以后针对这个问题提出改进方案。</p>
 ]]></content>
   </entry>
   
