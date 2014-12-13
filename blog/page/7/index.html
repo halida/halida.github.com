@@ -9,23 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="有的时候，rails里面一个model的工作太多，在一个文件里面都放不下了，于是我需要拆分出不同的模块。我的拆分方法是这样的： user.rb里面： 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-class User &lt; ActiveRecord::Base &hellip;">
+  <meta name="description" content="It is very annoying when you see a image is loading in a webpage: Lots of website support this kind of effect to get rid of this.
+when the image is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,6 +79,144 @@ class User &lt; ActiveRecord::Base &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/display-image-after-it-is-downloaded/">Display Image After It Is Downloaded</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-10T18:40:00+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2013</time>
+        
+         | <a href="/blog/display-image-after-it-is-downloaded/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It is very annoying when you see a image is loading in a webpage:</p>
+
+<p><img src="/images/posts/CPyoOWx.png"></p>
+
+<p>Lots of website support this kind of effect to get rid of this.
+when the image is loading, it is displaying a &ldquo;loading&rdquo; effect, like this:</p>
+
+<p><img src="/images/posts/m76L8U5.png"></p>
+
+<p>So how can we implement it to our website? The method is simple:</p>
+
+<ol>
+<li>Display a loading gif, and hide the image.</li>
+<li>After image loaded, hide gif, and display image.</li>
+</ol>
+
+
+<p>We can use JQuery <code>load</code> method <a href="api.jquery.com/load/">here</a> to add a callback to do the things in step 2 above.
+Use this html:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;loading_image&quot;</span> <span class="na">data-src=</span><span class="s">&quot;/images/demo.png&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>...
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;resources&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;image_loader&quot;</span> <span class="na">src=</span><span class="s">&quot;loader.gif&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>add run <code>init_loading_image</code> javascript list below.
+It is written in <a href="http://coffeescript.org/">coffeescript</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nv">init_loading_image = </span><span class="nf">()-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.loading_image&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">self = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span><span class='line'>        <span class="nv">loader = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.resources .image_loader&#39;</span><span class="p">).</span><span class="nx">clone</span><span class="p">()</span>
+</span><span class='line'>        <span class="nx">loader</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">load</span> <span class="o">-&gt;</span>
+</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">prev</span><span class="p">().</span><span class="nx">hide</span><span class="p">()</span>
+</span><span class='line'>            <span class="nx">self</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;show&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">self</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;src&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_loading_image</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For each <code>.loading_image</code>, place a loader gif in front of it.
+I set the image to opacity 0.0, so the image is downloading, and user will not see this image.
+after image loaded, hide the gif, and show the image.</p>
+
+<p>The css is list below. I&rsquo;m using <a href="http://sass-lang.com/">sass</a> + <a href="http://compass-style.org/">compass</a> for clearer css:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.resources</span>
+</span><span class='line'>  <span class="nt">display</span><span class="o">:</span> <span class="nt">none</span>
+</span><span class='line'><span class="nc">.loading_image</span>
+</span><span class='line'>  <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">0</span><span class="nc">.0</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="nc">.show</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">opacity</span><span class="o">(</span><span class="nt">1</span><span class="nc">.0</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">transition-property</span><span class="o">(</span><span class="nt">opacity</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">+</span><span class="nt">transition-duration</span><span class="o">(</span><span class="nt">0</span><span class="nc">.3s</span><span class="o">)</span>
+</span><span class='line'><span class="nc">.image_loader</span>
+</span><span class='line'>  <span class="nt">position</span><span class="o">:</span> <span class="nt">absolute</span>
+</span><span class='line'>  <span class="nt">top</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
+</span><span class='line'>  <span class="nt">left</span><span class="o">:</span> <span class="nt">50</span><span class="o">%</span>
+</span><span class='line'>  <span class="nt">margin-top</span><span class="o">:</span> <span class="nt">-6px</span>
+</span><span class='line'>  <span class="nt">margin-left</span><span class="o">:</span> <span class="nt">-22px</span>
+</span><span class='line'>  <span class="nt">width</span><span class="o">:</span> <span class="nt">43px</span>
+</span><span class='line'>  <span class="nt">height</span><span class="o">:</span> <span class="nt">11px</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Very simple process, you can see <a href="http://jsfiddle.net/linjunhalida/kU2VU/2/">the demo here</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1481,68 +1604,6 @@ comments: true</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/tedxfdu-2012-11/">TEDxFDU 2012年11月 活动总结</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-27T10:51:00+08:00" pubdate data-updated="true">Nov 27<span>th</span>, 2012</time>
-        
-         | <a href="/blog/tedxfdu-2012-11/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/sEUpi.jpg"></p>
-
-<p>上周日，我去参加了<a href="http://tedxfdu.com/">TEDxFDU</a>的活动，我原先参加过一次，感觉气氛不错，所以这次我也报名了。</p>
-
-<p>地点是在江湾体育场的创智天地，我到了现场的时候，发现是用到了7号楼的大会议室，看到有那么多人参加，不由觉得很遗憾。这次的形式是大会性质的，我更希望是讨论和交流性质，因为如果要看好的讲演，网络上面有很多，但是好的讨论比较难获得。并且我周末过来，也有恢复社交能力的期望在。</p>
-
-<p><img src="/images/posts/SIfq6.jpg"></p>
-
-<p>不过除了这个遗憾以外，这个活动还是非常好的。讲者的内容和演讲素质都不错，参加非常值得。这里稍微整理一些我觉得有意思的讲者和内容。</p>
-
-<p>新闻学的兰启昌。讲了一些我也非常认同的重点。<strong>事实不等于真相</strong>。记者的专业主义，在于三个独立。<strong>独立于资本</strong>，<strong>独立于权力</strong>，<strong>独立于民粹</strong>。我觉得现在民粹盛行，是值得警惕的地方。我觉得如果一句话你听起来感觉很舒服很解气，那么你应该提高警惕心，因为这句话往往是为了迎合你创造出来了，可能离真相很远。</p>
-
-<p>社会学的沈老师。讲了一些关于社会性别的内容。比如文化强加给人的限制。男生应该是怎么样的，女生应该是怎么样的。社会对女性的压力（现在大家慢慢认识到了这一点，并且有了反思），有说社会对男性的压力更大。因为普遍观念上，只有成功的男性才受欢迎。这点我觉得是需要着重提出来的地方。</p>
-
-<p>艺术设计的卞雅文。提醒了我，关于艺术的要点在于用心去体验，用心去生活。然后就是我觉得大学生就可以变得很成熟很有气质，让我觉得非常有压力。</p>
-
-<p>艺术教育的龚金平老师。他主要提出来的是<strong>志在必得，不如顺势而为</strong>，指出是<strong>现代性早期的自信</strong>，因为现在其实是一个后现代的社会，重点是在人与人之间发生，而人是复杂的，不能期待能够获得一个既定的结果。如果目标既定，要么是满足了目标后的空虚，要么是实现不了目标的沮丧。我觉得这个也是一个非常重要的经验。</p>
-
-<p>生命技术的丁琦亮。只有18岁，就进入了主流的科学领域。不知道是怎么能够在这个年龄就能进入到这个层次的。有提到科学人员的社会责任。我觉得中国现在普通群众的科学素养非常低，科学领域人士应该有必要出来传播科学理念。</p>
-
-<p>最后是广告学的庾里翔。算是压轴的吧。分享了一些他有感触的摄影艺术家和作品，以及他的探索过程。对我来说有一定冲击，因为又是一个比我高领域的年轻人。</p>
-
-<h2>总结</h2>
-
-<p>这次活动的内容对我来说都不是新的，但是讲者演讲的能力非常不错，一定事先准备了很久。然后里面很多非常优秀的年轻人，他们有目标，有想法，有能力，当然也有资源。世界会在他们的工作下会变得更好。比较之下让我感到很有压力，希望我能够调整到和他们一样的状态。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1560,6 +1621,10 @@ comments: true</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/backup-method/">个人资料备份策略</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/english-gem/">how to use gem</a>
       </li>
     
@@ -1573,10 +1638,6 @@ comments: true</p>
     
       <li class="post">
         <a href="/blog/mask/">戴面具的国度</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/capistrano/">capistrano介绍和入门</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-07T10:21:18+08:00</updated>
+  <updated>2014-12-13T17:49:04+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[个人资料备份策略]]></title>
+    <link href="http://halida.github.com/blog/backup-method/"/>
+    <updated>2014-12-13T17:33:29+08:00</updated>
+    <id>http://halida.github.com/blog/backup-method</id>
+    <content type="html"><![CDATA[<p>思考了一下个人资料的备份策略。个人资料可以以重要程度，资料的大小，私密性作为区分。</p>
+
+<ul>
+<li>重要，文件大，私密性高：电脑全盘备份</li>
+<li>重要，文件小，私密性高：关键数据，比如日记</li>
+<li>不重要，文件中等，私密性高：图片</li>
+<li>不重要，文件大，私密性低：下载的电影，漫画</li>
+</ul>
+
+
+<p>根据不同的类型，可以选择不同的方式来备份。不同的备份方式有价格，空间，安全性，易用度等差异。</p>
+
+<ul>
+<li>加密网盘：价格高，空间小，安全性高，易用度低</li>
+<li>国外网盘：价格高，空间小，安全性中，易用度高</li>
+<li>国内网盘：价格低，空间大，安全性低，易用度高</li>
+<li>移动硬盘：价格低，空间大，安全性高，易用度低</li>
+<li>NAS：价格低，空间大，安全性高，易用度低</li>
+</ul>
+
+
+<p>因此，我现在选择的备份策略：</p>
+
+<ul>
+<li>备份电脑用timemachine备份到移动硬盘里面</li>
+<li><a href="https://lastpass.com/">lastpass</a>备份网站帐号密码和关键系统密码</li>
+<li>dropbox备份笔记和文档</li>
+<li>dropbox备份图片，因为我想办法把dropbox空间拓展到了20G。</li>
+<li>移动硬盘备份视频，漫画等</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[how to use gem]]></title>
@@ -949,25 +988,6 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
 
 
 <p>解算法题比<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>有意思多了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[programming chaos]]></title>
-    <link href="http://halida.github.com/blog/programming-chaos/"/>
-    <updated>2014-02-06T14:05:23+08:00</updated>
-    <id>http://halida.github.com/blog/programming-chaos</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_02_06.jpeg"></p>
-
-<p>Programming, as a career, faces more chaos compares to other professionals.</p>
-
-<p>First, everyone can start programming after several months of study, it makes programmers are a group of people vary in coding abilities, basic understanding of computer science, and engineer training.</p>
-
-<p>Programming as a professional, start only decades ago, principle for this domain, like technology, tools, best practice, is still under developing.</p>
-
-<p>And IT industry always changes dramatically, that makes programming career path is not as clear as other professionals, many job positions, like big data analyst, not even existed several years ago.</p>
-
-<p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
 ]]></content>
   </entry>
   
