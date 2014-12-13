@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-13T17:49:04+08:00</updated>
+  <updated>2014-12-13T18:50:20+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[personal data backup method]]></title>
+    <link href="http://halida.github.com/blog/english-backup-method/"/>
+    <updated>2014-12-13T18:35:40+08:00</updated>
+    <id>http://halida.github.com/blog/english-backup-method</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m thinking about how to backup personal data, we can divide them into groups which according to their importance, file size, and privacy.</p>
+
+<ul>
+<li>Important, Big size, Sensitive: Computer full disk data.</li>
+<li>Important, Small size, Sensitive: key information, like daily.</li>
+<li>Unimportant, Middle size, Sensitive: photos.</li>
+<li>Unimportant, Big size, insensitive: film, comics.</li>
+</ul>
+
+
+<p>We can use different methods to backup them, vary in price, space, security, and usability:</p>
+
+<ul>
+<li>Encrypted online backup service: high price, small space, secure, hard to use.</li>
+<li>Online backup service: fair price, small space, insecure, easy to use.</li>
+<li>NAS/Portable disk drive: low price, big space, secure, hard to use.</li>
+</ul>
+
+
+<p>So, this is the method I&rsquo;m using now:</p>
+
+<ul>
+<li>Use timemachine to backup computer into portable disk drive.</li>
+<li>Use <a href="https://lastpass.com/">lastpass</a> to keep website and server password.</li>
+<li>Use dropbox to save and sync notes, photos, and documents, I extended it to 20G.</li>
+<li>Use portable disk drive to backup film, music and comics.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[how to use gem]]></title>
@@ -176,34 +212,6 @@ Senior programmer meets them all, and with experiences of the past, they learn n
 <p>And IT industry always changes dramatically, that makes programming career path is not as clear as other professionals, many job positions, like big data analyst, not even existed several years ago.</p>
 
 <p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[the meaning of life]]></title>
-    <link href="http://halida.github.com/blog/the-meaning-of-life/"/>
-    <updated>2014-01-28T08:15:48+08:00</updated>
-    <id>http://halida.github.com/blog/the-meaning-of-life</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/2014_01_28_life.jpeg"></p>
-
-<p>At some point in the life, we may ask ourselves: <strong>What&rsquo;s the meaning of life?</strong>
-We seek answers from others, from social groups or religion groups, from books written by philosophers.</p>
-
-<p>In the ancient times, philosophers ask bigger question: <strong>What is the meaning of humanity?</strong>
-Someone turns to the obvious answer: <strong>there must be the god, and god creates human for good.</strong>
-The question turns into: <strong>what god wants?</strong> Argument of it was through the history, and bring conflict and war.</p>
-
-<p>Someone asks another question: <strong>If there is god, where is the god?</strong>
-They start to seek the proof, develop system of critical thinking, then the light of rationality shining, expulse the shadow of mysticism.
-And we got science, and we can identify facts, and we found the big discovery of evolution, with the proof of it.
-It turns out either there is no god, or the god is not concern about us,
-human is a kind of random generated chemical compound which can reproduce itself,
-specialized in alter environment with the help of a highly developed organ called brain random generated thousands of thousands years ago.</p>
-
-<p>The big answer of human meanin is unveiled now, If human as a group has no meaning, what about each individual?
-Maybe no default meaning, we still can <strong>seek it ourselves</strong>. Without meaning, life is no more than an ordinary animal.
-With meaning, life of roaming turns into life of journey with porpose, great things can be done, ordinary can be extraordinary,
-and life can be meanful.</p>
 ]]></content>
   </entry>
   
