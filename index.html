@@ -9,7 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="I&rsquo;m thinking about how to backup personal data, we can divide them into groups which according to their importance, file size, and privacy. &hellip;">
+  <meta name="description" content="I&rsquo;ve bought a NAS as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system. I&rsquo;ve got &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,98 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-linux-disk-format/">How to Mount Disk to Linux Operation System</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-16T17:33:42+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/english-linux-disk-format/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<p>I&rsquo;ve bought a <a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">NAS</a> as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system.</p>
+
+<p>I&rsquo;ve got SSD and HDD, SSD is faster, but is more expensive, and write time limit. So SSD should mount at <code>/</code>, OS will run faster. Writing frequently location like <code>/home</code>, <code>/var</code> should mount on HDD, Temporary location <code>/tmp</code> should mount to file system <code>tmpfs</code>.</p>
+
+<p>About choosing file system. SSD can use <code>ext4</code> with <a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">some adjustment</a> to reduce write, HDD can use <code>ext4</code> for ordinary use, if used for file sharing and service, <a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a> is a good fit: Compressed storage, higher ID throughput.</p>
+
+<p>If you want setup NAS disk array, RAID0 is the simplest solution, multiple disks handle IO in the same time. If you have to store some important data, use RAID2: dual disk write the same data. But RAID1 spend too much disk space, software RAID5 can balance it well enough. If you know nothing about RAID, you can watch <a href="http://www.acnc.com/raid">this demo</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-disk-format/">Linux分区策略</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-16T17:21:51+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/linux-disk-format/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<p>最近我购买了<a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">一台NAS</a>用作家庭服务器，需要考虑如何设置磁盘，如何分区和安排加载linux目录，这里整理一下思路。</p>
+
+<p>我有SSD和HDD（就是我们平常的硬盘），SSD读写更快，但是有写入寿命，以及平均价格更贵。SSD挂载在<code>/</code>，这样操作系统跑起来更快。<code>/home</code>，<code>/var</code>这种经常写操作的目录，就挂载在HDD上面。<code>/tmp</code>这种临时目录，可以用内存文件系统<code>tmpfs</code>。</p>
+
+<p>SSD的分区用<code>ext4</code>就好，不过需要<a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">设置一些参数用来减少写入</a>。HDD的分区根据状况，如果是普通操作，<code>ext4</code>就可以了，如果用来分享文件和媒体，可以用<a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a>，压缩存储，更高的IO性能。</p>
+
+<p>如果用硬盘架设NAS，最简单的方法是RAID0，多磁盘同时读写增加性能。如果有重要数据，用RAID1，2个磁盘镜像备份。RAID1镜像有点浪费空间，可以用软件RAID5增加使用效率，如果你对RAID不熟悉，这里有一个<a href="http://www.acnc.com/raid">形象的演示</a>。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -690,119 +782,6 @@ Mask economy, is important for this country.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/fast-food/">大城市快捷美食解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-07T09:27:44+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2014</time>
-        
-         | <a href="/blog/fast-food/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在大城市里面吃饭是一个头疼的问题。首先没有足够的时间做饭：每次做饭都需要花费一个小时，不管是给4个人做，还是一个人做。如果在外面吃，就需要花费很多钱，并且往往需要走很远以及等好久。
-我是一个注重效率的人。我找到了自己的一套解决方案。解决的思路注重效率，金钱以及营养均衡。</p>
-
-<p>首先是早餐。早餐要一个鸡蛋，足够的碳水化合物，以及蔬菜。
-煮鸡蛋需要花费一些时间，一个很方便的解决方案：用微波炉来做。把鸡蛋打在小碗里面，筷子拌匀，用另外一个碗盖着，放到微波炉里面，1分钟即可。可能有一点小爆炸，但是有碗盖着，不会爆出来。
-也可以把鸡蛋打到面包里面，混着面包一起。如果觉得口味不好，可以在搅拌的时候加上一点糖。
-然后是早上的主食。我的主食是日清方便面。方便面之父创立了日清，在所有的方便面里面，日清是我觉得最好吃的，强烈推荐。
-也可以购买冷冻批萨，也可以放很久，我有朋友的冰箱里面都是冷冻批萨，不过价格就贵了一些。</p>
-
-<p>然后是中午和晚上。我的解决方案是找到最近的一家农民餐小食堂。因为是农民餐，分量大，肉多。我一般花费15元或者20元买一份（20元2个鸡腿），然后拆分成2份，分成午餐和晚餐来吃。因为我并不做大体力活，这样的份量刚好八分饱，很健康。
-至于口感的问题，我提供2个解决方案：一个是老干妈调料，非常有效。另外一个是用iPad看电视剧，看得精彩就不觉得口感差了。</p>
-
-<p>我是一个坚持的人，周末坚持按照我的食谱进行，社交活动会去聚餐，然后腻味了会更换伙食，购买全家盒饭或者罗森盒饭。7/11的盒饭也很好吃。
-可能有人觉得这样吃饭太不会享受生活了，对于我来说，吃饭只是满足身体的基本需要，可以投入更多的时间精力到其他方面的享受上面去。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/working-late/">加班语录</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-05T17:48:36+08:00" pubdate data-updated="true">Jun 5<span>th</span>, 2014</time>
-        
-         | <a href="/blog/working-late/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2014_06_05.jpg"></p>
-
-<ul>
-<li>我已经习惯加班了。</li>
-<li>年轻人不加班怎么行</li>
-<li>不加班做不好事情</li>
-<li>加班是种生活习惯</li>
-<li>反正下班了也是做上班的事情</li>
-<li>有的时候不是想加班，而是不上班就不知道日子怎么过</li>
-<li>不天天加班的人生是不完整的</li>
-<li>10点之前下班不算加班</li>
-<li>为了增加加班时间，我搬到办公桌下面睡觉去了。</li>
-<li>什么是加班？</li>
-<li>工作是生活，加班是乐趣</li>
-<li>有的时候下班了还是要回家，换个地方工作效率更高</li>
-<li>工作是如此地有趣，以至于让人忘记天亮了</li>
-<li>虽然加班很累，比起晚上的无所事事，我还是宁愿加班</li>
-<li>国家规定每天工作8小时你就工作8小时？</li>
-<li>工作让人上瘾</li>
-<li>加班可以让你忘却自己的失败，家庭的不和谐，生活的不如意，并且还有钱拿</li>
-<li>加班让人感觉自己是英雄，独自一人和黑暗作战。</li>
-<li>下班的时候看着路灯映照下的背影，感受到夜晚略带寒冷的气温，更能够体验到自己的存在</li>
-<li>晚上加班是我一天中最快乐的时光，真的在做事情，没有人干扰，安静地独处。</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -818,6 +797,14 @@ Mask economy, is important for this country.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/english-linux-disk-format/">how to mount disk to linux operation system</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/linux-disk-format/">linux分区策略</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/english-backup-method/">personal data backup method</a>
       </li>
     
@@ -827,14 +814,6 @@ Mask economy, is important for this country.</p>
     
       <li class="post">
         <a href="/blog/english-gem/">how to use gem</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/gem/">如何使用Gem</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/english-mask/">country of mask</a>
       </li>
     
   </ul>

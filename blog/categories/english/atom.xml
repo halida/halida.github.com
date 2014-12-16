@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-13T18:50:20+08:00</updated>
+  <updated>2014-12-16T17:47:51+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[how to mount disk to linux operation system]]></title>
+    <link href="http://halida.github.com/blog/english-linux-disk-format/"/>
+    <updated>2014-12-16T17:33:42+08:00</updated>
+    <id>http://halida.github.com/blog/english-linux-disk-format</id>
+    <content type="html"><![CDATA[<p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<p>I&rsquo;ve bought a <a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">NAS</a> as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system.</p>
+
+<p>I&rsquo;ve got SSD and HDD, SSD is faster, but is more expensive, and write time limit. So SSD should mount at <code>/</code>, OS will run faster. Writing frequently location like <code>/home</code>, <code>/var</code> should mount on HDD, Temporary location <code>/tmp</code> should mount to file system <code>tmpfs</code>.</p>
+
+<p>About choosing file system. SSD can use <code>ext4</code> with <a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">some adjustment</a> to reduce write, HDD can use <code>ext4</code> for ordinary use, if used for file sharing and service, <a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a> is a good fit: Compressed storage, higher ID throughput.</p>
+
+<p>If you want setup NAS disk array, RAID0 is the simplest solution, multiple disks handle IO in the same time. If you have to store some important data, use RAID2: dual disk write the same data. But RAID1 spend too much disk space, software RAID5 can balance it well enough. If you know nothing about RAID, you can watch <a href="http://www.acnc.com/raid">this demo</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[personal data backup method]]></title>
@@ -193,25 +210,6 @@ Maybe the thing you hates is the best solution, even compare with your favorites
 
 <p>There are also other pitfalls, like: be a jack of all trades, code before think, etc.
 Senior programmer meets them all, and with experiences of the past, they learn not to listen to the siren&rsquo;s songs.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[programming chaos]]></title>
-    <link href="http://halida.github.com/blog/programming-chaos/"/>
-    <updated>2014-02-06T14:05:23+08:00</updated>
-    <id>http://halida.github.com/blog/programming-chaos</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/2014_02_06.jpeg"></p>
-
-<p>Programming, as a career, faces more chaos compares to other professionals.</p>
-
-<p>First, everyone can start programming after several months of study, it makes programmers are a group of people vary in coding abilities, basic understanding of computer science, and engineer training.</p>
-
-<p>Programming as a professional, start only decades ago, principle for this domain, like technology, tools, best practice, is still under developing.</p>
-
-<p>And IT industry always changes dramatically, that makes programming career path is not as clear as other professionals, many job positions, like big data analyst, not even existed several years ago.</p>
-
-<p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
 ]]></content>
   </entry>
   
