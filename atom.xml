@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-16T17:47:51+08:00</updated>
+  <updated>2014-12-28T22:42:08+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[old is better]]></title>
+    <link href="http://halida.github.com/blog/english-old-is-better/"/>
+    <updated>2014-12-27T22:28:42+08:00</updated>
+    <id>http://halida.github.com/blog/english-old-is-better</id>
+    <content type="html"><![CDATA[<p>We programmers face a pitfall: there are always new things to learn. like nodejs, swift, programming languages, development tools,
+machine learning, statistics, UI design, etc&hellip;</p>
+
+<p>Time is scare, life can be wasted by learn new things. The more you spend on learning, the more time you are wasting.</p>
+
+<p>New knowledge may has those porperties:</p>
+
+<ul>
+<li><code>Unstable</code>: With limited man power and usecase, you may face lots of unneccessary challenges.</li>
+<li><code>Limited Domain</code>: Those knowledge are limited under some special case, learned but never used.</li>
+<li><code>Homogenization</code>: Another dynamic typing, functional, script programming language.</li>
+<li><code>Too much for an human Brain</code>: A dev team have frontend, backend, designer is for good reason. those knowledge are not fit for one man&rsquo;s brain.</li>
+</ul>
+
+
+<p>Because of those properties, I recommand learn old things other then new one:</p>
+
+<ul>
+<li><code>Tested by time</code>: Like C, shell, even English, those are the things you will eventually use.</li>
+<li><code>Fundamantal</code>: tcp/ip protocol, Operation System, Database, Baisc Algorithm, maybe you are not using them everyday, that will bring great value when time comes.</li>
+<li><code>The thing you are using</code>: Level up is better than learn a new skill.</li>
+</ul>
+
+
+<p>Also, there are cases I think we can learn new things:</p>
+
+<ul>
+<li><code>Take Small Step</code>: You can take an overview, but deside before further learning.</li>
+<li><code>Expend current domain</code>: You can learn things which is supplement for your current knowledge domain, like you are a web developer, learn async web frameworks.</li>
+<li><code>Better replacement of current ones</code>: If you are PHP programmer, try to learn Rails.</li>
+<li><code>Next step abour your career</code>: If you want to be an data scientist, you need learn lots about statistic.</li>
+</ul>
+
+
+<p>Most of the time, investment on an old knowledge is better then the new one. An jack-of-all-trades programmer is cheaper than a domain expert.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[喜新厌旧]]></title>
+    <link href="http://halida.github.com/blog/old-is-better/"/>
+    <updated>2014-12-27T22:23:57+08:00</updated>
+    <id>http://halida.github.com/blog/old-is-better</id>
+    <content type="html"><![CDATA[<p>程序员会面对一个陷阱：就是永远有新的知识可学。比如nodejs，swift，各种编程语言，各种各样的开发库，机器学习，统计学，交互设计等等。
+时间宝贵，我们很容易把时间浪费在学习上面，学了一堆，结果获得的成果寥寥。</p>
+
+<p>新的知识往往会有这样的一些问题：</p>
+
+<ul>
+<li><code>不够稳定</code>：新的东西往往没有充足的开发人力和实际应用，使用的时候各种坑，遇到各类的bug和问题，宝贵的时间就用来和这些坑纠结了。</li>
+<li><code>适用场景狭窄</code>：很多时候一个新东西是针对一个领域的特定问题的，如果你不实际用到它，学了完全没有用处。</li>
+<li><code>同质化</code>：经常会有一门新的编程语言冒出来，它们可能有一些好的特性，但是你真的需要再学一门编程语言吗？</li>
+<li><code>人力有限</code>：你确定需要学习前端，后端，服务器，机器学习，交互设计全部的知识？每样都没有时间学精，这么多东西也塞不进自己的脑子里面。</li>
+</ul>
+
+
+<p>因为新的知识有这样或者那样的问题，很多时候不如退一步，去学一些不那么酷，但是经久使用的旧知识：</p>
+
+<ul>
+<li><code>经过时间检验的知识</code>：比如C，脚本语言，甚至英语，这些你总归会用到的。</li>
+<li><code>不会变的基础知识</code>：tcp/ip协议，操作系统原理，数据库，基础算法。虽然平时工作不一定遇到，遇到的时候自己不懂就有得受了。</li>
+<li><code>继续深入现存技能</code>：打磨我们日常用到的技能，是投入产出比最高的。</li>
+</ul>
+
+
+<p>我觉得可以去学习新知识的情况：</p>
+
+<ul>
+<li><code>浅尝辄止</code>：可以了解新的一些事物，知道它们的潜力，但是不要轻易深入学习。</li>
+<li><code>工作领域的延伸</code>：比如你是普通web应用的开发者，可以学习重前端框架，异步后端框架，这些可以弥补现在掌握技能一些照顾不到的空缺。</li>
+<li><code>更先进的替代工具</code>：比如你现在是php开发者，可以去学习rails。</li>
+<li><code>下一个职业发展方向相关</code>：你希望成为一个新兴领域的专家，那么你需要投入大量的时间和精力在这个领域里面。</li>
+</ul>
+
+
+<p>大多数时候，学习新知识的投入产出比，比不上学习旧知识的投入产出比。一个什么都懂的万金油程序员，不如一个领域专家收入高。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[how to mount disk to linux operation system]]></title>
@@ -719,76 +803,6 @@ Mask economy, is important for this country.</p>
 请问大家是否有收集到比较好的解释性质的资料？非常感谢。</p>
 
 <p>这个过程还是知道了一些东西，比如台湾这些年发展得不好，年轻人基本台湾认同了。香港不行了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[求视线范围的算法]]></title>
-    <link href="http://halida.github.com/blog/view-point/"/>
-    <updated>2014-03-29T10:55:02+08:00</updated>
-    <id>http://halida.github.com/blog/view-point</id>
-    <content type="html"><![CDATA[<p>前段时间看到<a href="https://back.nothingtohide.cc/">有一个游戏</a>，玩家必须保持自己在监控设备的视线范围内。
-画面上面展示的效果是高亮出监视器的视线范围。如图：</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_03_30_view.png"></p>
-
-<p>我思考了一下如何做到这点。首先定义问题：
-给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
-（可以用一系列的三角形表示）。</p>
-
-<p>求视线范围的三角形列表，可以从房间所有墙壁的顶点往监控点做视线线段，
-找视线线段和墙壁边的连接中距离监控点最近的点，
-然后可视范围就是这些点和监控点组成的三角形了。</p>
-
-<p>填充三角形，可以用扫描线算法。把三角形根据水平线拆分成2个，
-然后从顶点往下做扫描线，求扫描线和两条边的交点，然后填充里面的区域。
-如下图所示：</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_03_30_scan.png"></p>
-
-<p>求线段相交点的算法网上搜索一下就可以得到。</p>
-
-<p>估计一下算法复杂度，墙壁边是m(4&lt;m&lt;240)，求交点是m*m，应该是上界。
-常数应该比较大，包括求交点，找出距离监控点最近的点。
-可以优化一下参数，比如变形求交点算法（做垂线），快速找到距离监控点最近的点。</p>
-
-<p>大家想想看有什么更好的解法？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[pitfalls of programming]]></title>
-    <link href="http://halida.github.com/blog/pitfalls-of-programming/"/>
-    <updated>2014-03-09T21:19:12+08:00</updated>
-    <id>http://halida.github.com/blog/pitfalls-of-programming</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_03_09_siren.jpg"></p>
-
-<p>There are some dangerous zones there, waiting for a careless programmer to fall,
-I list some of them, see what you get.</p>
-
-<p>First one: <strong>spend too much time on the detail</strong>. We all say the Devil is in the detail, and it is so as we write program.
-Some tiny little misunderstood of concept, or miss taking care of one small condition will lead to a fatal error.
-And it makes programmer addictive to the detail: each fraction of detail brings some joy.
-Lots of programmers spend enormous hours on seek more details, in the language, in the library, in the code,
-so forget to do the most important job: getting things done.</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_03_09_magnify.png"></p>
-
-<p>Second one: <strong>Chase new things</strong>. Yes, nodejs is cool, angularjs is cool, mongodb is cool, html5 is cool too.
-But is it stable? Is it fits your needs? Can it survive long or just a flash in the sky?
-Think twice before you use it (or even start to learn it).</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_03_09_baby.jpg"></p>
-
-<p>And the third: <strong>language or tech hater</strong>. Windows sucks, PHP is not cool, Java is ugly.
-Maybe that&rsquo;s true, and take it with no deep thinking brings you a pair of coloured glasses.
-Rational people think at the margin, consider things in different angles,
-Maybe the thing you hates is the best solution, even compare with your favorites.</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_03_09_glasses.jpg"></p>
-
-<p>There are also other pitfalls, like: be a jack of all trades, code before think, etc.
-Senior programmer meets them all, and with experiences of the past, they learn not to listen to the siren&rsquo;s songs.</p>
 ]]></content>
   </entry>
   

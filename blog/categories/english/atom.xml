@@ -4,7 +4,7 @@
   <title><![CDATA[Category: english | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/english/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2014-12-16T17:47:51+08:00</updated>
+  <updated>2014-12-28T22:42:08+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[old is better]]></title>
+    <link href="http://halida.github.com/blog/english-old-is-better/"/>
+    <updated>2014-12-27T22:28:42+08:00</updated>
+    <id>http://halida.github.com/blog/english-old-is-better</id>
+    <content type="html"><![CDATA[<p>We programmers face a pitfall: there are always new things to learn. like nodejs, swift, programming languages, development tools,
+machine learning, statistics, UI design, etc&hellip;</p>
+
+<p>Time is scare, life can be wasted by learn new things. The more you spend on learning, the more time you are wasting.</p>
+
+<p>New knowledge may has those porperties:</p>
+
+<ul>
+<li><code>Unstable</code>: With limited man power and usecase, you may face lots of unneccessary challenges.</li>
+<li><code>Limited Domain</code>: Those knowledge are limited under some special case, learned but never used.</li>
+<li><code>Homogenization</code>: Another dynamic typing, functional, script programming language.</li>
+<li><code>Too much for an human Brain</code>: A dev team have frontend, backend, designer is for good reason. those knowledge are not fit for one man&rsquo;s brain.</li>
+</ul>
+
+
+<p>Because of those properties, I recommand learn old things other then new one:</p>
+
+<ul>
+<li><code>Tested by time</code>: Like C, shell, even English, those are the things you will eventually use.</li>
+<li><code>Fundamantal</code>: tcp/ip protocol, Operation System, Database, Baisc Algorithm, maybe you are not using them everyday, that will bring great value when time comes.</li>
+<li><code>The thing you are using</code>: Level up is better than learn a new skill.</li>
+</ul>
+
+
+<p>Also, there are cases I think we can learn new things:</p>
+
+<ul>
+<li><code>Take Small Step</code>: You can take an overview, but deside before further learning.</li>
+<li><code>Expend current domain</code>: You can learn things which is supplement for your current knowledge domain, like you are a web developer, learn async web frameworks.</li>
+<li><code>Better replacement of current ones</code>: If you are PHP programmer, try to learn Rails.</li>
+<li><code>Next step abour your career</code>: If you want to be an data scientist, you need learn lots about statistic.</li>
+</ul>
+
+
+<p>Most of the time, investment on an old knowledge is better then the new one. An jack-of-all-trades programmer is cheaper than a domain expert.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[how to mount disk to linux operation system]]></title>
@@ -174,42 +217,6 @@ Collector will gether all kinds of rare masks, special or from special people.
 Mask economy, is important for this country.</p>
 
 <p>It will be fun, if there is a country with mask.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[pitfalls of programming]]></title>
-    <link href="http://halida.github.com/blog/pitfalls-of-programming/"/>
-    <updated>2014-03-09T21:19:12+08:00</updated>
-    <id>http://halida.github.com/blog/pitfalls-of-programming</id>
-    <content type="html"><![CDATA[<p><img src="/images/posts/2014_03_09_siren.jpg"></p>
-
-<p>There are some dangerous zones there, waiting for a careless programmer to fall,
-I list some of them, see what you get.</p>
-
-<p>First one: <strong>spend too much time on the detail</strong>. We all say the Devil is in the detail, and it is so as we write program.
-Some tiny little misunderstood of concept, or miss taking care of one small condition will lead to a fatal error.
-And it makes programmer addictive to the detail: each fraction of detail brings some joy.
-Lots of programmers spend enormous hours on seek more details, in the language, in the library, in the code,
-so forget to do the most important job: getting things done.</p>
-
-<p><img src="/images/posts/2014_03_09_magnify.png"></p>
-
-<p>Second one: <strong>Chase new things</strong>. Yes, nodejs is cool, angularjs is cool, mongodb is cool, html5 is cool too.
-But is it stable? Is it fits your needs? Can it survive long or just a flash in the sky?
-Think twice before you use it (or even start to learn it).</p>
-
-<p><img src="/images/posts/2014_03_09_baby.jpg"></p>
-
-<p>And the third: <strong>language or tech hater</strong>. Windows sucks, PHP is not cool, Java is ugly.
-Maybe that&rsquo;s true, and take it with no deep thinking brings you a pair of coloured glasses.
-Rational people think at the margin, consider things in different angles,
-Maybe the thing you hates is the best solution, even compare with your favorites.</p>
-
-<p><img src="/images/posts/2014_03_09_glasses.jpg"></p>
-
-<p>There are also other pitfalls, like: be a jack of all trades, code before think, etc.
-Senior programmer meets them all, and with experiences of the past, they learn not to listen to the siren&rsquo;s songs.</p>
 ]]></content>
   </entry>
   

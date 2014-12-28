@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近，我开始实践完全的书籍电子化方案，渐渐把现在手头上拥有的实体书都出掉。
-我认为现在的书籍电子化方案已经非常成熟，留存实体书，对于我来说，已经没有太多实际意义。
-我同时也建议大家评估一下，看看要不要采用这种方案。 电子书的优点 首先，电子书不占空间。实体书需要书柜放置，如果住在大城市， &hellip;">
+  <meta name="description" content="我最近在调整我们网站GuruDigger的类似文章推荐功能。
+原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
+我需要采用更好的方式来处理这个问题。 整体思路 推荐文章可以用协同过滤（Collaborative Filtering）， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,375 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/recommander-similar-items/">如何实现推荐类似文章功能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-13T20:31:00+08:00" pubdate data-updated="true">Jun 13<span>th</span>, 2013</time>
+        
+         | <a href="/blog/recommander-similar-items/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/recommander-similar-items.jpg"></p>
+
+<p>我最近在调整我们网站<a href="http://gurudigger.com">GuruDigger</a>的类似文章推荐功能。
+原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
+我需要采用更好的方式来处理这个问题。</p>
+
+<h2>整体思路</h2>
+
+<p>推荐文章可以用协同过滤（<a href="http://en.wikipedia.org/wiki/Collaborative_filtering">Collaborative Filtering</a>），
+不过要业务逻辑符合这个模式，以及数据量足够大才行，我还是用基于文章内容（Content Based）的算法来解决。</p>
+
+<p>具体思路：</p>
+
+<ul>
+<li>首先是分词。文章需要拆分成单元为词的串，然后才有办法处理。</li>
+<li>然后从词串中获取能够代表文章内容意思的关键词。</li>
+<li>然后基于文章的关键词，来选择类似的文章。</li>
+</ul>
+
+
+<p>这种方法，文章数据只被利用到了词和词出现频率的信息，
+另外也可以通过基于语义的方式来分析出更多内容，
+对应的学术领域叫做<a href="http://en.wikipedia.org/wiki/Topic_modeling">Topic Modeling</a>，
+我现在这个思路算是一个很简单的方法。</p>
+
+<h2>分词</h2>
+
+<p>采用<a href="http://technology.chtsai.org/mmseg/">mmseg</a>的分词方法。原理看起来比较简单，大家可以稍微了解一下。
+具体实现采用的库是针对ruby的绑定<a href="https://github.com/pluskid/rmmseg-cpp">rmmseg-cpp</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rmmseg&#39;</span>
+</span><span class='line'><span class="no">RMMSeg</span><span class="o">::</span><span class="no">Dictionary</span><span class="o">.</span><span class="n">load_dictionaries</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_word_split</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">algor</span> <span class="o">=</span> <span class="no">RMMSeg</span><span class="o">::</span><span class="no">Algorithm</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">while</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">algor</span><span class="o">.</span><span class="n">next_token</span>
+</span><span class='line'>    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">to_utf8</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">out</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">to_utf8</span> <span class="n">text</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>提取关键词</h2>
+
+<p>分词完毕之后，还需要初步筛掉一些对了解文章内容不需要的词，这种词叫做<a href="http://zh.wikipedia.org/zh/%E5%81%9C%E7%94%A8%E8%AF%8D">停用词</a>，
+我随便在网络上面下载了一份，大致能用，<a href="/assets/posts/chinese_stop_words.txt">在这里下载</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">stop_words</span>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;chinese_stop_words.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">sort</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_filter_stop_words</span> <span class="n">words</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">words</span> <span class="o">-</span> <span class="n">stop_words</span><span class="p">)</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">stop_words</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">sw</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">word</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对了，分词之前，还需要对文章预处理一下，去掉一些比较杂的东西。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">cn_tokenize</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'>  <span class="c1"># Strip all HTML</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/&lt;[^&lt;&gt;]+&gt;/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># Strip all number</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[0-9]+/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># strip all url</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/(http|https):\/\/[^\s]*/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_word_split</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_filter_stop_words</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>我采用<a href="http://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>的方式给文章中所有词算好一个权重。
+关于tf-idf的介绍，可见<a href="http://www.ruanyifeng.com/blog/2013/03/tf-idf.html">这里</a>。</p>
+
+<p><img src="/images/posts/tf-idf.png"></p>
+
+<p>我采用的是一个叫<a href="https://github.com/reddavis/TF-IDF">tf_idf</a>的Gem，
+同时我把文章title，tag等也当做词加入进文章内容中。为了表示title和tag的重要性，
+出现在title和tag中的词，相当于出现在文章中的次数为系数k（我选取的是10和5）。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">pre_token</span> <span class="n">item</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">dw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">gw</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">taggings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">gw</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">dw</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;tf_idf&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">caculate</span> <span class="n">items</span>
+</span><span class='line'>  <span class="n">corpus</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">pre_token</span><span class="p">(</span><span class="n">item</span><span class="p">)}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">data</span> <span class="o">=</span> <span class="no">TfIdf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">tf_idf</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>选择类似的文章</h2>
+
+<p>把文章抽象成一个在关键词作为维度的多维空间的向量，然后2篇文章的相似度就是它们之间的夹角。
+这种方法叫<a href="http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html">余弦相似度</a>。
+按照<a href="en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
+
+<p><img src="/images/posts/cosine-similarity.png"></p>
+
+<p>实现起来很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">similars</span> <span class="n">data</span><span class="p">,</span> <span class="n">d1</span>
+</span><span class='line'>    <span class="n">data</span><span class="o">.</span><span class="n">each_with_index</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d2</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">same_keys</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">keys</span> <span class="o">&amp;</span> <span class="n">d2</span><span class="o">.</span><span class="n">keys</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">=</span> <span class="n">same_keys</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">d1</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">*</span> <span class="n">d2</span><span class="o">[</span><span class="n">k</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">/=</span> <span class="p">(</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span> <span class="o">*</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>      <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">i</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面函数返回的就是按照相似度排列的item列表了。
+我考虑只展示前5个相似度比较高的，如果还是没有，选择相似度最高的2个。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">filter_similars</span> <span class="n">similars</span><span class="p">,</span> <span class="n">i</span>
+</span><span class='line'>  <span class="n">selected</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="n">similars</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># escape same item</span>
+</span><span class='line'>    <span class="k">next</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar for score too low</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">selected</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">selected</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>稍微调整一下之后，列出来相似文章还是大致靠谱的。关于整体开发过程，还是有一些可以说的。</p>
+
+<p>在调研上面花费了很多时间，走了弯路。这个领域我不熟悉，搜索资料，尝试各种其他方法上面，花费了不少的时间。
+比如有一个python专门关于Topic Modeling的库叫<a href="http://radimrehurek.com/gensim/">gensim</a>，
+我打算用它，不过现在项目主要用ruby，我尝试互相调用，最后还是失败了，还是走回全部ruby的方法。</p>
+
+<p>现在全部流程是批次的，每次有新的文章进来，都需要重新算，一次计算需要消耗我自己rMBP时间100秒左右，
+计算开销还是很大的。不过现在网站压力不大，放到后台慢慢算。</p>
+
+<p>关于推荐准确率，瓶颈主要在关键词获取，现在的方案中，分数比较高的词很多还是会不准确，
+如果要提升的话，可能要用更多数据输入过滤掉更多的词，或者通过语义分析只提取名词，
+不过现在得到的结果还行，优化的问题等真正需要面对的时候再说，先去做其它一些更重要的事情吧。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T23:11:00+08:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time>
+        
+         | <a href="/blog/continuous-integration-systems/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/Continuous_Integration.png"></p>
+
+<p>今天打算弄一个<a href="http://en.wikipedia.org/wiki/Continuous_Integration">持续集成</a>系统，
+用来自动化测试我们<a href="http://gurudigger.com/">GuruDigger</a>的代码。选型和测试结果如下。</p>
+
+<h2>gitlab-ci</h2>
+
+<p><a href="http://gitlab.org/">gitlab-ci</a>和GitLab是一起的，安装过程非常复杂，需要创建系统用户等等，我安装失败就没有继续了。</p>
+
+<h2>cruisecontrol.rb</h2>
+
+<p><a href="https://github.com/thoughtworks/cruisecontrol.rb">cruisecontrol.rb</a>是thoughtworks的一个东西，安装还是比较简单的。</p>
+
+<ul>
+<li>首先把源代码下载下来。</li>
+<li>替换gemspec里面的<code>rcov</code>成<code>"simplecov-rcov", '0.2.3'</code>，因为rcov不支持1.9.x之后的版本。</li>
+<li><code>bundle install</code>。</li>
+<li><code>./cruise start</code>启动服务器。</li>
+<li>访问3333端口网站，或者用<code>./cruise</code>命令行进行操作。</li>
+</ul>
+
+
+<p>不过这个项目看起来很老了，也没有什么更新，功能上面看起来也很简单，只是点击跑一下测试显示结果，不是很满足要求。</p>
+
+<h2>travis-ci</h2>
+
+<p><a href="https://travis-ci.org">travis-ci</a>它可以针对github的开源项目免费测试，针对私有项目就没有办法了，可以去<a href="https://github.com/travis-ci/travis-ci">下载安装源码</a>，不过上面说还不稳定不推荐自己折腾。</p>
+
+<h2>cijoe</h2>
+
+<p><a href="https://github.com/defunkt/cijoe">看起来</a>使用比较简单，不过我死活没有跑起来。
+更新也还是2年以前，放弃之。</p>
+
+<h2>jenkins</h2>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins">好像是</a>比较受欢迎的CI系统，
+安装非常简单，只要下载war文件，然后执行<code>java -jar jenkins.war</code>，之后访问8080端口网站即可。
+不过添加测试用例的过程就有点复杂，我还没有深入。看起来jenkins是我需要的东西。(待续)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -812,188 +1181,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/squeel/">Squeel介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-02T11:44:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2013</time>
-        
-         | <a href="/blog/squeel/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/yxqRwG5.jpg"></p>
-
-<p><a href="https://github.com/ernie/squeel">squeel</a>是Rails下面一个处理复杂sql查询的框架，
-具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。</p>
-
-<h2>为什么要用它？</h2>
-
-<p>平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-</span><span class='line'>  <span class="s1">&#39;(name LIKE ? AND salary &lt; ?) OR (name LIKE ? AND salary &gt; ?)&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;Ernie%&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">,</span> <span class="mi">100000</span>
-</span><span class='line'><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样的写法不是很好，因为：</p>
-
-<ul>
-<li>里面的sql是只针对一个数据库的，不能做到数据库的切换。</li>
-<li>里面的sql在ruby里面是字符串，一个是可读性差，一个是不能进行语法上面的检查，只能通过单元测试来保证。</li>
-<li>写这样语句的时候，需要切换成sql的思路，写完之后再切换回来。</li>
-<li>遇到复杂sql的时候，不容易拆分问题，只能通过大段长度的sql来处理。</li>
-</ul>
-
-
-<p>采用squeel，就可以变成这些的写法：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">{(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Ernie%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="mi">50000</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">)}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>原理</h2>
-
-<p>squeel使用的方法是传一个block给where，然后这个block会被修改作用域，在这个作用域里面，
-各种操作符和变量都会被转义，变成Node对象，然后形成一个抽象语法树，最后通过底层的<a href="https://github.com/rails/arel">arel</a>变成真正执行的sql。</p>
-
-<p>具体代码比较重要的是<code>dsl.rb</code>里面的<code>eval</code>，<code>method_missing</code>，<code>stub.rb</code>，<code>visitor.rb</code>。</p>
-
-<p>我思考了一下，这种方法应该是最简洁和干净的，语法是采用ruby的方式，魔法的部分都被包裹在block里面，和现有的功能无缝衔接。</p>
-
-<h2>使用心得</h2>
-
-<p>如果明白原理，使用它没有什么太多的问题，需要注意的是，
-一定要看一遍log里面生成的sql，确认是自己期望的结构。</p>
-
-<p>还有就是，squeel和原有系统切割得比较好，只有一点需要注意：
-针对<code>User.where(name: :aaa)</code>里面把symbol当做value的状况，squeel会转变成：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">users</span> <span class="k">where</span> <span class="n">users</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">users</span><span class="p">.</span><span class="n">aaa</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这是一个特性，如果你不期望这样的话，需要改成<code>where(name: :aaa.to_s)</code>。也可以关闭，具体看squeel的文档。</p>
-
-<p>在我用的过程中，遇到几个问题：</p>
-
-<ul>
-<li>我直接用<code>or</code>和<code>and</code>，结果发现按照文档应该是用<code>|</code>和<code>&amp;</code>，使用任何东西之前还是需要认真看一遍文档。</li>
-<li>复杂查询条件下面，如果用到了<code>|</code>和<code>&amp;</code>，为了保证是按照自己期望的优先级分割，需要用括号来明确界定，比如<code>where{(name == 'aaa' | name == 'bbb') &amp; (level == 1)}</code></li>
-<li>上面提到的symbol当做value的bug。</li>
-<li>因为使用了作用域切换，对象属性等就不能访问了，比如<code>where{name == @user.name}</code>，需要改成<code>where{name == my{@user.name}}</code></li>
-</ul>
-
-
-<h2>结论</h2>
-
-<p>考虑一下是否需要采用squeel：它的学习成本应该只需要一个小时，性能问题可以通过cache来解决，可以无缝衔接，收益是更清晰，更一致，更好用的代码。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/try-gitlab/">试用gitlab</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-27T12:10:00+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2013</time>
-        
-         | <a href="/blog/try-gitlab/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://gitlab.org/images/gitlab_hq.png" alt="image" /></p>
-
-<p>今天我试着安装了一下<a href="http://gitlab.org/">gitlab</a>，它是一个开源的类似github的系统，
-利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。</p>
-
-<h2>安装过程</h2>
-
-<p>按照<a href="https://github.com/gitlabhq/gitlabhq/blob/5-0-stable/doc/install/installation.md">文档</a>进行，我中间走了一些弯路：</p>
-
-<ul>
-<li>安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby，后来发现不对，必须安装成系统的版本，不然服务起不起来。</li>
-<li>postgres用户gitlab不能登陆，后来搜索了一下，发现<a href="http://blog.deliciousrobots.com/2011/12/13/get-postgres-working-on-ubuntu-or-linux-mint/">需要修改权限</a></li>
-</ul>
-
-
-<p>其他过程比较顺利，基本按照教程来就可以了。</p>
-
-<h2>架构</h2>
-
-<p>其实整体系统还是比较简单的，安装了一个系统服务，后面主要是把gitlab当做一个rails应用来跑，后台启动了一个sidekiq。</p>
-
-<p>针对git的部分，分离出来了git-shell，其实就是在系统里面安装了一个shell，用户用git连过来的时候，就用这个shell来进行版本库的操作，它是调用rails网站服务器的API来做权限管控之类的事情。</p>
-
-<h2>试用感觉</h2>
-
-<p>因为我只是试用一下，没有用于生产，只是稍微浏览了一下功能。
-github有的功能它都有，还加上了用户管理，群组管理，查看系统日志等功能。
-功能上面感觉还是够用的。</p>
-
-<p>关于这个项目的架构思路，我觉得还是挺好的。
-网站的部分归网站，git的部分归git，中间通过API来通讯。
-git-shell的方式减少另外跑一个服务的成本，对于小用户群的环境来说可以，
-但是不是很适应用户数量过多的状况，但是场景不多，问题不大。
-不过需要安装系统的ruby环境倒是挺麻烦的，希望他们以后针对这个问题提出改进方案。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1011,6 +1198,14 @@ git-shell的方式减少另外跑一个服务的成本，对于小用户群的�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/english-old-is-better/">old is better</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/old-is-better/">喜新厌旧</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/english-linux-disk-format/">how to mount disk to linux operation system</a>
       </li>
     
@@ -1020,14 +1215,6 @@ git-shell的方式减少另外跑一个服务的成本，对于小用户群的�
     
       <li class="post">
         <a href="/blog/english-backup-method/">personal data backup method</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/backup-method/">个人资料备份策略</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/english-gem/">how to use gem</a>
       </li>
     
   </ul>
