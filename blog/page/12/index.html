@@ -9,10 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="为了能够贯彻自己的理念和思维,
-我们需要找到一种方式能够让知识转化为行为方式,
-以及时刻调整自己的生存状态. 因此, 我打算遵循一套仪式,
-来保证我能够贯彻决定以及提供精神动力. 这套仪式需要达成的具体目标和过程如下: 早晨重置 每天早晨要经过一套仪式来重置自己的精神状态, 查漏补缺, &hellip;">
+  <meta name="description" content="这里整理一下设置mongodb访问权限的资料. 我们有通用的方法, 用iptable严格限制访问ip,
+以及mongodb自带的密码验证(key验证等有需求的时候再研究) iptable限制访问资源 服务器完全开放mongodb, 通过iptables来限制访问. 修改/etc/mongo. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +79,162 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/mongodb-privilege/">Mongodb访问权限设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-16T18:31:01+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
+        
+         | <a href="/blog/mongodb-privilege/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里整理一下设置mongodb访问权限的资料.</p>
+
+<p>我们有通用的方法, 用iptable严格限制访问ip,
+以及mongodb自带的密码验证(key验证等有需求的时候再研究)</p>
+
+<h2>iptable限制访问资源</h2>
+
+<p>服务器完全开放mongodb, 通过iptables来限制访问.</p>
+
+<p>修改/etc/mongo.conf, host为0.0.0.0, 允许外部访问.</p>
+
+<p>设置规则:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo iptables -I INPUT 1 -p tcp --dport 27017 -s 允许的外部IP -j ACCEPT
+</span><span class='line'>iptables -A INPUT -p tcp --dport 27017 -j DROP
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>设置完毕后, 安装iptables-persistent 保证重启后iptables还是有效.</p>
+
+<h2>mongodb权限管理</h2>
+
+<p>有的时候还是需要限制权限, 方法整理如下:</p>
+
+<p>在服务器本地执行 mongo</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>use crawler_db
+</span><span class='line'>db.addUser<span class="o">(</span><span class="s1">&#39;admin&#39;</span>,<span class="s1">&#39;admin&#39;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后修改/etc/mongo.conf, 设置 auth = true 需要重启mongo</p>
+
+<p>连接上的时候, 需要db auth一下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$db</span>.authenticate<span class="o">(</span><span class="s1">&#39;admin&#39;</span>, <span class="s1">&#39;admin&#39;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/comprehension/">关于理解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-16T09:32:35+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
+        
+         | <a href="/blog/comprehension/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前我看维特根斯坦的书&lt;语言游戏>, 我印象很深的一个概念就是(非原文):
+词语的含义不是字面上的意思, 而是要看它的用法.
+词语本身的产生是有历史条件的, 字面上的含义可能蕴涵有非常复杂的历史成因,
+但是普通人不是历史学家,
+我们使用一个词语不是因为我们理解了这个词语的意思才去用它, 很多时候,
+只是因为听到别人在某些场合针对某种状况下面使用这个词语, 我们才学会它.
+简单地说, 我们是通过模仿学习语言, 而不是通过理解词语的含义.
+(单独背单词的人可以退散了)</p>
+
+<p>让我们把这个概念扩展开来一下, 应用到其他领域. 来看看法律.
+很多人理解法律只是按照法典字面上的意思来, 而不去注重实际的使用,
+而在很多国家, 比如我们国家,
+从字面上是很难理解得到实际法律执行和运作的方式的, 如何解释法律,
+不同地区的执行状况, 执法过程, 非成文规则, 这些内容都比法典本身复杂,
+灵活, 有生命, 甚至可以在善于表达的专业人士口中变得妙趣横生.</p>
+
+<p>我们也可以把这个概念应用在生活中.
+一个人的知识背景和思考方式形成了语言的具体内容, 但是要考察其他方面,
+就不太能相信言语, 因为言语不是这样产生的&hellip;
+我们不能因为一个人说要怎么样就认为他会怎么样,
+我们只能知道言语产生的条件: 他在什么样的刺激下,
+因为哪些知识背景和阅历产生出来了这样的言语. 举个实际的例子,
+如果一个人突然说&#8221;我要死啦&#8221;, 并不是说他自己真的要死了,
+而是因为他搞砸了什么事情, 然后他自己平时也咋咋呼呼的. 这个时候,
+我们不能根据字面上的意思而做反应&#8221;要死早死&#8221;,
+因为言语的字面意思不能反映实际他需要表达的内容. 我们一般会问一下&#8221;怎么了?
+被炒鱿鱼啦?&#8221;</p>
+
+<p>我们可以应用到学习上面. 进入一个新领域之前,
+我们可能会被这个领域的无数新词汇, 新概念弄晕,
+它们字面上面的意思和实际的使用方式往往不对应,
+实际的做事方式和文档资料里面的也有很大出入. 这个时候, 我们可以通过模仿:
+找一个该领域专家, 学习他的思考方式做事方式, 让自己同化成他的样子,
+我觉得这样才是最快速有效的学习方法.</p>
+
+<p>当你观察事物的角度从显式的含义转换到真实运作方式的时候,
+你会发现你开始理解了很多以前不理解的事物. 你会感觉世间万物都在流动,
+它们不是死的东西, 它们都在时刻调整, 变化, 你不好通过表象来定义它们,
+你需要感觉, 深入, 理解, 运用. 这样无数丰富的世界会在你面前敞开大门.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -815,129 +969,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/everyone-should-learn-one-musical-instrument/">人人都应该掌握一门乐器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-03T22:39:51+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2011</time>
-        
-         | <a href="/blog/everyone-should-learn-one-musical-instrument/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.rocketpiano.com/images/grandpiano.jpg" alt="image" /></p>
-
-<p>作为一名程序员, 我最近开始下定决心掌握一门乐器,
-我跟风一个朋友franky开始学习钢琴. 我去附近的一个琴行报了班, 开始了练习.</p>
-
-<p>现在基本能弹一些非常简单的练习曲, 比起franky能弹&lt;放牛班的春天>,
-我还差远了. 但是我已经计划好了学习钢琴的时间: 一辈子.</p>
-
-<h2>为什么要掌握乐器</h2>
-
-<p>那么为什么我要开始学习乐器了呢? 我觉得音乐是人类社会非常重要的伟大成就,
-绝大多数人都喜欢听音乐.</p>
-
-<p>而演奏音乐是欣赏音乐的一个重要组成部分, 音乐在自己手中变化,
-更能体验到音乐的魅力.</p>
-
-<p>如果说一生中没有尝试过这个过程, 那么我觉得人生体验是很不完整的.
-而学习音乐几乎不需要基础, 只需要时间和若干请老师的钱.</p>
-
-<h2>如何掌握一门乐器</h2>
-
-<p>如果你决定开始学习乐器了, 你基本上完成了大部分的工作.
-下面你只需要去本地的琴行, 选择一个你中意的乐器, 掏钱出来就可以了.</p>
-
-<p>比起掌握乐器带来的乐趣和收益, 这点钱不算什么(除非你真的非常非常缺钱,
-你还是专心赚钱去吧..)</p>
-
-<h2>结论</h2>
-
-<p>我从2011/03/26开始, 已经断断续续学了4个多月了, 工作和精力原因,
-我平均每天练半个小时. 我希望和预期能够在单位年底活动的时候, 献艺一曲.
-这样绝对能够树立我新的形象. 希望大家也都加入到学习乐器的队伍中来.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/cython-intro/">Cython介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-01T11:09:09+08:00" pubdate data-updated="true">Aug 1<span>st</span>, 2011</time>
-        
-         | <a href="/blog/cython-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://docs.cython.org/_static/cython-logo-light.png" alt="image" /></p>
-
-<p>python是门很强大很易用的动态语言, 像其他动态语言一样,
-非静态绑定而是在执行时确定值会造成很多性能损耗,
-我们可以用cython来解决这样的性能问题.</p>
-
-<p>cython的策略是这样的: 在python语法的基础上, 加上一些静态语言的特性,
-比如确定值类型等, 然后把这种类似python语法的代码, 编译成c代码,
-然后利用c编译器, 把代码做成python模块. 这样通过静态编译的方式,
-来提高执行代码的性能.</p>
-
-<p>具体如何使用和学习我就不多说了,
-<a href="http://docs.cython.org/index.html">官方文档</a> 上面写得很清楚.</p>
-
-<p>我写了一个简单的实例代码:
-<a href="https://bitbucket.org/linjunhalida/code-example/src/tip/python/cython_test">https://bitbucket.org/linjunhalida/code-example/src/tip/python/cython_test</a>/
-但是转变成cython性能提高只有一倍左右, 不知道到底出了什么问题&hellip;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -955,6 +986,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/english-2014-summary/">2014 Summary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-summary/">2014总结与2015年计划</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/english-old-is-better/">old is better</a>
       </li>
     
@@ -964,14 +1003,6 @@
     
       <li class="post">
         <a href="/blog/english-linux-disk-format/">how to mount disk to linux operation system</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/linux-disk-format/">linux分区策略</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/english-backup-method/">personal data backup method</a>
       </li>
     
   </ul>
@@ -1025,7 +1056,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - 机械唯物主义 -
+  Copyright &copy; 2015 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
