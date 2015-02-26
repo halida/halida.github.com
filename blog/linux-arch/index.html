@@ -5,16 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>无题 - 网络寻租</title>
+  <title>从零开始构建linux - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我是一个有一点点现象力的人, 从小的时候,
-我就喜欢在上学的路上一边走路一边幻想:
-自己是一艘飞船在一个非常大的星球表面飞翔.
-前方的道路上一个个的障碍物都是巨大的建筑物, 或者敌方的武装工事,
-然后我就躲开它们射出的子弹, 然后优雅地飞过, 丢下一颗炸弹,
-然后听那后方传来的爆炸声, &hellip;">
+  <meta name="description" content="最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（Linux From Scratch）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。 LFS的过程做成了书籍，可以下载阅读。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/no-name/">
+  <link rel="canonical" href="http://halida.github.com/blog/linux-arch/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -86,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">无题</h1>
+      <h1 class="entry-title">从零开始构建linux</h1>
     
     
       <p class="meta">
@@ -102,7 +97,7 @@
   
 
 
-<time datetime="2011-09-05T18:45:38+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2011</time>
+<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -111,45 +106,23 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://flowtv.org/wp-content/uploads/2009/05/resurrection-ship.png" alt="image" /></p>
+<div class="entry-content"><p>最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（<a href="http://www.linuxfromscratch.org/lfs">Linux From Scratch</a>）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。</p>
 
-<p>我是一个有一点点现象力的人, 从小的时候,
-我就喜欢在上学的路上一边走路一边幻想:
-自己是一艘飞船在一个非常大的星球表面飞翔.
-前方的道路上一个个的障碍物都是巨大的建筑物, 或者敌方的武装工事,
-然后我就躲开它们射出的子弹, 然后优雅地飞过, 丢下一颗炸弹,
-然后听那后方传来的爆炸声, 如果边上有人看到我的话,
-只看到一个学生跳来跳去的, 嘴巴里面发出不明其意的声音..</p>
+<p>LFS的过程做成了书籍，可以<a href="http://www.linuxfromscratch.org/lfs/downloads/stable/">下载阅读</a>。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。</p>
 
-<p>那时候, 我习惯挑战自己的走路速度, 上下学的时候就以非人的走程,
-选择最近的道路, 有的时候甚至会赶上绕一点远路的自行车.
-那个时候我单纯地以走路时间更少而快乐.</p>
+<p>首先需要有一个支持编译的类Unix宿主环境，创建编译目录和专门用来编译的用户，把系统需要的工具包下载下来。</p>
 
-<p>长大之后, 这些神奇的能力离我而去, 每天上下班走的是同样的道路,
-只会感觉厌烦, 可能会不定时间换一条. 即使现在我没有以前那么奇特了,
-但是我还是保留了不少特质, 能够让我从人群中凸显出来, 是我的好也是我的坏.
-我庆幸过去没有杀害我的&#8221;病&#8221;, 让我获得了勋章一般的伤痕.</p>
+<p>然后是在宿主机上面创建编译工具链，首先用宿主机的编译系统编译gcc工具链，然后用gcc自己编译一遍gcc，
+这样隔离宿主机编译系统的影响。</p>
 
-<p>说道&#8221;病&#8221;, 我以前不是能够和同学们合得来, 可能是我特殊个性, 岁数,
-或者其他什么原因, 我现在也无法考证, 总之我得到一个&#8221;癫子&#8221;的外号,
-让我非常困扰. 更让我困扰的是合群. 直到现在我也没有很好地学会投入感情,
-以及把握朋友关系.</p>
+<p>LFS提出了一个SBU（标准编译时间）的概念，每个工具包会列出SBU，让你知道编译这个工具包大概需要多少时间。</p>
 
-<p>大学前, 生活比较简单, 上学放学, 做作业打游戏. 矛盾是家长管教.
-天资不错的我, 即使高考前, 都没有放弃天天打电脑游戏.
-考试也算是进到一个好的学校. 但是大学暴露出我意志力薄弱的天性.
-四年颓废生活. 面对毕业工作的恐惧, 很多次计划选择死亡. 宿舍就在11楼.
-跳出窗口就可以了. 意志力薄弱又救了我.</p>
+<p>编译好gcc之后，用编译工具把linux需要的各种包，分门别类安装到目标文件系统中。</p>
 
-<p>我很奇怪我竟然能够找到工作. 工作之后, 情况好了很多,
-即使是一份不太好的工作. 虽然酬劳说不过去, 至少我活下来了.
-我尝试展开我的天性, 开始学会追逐自己喜欢的东西, 从最简单的开始.
-特立独行让我没有从众的压力,
-意志力薄弱让我做不出必要的决定和抵制不住诱惑.</p>
+<p>各种工具都安装好了，就开始进行系统的配置。设置磁盘的引导区指向到grub引导工具，然后用grub来加载linux内核。
+设置udev设备管理器，设置fstab文件系统加载器，init进程启动器，shadow增加用户，网络等。</p>
 
-<p>不过, 最终我还是这样过下来了. 一天又一天. 生活轨迹往上.
-我猜测未来的我成就有限, 但是谁又能知道未来呢? 说不定我能活到审判日,
-见证新智慧的产生和旧智慧的消亡.</p>
+<p>一切顺利之后，系统就可以启动使用了。我个人只是看了一遍，通过阅读来了解系统的架构。走一遍的话比较消耗时间，如果你时间充足，可以跟着做一下。</p>
 </div>
 
 
@@ -172,7 +145,7 @@
   
 
 
-<time datetime="2011-09-05T18:45:38+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2011</time>
+<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
       
 
 
@@ -180,7 +153,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/no-name/" data-via="" data-counturl="http://halida.github.com/blog/no-name/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/linux-arch/" data-via="" data-counturl="http://halida.github.com/blog/linux-arch/" >Tweet</a>
   
   
   
@@ -189,10 +162,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/trainning-series1-how-to-start/" title="Previous Post: 训练专题1_如何开始训练">&laquo; 训练专题1_如何开始训练</a>
+        <a class="basic-alignment left" href="/blog/english-2014-summary/" title="Previous Post: 2014 Summary">&laquo; 2014 Summary</a>
       
-      
-        <a class="basic-alignment right" href="/blog/how-to-learn-computer-science/" title="Next Post: 如何学习计算机科学">如何学习计算机科学 &raquo;</a>
       
     </p>
   </footer>
@@ -288,8 +259,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/no-name/';
-        var disqus_url = 'http://halida.github.com/blog/no-name/';
+        var disqus_identifier = 'http://halida.github.com/blog/linux-arch/';
+        var disqus_url = 'http://halida.github.com/blog/linux-arch/';
         var disqus_script = 'embed.js';
       
     (function () {

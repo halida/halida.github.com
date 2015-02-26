@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-01-13T12:42:32+08:00</updated>
+  <updated>2015-02-26T12:36:37+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[从零开始构建linux]]></title>
+    <link href="http://halida.github.com/blog/linux-arch/"/>
+    <updated>2015-02-26T12:21:00+08:00</updated>
+    <id>http://halida.github.com/blog/linux-arch</id>
+    <content type="html"><![CDATA[<p>最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（<a href="http://www.linuxfromscratch.org/lfs">Linux From Scratch</a>）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。</p>
+
+<p>LFS的过程做成了书籍，可以<a href="http://www.linuxfromscratch.org/lfs/downloads/stable/">下载阅读</a>。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。</p>
+
+<p>首先需要有一个支持编译的类Unix宿主环境，创建编译目录和专门用来编译的用户，把系统需要的工具包下载下来。</p>
+
+<p>然后是在宿主机上面创建编译工具链，首先用宿主机的编译系统编译gcc工具链，然后用gcc自己编译一遍gcc，
+这样隔离宿主机编译系统的影响。</p>
+
+<p>LFS提出了一个SBU（标准编译时间）的概念，每个工具包会列出SBU，让你知道编译这个工具包大概需要多少时间。</p>
+
+<p>编译好gcc之后，用编译工具把linux需要的各种包，分门别类安装到目标文件系统中。</p>
+
+<p>各种工具都安装好了，就开始进行系统的配置。设置磁盘的引导区指向到grub引导工具，然后用grub来加载linux内核。
+设置udev设备管理器，设置fstab文件系统加载器，init进程启动器，shadow增加用户，网络等。</p>
+
+<p>一切顺利之后，系统就可以启动使用了。我个人只是看了一遍，通过阅读来了解系统的架构。走一遍的话比较消耗时间，如果你时间充足，可以跟着做一下。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2014 Summary]]></title>
@@ -868,42 +893,6 @@ Mask economy, is important for this country.</p>
 
 <p>还有一种效果是自我催眠。很多人去看书，都说从书中学到了很多。
 其实不是这些书教会了你，而是你假借这些书教会了自己。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[自动更新程序功能思考]]></title>
-    <link href="http://halida.github.com/blog/auto-update/"/>
-    <updated>2014-04-15T08:16:11+08:00</updated>
-    <id>http://halida.github.com/blog/auto-update</id>
-    <content type="html"><![CDATA[<p>对于有经验的程序员来说，
-很多看起来比较简单的功能，实际做起来会非常复杂。
-而对于有经验的工作者而言，任何事情都是这样的。
-把事情做好需要的精力，是把事情做完需要精力的无数倍。
-同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。</p>
-
-<p>回到正题。这里整理一下windows下面写一个可以自己自动更新的程序需要的考虑。</p>
-
-<p>首先，windows下面程序不能自动更新自己，程序开启的时候会锁住程序的可执行文件。
-因此，需要先做一个启动器，通过启动器来负责调用程序和更新程序的事情。
-同时这个启动器必须足够快足够小。我选择的是autoit，
-如果有更多开发资源，最好还是用C++写一个windows原生程序。</p>
-
-<p>启动器的逻辑是这样，分成检查更新和更新部分。
-用户开启程序，实际是调用启动器的更新部分后再启动程序。
-程序本身运行的时候，再定时监控是否有更新，实际调用启动器的检查更新部分，
-这样关于更新的逻辑都丢给启动器，模块化好一些。</p>
-
-<p>检查更新的逻辑比较简单，会去访问更新服务器上面一个版本文件，
-和本地程序的版本做比较，如果本地更旧，就下载程序到一个new_program目录下面。
-定时检查更新的时候需要随机化检查时间，防止无数客户端同时更新拖垮更新服务器。</p>
-
-<p>更新部分会在本地判断是否存在new_program目录，有的话就替换掉旧的程序，
-执行安装脚本做一些系统相关的配置，再启动。</p>
-
-<p>其中为了防止旧程序开启把旧程序目录锁住，需要关闭旧程序，或者跳过这块的更新。
-启动器本身也要能够被自动更新掉，逻辑上面需要照顾到这个问题。
-启动器对应的一些参数，比如更新服务器地址，更新目录，最好做成配置文件，方便修改。</p>
 ]]></content>
   </entry>
   
