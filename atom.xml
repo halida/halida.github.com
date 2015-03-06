@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-03-05T13:18:54+08:00</updated>
+  <updated>2015-03-06T14:51:57+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,107 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[家庭NAS服务器搭建]]></title>
+    <link href="http://halida.github.com/blog/nas-server/"/>
+    <updated>2015-03-06T12:44:37+08:00</updated>
+    <id>http://halida.github.com/blog/nas-server</id>
+    <content type="html"><![CDATA[<p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<h2>为什么要用家用NAS</h2>
+
+<p>去年年底，我搭建了一台家用NAS服务器。我用它来存放视频漫画等数据资料，
+创建一些空间消耗大的虚拟机，备份笔记本电脑系统。
+有了NAS，资料可以给家里面所有设备使用（比如多台iPad，手机），
+可以跑一些消耗大量时间和空间的应用（比如虚拟机和下载），
+生活工作方便许多。</p>
+
+<h2>NAS硬件选购</h2>
+
+<p>我选购的是<a href="http://item.jd.com/1019704.html">N54L</a>，主要是考虑到性价比。
+设备买回来之后，发现做工不错，拓展性也很好。</p>
+
+<p>我把内存<a href="http://item.jd.com/783266.html">加到12G</a>，对于服务器来说，内存越大越好，尤其我这种希望使用虚拟机的情况。</p>
+
+<p>硬盘选择的是：一个SSD，一个<a href="http://item.jd.com/694106.html">服务器硬盘</a>。
+SSD用来安装系统，用来保证系统执行速度。其他资料和动态数据目录都放在服务器硬盘上面。</p>
+
+<p>N54L有4个硬盘位，方便拓展，到时候我会选择用RAID5方式，
+因为在保证资料安全性的同时，能够有比较大的空间利用率。</p>
+
+<h2>系统平台</h2>
+
+<p>考虑了一系列操作系统，包括<a href="http://www.freenas.org/">FreeNAS</a>，<a href="https://www.synology.com/en-us/dsm/5.1">群辉</a>等，我最后还是选择了Ubuntu Server，
+因为这是我最熟悉的系统，并且我会装好多实验工具，有一个专业的服务器平台更好一些。</p>
+
+<p>系统设置了<a href="https://help.ubuntu.com/community/AutomaticSecurityUpdates">自动更新</a>，我写了一个脚本，<a href="http://serverfault.com/questions/92932/how-does-ubuntu-keep-track-of-the-system-restart-required-flag-in-motd">当需要重启的时候</a>发消息通知我。</p>
+
+<p>分区<a href="http://blog.linjunhalida.com/blog/linux-disk-format/">我考虑了一下</a>,
+最后还是用lvm和btrfs结合的方案，没有搞懂zfs如何和lvm一起工作。</p>
+
+<h2>服务搭建</h2>
+
+<h3>外网访问</h3>
+
+<p>首先需要让外网可以知道自己家的IP地址，我用<a href="https://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client-on-ubuntu/">noip</a>来自动更新域名。</p>
+
+<p>外网访问家里的内网，需要给NAS装一个VPN系统。l2tp和pptp都对网络有要求(IP层允许ESP，PPP协议)，
+安装的时候调试了好久，最后还是选择了<a href="http://www.softether.org/">softether</a>，看起来比较简单一些，
+并且可以外网配置。
+VPN访问自身服务器有问题，不能同一个网卡出入，最后我还是购买了另外的一块网卡，用来提供给VPN使用。</p>
+
+<h3>防火墙</h3>
+
+<p>因为家里无线路由的开放性，服务器提供的服务都设置了密码，并且用防火墙ufw限制了开启的端口。</p>
+
+<h3>下载</h3>
+
+<p>考虑各种下载方案，最后我选择用<a href="https://github.com/ziahamza/webui-aria2">webui-aria2</a>，结合迅雷离线，
+迅雷离线插件ThunderLixianExporter。</p>
+
+<p>如果是电影等通用资源，用迅雷离线快速下载，然后用迅雷插件通知aria2下载回本地。
+非常见资源直接丢链接给webui-aria2慢慢下。</p>
+
+<h3>timemachine备份</h3>
+
+<p>因为OSX的timemachine会占用全部的磁盘资源，我专门做了一个分区。
+按照<a href="https://www.64bit.co.uk/ubuntu-as-a-osx-time-machine/">这里的教程</a>搭起来服务就好了。
+有的时候备份会提示已经占用磁盘，需要重启一下netatalk服务。</p>
+
+<h3>文件服务器</h3>
+
+<p>考虑了http，ftp，net，dlna，各种第三方的media server，最后发现还是<a href="https://help.ubuntu.com/community/Samba/SambaServerGuide">samba好用</a>，
+渲染视频音频的操作还是交给客户端来做吧。</p>
+
+<h3>格式转换</h3>
+
+<p>网上下载下来的东西格式比较多，手机上面看不是很方便，我用<a href="https://libav.org/avconv.html">avconv</a>来统一把视频转换成mp4的格式（视频h264，音频aac）。同时为了方便预览，我写了<a href="https://gist.github.com/halida/c7924e97cf50d61b3f8f">脚本</a>，自动给所有视频创建一个gif的预览，然后做一个网页，可以快速查看它们。</p>
+
+<h3>监控</h3>
+
+<p>我直接给服务器装了<a href="http://newrelic.com/">New Relic</a>，它会自动通知我磁盘空间使用率，以及宕机状况。我也装了<a href="http://munin-monitoring.org/">munin</a>，但是用不太到。</p>
+
+<h3>虚拟机</h3>
+
+<p>我对<a href="https://www.virtualbox.org/">VirtualBox</a>比较熟悉，安装了命令行工具，然后再装上web前端<a href="http://sourceforge.net/p/phpvirtualbox/wiki/Home/#getting-started">phpVirtualBox</a>。</p>
+
+<p>创建了虚拟机之后，我可以设置端口映射访问虚拟机，或者用VirtualBox的<a href="https://www.virtualbox.org/manual/ch07.html#vbox-auth">远程桌面</a>功能。</p>
+
+<h3>web安全</h3>
+
+<p>所有通过http访问的服务，我全部都改成了https，保证传输安全性。采用<a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04">自授权</a>，
+自授权需要写host域名，我自己定义了一个nas的域名（比如local-nas-server.pc），然后增加到自己电脑的/etc/hosts，地址就是nas的内网地址。</p>
+
+<h3>备份</h3>
+
+<p>NAS的重要资料我都备份到云平台上面，不重要又大的资料（比如电影）就不管了。系统的配置一定要写脚本定期备份，不然丢了就好难找回来。</p>
+
+<h3>待实现</h3>
+
+<p>以后有时间可以买一个摄像头，实时监控家里或者门口的情况。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[chef介绍]]></title>
@@ -906,42 +1007,6 @@ Mask economy, is important for this country.</p>
 状态有的时候会非常多，需要寻找规律，把状态合并起来。</p>
 
 <p>学习资料应用：《挑战程序设计竞赛》中游戏博弈部分</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何找对象]]></title>
-    <link href="http://halida.github.com/blog/zhao-dui-xiang/"/>
-    <updated>2014-04-28T14:32:17+08:00</updated>
-    <id>http://halida.github.com/blog/zhao-dui-xiang</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_04_28.jpg"></p>
-
-<p>现在都说找对象难找，如果你不是像我一样矫情挑剔的话，还是可以很快找到的。</p>
-
-<p>首先我们需要知道自己要找什么样的人，以及这样的人存在的概率。
-标准要具体一些，方便快速筛选，比如对方性格，背景，外表之类。
-如果没有概念，一方面遇到了也可能错过，另一方面会定位到错误群体，浪费时间精力。
-不知道怎么办？多见人，多和人接触，自然会清楚自己对什么类型比较倾心。</p>
-
-<p>然后就是把这种人找出来了。单个的相亲类似于大海捞针，非常没有效率，
-建议拓展社交圈为主，一个社交圈后面是许多的人，并且有机会一次接触许多。
-如何拓展社交圈？
-普通人本身有的是工作同事圈，同学朋友圈，圈子里面每个人后面都有一个或者几个圈子，
-有些社交达人后面圈子比较多，可以重点挖掘。
-除此以外，还有兴趣爱好圈，吃喝玩乐圈，旅游户外圈。如果你想找同类的话，可以重点挖掘这些圈子。
-大城市各种活动组织比较多，比较容易挖掘，小城市的话也有各种同城QQ群。
-挖掘方法上面，先每个圈子看看，如果发现一个圈子里面有很多达到自己标准的人，再重点关注和发展。
-除了挖掘圈子，也要对其他渠道抱有开放心态。父母介绍，朋友介绍，同事介绍，各种活动，工作客户，各种场合遇到的各种人。
-也不要拒绝相亲，多一个渠道多一些机会，但是一定要预先筛选，不然见了无数人，没有一个是目标类型。</p>
-
-<p>现在你可以遇到很多人了，那么如何了解他们呢？我觉得要从多个角度。
-首先是见面。见面可以知道长相，性格，人的类型，可以最有效地筛选。网上聊了很久见面不喜欢成本就大了。
-然后是接触。可以出来聊，更好的方式是一起做项目，可以直接了解对方的性格，能力，行为方式，以及直接发现是否互相适合。
-还有就是深入全面了解。可以挖掘对方历史，了解家庭背景，搜索网上痕迹。
-很多人表面平平，搜索之后才知道不简单。不要错过他们。</p>
-
-<p>这样你基本可以定位到意向目标了，之后就是争取对方。
-不是“找对象”而是“追对象”，和“处对象”了，下次我再来介绍相关的经验。</p>
 ]]></content>
   </entry>
   
