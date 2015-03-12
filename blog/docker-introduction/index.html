@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>从零开始构建linux - 网络寻租</title>
+  <title>docker介绍 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（Linux From Scratch）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。 LFS的过程做成了书籍，可以下载阅读。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。 &hellip;">
+  <meta name="description" content="我们知道虚拟化的层次有：CPU指令集级别虚拟化，操作系统级别虚拟化，
+还有一种进程级别虚拟化（container），底层都采用linux内核，在内核之上的CPU资源，内存，文件系统，设备，都用虚拟化技术隔离出来。
+docker就是这样的一个工具。 docker用linux内核的资源控制功能（LXC &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/linux-arch/">
+  <link rel="canonical" href="http://halida.github.com/blog/docker-introduction/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">从零开始构建linux</h1>
+      <h1 class="entry-title">Docker介绍</h1>
     
     
       <p class="meta">
@@ -97,7 +99,7 @@
   
 
 
-<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
+<time datetime="2015-03-12T12:55:36+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,23 +108,25 @@
   </header>
 
 
-<div class="entry-content"><p>最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（<a href="http://www.linuxfromscratch.org/lfs">Linux From Scratch</a>）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。</p>
+<div class="entry-content"><p>我们知道虚拟化的层次有：CPU指令集级别虚拟化，操作系统级别虚拟化，
+还有一种进程级别虚拟化（container），底层都采用linux内核，在内核之上的CPU资源，内存，文件系统，设备，都用虚拟化技术隔离出来。
+<a href="https://www.docker.com/">docker</a>就是这样的一个工具。</p>
 
-<p>LFS的过程做成了书籍，可以<a href="http://www.linuxfromscratch.org/lfs/downloads/stable/">下载阅读</a>。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。</p>
+<p>docker用linux内核的资源控制功能（<a href="http://en.wikipedia.org/wiki/LXC">LXC</a>）来隔离和控制资源，用<a href="http://en.wikipedia.org/wiki/aufs">AUFS</a>来管理虚拟的文件系统，用docker可以提供一个轻量级的虚拟机，它的特性有：</p>
 
-<p>首先需要有一个支持编译的类Unix宿主环境，创建编译目录和专门用来编译的用户，把系统需要的工具包下载下来。</p>
+<ul>
+<li>快速启动，一个进程起来可能只需要几秒钟。</li>
+<li>轻量级文件系统虚拟化，带有版本控制的文件系统，改动只保存变更，存储占用非常小。</li>
+<li>进程间隔离，保证进程之间不会互相干扰。</li>
+</ul>
 
-<p>然后是在宿主机上面创建编译工具链，首先用宿主机的编译系统编译gcc工具链，然后用gcc自己编译一遍gcc，
-这样隔离宿主机编译系统的影响。</p>
 
-<p>LFS提出了一个SBU（标准编译时间）的概念，每个工具包会列出SBU，让你知道编译这个工具包大概需要多少时间。</p>
+<p>用docker可以把应用集装箱化，快速搭建，移动，复制，分发。对于应用开发，它可以让开发和发布环境归一起来，
+开发阶段测试完毕之后可以直接装箱进入发布流程。</p>
 
-<p>编译好gcc之后，用编译工具把linux需要的各种包，分门别类安装到目标文件系统中。</p>
+<p>同时docker<a href="http://teahour.fm/2015/02/13/docker-introduction.html">也有一些不适合的场景</a>，比如有状态应用（存储），资源占用比较大，或者高性能网络应用，虚拟化会带来性能损耗。</p>
 
-<p>各种工具都安装好了，就开始进行系统的配置。设置磁盘的引导区指向到grub引导工具，然后用grub来加载linux内核。
-设置udev设备管理器，设置fstab文件系统加载器，init进程启动器，shadow增加用户，网络等。</p>
-
-<p>一切顺利之后，系统就可以启动使用了。我个人只是看了一遍，通过阅读来了解系统的架构。走一遍的话比较消耗时间，如果你时间充足，可以跟着做一下。</p>
+<p>docker以及container思想对于现在系统架构的冲击比较大，现在有一个<a href="https://coreos.com">CoreOS</a>发行版，所有发布的应用都存放在container里面执行。</p>
 </div>
 
 
@@ -145,7 +149,7 @@
   
 
 
-<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
+<time datetime="2015-03-12T12:55:36+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
       
 
 
@@ -153,7 +157,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/linux-arch/" data-via="" data-counturl="http://halida.github.com/blog/linux-arch/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/docker-introduction/" data-via="" data-counturl="http://halida.github.com/blog/docker-introduction/" >Tweet</a>
   
   
   
@@ -162,10 +166,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/english-2014-summary/" title="Previous Post: 2014 Summary">&laquo; 2014 Summary</a>
+        <a class="basic-alignment left" href="/blog/into-systemd/" title="Previous Post: systemd初探">&laquo; systemd初探</a>
       
-      
-        <a class="basic-alignment right" href="/blog/introduce-chef/" title="Next Post: chef介绍">chef介绍 &raquo;</a>
       
     </p>
   </footer>
@@ -261,8 +263,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/linux-arch/';
-        var disqus_url = 'http://halida.github.com/blog/linux-arch/';
+        var disqus_identifier = 'http://halida.github.com/blog/docker-introduction/';
+        var disqus_url = 'http://halida.github.com/blog/docker-introduction/';
         var disqus_script = 'embed.js';
       
     (function () {
