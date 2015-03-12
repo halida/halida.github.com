@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>关于理性的设计 - 网络寻租</title>
+  <title>systemd初探 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="上周六, 我参加了 pmcamp 的活动,
-主要是为了看看传说中的 西乔. 见面后,
-发现真人完全比不上twitter上面的照片&hellip; 不过她带给我们一个演讲&lt;理性的设计>, 的确是非常的精彩,
-整个过程我们都全神贯注地听, 获益也非常的多. 以至于在讲完之后的提问环节, &hellip;">
+  <meta name="description" content="最近ubuntu准备迁移到systemd，基本上linux上面init纷争大局已定，systemd赢得了主要的市场。
+以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
+对于系统管理员们来说，systemd成为必须学习的一个模块。 那么什么是systemd？ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/rational-desgin/">
+  <link rel="canonical" href="http://halida.github.com/blog/into-systemd/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">关于理性的设计</h1>
+      <h1 class="entry-title">Systemd初探</h1>
     
     
       <p class="meta">
@@ -100,7 +99,7 @@
   
 
 
-<time datetime="2010-11-22T20:00:25+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2010</time>
+<time datetime="2015-03-12T12:03:05+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,53 +108,40 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://www.jackpike.co.uk/waveride.jpg" alt="image" /></p>
+<div class="entry-content"><p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Systemd_components.svg/1440px-Systemd_components.svg.png" style="width: 600px" /></p>
 
-<p>上周六, 我参加了 <a href="http://pmcamp.info/">pmcamp</a> 的活动,
-主要是为了看看传说中的 <a href="http://blog.xiqiao.info/">西乔</a>. 见面后,
-发现真人完全比不上twitter上面的照片&hellip;</p>
+<p>最近<a href="http://www.zdnet.com/article/after-linux-civil-war-ubuntu-to-adopt-systemd/">ubuntu准备迁移到systemd</a>，基本上linux上面init纷争大局已定，<a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a>赢得了主要的市场。
+以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
+对于系统管理员们来说，systemd成为必须学习的一个模块。</p>
 
-<p>不过她带给我们一个演讲&lt;理性的设计>, 的确是非常的精彩,
-整个过程我们都全神贯注地听, 获益也非常的多. 以至于在讲完之后的提问环节,
-我们都以&#8221;西乔老师&#8221;作为尊称来提问.</p>
+<p>那么什么是systemd？我们知道linux系统里面启动各大进程的工作都是由<a href="http://en.wikipedia.org/wiki/Init">init</a>来完成的，
+机器启动有不同的级别（rc level），根据不同的级别设置启动进程的顺序。
+这种传统架构已经不适应现代的操作系统进程管理了，问题有：</p>
 
-<p>具体内容可以见分享出来的
-<a href="http://www.slideshare.net/FelixDing/ss-3853755">幻灯片</a> ,
-可能以后会有放出来的视频, 具体得看pmcamp的组织者了.</p>
+<ul>
+<li>设备管理：传统架构架设设备是静态的，但是现代操作系统里面设备动态插入和拔出的状况非常常见。</li>
+<li>依赖管理：传统架构靠/etc/rc3.d/下面文件名显式制定启动顺序，无法适应复杂依赖关系。</li>
+<li>进程管理：传统架构没有进程管理，只负责启动，停止的时候也不能保证进程的子进程正常关闭，往往需要系统管理员单独配置。</li>
+</ul>
 
-<p>这里说下我个人的理解, 对于资深读者来说可以到此为止了. :)</p>
 
-<p>和名字所说的一样, 整篇内容都是讲关于如何做设计的, 以及设计的整个思路,
-其实是非常的理性的. 目标是理性的, 思路是理性的, 准则也是非常理性的&hellip;
-设计并不像我们想象中的那么感性, 虽然会触发观者的感性思维,
-但是设计的过程是可控的.</p>
+<p>做过系统管理员的人，应该知道针对进程管理，需要写多少脚本，搭建各种各样的监控和管理系统。
+systemd是init的替代系统，有了它，可以说解决了很大一部分的问题，脚本可以丢掉一大部分了。
+systemd的解决方案：</p>
 
-<p>首先要说的是, 在解决问题之前, 最重要的是要问对问题. 做设计,
-需要把握住几点: 受众.. 等一等, 这些都是幻灯片里面已经有的内容,
-我不需要再说一遍了. 要补充的是: 无论是做什么事情, 都要先问对问题,
-以及可以从受众, 目的, 语境这三个方面来考虑.
-面对威权我们可以用言语来撼动, 面对拖拉机我们只有跑路&mdash;-看起来扯远了.</p>
+<ul>
+<li>所有管理的对象都是<a href="http://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit</a>，包括系统服务，文件系统，设备等</li>
+<li>做到比较好的资源依赖管理</li>
+<li>利用cgroup等工具，做到进程管理和控制</li>
+<li>内置日志系统来接收和管理各个unit的日志</li>
+</ul>
 
-<p>这里面提到一个重要的思想: 视觉习惯. 即利用用户的视觉习惯来带动他们,
-按照我们希望的方法来&#8221;看&#8221;, 来&#8221;想&#8221;, 来&#8221;活动&#8221;, 这个对于任何的设计,
-都是有用的. 不能让用户来学习我们的思维,
-而是让用户不知不觉按照我们预设的道路走.
-比如现在很多流氓网站上面的flash广告就很深得精髓.</p>
 
-<p>然后下面就是具体的策略: 排列,强调,清晰,简洁,风格,语气,
-按照我这个程序员的思想来说,
-就是用用户的思维语言(主要还是人类视觉的识别方式)来表示信息,
-去掉多余的信息, 强化需要表达的信息. 这里面我还获得了一个观念: 现代主义.
-极简, 强烈对比, 内容间大段的空白, 符合网格. 用这样的方式来展示信息,
-给人以强烈的信息刺激&hellip;.. 恩, 看起来我的博客就是现代主义的.
-有没有人注意到底下的版权声明?</p>
+<p>systemd做的事情很多，体积也很大，网上对此也有争议。我对于它的涉及领域没有意见，因为进程管理相关的事情是很多，彼此也有依赖。
+用了systemd，管理一个进程，只需要写好对应的一个配置文件就好了，对于系统管理员来说，事情变得更简单了，
+配置文件的格式也不是很复杂。</p>
 
-<p>我觉得, 里面讲的内容都是非常实战性的, 需要在实际工作中不断地运用,
-成为我们的本能.. 对于任何人来说, 其实都会从事设计(至少设计自己的房间),
-这里再次推荐 `幻灯片`_ 给大家.</p>
-
-<p>恩, 还有, 她每天会推几个设计到
-<a href="http://designlol.net">http://designlol.net</a>/ 上面, 大家可以学习学习.</p>
+<p>现在我的主力服务器发行版是ubuntu，等ubuntu正式引入systemd之后，我会用它来进行进程管理，到时候会有更多的心得可供分享。</p>
 </div>
 
 
@@ -178,7 +164,7 @@
   
 
 
-<time datetime="2010-11-22T20:00:25+08:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2010</time>
+<time datetime="2015-03-12T12:03:05+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
       
 
 
@@ -186,7 +172,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/rational-desgin/" data-via="" data-counturl="http://halida.github.com/blog/rational-desgin/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/into-systemd/" data-via="" data-counturl="http://halida.github.com/blog/into-systemd/" >Tweet</a>
   
   
   
@@ -195,10 +181,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/pyqt-i18n/" title="Previous Post: pyqt多国语言">&laquo; pyqt多国语言</a>
+        <a class="basic-alignment left" href="/blog/nas-server/" title="Previous Post: 家庭NAS服务器搭建">&laquo; 家庭NAS服务器搭建</a>
       
-      
-        <a class="basic-alignment right" href="/blog/why-qt-is-for-you/" title="Next Post: 为什么qt是最适合你的">为什么qt是最适合你的 &raquo;</a>
       
     </p>
   </footer>
@@ -294,8 +278,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/rational-desgin/';
-        var disqus_url = 'http://halida.github.com/blog/rational-desgin/';
+        var disqus_identifier = 'http://halida.github.com/blog/into-systemd/';
+        var disqus_url = 'http://halida.github.com/blog/into-systemd/';
         var disqus_script = 'embed.js';
       
     (function () {

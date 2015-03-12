@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-03-06T14:51:57+08:00</updated>
+  <updated>2015-03-12T12:48:46+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[systemd初探]]></title>
+    <link href="http://halida.github.com/blog/into-systemd/"/>
+    <updated>2015-03-12T12:03:05+08:00</updated>
+    <id>http://halida.github.com/blog/into-systemd</id>
+    <content type="html"><![CDATA[<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Systemd_components.svg/1440px-Systemd_components.svg.png" style="width: 600px" /></p>
+
+<p>最近<a href="http://www.zdnet.com/article/after-linux-civil-war-ubuntu-to-adopt-systemd/">ubuntu准备迁移到systemd</a>，基本上linux上面init纷争大局已定，<a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a>赢得了主要的市场。
+以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
+对于系统管理员们来说，systemd成为必须学习的一个模块。</p>
+
+<p>那么什么是systemd？我们知道linux系统里面启动各大进程的工作都是由<a href="http://en.wikipedia.org/wiki/Init">init</a>来完成的，
+机器启动有不同的级别（rc level），根据不同的级别设置启动进程的顺序。
+这种传统架构已经不适应现代的操作系统进程管理了，问题有：</p>
+
+<ul>
+<li>设备管理：传统架构架设设备是静态的，但是现代操作系统里面设备动态插入和拔出的状况非常常见。</li>
+<li>依赖管理：传统架构靠/etc/rc3.d/下面文件名显式制定启动顺序，无法适应复杂依赖关系。</li>
+<li>进程管理：传统架构没有进程管理，只负责启动，停止的时候也不能保证进程的子进程正常关闭，往往需要系统管理员单独配置。</li>
+</ul>
+
+
+<p>做过系统管理员的人，应该知道针对进程管理，需要写多少脚本，搭建各种各样的监控和管理系统。
+systemd是init的替代系统，有了它，可以说解决了很大一部分的问题，脚本可以丢掉一大部分了。
+systemd的解决方案：</p>
+
+<ul>
+<li>所有管理的对象都是<a href="http://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit</a>，包括系统服务，文件系统，设备等</li>
+<li>做到比较好的资源依赖管理</li>
+<li>利用cgroup等工具，做到进程管理和控制</li>
+<li>内置日志系统来接收和管理各个unit的日志</li>
+</ul>
+
+
+<p>systemd做的事情很多，体积也很大，网上对此也有争议。我对于它的涉及领域没有意见，因为进程管理相关的事情是很多，彼此也有依赖。
+用了systemd，管理一个进程，只需要写好对应的一个配置文件就好了，对于系统管理员来说，事情变得更简单了，
+配置文件的格式也不是很复杂。</p>
+
+<p>现在我的主力服务器发行版是ubuntu，等ubuntu正式引入systemd之后，我会用它来进行进程管理，到时候会有更多的心得可供分享。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[家庭NAS服务器搭建]]></title>
@@ -981,32 +1023,6 @@ Mask economy, is important for this country.</p>
 <li>晚上加班是我一天中最快乐的时光，真的在做事情，没有人干扰，安静地独处。</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[无偏博弈游戏的解法]]></title>
-    <link href="http://halida.github.com/blog/grundy/"/>
-    <updated>2014-05-05T09:24:23+08:00</updated>
-    <id>http://halida.github.com/blog/grundy</id>
-    <content type="html"><![CDATA[<p>无偏博弈是指这样一种游戏：游戏双方共用棋子，游戏过程没有随机变化，一定会结束在其中一方胜利。
-根据结束状态反推，可以用数学归纳法来证明，这类游戏一定可以确认每个游戏状态是必胜还是必败的。</p>
-
-<p>我们可以构造一种必胜方法，在游戏进行过程中，保证每一步都停留在必胜状态上面。
-可以根据游戏状态维护一个特殊值，每当这个特殊值不为0的时候，都可以把状态转换到特殊值是0的状态。
-然后游戏一定结束在特殊值是0的状态，如果这个状态是必胜态，那么这种方法一定必胜。
-如果双方都采用这种方法，失去机会维护这个状态的玩家必败。</p>
-
-<p>这个状态我们叫grundy值。构造的算法采用递归。首先获取这个状态可以走到的所有状态的grundy值，
-然后取不属于这些值的最小非负数整数。
-假设状态K的grundy值是n，那么K一定可以转换到grundy值是n-1, n-2, &hellip;, 0的状态。
-证明通过反证法：如果有一个状态t&lt;n不能转换，那么n&lt;=t，产生矛盾。</p>
-
-<p>有了grundy值，之后通过维护grundy值来保证转换到必胜态就好了。
-实际做题，通过动态规划来计算一个状态的grundy值，然后通过这个值知道当前状态必胜还是必败。
-状态有的时候会非常多，需要寻找规律，把状态合并起来。</p>
-
-<p>学习资料应用：《挑战程序设计竞赛》中游戏博弈部分</p>
 ]]></content>
   </entry>
   
