@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-03-19T12:53:59+08:00</updated>
+  <updated>2015-03-26T17:48:09+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[slack介绍-企业级实时通讯工具]]></title>
+    <link href="http://halida.github.com/blog/introduce-slack/"/>
+    <updated>2015-03-26T17:33:52+08:00</updated>
+    <id>http://halida.github.com/blog/introduce-slack</id>
+    <content type="html"><![CDATA[<p>最近我在团队里面推广了<a href="https://slack.com/">slack</a>，它是一个文字实时通讯工具，为什么要用它呢？
+比起QQ，skype等通用实时文字通讯工具，有几个好处：</p>
+
+<ul>
+<li>文字交流内容可以在团队之间分享。</li>
+<li>交流按照channel主题分组，比如项目1，服务器管理，客服等。</li>
+<li>可以存档，以及搜索历史记录。</li>
+<li>安装了手机应用或者桌面应用了之后，可以实时收到提醒。</li>
+<li>可以和其他各种系统整合，比如redmine，gitlab，或者程序员撰写提醒插件（比如监控服务器性能，登录，应用发布，定期任务等）</li>
+<li>聊天机器人：机器人可以通过监控聊天室的内容，执行特定操作：
+
+<ul>
+<li>这样团队成员可以控制机器人做一些事情（查看系统状态，执行特定任务等），这些控制指令可以在手机上面发出。</li>
+<li>机器人监控各种提醒，执行操作。</li>
+</ul>
+</li>
+</ul>
+
+
+<p>因为这些好处，我觉得slack这种工具值得所有的技术团队使用。</p>
+
+<p>不过同时slack也有一些其他问题：</p>
+
+<ul>
+<li>聊天分组是按照channel来的，不能进一步区分，比如服务器管理下面还有系统性能，系统重启，系统登录等子分组。这样用户可以关注特定的子分组，而不会被大分组的其他内容刷屏。</li>
+<li>通讯不够实时，有的时候可能好几分钟才能响应，一些紧急时间几分钟是很长的时间了。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[比特币介绍]]></title>
@@ -1006,62 +1042,6 @@ Mask economy, is important for this country.</p>
 面具经济，是这个国家里面的一个重要的组成部分。</p>
 
 <p>如果真的有一个面具的国度，一定很有意思。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[capistrano介绍和入门]]></title>
-    <link href="http://halida.github.com/blog/capistrano/"/>
-    <updated>2014-06-16T10:28:51+08:00</updated>
-    <id>http://halida.github.com/blog/capistrano</id>
-    <content type="html"><![CDATA[<p><img src="http://halida.github.com/images/posts/2014_06_16_cap.png"></p>
-
-<p><a href="http://capistranorb.com/">Capistrano</a>是一个ruby写的远程服务器自动化和部署工具。</p>
-
-<p>虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点：</p>
-
-<ul>
-<li>多台服务器任务量巨大。</li>
-<li>手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。</li>
-<li>写脚本自动操作不能重用到其他项目里面去。</li>
-</ul>
-
-
-<p>用了自动化工具，可能第一次配置比较复杂，但是配置好了之后，发布工作就简单得只需要执行一个命令，轻松愉快。
-它也有学习复杂，因为有抽象出现问题难以找到原因，造成额外心智负担的问题，
-这个要开发者根据项目大小和类型来做权衡。</p>
-
-<p>看了官方文档，wiki，看了一天都没有看出门道，后来看官方网站上面的文档才慢慢弄懂。</p>
-
-<p>Capistrano的原理是这样：</p>
-
-<ul>
-<li>需要部署的服务器根据角色(role)区分: 比如有app，db，web，然后每个角色可以有多台服务器。</li>
-<li>针对不同角色，设置各类的任务，设置执行一些命令。</li>
-<li>可以根据阶段设置不同的stage，比如staging/production，staging用来本地测试环境的部署，production用来进行生产环境的部署。</li>
-<li>默认的一套发布流程包括了检查服务器环境，更新代码，初始化，上线等各种过程。</li>
-<li>每个过程都提供了钩子，把任务链接到钩子上面，就能够保证部署过程按照期待的状况进行。</li>
-</ul>
-
-
-<p>弄懂如何用cap比较麻烦，我整理了一下如何学习的资料：</p>
-
-<ul>
-<li>首先是去看<a href="http://capistranorb.com/">官方文档</a>，对于基础概念，有一定的了解。</li>
-<li>一定要实际部署一下，可以用本地环境测试，repo_url设置成本地，比如&#8221;user@localhost:/home/user/testapp&#8221;。</li>
-<li>弄清楚发布到服务器上面的文件架构。本地测试部署一次就清楚概念了。</li>
-<li>如果需要自动部署rails，可看<a href="https://ruby-china.org/topics/18616?page=2#replies">别人整理的一份详细文档</a>。</li>
-</ul>
-
-
-<p>然后学习一些原理性质的资料：</p>
-
-<ul>
-<li>弄清楚<a href="http://capistranorb.com/documentation/getting-started/flow/">发布过程和逻辑</a>。</li>
-<li>如何在服务器上面执行代码是用SSHKit库，需要<a href="https://github.com/capistrano/sshkit">看一遍文档</a>。</li>
-<li>看一遍用到的cap相关Gem，包括<a href="https://github.com/capistrano/capistrano/tree/master/lib/capistrano/tasks">capistrano</a>, <a href="https://github.com/capistrano/bundler/blob/master/lib/capistrano/tasks/bundler.cap">capistrano-bundle</a>, <a href="https://github.com/capistrano/rvm/blob/master/lib/capistrano/tasks/rvm.rake">capistrano-rvm</a>, <a href="https://github.com/capistrano/rails/blob/master/lib/capistrano/tasks/">capistrano-rails</a>里面rake是怎么执行的，弄清楚原理。</li>
-</ul>
-
 ]]></content>
   </entry>
   
