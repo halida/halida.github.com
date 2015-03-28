@@ -36,7 +36,7 @@ module NewBlog
     run "bundle exec rake 'isolate[#{filename}]'"
 
     # open emacs about new file
-    log "ecc '#{filename}'"
+    run "bash -cl 'ecc #{filename}'"
 
     # and start watcher
     watcher_pid = fork do
