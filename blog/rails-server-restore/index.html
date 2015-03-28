@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>牛逼或怂逼 - 网络寻租</title>
+  <title>rails容灾恢复策略 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="不知啥时开始，举目皆是英雄。 他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
-地球跟随他们转动，历史就是他们的故事。 这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
-英雄开创出来的基业，里面一个个坑还要普通人去填的。
-但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住， &hellip;">
+  <meta name="description" content="我们可以把一个运行的rails环境，根据处置的方式，拆分成以下几个部分： 系统环境：跑rails必须的服务器系统环境，比如特定版本的ruby，各种第三方库，第三方工具等。
+项目配置：和当前运行环境相关的变量，比如数据库帐号，各种第三方API和服务的连接方式。
+项目代码： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/ordinary-or-extraordinary/">
+  <link rel="canonical" href="http://halida.github.com/blog/rails-server-restore/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">牛逼或怂逼</h1>
+      <h1 class="entry-title">Rails容灾恢复策略</h1>
     
     
       <p class="meta">
@@ -100,7 +99,7 @@
   
 
 
-<time datetime="2013-10-27T19:45:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+<time datetime="2015-03-28T19:53:07+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,36 +108,34 @@
   </header>
 
 
-<div class="entry-content"><p><img src="/images/posts/2013_10_27_tired.jpeg"></p>
+<div class="entry-content"><p>我们可以把一个运行的rails环境，根据处置的方式，拆分成以下几个部分：</p>
 
-<p>不知啥时开始，举目皆是英雄。</p>
+<ul>
+<li>系统环境：跑rails必须的服务器系统环境，比如特定版本的ruby，各种第三方库，第三方工具等。</li>
+<li>项目配置：和当前运行环境相关的变量，比如数据库帐号，各种第三方API和服务的连接方式。</li>
+<li>项目代码：除去和运行环境相关的rails应用代码。</li>
+<li>应用数据：比如数据库，本地一些需要持久化的文件等。</li>
+</ul>
 
-<p>他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
-地球跟随他们转动，历史就是他们的故事。</p>
 
-<p>这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
-英雄开创出来的基业，里面一个个坑还要普通人去填的。
-但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住，还有点小玩头。</p>
+<p>拆分的原因是因为以上几个部分有不同的特性，在构建，备份，恢复的过程中需要用不同的方式来对待。
+特性包括是否经常发生变化，变化的频率，是否和运行环境相关等。</p>
 
-<p>英雄多了，普通人亦不值钱了，
-那些坑已然都挖好，谁人来站没啥区别，换换也就铲子的事儿，犯不着滴多点油水。
-真要耗油水抢地盘的地方不是蓝海就是红海，战刺刀的不是海盗就是海军陆战队，
-要和他们争，也非得上英雄不可，没超能力的还是靠边站吧。</p>
+<p>首先看构建过程。构建过程往往非常繁琐，需要能够自动化进行。拆分成以上几个部分后，构建方案如下：</p>
 
-<p>坑里面油水再少，也算过得下去，一家几口挤个公寓，交齐了月租也能其乐融融，
-本朝政府虽说变扭难养，至少也留口气给你呼吸或者说话，比起上世纪的伟人时代好过活许多，
-外面还有国内外的英雄们开疆扩土，坐着也能等着日子一天天变好。</p>
+<ul>
+<li>用<a href="https://www.chef.io/chef/">chef</a>构建系统环境。</li>
+<li>用<a href="http://capistranorb.com/">cap</a>把项目配置和项目代码构建出应用的执行环境。</li>
+<li>用<a href="http://meskyanichi.github.io/backup/v4/">backup Gem</a>备份和恢复应用数据。</li>
+</ul>
 
-<p>但人本性还是矫情，自己小日子过得不行，还要发贱探头去外面比，一比就完了。
-举目皆是英雄人英雄事，相较之下生活就粗鄙不堪，连带身边婆娘或汉子也俗气了，着实难过。
-难过也就罢了，落下一病，名为不甘心，
-发起病来容易抛妻弃子背井离乡去当英雄，结果底子弱没有超能力，
-英雄当不成，成了狗熊，连自己的一某三分地都丢了。
-只留得脑壳后面印下三个字：不后悔。</p>
 
-<p>所以咋办？
-要么牛逼，要么怂逼，不上不下还是认怂吧，
-没有超能力就不要戴面罩当英雄，不然脸被打得亲妈都认不出来。</p>
+<p>发布新版本，因为只改动了项目代码，只需要重新用cap重新构建执行环境。
+需要增加配置，或者修改应用数据，也不复杂，执行一些特定脚本即可。</p>
+
+<p>系统恢复：可以重头构建，但是时间消耗太长，更好的方案是针对服务器做镜像，也可以用docker做应用级别的镜像。
+另外也需要备份好项目配置，以及隔离和备份出来应用数据。
+出现问题的时候从镜像创建环境，修改配置，恢复备份的应用数据，然后发布最新的代码。</p>
 </div>
 
 
@@ -161,7 +158,7 @@
   
 
 
-<time datetime="2013-10-27T19:45:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+<time datetime="2015-03-28T19:53:07+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2015</time>
       
 
 
@@ -169,7 +166,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/ordinary-or-extraordinary/" data-via="" data-counturl="http://halida.github.com/blog/ordinary-or-extraordinary/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/rails-server-restore/" data-via="" data-counturl="http://halida.github.com/blog/rails-server-restore/" >Tweet</a>
   
   
   
@@ -178,10 +175,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/rails-customize-error-page/" title="Previous Post: rails定制报错页面">&laquo; rails定制报错页面</a>
+        <a class="basic-alignment left" href="/blog/rails-deployment/" title="Previous Post: rails项目的发布">&laquo; rails项目的发布</a>
       
-      
-        <a class="basic-alignment right" href="/blog/boolean-retrieval/" title="Next Post: 最简单的搜索引擎">最简单的搜索引擎 &raquo;</a>
       
     </p>
   </footer>
@@ -277,8 +272,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/ordinary-or-extraordinary/';
-        var disqus_url = 'http://halida.github.com/blog/ordinary-or-extraordinary/';
+        var disqus_identifier = 'http://halida.github.com/blog/rails-server-restore/';
+        var disqus_url = 'http://halida.github.com/blog/rails-server-restore/';
         var disqus_script = 'embed.js';
       
     (function () {

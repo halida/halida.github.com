@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-03-28T10:37:59+08:00</updated>
+  <updated>2015-03-28T20:31:14+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails容灾恢复策略]]></title>
+    <link href="http://halida.github.com/blog/rails-server-restore/"/>
+    <updated>2015-03-28T19:53:07+08:00</updated>
+    <id>http://halida.github.com/blog/rails-server-restore</id>
+    <content type="html"><![CDATA[<p>我们可以把一个运行的rails环境，根据处置的方式，拆分成以下几个部分：</p>
+
+<ul>
+<li>系统环境：跑rails必须的服务器系统环境，比如特定版本的ruby，各种第三方库，第三方工具等。</li>
+<li>项目配置：和当前运行环境相关的变量，比如数据库帐号，各种第三方API和服务的连接方式。</li>
+<li>项目代码：除去和运行环境相关的rails应用代码。</li>
+<li>应用数据：比如数据库，本地一些需要持久化的文件等。</li>
+</ul>
+
+
+<p>拆分的原因是因为以上几个部分有不同的特性，在构建，备份，恢复的过程中需要用不同的方式来对待。
+特性包括是否经常发生变化，变化的频率，是否和运行环境相关等。</p>
+
+<p>首先看构建过程。构建过程往往非常繁琐，需要能够自动化进行。拆分成以上几个部分后，构建方案如下：</p>
+
+<ul>
+<li>用<a href="https://www.chef.io/chef/">chef</a>构建系统环境。</li>
+<li>用<a href="http://capistranorb.com/">cap</a>把项目配置和项目代码构建出应用的执行环境。</li>
+<li>用<a href="http://meskyanichi.github.io/backup/v4/">backup Gem</a>备份和恢复应用数据。</li>
+</ul>
+
+
+<p>发布新版本，因为只改动了项目代码，只需要重新用cap重新构建执行环境。
+需要增加配置，或者修改应用数据，也不复杂，执行一些特定脚本即可。</p>
+
+<p>系统恢复：可以重头构建，但是时间消耗太长，更好的方案是针对服务器做镜像，也可以用docker做应用级别的镜像。
+另外也需要备份好项目配置，以及隔离和备份出来应用数据。
+出现问题的时候从镜像创建环境，修改配置，恢复备份的应用数据，然后发布最新的代码。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails项目的发布]]></title>
@@ -946,80 +982,6 @@ or you can debug it yourself by add log to the gem source code.</p>
 没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
 
 <p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[country of mask]]></title>
-    <link href="http://halida.github.com/blog/english-mask/"/>
-    <updated>2014-06-30T11:17:21+08:00</updated>
-    <id>http://halida.github.com/blog/english-mask</id>
-    <content type="html"><![CDATA[<p>I was thinking, if we all wear masks, we cound decorate ourself as we want,
-present self as we are, to show our true character, without bothered by the nature born face.</p>
-
-<p>Mask is make by ourselves, represented in a way we want to.</p>
-
-<p>You can use this mask:</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_06_30_two.jpeg"></p>
-
-<p>And that:</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_06_30_smile.jpg"></p>
-
-<p>So how could it be, for a world like this? Let me illustrate one.</p>
-
-<p>The first question is, how this could be?
-Tradition may come from nowhere and anywhere,
-As if there was a dectator, have some skin conditions maybe coming from syphilis.
-He wear a mask, and force all the others do so.
-Then dectator goes tradition remains.</p>
-
-<p>For public security, all mask must marked with ID which belongs to individual,
-as in the condition same as car number.
-Steal mask is felony, because it is identity thefting and critical privacy violation.
-People only show their face to the relative really close.</p>
-
-<p>Children&rsquo;s mark are labeled with their parents&#8217; identity, after they come of age,
-they should create their own. There are mask craftsman who fill people&rsquo;s needs.
-Person with figure choose the best tailor, ordinary may buy a template and customize it by their own.</p>
-
-<p>Soldier&rsquo;s mask are standard by rank, for serious concern, all soldiers tatoo for proventing identity theft.</p>
-
-<p>So how to eat food while wearing a mask? Mask should have a moving part on the mouth area for feeding.
-The way people eat will change, Food are cutting into small pieces for easy deliver.
-Then tools for eating are changed accordingly, with tools to clean mouth.</p>
-
-<p>It is impossible to communicate with face expression,
-and it will not be needed, people use tone and gesture to express the subtle.
-For foreigners, understand the art of tones may be challenging.</p>
-
-<p>There could be mask represents emotion, and those who want represent them,
-include women, noble, actor, will prepare lots of them,
-changing them rapidly in the public.</p>
-
-<p>For finding the perfect wife, people seek according to how beautiful her musk is.
-It repesent her light hand.
-Women will spend lots of time on decorating mask, same as in makeup in our country.</p>
-
-<p>But we know man are nature&rsquo;s slave, seek for pretty, they invite girl for dinner,
-look through the small holes on the mouth, to find the evidence.
-Women has contermeasures by using hand or thin cloth to hide.
-And for the women who feel more comfortable about it, would protent to show more,
-even remove part of the cover on the mask.</p>
-
-<p><img src="http://halida.github.com/images/posts/2014_06_30_woman.jpg"></p>
-
-<p>There are still diversity around people. Rich one use better mask,
-embeded with jewel, crafted with special treatment.</p>
-
-<p>And there definitly will be a festival about mask, people bring the best mask off,
-Mask crafter are create all kinds of strange mask to promote themself: the biggest one, smallest one, most delicate one.
-It will attract lots of tourists, they will buy masks and bring them home,
-Collector will gether all kinds of rare masks, special or from special people.
-Mask economy, is important for this country.</p>
-
-<p>It will be fun, if there is a country with mask.</p>
 ]]></content>
   </entry>
   

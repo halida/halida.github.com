@@ -9,8 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这年头做技术没有人不用ssh的吧，然后ssh使用起来还是很不爽的，
-远程服务器慢的时候反应慢，ssh有的时候断掉要重新连。。。 mosh是ssh的替代方案，用来解决慢速网络和移动网络的问题，具体上来说： 连上一台服务器后，不管你切换什么网络，或者网络断掉，或者机器休眠又醒过来，连接都能够一直保持 &hellip;">
+  <meta name="description" content="我是一个游戏爱好者。从初中起我就在玩电脑游戏，一直持续到现在。初中到大学阶段我一直是以PC游戏为主，最近几年我渐渐转移到了独立游戏上面。 为什么我喜欢独立游戏 我喜欢去接触各种新的领域，厌烦没有新意的东西。在独立游戏领域，会有更多人尝试新的游戏性，设计性的东西出来。
+独立游戏一般不会是大制作， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/indie-games/">关于独立游戏</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-08T08:54:00+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2013</time>
+        
+         | <a href="/blog/indie-games/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/etBZ9lM.jpg"></p>
+
+<p>我是一个游戏爱好者。从初中起我就在玩电脑游戏，一直持续到现在。初中到大学阶段我一直是以PC游戏为主，最近几年我渐渐转移到了独立游戏上面。</p>
+
+<h2>为什么我喜欢独立游戏</h2>
+
+<ul>
+<li>我喜欢去接触各种新的领域，厌烦没有新意的东西。在独立游戏领域，会有更多人尝试新的游戏性，设计性的东西出来。</li>
+<li>独立游戏一般不会是大制作，游戏占用的硬盘空间不会很大，容易下载容易保存。</li>
+<li>独立游戏价格一般不会很高，我能够承受得起，并且能够购买相当数量的游戏。</li>
+</ul>
+
+
+<h2>我玩的一些独立游戏</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Roguelike">roguelike</a> 其实是一类游戏，我玩过很久的有：<a href="http://www.adom.de">ADOM</a>，<a href="http://www.nethack.org/">nethack</a>，<a href="http://crawl.develz.org/wordpress/">stonesoup</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/cortex-command/">Cortex Command</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/minecraft/">minecraft</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1230,72 +1288,6 @@ cp wp-config-sample.php wp-config.php
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/reverse-ssh/">如何从外网访问内网主机</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
-        
-         | <a href="/blog/reverse-ssh/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/Ay4f5YX.jpg"></p>
-
-<p>很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。</p>
-
-<p>假设：</p>
-
-<ul>
-<li>A主机（$A_IP）：我们内网需要被访问的主机。</li>
-<li>B主机（$B_IP）：有一个公网IP的主机，可以是购买的VPS。</li>
-<li>C主机（$C_IP）：需要访问A主机的电脑，比如我们随身的笔记本或者手机。</li>
-</ul>
-
-
-<p>首先我们需要把A主机的ssh链接到B主机上面：</p>
-
-<pre><code>autossh -M 2132 $B_IP -N -R 6333:localhost:22
-</code></pre>
-
-<p>我们用autossh来保证A主机的ssh一直保持连接。这个命令把A主机的ssh端口绑定到B主机的6333端口上面。</p>
-
-<p>然后我们需要把B主机的6333端口暴露到公网，工具采用的是万能的端口接口工具socat：</p>
-
-<pre><code>socat TCP-LISTEN:6335,fork TCP:localhost:6333
-</code></pre>
-
-<p>这样在公网的C主机就可以通过B主机的6335端口访问到A主机了：</p>
-
-<pre><code>ssh $B_IP -p 6335
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1313,6 +1305,10 @@ cp wp-config-sample.php wp-config.php
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rails-server-restore/">rails容灾恢复策略</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rails-deployment/">rails项目的发布</a>
       </li>
     
@@ -1326,10 +1322,6 @@ cp wp-config-sample.php wp-config.php
     
       <li class="post">
         <a href="/blog/nodewebkit-client-server-architecture-design/">采用node-webkit进行C/S架构客户端设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/docker-introduction/">docker介绍</a>
       </li>
     
   </ul>
