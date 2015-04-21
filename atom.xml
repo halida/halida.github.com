@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-03-28T20:31:14+08:00</updated>
+  <updated>2015-04-21T12:57:12+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[正确使用社交网络的方法]]></title>
+    <link href="http://halida.github.com/blog/right-way-to-use-sns/"/>
+    <updated>2015-04-21T12:32:51+08:00</updated>
+    <id>http://halida.github.com/blog/right-way-to-use-sns</id>
+    <content type="html"><![CDATA[<p>我们常用的社交网络有：微信，微博，QQ，豆瓣，它们消耗了我们大量的时间，其中绝大部分都被浪费了。</p>
+
+<p>我们在无聊的时候会拿出手机，刷一下动态。刷动态的时候，大脑通过接受信息，获得了奖励：感觉到和他人建立了联系，学到了新的知识，享受到了快感。
+这个过程强化了神经反射：我们有了冲动，经常拿出手机来刷一下，期望能够获得奖励。这是上瘾症状。</p>
+
+<p>我们需要反省一下，应该如何更好地使用社交网络。它对我们的用途有：</p>
+
+<ul>
+<li>娱乐：从其他人分享的内容上面取乐。</li>
+<li>关注认识的人：获取动态，能够保持联系。</li>
+<li>关注有意思的人：获取资讯和洞见。</li>
+</ul>
+
+
+<p>在满足这些用途的前提下，我期望能够更少消耗时间，更好和他人保持联系，获得真正重要的信息。所以这里列了一下更好的使用方式：</p>
+
+<ul>
+<li>社交网络核心的用法是记录人：记录认识的人的联系方式，收集有趣的人的讯息。</li>
+<li>我不建议把社交网络作为娱乐方式，因为：娱乐正是给我们大脑奖励的主要手段，娱乐性内容是成瘾的主要一环，娱乐要么正正经经地玩个痛快，而不是一点点的享受，欲求不满容易刺激上瘾。</li>
+<li>和他人的沟通和联系，尽量用语音聊天或者见面聊，时间成本更低，收益更高。</li>
+<li>保持联系和关注认识的人：每天最多过一遍认识人的动态，尽量回复，而不是点赞，这样他人对你印象更深刻。觉得无关注价值的人，就不用看他的资讯了，记录联系方式即可。</li>
+<li>获得洞见：大多数的信息是碎片化的，不成体系没有阅读价值，建议通过看书获得。最新资讯可以关注一些高质量的讯息来源。</li>
+<li>只利用碎片时间查看和处理动态：没其他事情可做，以及有明确截止时间。比如：等车，等饭，上厕所的时间。整块的时间里，千万不要打开这些手机应用。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails容灾恢复策略]]></title>
@@ -945,43 +978,6 @@ I prefer figure out how gem works by read the source code, so if something goes 
 or you can debug it yourself by add log to the gem source code.</p>
 
 <p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何使用Gem]]></title>
-    <link href="http://halida.github.com/blog/gem/"/>
-    <updated>2014-12-07T09:41:47+08:00</updated>
-    <id>http://halida.github.com/blog/gem</id>
-    <content type="html"><![CDATA[<p>作为rails开发者，无数好用的第三方Gem插件让工作变得更加简单。
-不过东西好用，也还是有一些需要注意的问题。这里整理一下我使用Gem的经验。</p>
-
-<h2>搜索</h2>
-
-<p>第一步是寻找到想要的Gem。最基础的方法是Google搜索，输入想要实现的功能，比如：<code>rails tagging</code>，
-也可以去<a href="https://www.ruby-toolbox.com/">ruby toolbox网站</a>上面根据分类寻找。</p>
-
-<h2>选择</h2>
-
-<p>找到Gem之后，需要选择质量高的Gem，不然会出现各种问题。主要看Github上面是否有很多人Follow，
-以及项目近期是否有足够的更新。</p>
-
-<p>不能随便引入Gem到项目里面，需要从增加的系统复杂度，拓展性，系统稳定性等方面综合考虑。
-除了引入Gem，可以考虑直接拷贝需要的代码文件到项目里面。一些会修改Rails等其他模块的Gem，需要谨慎引入。</p>
-
-<h2>使用</h2>
-
-<p>Gem导入之后，最好要固定版本，这样防止Gem功能变更引入Bug。</p>
-
-<p>选择好了Gem，需要对它有足够的了解。认认真真看一遍文档，wiki，如果文档不清晰，搜索一下使用教程。</p>
-
-<p>我个人偏好把Gem的实现原理弄懂，最好扫一遍源码，这样出现bug或者问题大概有一个方向，
-以及可以学会别人是怎么写ruby的。</p>
-
-<p>当使用Gem的时候出现了问题，可以去项目Github的Issue区块看看有没有人提交类似问题，
-没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
-
-<p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
 ]]></content>
   </entry>
   
