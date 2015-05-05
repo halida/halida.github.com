@@ -9,8 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我现在笔记本的声音都通过耳机输出，耳机有几个不好的地方，就是每次我离开电脑去上厕所或者干什么事情的时候，都要把耳机拔出来，非常不方便，
-我想如果能够把声音换到手机上面，这样挺不错的。我的电脑是rMBP，手机是google galaxy手机。 我搜索到了一些解决方案： rspeakers &hellip;">
+  <meta name="description" content="今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如： 我今天发现一个好的网站，它是：www.dreamore.com 而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。 我今天发现一个好的网站，它是：www. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +78,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/debug-rails-autolink/">调试rails Autolink</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-09T22:03:00+08:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/debug-rails-autolink/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/debug-rails-autolink.jpg"></p>
+
+<p>今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com
+</code></pre>
+
+<p>而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com。
+</code></pre>
+
+<p>我首先判断一下这个问题是否是一个问题。在使用中，中文的逗号和句号都是参见的分割符，用户会很容易就使用这种方法。我觉得这个问题需要解决。</p>
+
+<p>首先是界定问题。这个很明显是渲染链接出错。我采用的是<code>rails_autolink</code>gem，因为在rails3.2中，原先的<code>autolink</code>功能被移除了。</p>
+
+<p>我下载了它的代码库，找到具体做这件事的文件：<code>lib/rails_autolink/helpers.rb</code>，和对应的位置：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">AUTO_LINK_RE</span> <span class="o">=</span> <span class="sr">%r{</span>
+</span><span class='line'><span class="sr">  (?: ((?:ed2k|ftp|http|https|irc|mailto|news|gopher|nntp|telnet|webcal|xmpp|callto|feed|svn|urn|aim|rsync|tag|ssh|sftp|rtsp|afs|file):)// | www\. )</span>
+</span><span class='line'><span class="sr">  [^\s&lt;]+</span>
+</span><span class='line'><span class="sr">}x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它是利用正则来找到链接位置，然后替换的。在<code>[^\s&lt;]+</code>里面，没有取消掉中文的分隔符，这样把后面的东西全部匹配掉了。</p>
+
+<p>找到了问题，如何解决呢？我尝试去掉分隔符，把它替换成<code>[^\s&lt;\p{P}]+</code>，但是发现<code>.</code>是应该被匹配到的，也被包含在了<code>\p{P}</code>里面，于是我要细分以下。
+文档中有：</p>
+
+<pre><code>/\p{Pc}/ - 'Punctuation: Connector'
+/\p{Pd}/ - 'Punctuation: Dash'
+/\p{Ps}/ - 'Punctuation: Open'
+/\p{Pe}/ - 'Punctuation: Close'
+/\p{Pi}/ - 'Punctuation: Initial Quote'
+/\p{Pf}/ - 'Punctuation: Final Quote'
+/\p{Po}/ - 'Punctuation: Other'
+</code></pre>
+
+<p>然后我完全不清楚每一个组里面有什么符号，google也找不到解释，这个时候我只能去挖ruby源码了。
+我用<code>find | grep</code>来找<code>Punctuation</code>，被我找到具体的定义位置在：<code>enc/unicode/name2ctype.h</code>里面。英文的句号被分组在<code>Punctuation: Other</code>中。</p>
+
+<p>这条路走不通，我又回头好好思考了一下，我觉得这个需求并不是全局的，只是针对采用中文的用户有效。我放弃做一个全局的方案，然后提交<code>Pull Request</code>，
+改成自己客制化一个repo算了。于是我<code>fork</code>了这个项目，然后把<code>[^\s&lt;]+</code>改成<code>[^\s&lt;，。]+</code>，<code>push</code>上去，<code>Gemfile</code>里面换成<code>gem 'rails_autolink', github: "halida/rails_autolink"</code>，
+发布到服务器上面去，问题解决了。</p>
+
+<p>但是问题并没有完全结束，我必须在以后的版本里面注意到采用了一个客制化的gem，可能会有各种问题出现。未来的地雷需要小心不要踩到。
+这是一个简单的bug处理，上面是我debug的整个过程，体力活，是以为记，大家对于这个过程有什么看法吗？</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -927,124 +1015,6 @@ after image loaded, hide the gif, and show the image.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/split-big-model-in-rails/">Rails里面拆分大的model</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-04T22:07:00+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time>
-        
-         | <a href="/blog/split-big-model-in-rails/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有的时候，rails里面一个model的工作太多，在一个文件里面都放不下了，于是我需要拆分出不同的模块。我的拆分方法是这样的：</p>
-
-<p>user.rb里面：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">has_module</span> <span class="nb">name</span>
-</span><span class='line'>    <span class="nb">eval</span> <span class="s2">&quot;</span>
-</span><span class='line'><span class="s2">    define_method :</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> do</span>
-</span><span class='line'><span class="s2">      @</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2"> ||= User</span><span class="si">#{</span><span class="nb">name</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">camelize</span><span class="si">}</span><span class="s2">.new(self)</span>
-</span><span class='line'><span class="s2">    end</span>
-</span><span class='line'><span class="s2">    &quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:account</span>
-</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:displayer</span>
-</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:privacy</span>
-</span><span class='line'>  <span class="n">has_module</span> <span class="ss">:message</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后对应的职责模块：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserDisplayer</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span> <span class="n">user</span>
-</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">address</span>
-</span><span class='line'>    <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">city</span><span class="si">}#{</span><span class="s1">&#39;, &#39;</span> <span class="k">unless</span> <span class="vi">@user</span><span class="o">.</span><span class="n">city</span><span class="o">.</span><span class="n">blank?</span> <span class="ow">or</span> <span class="vi">@user</span><span class="o">.</span><span class="n">country</span><span class="o">.</span><span class="n">blank?</span><span class="si">}#{</span><span class="vi">@user</span><span class="o">.</span><span class="n">country</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后调用的方式：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span> <span class="mi">5</span>
-</span><span class='line'><span class="n">user</span><span class="o">.</span><span class="n">displayer</span><span class="o">.</span><span class="n">address</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当用到对应模块的时候，才会加载该模块。</p>
-
-<p>原先我考虑过采用concerns，但是看起来只是把代码移动到另外的地方去，
-当需要调试的时候很不方便，不知道代码放到哪里了。所以不觉得好用。</p>
-
-<p>大家有什么看法？</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1062,6 +1032,10 @@ after image loaded, hide the gif, and show the image.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/chef-manage-small-group-of-servers/">用chef对少量服务器进行配置管理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/right-way-to-use-sns/">正确使用社交网络的方法</a>
       </li>
     
@@ -1075,10 +1049,6 @@ after image loaded, hide the gif, and show the image.</p>
     
       <li class="post">
         <a href="/blog/introduce-slack/">slack介绍-企业级实时通讯工具</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/introduce-bitcoin/">比特币介绍</a>
       </li>
     
   </ul>

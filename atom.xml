@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-04-21T12:57:12+08:00</updated>
+  <updated>2015-05-05T11:27:33+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[用chef对少量服务器进行配置管理]]></title>
+    <link href="http://halida.github.com/blog/chef-manage-small-group-of-servers/"/>
+    <updated>2015-05-05T10:12:09+08:00</updated>
+    <id>http://halida.github.com/blog/chef-manage-small-group-of-servers</id>
+    <content type="html"><![CDATA[<p>原先<a href="http://blog.dev/blog/introduce-chef/">介绍了chef</a>，现在需要面对一个实际的问题：如何用chef管理少量的服务器。</p>
+
+<p>我希望：</p>
+
+<ul>
+<li>能够对几台或者十几台服务器进行配置管理。</li>
+<li>针对每台服务器，写yml格式的配置文件，执行一个命令之后，就可以配置好这台服务器，同时源码管控这个yml文件的变更。</li>
+<li>支持复杂的服务器配置，包括启动项目管理，自动告警，日志归总等。</li>
+<li>不需要管理服务器，比如chef-server这样的东西，只需要留有本地的配置文件。</li>
+</ul>
+
+
+<p>我采用的解决方案：</p>
+
+<ul>
+<li>用<a href="https://github.com/tobami/littlechef">littlechef</a>，这个项目可以把<a href="https://docs.chef.io/chef_solo.html">chef-solo</a>，一个本地跑chef的方法，部署到远端服务器上面去，同时拷贝本地的recipe和配置文件到远端，执行需要的操作。</li>
+<li>写recipe，让部署能够通过写node配置文件进行配置，比如启动服务，日志归总，服务器管理员用户，自动重启更新等。</li>
+<li>用yml格式撰写node配置文件，以及datatag配置文件，然后用自动化脚本转换成json格式。手动写json太反人类了。</li>
+<li>远端的脚本用ruby写，脚本里面的参数不是用erb渲染出来的，而是把配置序列化成yml，ruby脚本再读取它们。这样远端服务器上面的执行代码是规整的，人可以阅读。</li>
+</ul>
+
+
+<p>都弄好之后，可以写这样的服务器配置文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'>  <span class="c1"># 服务器名字</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="s">&quot;test&quot;</span>
+</span><span class='line'>  <span class="c1"># 基础配置的recipe</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">base-system</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="c1"># 是否跑软件包更新</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">update</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+</span><span class='line'>    <span class="c1"># 是否设置自动更新</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">auto-upgrade</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># base-system会自动创建一个deployer管理员用户，谁可以通过公钥的方式访问这个用户</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">authorized_keys</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="s">&quot;linjunhalida&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 写在databags里面的配置参数，可以连接到slack发提醒</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">notify</span><span class="p-Indicator">:</span> <span class="s">&#39;test&#39;</span>
+</span><span class='line'>    <span class="c1"># 是否每天判断服务器是否需要重启或者更新</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">check</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">need_reboot</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">need_upgrade</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>    <span class="c1"># 设置服务器定期重启</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">schedule-reboot</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">minute</span><span class="p-Indicator">:</span> <span class="s">&#39;26&#39;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">hour</span><span class="p-Indicator">:</span> <span class="s">&#39;8&#39;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">weekday</span><span class="p-Indicator">:</span> <span class="s">&#39;2&#39;</span>
+</span><span class='line'>    <span class="c1"># 设置服务器自动升级安全更新</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">schedule-upgrade</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">reboot</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">minute</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">hour</span><span class="p-Indicator">:</span> <span class="s">&#39;0&#39;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">weekday</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span><span class='line'>    <span class="c1"># 服务器启动的时候跑的应用</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="s">&quot;railsapp&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="s">&#39;deployer&#39;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">pwd</span><span class="p-Indicator">:</span> <span class="s">&#39;/home/deployer/apps/railsapp/current&#39;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">cmds</span><span class="p-Indicator">:</span>
+</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">thin</span><span class="nv"> </span><span class="s">restart</span><span class="nv"> </span><span class="s">-C</span><span class="nv"> </span><span class="s">config/thin.yml&#39;</span>
+</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">resque:restart_workers&#39;</span>
+</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">ts:restart&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">run_list</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&quot;recipe[chef-solo-search]&quot;</span> <span class="c1"># so chef-solo search can work</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&quot;recipe[base-system]&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>chef部署之后，会创建目录<code>/etc/base-system</code>，里面存放各种配置和执行脚本，同时安装到crontab，/etc/rc.local等各种地方。
+服务器的关键操作，比如重启，安全更新结果，都会通过notify功能汇报到slack上面。
+我可以通过node配置文件，清晰看到每台服务器是如何配置的。并且这个系统可以演化，更换一种配置方式，只需要重新跑一下部署。</p>
+
+<p>不过还是有一些难办的问题：</p>
+
+<ul>
+<li>littlechef项目成熟度不高，使用起来不是很舒服。</li>
+<li>架构复杂：chef已经很复杂了，远端还要部署一个ruby环境，架构复杂带来调试和理解上面的难度。</li>
+<li>学习成本高：维护者需要弄懂chef，远端编织起来的ruby框架，之后才能配置服务器，最后可能只是需要加上一个小东西。</li>
+<li>维护成本：又多了一个项目了。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[正确使用社交网络的方法]]></title>
@@ -941,43 +1077,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 <li>移动硬盘备份视频，漫画等</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[how to use gem]]></title>
-    <link href="http://halida.github.com/blog/english-gem/"/>
-    <updated>2014-12-07T09:48:29+08:00</updated>
-    <id>http://halida.github.com/blog/english-gem</id>
-    <content type="html"><![CDATA[<p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
-Gem is flaring, but handle without enough care, it may cut your finger bleeding.
-As a jeweler, I can share some knowledge about it.</p>
-
-<h2>Search</h2>
-
-<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
-or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
-
-<h2>Pick</h2>
-
-<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
-you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
-
-<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
-Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
-Some gem may change rails module, handle them with caution.</p>
-
-<h2>Use</h2>
-
-<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
-
-<p>You must know what you have done, read gem documents, wiki, know how to use it.
-I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
-
-<p>When something bad happens, check the gem project issue page,
-or you can debug it yourself by add log to the gem source code.</p>
-
-<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
 ]]></content>
   </entry>
   
