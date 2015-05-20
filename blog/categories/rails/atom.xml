@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-05-10T22:42:07+08:00</updated>
+  <updated>2015-05-20T09:26:43+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,172 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[rails导出数据经验整理]]></title>
+    <link href="http://halida.github.com/blog/rails-export-data/"/>
+    <updated>2015-05-20T08:42:25+08:00</updated>
+    <id>http://halida.github.com/blog/rails-export-data</id>
+    <content type="html"><![CDATA[<p>最近做了一些rails数据导出的工作，就是把一些特定的ActiveRecord数据挖出来，保存到表格里面。
+需要注意几件事：执行速度，内存消耗，以及调试速度。</p>
+
+<h2>执行速度</h2>
+
+<p>导数据的程序基本上就是一个循环体，外部获取数据集，内部把一条数据转换成表格。
+在内部，往往需要通过一条记录作为主体，通过数据库逻辑关系顺藤摸瓜挖出一批数据，
+这样会形成一批短查询，因为是在循环体里面，会带来很大时间上的消耗，比如：</p>
+
+<p><code>ruby
+out = []
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  out &lt;&lt; [unit.company.name]
+end
+</code></p>
+
+<p>可以先把这些查询汇总起来，一次查询掉，然后在循环体内部筛选出对应的数据：</p>
+
+<p><code>
+out = []
+units = Unit.where("active_at" &lt; Time.now)
+company_names = Company.where(id: units.pluck(:company_id).uniq).pluck(:id, :name).to_h
+units.each do |unit|
+  out &lt;&lt; [company_names[unit.company_id]]
+end
+</code></p>
+
+<h2>内存消耗</h2>
+
+<p>查询大量数据的时候，可以首先查所有的ID，然后分批查询，这样防止序列化大量的数据库对象：</p>
+
+<p>```ruby
+unit_ids = Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).pluck(:id)
+group_size = 100
+unit_ids.in_groups_of(group_size, false) do |ids|
+  Unit.where(id: ids).each do |unit|</p>
+
+<pre><code>...
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>数据全部缓存在一个array中的话，会占用大量内存，最好是通过数据流的方式一个个输出处理，用后即丢：</p>
+
+<p>```ruby
+def export
+  Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).each do |unit|</p>
+
+<pre><code>yield([unit.name])
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>CSV.open(&lsquo;out.csv&rsquo;, wb) do |csv|
+  export { |row| csv &lt;&lt; row }
+end
+```</p>
+
+<p>在循环体内部，尽量用局部变量，不用的资源会更早释放。</p>
+
+<p>跑数据导出的时候，最好同时注意一下服务器的剩余内存。不要把其它服务搞挂了。</p>
+
+<h2>调试速度</h2>
+
+<p>导数据最花费时间的往往还是调试过程。</p>
+
+<p>调试的时候，可以只返回几条数据，检查完毕之后再全部跑。</p>
+
+<p><code>ruby
+debug = true
+index = 0
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  yield([unit.name])
+  index += 1
+  break if debug and index &gt;= 10
+end
+</code></p>
+
+<p>需要考虑数据并不是很规整，做好预防性编程。</p>
+
+<p><code>ruby
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  yield([unit.company.try(:name)]) # 公司可能不存在
+end
+</code></p>
+
+<p>很多时候难免特定数据不符合预设状况，最好循环体内部记录log，出现问题可以跟踪。
+比如下面的例子，unit没有oldest_driver的时候，会报错，记录了日志，就知道在哪条上面出现了问题。</p>
+
+<p><code>ruby
+logs = []
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  logs &lt;&lt; "unit: #{unit.id}"
+  oldest_driver = unit.drivers.order('age desc').first
+  #
+  yield([ordest_driver.name])
+end
+</code></p>
+
+<p>导出数据可以生成两个版本，一个给客户，另外一个加上一些debug数据方便自己分析。</p>
+
+<p>```ruby
+def export
+  Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).each do |unit|</p>
+
+<pre><code>yield([unit.name, 'debug', unit.id])
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>CSV.open(&lsquo;out.csv&rsquo;, wb) do |csv|
+  CSV.open(&lsquo;out_debug.csv&rsquo;, wb) do |debug_csv|</p>
+
+<pre><code>export { |row|
+  debug_csv &lt;&lt; row
+  csv &lt;&lt; row[1..1]
+}
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h2>架构设计</h2>
+
+<p>代码架构上面最重要的是职责清晰。导出数据的逻辑比较简单，分离出导数据类，以及处理数据类就可以了：</p>
+
+<p>```ruby
+module Exporter
+  def iterator_to_csv(filename, iterator)</p>
+
+<pre><code>CSV.open(filename, wb) do |csv|
+iterator.call { |row| csv &lt;&lt; row }
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class ExportActiveUnits
+  attr_accessor :time
+  def export</p>
+
+<pre><code>Unit.where("active_at" &lt; time).each do |unit|
+  yield([unit.name])
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>eau = ExportActiveUnits.new
+eau.time = Time.now
+Exporter.iterator_to_csv &ldquo;out.csv&rdquo;, eau.method(:export)
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[试用gitlab]]></title>
