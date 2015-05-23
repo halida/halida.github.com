@@ -9,10 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我现在算是一个rails程序员了， 作为一门技术的使用者，
-必要的时候要向其他人推广和介绍这门技术， 下面是我准备的slide,
-不定期更新。
-">
+  <meta name="description" content="什么是pjax? 现在很多网站(facebook,
+twitter)都支持这样的一种浏览方式，
+当你点击一个站内的链接的时候， 不是做页面跳转， 而是只是站内页面刷新。
+这样的用户体验， 比起整个页面都闪一下来说， 好很多。 其中有一个很重要的组成部分， 这些网站的ajax刷新是支持浏览器历史的 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,346 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pjax/">Pjax是什么以及为什么推荐大家用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-19T16:21:04+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
+        
+         | <a href="/blog/pjax/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://webification.com/wp-content/uploads/2011/03/pjaxascii.png" alt="image" /></p>
+
+<h2>什么是pjax?</h2>
+
+<p>现在很多网站(<a href="https://twitter.com/">facebook</a>,
+<a href="https://twitter.com/">twitter</a>)都支持这样的一种浏览方式，
+当你点击一个站内的链接的时候， 不是做页面跳转， 而是只是站内页面刷新。
+这样的用户体验， 比起整个页面都闪一下来说， 好很多。</p>
+
+<p>其中有一个很重要的组成部分， 这些网站的ajax刷新是支持浏览器历史的，
+刷新页面的同时， 浏览器地址栏位上面的地址也是会更改，
+用浏览器的回退功能也能够回退到上一个页面。</p>
+
+<p>那么如果我们想要实现这样的功能， 我们如何做呢？</p>
+
+<p>我发现pjax提供了一个脚本支持这样的功能。</p>
+
+<p>pjax项目地址在
+<a href="https://github.com/defunkt/jquery-pjax">https://github.com/defunkt/jquery-pjax</a>
+。 实际的效果见： <a href="http://pjax.heroku.com">http://pjax.heroku.com</a>/
+没有勾选pjax的时候， 点击链接是跳转的。 勾选了之后，
+链接都是变成了ajax刷新。</p>
+
+<h2>为什么要用pjax?</h2>
+
+<p>pjax有好几个好处：</p>
+
+<ul>
+<li><p>用户体验提升。</p>
+
+<p>页面跳转的时候人眼需要对整个页面作重新识别， 刷新部分页面的时候，
+只需要重新识别其中一块区域。自从我在自己的网站
+<a href="http://gurudigger.com/">GuruDigger</a> 上面采用了pjax技术后，
+不由觉得访问其他只有页面跳转的网站难受了许多。 同时，
+由于刷新部分页面的时候提供了一个loading的提示，
+以及在刷新的时候旧页面还是显示在浏览器中，
+用户能够容忍更长的页面加载时间。</p></li>
+<li><p>极大地减少带宽消耗和服务器消耗。</p>
+
+<p>由于只是刷新部分页面， 大部分的请求（css/js）都不会重新获取，
+网站带有用户登录信息的外框部分都不需要重新生成了。
+虽然我没有具体统计这部分的消耗， 我估计至少有40%以上的请求，
+30%以上的服务器消耗被节省了。</p></li>
+</ul>
+
+
+<p>坏处我觉得也有：</p>
+
+<ul>
+<li><p>IE6等历史浏览器的支持</p>
+
+<p>虽然我没有实际测试， 但是由于pjax利用到了新的标准，
+旧的浏览器兼容会有问题。 不过pjax本身支持fallback，
+当发现浏览器不支持该功能的时候， 会回到原始的页面跳转上面去。</p></li>
+<li><p>复杂的服务器端支持</p>
+
+<p>服务器端需要根据过来的请求， 判断是作全页面渲染还是部分页面渲染，
+相对来说系统复杂度增大了。 不过对于设计良好的服务器代码，
+支持这样的功能不会有太大的问题。</p></li>
+</ul>
+
+
+<p>综合起来， 由于用户体验和资源利用率的提升， 坏处是可以完全得到弥补的。
+<strong>我强烈推荐大家使用。</strong></p>
+
+<h2>如何使用pjax?</h2>
+
+<p>直接看 <a href="https://github.com/defunkt/jquery-pjax">官方文档</a> 就可以了。</p>
+
+<p>我觉得做技术的人要养成看一手的技术资料的习惯。</p>
+
+<p>有一个rails针对pjax的 <a href="https://github.com/rails/pjax_rails">gem插件</a>
+可以直接使用。 也有
+<a href="https://github.com/jacobian/django-pjax">django的支持</a> 。</p>
+
+<h2>pjax的原理</h2>
+
+<p>为了能够处理问题， 我们需要能够理解pjax的运作方式。
+pjax的代码只有一个文件：
+<a href="https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js">https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js</a></p>
+
+<p>如果有能力， 可以自己去看一遍。 我这里解释一下原理。</p>
+
+<p>首先， 我们在html里面指定， 需要做pjax的链接内容是哪些，
+以及点击之后需要更新的部分（放在data-pjax属性里面）:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a[data-pjax]&#39;</span><span class="p">).</span><span class="nx">pjax</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当加载了pjax脚本之后， 它会拦截这些链接的事件， 然后包装成一个ajax请求，
+发送给服务器。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click.pjax&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">pjax</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">pjax</span><span class="p">.</span><span class="nx">xhr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个请求带有X-PJAX的HEADER标识， 服务器在收到这样的请求的时候，
+就知道只需要渲染部分页面返回就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX-Container&#39;</span><span class="p">,</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pjax接受到返回的请求之后， 更新data-pjax指定的区域，
+同时也会更新浏览器的地址。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">extractContainer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span>
+</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了能够支持浏览器的后退， 利用到了history的api， 记录下来对应的信息，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">id</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="nx">uniqueId</span><span class="p">(),</span>
+</span><span class='line'>  <span class="nx">url</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">container</span><span class="o">:</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">fragment</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">timeout</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">timeout</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">push</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span><span class="p">(</span><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当浏览器后退的时候， 拦截事件， 根据记录的历史信息， 产生一个新的ajax请求。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;popstate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">state</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">state</span> <span class="o">&amp;&amp;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">container</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">push</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">fragment</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">timeout</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">timeout</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">scrollTo</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">contents</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;start.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">state</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:end&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;end.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了支持fallback， 一个是在加载的时候判断浏览器是否支持history push state
+API：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Is pjax supported by this browser?</span>
+</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">support</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span>
+</span><span class='line'>  <span class="c1">// pushState isn&#39;t reliable on iOS until 5.</span>
+</span><span class='line'>  <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个是当发现请求一段时间没有回复的时候（可以设置参数timeout），
+直接做页面跳转。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">beforeSend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">timeoutTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;pjax:timeout&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">]))</span>
+</span><span class='line'>        <span class="nx">xhr</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">},</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Clear timeout setting so jquerys internal timeout isn&#39;t invoked</span>
+</span><span class='line'>    <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>既然都看到这里了， 你为什么不去实际使用一下pjax呢？ 有那么多好处，
+我觉得几乎所有网站都应该采用pjax。 赶紧用起来吧！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1221,129 +1561,6 @@ variable(真绕). 因为@@定义在类树里面, 容易产生bug, 不建议使�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-deploy-by-passenger/">Rails_deploy方法之采用passenger</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-21T09:32:08+08:00" pubdate data-updated="true">Dec 21<span>st</span>, 2011</time>
-        
-         | <a href="/blog/rails-deploy-by-passenger/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这里整理一下rails deploy的几种方法.</p>
-
-<h2>Passenger</h2>
-
-<p>首先是最简单的采用 <a href="http://www.modrails.com/documentation.html">Phusion
-Passenger</a>,
-现在大家都用nginx了吧, 那么下面主要还是看
-<a href="http://www.modrails.com/documentation/Users%20guide%20Nginx.html">passenger和nginx的配置</a>.</p>
-
-<p>首先安装passenger:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install passenger
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后安装nginx插件， 需要系统权限， 所以采用rvmsudo:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rvmsudo passenger-install-nginx-module
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后设置nginx: (sudo vi /opt/nginx/conf/nginx.conf)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>http <span class="o">{</span>
-</span><span class='line'>    passenger_root /somewhere/passenger-x.x.x;
-</span><span class='line'>    passenger_ruby /usr/bin/ruby;
-</span><span class='line'>    passenger_max_pool_size 10;
-</span><span class='line'>
-</span><span class='line'>    gzip on;
-</span><span class='line'>
-</span><span class='line'>    server <span class="o">{</span>
-</span><span class='line'>        server_name www.foo.com;
-</span><span class='line'>        listen 80;
-</span><span class='line'>        root /webapps/foo/public;
-</span><span class='line'>        passenger_enabled on;
-</span><span class='line'>        passenger_use_global_queue on;
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改完设置之后重新启动nginx:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo /opt/nginx/sbin/nginx -s reload
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>重启服务的话只要:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>touch /webapps/mycook/tmp/restart.txt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>基本上这样就可以了. passenger工作的方式还是基于多进程, 它会根据一套算法,
-来计算开启多少个线程, 以及如何生成进程, 来响应用户请求.</p>
-
-<p>最好要看一下 passenger_spawn_method 和 Spawning methods explained
-的部分, 了解一下工作原理. Analysis and system
-maintenance这部分也最好看看.</p>
-
-<p>不过听说passenger只是给初学者用的, 大家会用其他的可配置的工具. 比如
-<a href="http://unicorn.bogomips.org/">unicorn</a> 等等.</p>
-
-<p>这里再补充一下unicorn的使用方法, 基本上gem install unicorn,
-然后执行unicorn_rails -p 8080就可以了.
-在nginx上面设置一下端口转发80到8080就能用了. 这里有一个 <a href="http://unicorn.bogomips.org/examples/nginx.conf">unicorn
-nginx的示例</a> 可以抄.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -1361,6 +1578,10 @@ nginx的示例</a> 可以抄.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/fuck-commandline/">更好的命令行</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rails-export-data/">rails导出数据经验整理</a>
       </li>
     
@@ -1374,10 +1595,6 @@ nginx的示例</a> 可以抄.</p>
     
       <li class="post">
         <a href="/blog/right-way-to-use-sns/">正确使用社交网络的方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rails-server-restore/">rails容灾恢复策略</a>
       </li>
     
   </ul>

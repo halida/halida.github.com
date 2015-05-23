@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-05-20T09:26:43+08:00</updated>
+  <updated>2015-05-23T09:21:45+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[更好的命令行]]></title>
+    <link href="http://halida.github.com/blog/fuck-commandline/"/>
+    <updated>2015-05-23T08:56:28+08:00</updated>
+    <id>http://halida.github.com/blog/fuck-commandline</id>
+    <content type="html"><![CDATA[<p>命令行大家应该都熟悉了，但是命令行其实是很烂的，
+输入和输出都采用字符串的方式，而不是一个规整的数据结构。
+这样的后果是，每个程序都需要自己解析输入，以及提供一个特殊结构的输出，
+很容易出现解析上面的问题。</p>
+
+<p>从本质上面说，命令行就是一个函数执行的接口，终端就是一个状态机，
+每一个命令就是一个函数。那么为什么不像通用的编程语言的函数一样来定义？</p>
+
+<p>比如这样来写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 普通操作</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">date</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Sat May 23 09:18:38 CST 2015&quot;</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">rm</span><span class="p">(</span><span class="s1">&#39;/fdas/fdas/fda&#39;</span><span class="p">,</span> <span class="ss">directory</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出结构化</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="p">{</span><span class="ss">mode</span><span class="p">:</span> <span class="s1">&#39;drwxr-xr-x&#39;</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">group</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span><span class="p">(</span><span class="ss">columns</span><span class="p">:</span> <span class="o">[</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:size</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 管道</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">history</span> <span class="o">&gt;&gt;</span> <span class="nb">select</span><span class="p">{</span><span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="n">row</span><span class="o">[</span><span class="ss">:cmd</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/mina/</span> <span class="p">}</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="ss">cmd</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mina init&#39;</span><span class="p">},</span> <span class="n">run_at</span><span class="p">:</span> <span class="s1">&#39;2014-02-01 10:00:21&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span> <span class="o">&gt;&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Gemfile.lock&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 很多命令应该用面向对象的方式来执行，更容易理解</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span> <span class="o">=</span> <span class="n">git</span><span class="o">-</span><span class="n">get</span><span class="o">-</span><span class="n">commit</span><span class="p">(</span><span class="s1">&#39;master&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span><span class="mi">3</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">committer</span>
+</span><span class='line'><span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;James&#39;</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s1">&#39;james@gmail.com&#39;</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出日志就算是以文字的方式体现，也最好结构化起来，方便解析</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="s2">&quot;Process file (filename) finished, spend time (spendtime)&quot;</span><span class="p">,</span> <span class="ss">filename</span><span class="p">:</span> <span class="s2">&quot;xxx.mov&quot;</span><span class="p">,</span> <span class="ss">spendtime</span><span class="p">:</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">spendtime</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上搜索了一下，看起来没有什么好的解决方案，有时间我可以开发一个看看。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[rails导出数据经验整理]]></title>
@@ -1243,23 +1323,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 <p>About choosing file system. SSD can use <code>ext4</code> with <a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">some adjustment</a> to reduce write, HDD can use <code>ext4</code> for ordinary use, if used for file sharing and service, <a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a> is a good fit: Compressed storage, higher ID throughput.</p>
 
 <p>If you want setup NAS disk array, RAID0 is the simplest solution, multiple disks handle IO in the same time. If you have to store some important data, use RAID2: dual disk write the same data. But RAID1 spend too much disk space, software RAID5 can balance it well enough. If you know nothing about RAID, you can watch <a href="http://www.acnc.com/raid">this demo</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[linux分区策略]]></title>
-    <link href="http://halida.github.com/blog/linux-disk-format/"/>
-    <updated>2014-12-16T17:21:51+08:00</updated>
-    <id>http://halida.github.com/blog/linux-disk-format</id>
-    <content type="html"><![CDATA[<p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
-
-<p>最近我购买了<a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">一台NAS</a>用作家庭服务器，需要考虑如何设置磁盘，如何分区和安排加载linux目录，这里整理一下思路。</p>
-
-<p>我有SSD和HDD（就是我们平常的硬盘），SSD读写更快，但是有写入寿命，以及平均价格更贵。SSD挂载在<code>/</code>，这样操作系统跑起来更快。<code>/home</code>，<code>/var</code>这种经常写操作的目录，就挂载在HDD上面。<code>/tmp</code>这种临时目录，可以用内存文件系统<code>tmpfs</code>。</p>
-
-<p>SSD的分区用<code>ext4</code>就好，不过需要<a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">设置一些参数用来减少写入</a>。HDD的分区根据状况，如果是普通操作，<code>ext4</code>就可以了，如果用来分享文件和媒体，可以用<a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a>，压缩存储，更高的IO性能。</p>
-
-<p>如果用硬盘架设NAS，最简单的方法是RAID0，多磁盘同时读写增加性能。如果有重要数据，用RAID1，2个磁盘镜像备份。RAID1镜像有点浪费空间，可以用软件RAID5增加使用效率，如果你对RAID不熟悉，这里有一个<a href="http://www.acnc.com/raid">形象的演示</a>。</p>
 ]]></content>
   </entry>
   
