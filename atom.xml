@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2015-08-29T09:20:05+08:00</updated>
+  <updated>2015-08-29T16:52:52+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[什么通用数据交换格式更好]]></title>
+    <link href="http://halida.github.com/blog/common-data-exchange-format/"/>
+    <updated>2015-08-29T16:34:06+08:00</updated>
+    <id>http://halida.github.com/blog/common-data-exchange-format</id>
+    <content type="html"><![CDATA[<p>考虑可以同时用来应对程序和人都需要阅读状况的通用数据格式，
+几个层面：</p>
+
+<p>首先是数据格式，需要能够支持：string, bool, number, time。
+它们都应该是标准化了的。考虑不增加symbol，因为和string有概念上面的重复，
+使用上会产生困扰。</p>
+
+<p>然后是数据的组织方式。因为组织本身是不可变的，用map和list能够覆盖所有类型的数据组合方式，
+并且是完备的。tuple这种冗余不需要。</p>
+
+<p>最重要的是数据的表示方式。
+人工阅读的数据应该容易阅读，所以数据要有换行和缩进，没有xml这种尾部冗余。
+数据组织之间的切割应该用分割符，而不是换行。类似yaml这种换行分割会带来更多的问题。
+数据应该同时有两种表示方式，一种文本格式，用utf8编码，方便人阅读，
+一种二进制格式，机器处理更快，两种方式能够互相转换。</p>
+
+<p>关于xml，如果说json是类型的组合，那么xml就是物件的组合，默认物件拥有属性和子项，
+所以xml我觉得是一种非通用的格式，本质模型不适合进行通用数据交换。</p>
+
+<p>根据上述考虑，我觉得合适的方案是：格式化之后(换行缩进)的json，结合bson来用。
+比如RESTful的服务，返回的json默认增加缩进，同时也提供bson格式的返回，不考虑其他格式。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[局域网时代下科学上网]]></title>
@@ -1341,49 +1370,6 @@ Got more resposibility now, hard to keep on with the same speed, and left back f
 <li>和线上其他高质量人群建立联系，不然视野太局限了。</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[old is better]]></title>
-    <link href="http://halida.github.com/blog/english-old-is-better/"/>
-    <updated>2014-12-27T22:28:42+08:00</updated>
-    <id>http://halida.github.com/blog/english-old-is-better</id>
-    <content type="html"><![CDATA[<p>We programmers face a pitfall: there are always new things to learn. like nodejs, swift, programming languages, development tools,
-machine learning, statistics, UI design, etc&hellip;</p>
-
-<p>Time is scare, life can be wasted by learn new things. The more you spend on learning, the more time you are wasting.</p>
-
-<p>New knowledge may has those porperties:</p>
-
-<ul>
-<li><code>Unstable</code>: With limited man power and usecase, you may face lots of unneccessary challenges.</li>
-<li><code>Limited Domain</code>: Those knowledge are limited under some special case, learned but never used.</li>
-<li><code>Homogenization</code>: Another dynamic typing, functional, script programming language.</li>
-<li><code>Too much for an human Brain</code>: A dev team have frontend, backend, designer is for good reason. those knowledge are not fit for one man&rsquo;s brain.</li>
-</ul>
-
-
-<p>Because of those properties, I recommand learn old things other then new one:</p>
-
-<ul>
-<li><code>Tested by time</code>: Like C, shell, even English, those are the things you will eventually use.</li>
-<li><code>Fundamantal</code>: tcp/ip protocol, Operation System, Database, Baisc Algorithm, maybe you are not using them everyday, that will bring great value when time comes.</li>
-<li><code>The thing you are using</code>: Level up is better than learn a new skill.</li>
-</ul>
-
-
-<p>Also, there are cases I think we can learn new things:</p>
-
-<ul>
-<li><code>Take Small Step</code>: You can take an overview, but deside before further learning.</li>
-<li><code>Expend current domain</code>: You can learn things which is supplement for your current knowledge domain, like you are a web developer, learn async web frameworks.</li>
-<li><code>Better replacement of current ones</code>: If you are PHP programmer, try to learn Rails.</li>
-<li><code>Next step abour your career</code>: If you want to be an data scientist, you need learn lots about statistic.</li>
-</ul>
-
-
-<p>Most of the time, investment on an old knowledge is better then the new one. An jack-of-all-trades programmer is cheaper than a domain expert.</p>
 ]]></content>
   </entry>
   
