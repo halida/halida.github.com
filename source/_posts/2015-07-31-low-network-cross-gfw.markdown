@@ -6,6 +6,8 @@ comments: true
 categories: 
 ---
 
+(2015-08-29更新SS方法)
+
 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
 但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
 访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。
@@ -30,7 +32,7 @@ categories:
 
 具体操作：
 
-- 注册云涟，按照教程，本地电脑连接上VPN。
+- 注册[微林](https://vnet.link/?rc=18121)，按照教程，本地电脑连接上VPN。
 - 购买一台便宜的国外VPS，比如[DigitalOcean](https://www.digitalocean.com)。
 - 如果你是linux或者mac，在命令行执行 ssh -ND 1080 user@digital_ocean_vps_ip。
 - 设置浏览器的代理，用sock5，地址是127.0.0.1，端口1080。
@@ -40,3 +42,23 @@ categories:
 国外VPS就便宜了，DigitalOcean是5美元一个月。
 
 期待有科学上网服务商提供这样的整体方案，省得大家自己弄了。
+
+2015-08-29更新：
+
+因为ssh提供sock5代理的性能问题，以及有协议特征容易被防火墙干扰，我建议大家换用shadowsocks。
+它是一个python写的客户端/服务器分离的sock5代理（国外服务器跑server端，client端和server端加密通讯，client端再启动一个sock5服务）。
+现在作者被喝茶，官方项目已经废掉了，不过还有[其他的镜像](https://github.com/Long-live-shadowsocks/shadowsocks)。
+
+客户端和服务器双方预先保存密码，没有登录等操作，直接用密码加密通讯，
+同时可以选择多种加密方式，这样通讯没有协议特征，防火墙没有办法干扰。
+不过还是会有流量特征，防火墙如果开启智能学习的话，会把通讯劣化掉。不过现在好像没有进行这样的干扰。
+同时因为跑的是非主流协议，运营商会降低通讯的优先级，造成性能差一些。
+
+使用方法：
+
+- 购买一台便宜的国外VPS，比如[DigitalOcean](https://www.digitalocean.com)。
+- [在VPS上面安装SS](https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Shadowsocks-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)，然后执行`ssserver -p 4431 -k password`。记得修改-k的密码参数。
+- 注册[微林](https://vnet.link/?rc=18121)，在vxTrans里面创建一个端口映射，指向你的VPS服务器的4431端口。通过微林的CN2精品网络保证出国带宽。
+- 在你本地机器上面安装SS，执行`sslocal -s 微林服务器地址 -p 微林服务器分配给你的端口号 -k password -l 1080`，这样连接到微林的端口转接，同时在本地启动了一个1080的sock5服务。
+- 设置浏览器的sock5代理，指向本地服务器的1080端口。
+- 如果你希望在命令行下面翻墙，可以安装[proxychains-ng](https://github.com/rofl0r/proxychains-ng)，OSX下面可以用brew安装。
