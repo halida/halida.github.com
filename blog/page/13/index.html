@@ -9,10 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天去 hacking thursday 的活动,
-听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
-整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下. 我们先从显示器说起. 显示器负责真正把图像呈现给我们,
-一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号, &hellip;">
+  <meta name="description" content="这几天抽空把 javascript web
+applications 这本书看完了,
+整理一下学到的东西. 在我看来, 整本书主要内容就是讲如何抽象js前端开发, 让代码变得更清晰.
+具体采用的手法是在js里面实现class, MVC, module等抽象. 整理整理一下我觉得对我来说重要的知识点 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,196 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/javascript-web-applications/">Javascript_web_applications_读书笔记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-26T19:16:06+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/javascript-web-applications/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这几天抽空把 <a href="http://book.douban.com/subject/6805476/">javascript web
+applications</a> 这本书看完了,
+整理一下学到的东西.</p>
+
+<p>在我看来, 整本书主要内容就是讲如何抽象js前端开发, 让代码变得更清晰.
+具体采用的手法是在js里面实现class, MVC, module等抽象.</p>
+
+<p>整理整理一下我觉得对我来说重要的知识点:</p>
+
+<ul>
+<li>context switch. js里面, new会转换context,
+各种回调函数里面context会有变化, 具体影响到的是this以及环境变量.
+要利用到jQuery里面的proxy(底层调用apply等)来做context switch.</li>
+<li>js是prototype的语言, js里面实现继承, 需要通过递归调用prototype.</li>
+<li>很多封装的技巧, 有种lisp的感觉.
+看起来成为一个靠谱的js程序员需要掌握这些技巧了.</li>
+<li>MVC模型, 这个也不需要多说了, 都用烂了, 只要提一下大家就会注意了.
+Controller里面负责联系model和view, UI事件处理之类的事情.</li>
+</ul>
+
+
+<p>对我来说比较有用资源的索引:</p>
+
+<ul>
+<li>利用前端实现MVC</li>
+<li>实现module以及对应的依赖关系</li>
+<li>file, drag&amp;drop等的API实现</li>
+<li>前端开发需要考虑的: performance, cache</li>
+<li>浏览器调试方面的一些工具: profile, logging</li>
+<li>一些前端MVC库的介绍: spine, backbone, javascriptMVC</li>
+</ul>
+
+
+<p>我自己比较不足的地方, 可以在接下来的开发工作中提高的有:</p>
+
+<ul>
+<li>针对MVC的理解, 重构现有的程序.</li>
+<li>考虑使用一些前端的UI库.</li>
+<li>performance, profile, logging, 用它们来提高现有前端代码的性能.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/people-square-english-corner/">人民广场英语角参加小记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-19T23:11:48+08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2012</time>
+        
+         | <a href="/blog/people-square-english-corner/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://img.club.pchome.net/upload/club/other/2008/2/16/pics_andna_1203166311.jpg" alt="image" /></p>
+
+<h2>起因</h2>
+
+<p>上上周我锻炼的时候, 路过了人民广场, 发现在一个角落里面, 不太像相亲角,
+因为有男有女, 大多都是年轻人. 问了一个人, 发现竟然是英语角.
+我在这里留了一段时间, 稍微练习了一下,
+主要是我介绍了一点最近学习到的东西(哈佛幸福课).</p>
+
+<p>回去之后, 我觉得既然我住在南京西路, 可以利用好这个场所,
+达到练习英语口语, 练习演讲, 找妹子的目的.</p>
+
+<h2>经过</h2>
+
+<p>今天下午, 我有时间再次去英语角. 今天去的时候, 收获比较多,
+主要是遇到几个有意思的人.</p>
+
+<p>首先是一个日本人. 我不经意的时候聊上的. 没有看出来是日本人. 他19岁,
+爸爸是上海人, 妈妈是日本人. 在这边短期待一周左右. 在日本
+<a href="http://zh.wikipedia.org/wiki/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%B8">慶應大学</a>
+读书. 英语还算是能够用. 我刚刚到的时候自己还没有放开,
+没有什么太多可以说的. 基本上就是听的份. 这个时候边上过来了几个人,
+然后他们也会日语, 于是就开始说日语了, 我就在一旁安静地听了,
+日语夹着英语, 算是勉强能够弄懂一点意思.</p>
+
+<p>然后是第二个很有趣的人过来了. 他是一个老人家, 气色很好, 眼睛很有精神.
+讨论的时候有提到, 他自己刚刚从瑞士回来, 会七八门语言. 是企业主,
+有好几家公司, 日本一家旅游方面的公司. 他自己除了南美以外,
+世界其他地方他都去过了. 并且计划在未来去南美. 用他自己的话说, &ldquo;push his
+employee work hard, and I can enjoy my life.&rdquo;(凭记忆大致是这个意思).
+他也会写程序, 原先写java, 现在写C#, 用vs2010.</p>
+
+<p>在讨论的时候, 他有说道, 慶應大学是个好学校, 创办者是
+<a href="http://zh.wikipedia.org/wiki/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89">福泽谕吉</a>.
+他说自己过来是为了能够看看各种有趣的人.</p>
+
+<p>然后我们又讨论到日本的成长. 他说, 日本能够从一个农业国家,
+成为这么强大的国家, 基本上靠的就是全盘西化, 掌握了西方的先进思想和技术.
+福泽谕吉起到了最主要的过程. 他说日本人最尊敬的人, 就是他了.
+他对东方文明和西方文明都有足够的了解, 后来写了著名的&lt;脫亞論>,
+推行全盘西化. (我觉得我有必要花时间去看这本书.).</p>
+
+<p>这个老人家说, 文明是有层级的, 西方文明的层级比较高一些,
+他们更好地对待人. 不像亚洲. 他说, 中国一直以来都是中学为体, 西学为用,
+(我补充到现在也是这样), 这样让中国变成现在这样.</p>
+
+<p>他说, 学习各种语言是为了看各种语言背景下面的书, 了解更多, 第一手的资料.
+能够看问题更全面. 他建议年轻人多看看书, 各种语言的书.</p>
+
+<p>他说, 不要和其他观点的人争论, &ldquo;让他们保留自己的意见&rdquo;, 不过没有说为什么.
+我现在比较年轻气盛, 发现一个道理, 就想要和别人灌输. 这样从以往经历上面,
+被证明是没有效果的(尤其是对中国人), 反而恶化人际关系.
+以后我要好好约束自己. 让他们保留自己意见吧, 东西自己知道就可以了.</p>
+
+<p>后来这个老人家又说道, 有另外一个英语角, 外国人比较多,
+在陕西南路和长乐路的星巴克, 每周六下午, 因为外国人比较多, 会靠谱一些.
+下次我会去那边看看.</p>
+
+<p>老人家说, 可以通过一个人的词汇量来看他的教育背景, 受过教育的外国人,
+词汇量会很大, 然后英语角过来的外国人, 很多词汇量很低, 也就千把.
+指了一个人给我. 他说, 可能年轻的时候就是一个jobless.</p>
+
+<p>然后老人家时间差不多, 就走了. 我又发现第三个有趣的人. 一个小孩.</p>
+
+<p>我去和小孩说话. 这个小孩8岁, 来这个英语角已经5年了. 说话很有条理.
+估计也又是一个genius. 有谈到理想, 说是希望以后长大去哈佛,
+希望自己成为一个艺术家(具体做什么职业, 等到大学阶段尝试), 思路非常清晰,
+让我感到非常的佩服. 我觉得以后如果有小孩,
+也可以考虑把小孩带到这样的英语角, 练习英语.</p>
+
+<h2>结论</h2>
+
+<p>总体来说, 来英语角, 能够遇到这些有趣的人, 算是不虚此行.
+不过有趣的人不是那么容易遇到的, 下次注意要多接触一下再加入到聊天中去.
+大家也可以尝试来参加这样的场合.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -907,162 +1097,6 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/mongodb-privilege/">Mongodb访问权限设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-16T18:31:01+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
-        
-         | <a href="/blog/mongodb-privilege/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这里整理一下设置mongodb访问权限的资料.</p>
-
-<p>我们有通用的方法, 用iptable严格限制访问ip,
-以及mongodb自带的密码验证(key验证等有需求的时候再研究)</p>
-
-<h2>iptable限制访问资源</h2>
-
-<p>服务器完全开放mongodb, 通过iptables来限制访问.</p>
-
-<p>修改/etc/mongo.conf, host为0.0.0.0, 允许外部访问.</p>
-
-<p>设置规则:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo iptables -I INPUT 1 -p tcp --dport 27017 -s 允许的外部IP -j ACCEPT
-</span><span class='line'>iptables -A INPUT -p tcp --dport 27017 -j DROP
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>设置完毕后, 安装iptables-persistent 保证重启后iptables还是有效.</p>
-
-<h2>mongodb权限管理</h2>
-
-<p>有的时候还是需要限制权限, 方法整理如下:</p>
-
-<p>在服务器本地执行 mongo</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>use crawler_db
-</span><span class='line'>db.addUser<span class="o">(</span><span class="s1">&#39;admin&#39;</span>,<span class="s1">&#39;admin&#39;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后修改/etc/mongo.conf, 设置 auth = true 需要重启mongo</p>
-
-<p>连接上的时候, 需要db auth一下:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$db</span>.authenticate<span class="o">(</span><span class="s1">&#39;admin&#39;</span>, <span class="s1">&#39;admin&#39;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/comprehension/">关于理解</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-16T09:32:35+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
-        
-         | <a href="/blog/comprehension/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>以前我看维特根斯坦的书&lt;语言游戏>, 我印象很深的一个概念就是(非原文):
-词语的含义不是字面上的意思, 而是要看它的用法.
-词语本身的产生是有历史条件的, 字面上的含义可能蕴涵有非常复杂的历史成因,
-但是普通人不是历史学家,
-我们使用一个词语不是因为我们理解了这个词语的意思才去用它, 很多时候,
-只是因为听到别人在某些场合针对某种状况下面使用这个词语, 我们才学会它.
-简单地说, 我们是通过模仿学习语言, 而不是通过理解词语的含义.
-(单独背单词的人可以退散了)</p>
-
-<p>让我们把这个概念扩展开来一下, 应用到其他领域. 来看看法律.
-很多人理解法律只是按照法典字面上的意思来, 而不去注重实际的使用,
-而在很多国家, 比如我们国家,
-从字面上是很难理解得到实际法律执行和运作的方式的, 如何解释法律,
-不同地区的执行状况, 执法过程, 非成文规则, 这些内容都比法典本身复杂,
-灵活, 有生命, 甚至可以在善于表达的专业人士口中变得妙趣横生.</p>
-
-<p>我们也可以把这个概念应用在生活中.
-一个人的知识背景和思考方式形成了语言的具体内容, 但是要考察其他方面,
-就不太能相信言语, 因为言语不是这样产生的&hellip;
-我们不能因为一个人说要怎么样就认为他会怎么样,
-我们只能知道言语产生的条件: 他在什么样的刺激下,
-因为哪些知识背景和阅历产生出来了这样的言语. 举个实际的例子,
-如果一个人突然说&#8221;我要死啦&#8221;, 并不是说他自己真的要死了,
-而是因为他搞砸了什么事情, 然后他自己平时也咋咋呼呼的. 这个时候,
-我们不能根据字面上的意思而做反应&#8221;要死早死&#8221;,
-因为言语的字面意思不能反映实际他需要表达的内容. 我们一般会问一下&#8221;怎么了?
-被炒鱿鱼啦?&#8221;</p>
-
-<p>我们可以应用到学习上面. 进入一个新领域之前,
-我们可能会被这个领域的无数新词汇, 新概念弄晕,
-它们字面上面的意思和实际的使用方式往往不对应,
-实际的做事方式和文档资料里面的也有很大出入. 这个时候, 我们可以通过模仿:
-找一个该领域专家, 学习他的思考方式做事方式, 让自己同化成他的样子,
-我觉得这样才是最快速有效的学习方法.</p>
-
-<p>当你观察事物的角度从显式的含义转换到真实运作方式的时候,
-你会发现你开始理解了很多以前不理解的事物. 你会感觉世间万物都在流动,
-它们不是死的东西, 它们都在时刻调整, 变化, 你不好通过表象来定义它们,
-你需要感觉, 深入, 理解, 运用. 这样无数丰富的世界会在你面前敞开大门.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1080,6 +1114,14 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/window/">窗户</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/zhuangxiu/">装修</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/common-data-exchange-format/">什么通用数据交换格式更好</a>
       </li>
     
@@ -1089,14 +1131,6 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
     
       <li class="post">
         <a href="/blog/zhuangxiugongshi/">是否要用装修公司</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/fuck-commandline/">更好的命令行</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/rails-export-data/">rails导出数据经验整理</a>
       </li>
     
   </ul>
