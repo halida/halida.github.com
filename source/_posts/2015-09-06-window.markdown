@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "窗户"
+title: "装修如何选择窗户"
 date: 2015-09-06 15:56:58 +0800
 comments: true
 categories: 装修
