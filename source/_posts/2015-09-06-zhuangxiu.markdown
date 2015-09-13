@@ -11,7 +11,7 @@ categories: 装修
 
 - [是否要用装修公司](http://blog.linjunhalida.com/blog/zhuangxiugongshi/)
 - [装修如何选择窗户](http://blog.linjunhalida.com/blog/window/)
-- 是否要用中央空调
+- [是否要用中央空调](http://blog.linjunhalida.com/blog/vrv/)
 - 热水系统
 - 钱花在软装还是硬装上面
 - 买家具
