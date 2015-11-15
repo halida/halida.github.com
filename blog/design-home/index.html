@@ -5,11 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>how to mount disk to linux operation system - 网络寻租</title>
+  <title>家装设计策略 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="I&rsquo;ve bought a NAS as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system. I&rsquo;ve got &hellip;">
+  <meta name="description" content="这里整理一些家装的要点： 实用第一：
+家是自己用来住的，住不舒服每天都会难受，样式差了看久了也习惯了。 设计先行：
+先期设计一定要充分，工程中出现问题不能敷衍一定要搞好。
+开工之后设计问题都需要钱来弥补，所以不要急着开工。
+工程中出现问题都是可以改的，不要省钱放过，后期想改就难了。 轻硬装重软装 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/english-linux-disk-format/">
+  <link rel="canonical" href="http://halida.github.com/blog/design-home/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">How to Mount Disk to Linux Operation System</h1>
+      <h1 class="entry-title">家装设计策略</h1>
     
     
       <p class="meta">
@@ -97,7 +101,7 @@
   
 
 
-<time datetime="2014-12-16T17:33:42+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+<time datetime="2015-11-15T14:26:58+08:00" pubdate data-updated="true">Nov 15<span>th</span>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,15 +110,34 @@
   </header>
 
 
-<div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+<div class="entry-content"><p>这里整理一些家装的要点：</p>
 
-<p>I&rsquo;ve bought a <a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">NAS</a> as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system.</p>
+<p><strong>实用第一</strong>：
+家是自己用来住的，住不舒服每天都会难受，样式差了看久了也习惯了。</p>
 
-<p>I&rsquo;ve got SSD and HDD, SSD is faster, but is more expensive, and write time limit. So SSD should mount at <code>/</code>, OS will run faster. Writing frequently location like <code>/home</code>, <code>/var</code> should mount on HDD, Temporary location <code>/tmp</code> should mount to file system <code>tmpfs</code>.</p>
+<p><strong>设计先行</strong>：
+先期设计一定要充分，工程中出现问题不能敷衍一定要搞好。
+开工之后设计问题都需要钱来弥补，所以不要急着开工。
+工程中出现问题都是可以改的，不要省钱放过，后期想改就难了。</p>
 
-<p>About choosing file system. SSD can use <code>ext4</code> with <a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">some adjustment</a> to reduce write, HDD can use <code>ext4</code> for ordinary use, if used for file sharing and service, <a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a> is a good fit: Compressed storage, higher ID throughput.</p>
+<p><strong>轻硬装重软装</strong>：
+硬装的部分，除非水电等固定都要用的项目，造型因为大家的喜好不同，是不会一致的。
+所以房子卖出去的时候，造型往往会重新做。这就造成了这部分的投入是损失。
+所以除非自己非常喜欢，不要在硬装造型上面花费钱。
+当厌倦旧样式的时候，软装可以调整，硬装就难了。
+家具，软装的东西可以搬迁，所以可以投入钱。并且好的家具对室内品质提升很大。</p>
 
-<p>If you want setup NAS disk array, RAID0 is the simplest solution, multiple disks handle IO in the same time. If you have to store some important data, use RAID2: dual disk write the same data. But RAID1 spend too much disk space, software RAID5 can balance it well enough. If you know nothing about RAID, you can watch <a href="http://www.acnc.com/raid">this demo</a>.</p>
+<p><strong>少做吊顶</strong>：中国房子层高有限，顶太矮了会比较压抑。
+用射灯需要吊顶，可以考虑明射灯，或者后期加上台灯，
+其实住家开射灯的情况比较少，电费也多。</p>
+
+<p><strong>大量收纳</strong>：能够做收纳的地方做收纳，最好能够有储藏室，衣帽间。
+储藏房间里面可以不做柜门（成本比较高），往往比起明柜的成本要低。
+收纳区域：入户收纳（鞋，衣物和杂物），衣物收纳，杂物收纳，
+厨房收纳，卫生收纳（扫把吸尘器，洗衣，淋浴用品，卫生用品）。</p>
+
+<p><strong>推迟付款</strong>：购买项目能够延后的延后，晚付款的晚付款。
+分期付款，家装周期3个月，三个月的工资就能够补上好多了，装修过程就不会那么紧张。</p>
 </div>
 
 
@@ -137,12 +160,12 @@
   
 
 
-<time datetime="2014-12-16T17:33:42+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+<time datetime="2015-11-15T14:26:58+08:00" pubdate data-updated="true">Nov 15<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/english/'>english</a>
+    <a class='category' href='/blog/categories/zhuang-xiu/'>装修</a>
   
 </span>
 
@@ -151,7 +174,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/english-linux-disk-format/" data-via="" data-counturl="http://halida.github.com/blog/english-linux-disk-format/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/design-home/" data-via="" data-counturl="http://halida.github.com/blog/design-home/" >Tweet</a>
   
   
   
@@ -160,10 +183,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/linux-disk-format/" title="Previous Post: linux分区策略">&laquo; linux分区策略</a>
+        <a class="basic-alignment left" href="/blog/choose-furniture/" title="Previous Post: 乐从选购家具经验">&laquo; 乐从选购家具经验</a>
       
-      
-        <a class="basic-alignment right" href="/blog/old-is-better/" title="Next Post: 喜新厌旧">喜新厌旧 &raquo;</a>
       
     </p>
   </footer>
@@ -259,8 +280,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/english-linux-disk-format/';
-        var disqus_url = 'http://halida.github.com/blog/english-linux-disk-format/';
+        var disqus_identifier = 'http://halida.github.com/blog/design-home/';
+        var disqus_url = 'http://halida.github.com/blog/design-home/';
         var disqus_script = 'embed.js';
       
     (function () {
