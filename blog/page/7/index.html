@@ -9,8 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="librr是我最近离职休息玩的小项目，用处是给本地文档做一个索引，然后想查什么就可以搜索到。
-实现原理很简单，监控文件夹改动，有变化就把文件一行行读取出来，丢给solr进行索引。 使用上面首先设置你要索引的文件夹： librr add ./gtd 然后等一会让索引完成，就可以搜索数据了： &hellip;">
+  <meta name="description" content="关于输入法，有几点我觉得可以分享的。 首先是输入法的安全性。如果你是采用第三方的输入法工具，因为所有你键盘的输入都会经过输入法，
+你的隐私信息，包括行为，密码，帐号，都会被输入法厂商收集。
+你可能觉得他们大厂商，不会专门来对付自己一个普通人，
+但是要利用隐私数据的方法太多了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +81,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/my-input-method/">关于输入法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-28T18:50:56+08:00" pubdate data-updated="true">Dec 28<span>th</span>, 2013</time>
+        
+         | <a href="/blog/my-input-method/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_12_28_input.jpg"></p>
+
+<p>关于输入法，有几点我觉得可以分享的。</p>
+
+<p><strong>首先是输入法的安全性</strong>。如果你是采用第三方的输入法工具，因为所有你键盘的输入都会经过输入法，
+你的隐私信息，包括行为，密码，帐号，<a href="http://www.zhihu.com/question/20153643">都会被输入法厂商收集</a>。
+你可能觉得他们大厂商，不会专门来对付自己一个普通人，
+但是要利用隐私数据的方法太多了，他们也许不会用这些信息来窃取你的金钱和私密，
+但是私人邮箱收到垃圾邮件，私人手机受到垃圾短信，或者诈骗电话就免不了的了。</p>
+
+<p>我原先是采用搜狗输入法的，最近考虑到这个状况，越想越觉得危险，
+赶紧卸载掉，安装了开源的<a href="https://code.google.com/p/rimeime">rime</a>输入法。</p>
+
+<p><strong>然后是选择什么输入方式</strong>。我是重度的输入法用户，经常在各个地方留言，
+输入的效率很重要。对于普通人来说，思考的方式是采用语音的，拼音输入法更为适合。
+而普通拼音输入法的信息冗余太多，韵母都是固定组合，却要敲击多个按键，比如<code>in</code>，<code>uang</code>等。
+所以我去学习了双拼，学习大概十几分钟，一周的时间就能够熟练掌握，
+按照减少的键盘敲击数量，输入的效率可以提高一倍，强烈建议大家掌握。</p>
+
+<p>双拼怎么学习？<a href="http://www.zrm.com.cn/new/udpn.htm">看半页纸就能学懂</a>，
+选择自然码双拼输入法，练习敲几篇文章，肌肉记忆半个小时就能够学会了。
+我不分平舌音和翘舌音，因此加上了模糊音，不需要记忆<code>zh/ch/sh</code>的键位，学习起来更快一些。</p>
+
+<p>rime不是那么容易设置的，安装之后需要自己调整设置文件。
+安装之后，选择rime输入法，配置菜单里面选择<code>设置</code>，然后会进入一个文件夹，
+修改里面的<code>default.yaml</code>。
+<a href="https://code.google.com/p/rimeime/wiki/UserGuide">这里</a>告诉你如何设置输入法，
+<a href="https://code.google.com/p/rimeime/wiki/CustomizationGuide#DIY_%E8%99%95%E6%96%B9%E9%9B%86">这里</a>告诉你如何做一些细化的配置。
+如果你和我一样采用双拼加上模糊音，需要修改<code>double_pinyin.schema.yaml</code>，
+在<code>algebra:</code>区块(就是具体设置双拼方案的区块)的<code>- erase/^xx$/</code>(重置所有设置)后面加上：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- derive/^([zcs])h/$1/             # zh, ch, sh =&gt; z, c, s
+</span><span class='line'>- derive/^([zcs])([^h])/$1h$2/     # z, c, s =&gt; zh, ch, sh
+</span><span class='line'>- derive/([ei])n$/$1ng/            # en =&gt; eng, in =&gt; ing
+</span><span class='line'>- derive/([eia])ng$/$1n/           # eng =&gt; en, ing =&gt; in, ang =&gt; an</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1168,75 +1247,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/project-time-spending/">项目计划预估</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-26T19:40:00+08:00" pubdate data-updated="true">Aug 26<span>th</span>, 2013</time>
-        
-         | <a href="/blog/project-time-spending/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>进行一个项目开发项目，我们预期的状况是这样的：</p>
-
-<p><img src="/images/posts/2013_08_26_pm_1.jpg"></p>
-
-<p>需要实现一个例程，达到从A到B的一个操作。看起来很完美。</p>
-
-<p>但是实际开工之后却发现变成了这样的状况：</p>
-
-<p><img src="/images/posts/2013_08_26_pm_2.jpg"></p>
-
-<p>大量的细节在项目开始的时候没有预估到，比如：</p>
-
-<ul>
-<li>中间过程中出乎意料的复杂度。</li>
-<li>各种发现的例外状况。</li>
-<li>需求变更下的返工。</li>
-</ul>
-
-
-<p>这些状况构成了图片中其他的路径，工期的时间和路径的长度成等比关系。
-然后要把产品做得好，具体的分支细分还会更多。</p>
-
-<p>如果希望更快完成，我们可以尽量砍掉其中的路径：</p>
-
-<p><img src="/images/posts/2013_08_26_pm_3.jpg"></p>
-
-<ul>
-<li>开始之前有原型开发，预估到技术复杂度以及预先处理掉；</li>
-<li>例外状况不予接受，或者交给人来处理；</li>
-<li>小规模迭代，应对需求变更；至少尽快处理一个可用版本。</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1254,6 +1264,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/long-article/">为什么要阅读长文章</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/design-home/">家装设计策略</a>
       </li>
     
@@ -1267,10 +1281,6 @@
     
       <li class="post">
         <a href="/blog/window/">装修如何选择窗户</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/zhuangxiu/">装修</a>
       </li>
     
   </ul>
