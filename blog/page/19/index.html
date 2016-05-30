@@ -9,12 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="根据
-大妈gurudigger里面的idea,
-我研究了一下如何把rss订阅都发送到邮箱中,
-统一采用邮箱来处理每日的rss阅读. 尝试了一下以下工具/网站: http://www.feedmyinbox.com/
-可以订阅站点, 但是只有5个免费站点名额, 并且是每个站点一封邮件.
-http &hellip;">
+  <meta name="description" content="不知道大家是否都写过html或者xml, 里面尖括号真是既然写又难看,
+这里推荐给大家一个非常好用的工具:
+shpaml. shpaml 是借鉴
+haml (就是上面那个图片啦) 的一个工具,
+可以极大地简化html/xml的编写工作. 并且不像haml那么重量级. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +82,153 @@ http &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/shpaml/">Shpaml介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-15T16:15:51+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2011</time>
+        
+         | <a href="/blog/shpaml/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://www.rubyinside.com/wp-content/uploads/2007/03/haml.jpg" alt="image" /></p>
+
+<p>不知道大家是否都写过html或者xml, 里面尖括号真是既然写又难看,
+这里推荐给大家一个非常好用的工具:
+<a href="http://shpaml.webfactional.com/">shpaml</a>.</p>
+
+<p><a href="http://shpaml.webfactional.com/">shpaml</a> 是借鉴
+<a href="http://haml-lang.com/">haml</a> (就是上面那个图片啦) 的一个工具,
+可以极大地简化html/xml的编写工作. 并且不像haml那么重量级.</p>
+
+<p>shpaml的生成工具只是一个简单的python文件, 你只需要在
+<a href="http://shpaml.webfactional.com/shpaml_py">这里</a> 下载即可.
+整个文件只有365行!</p>
+
+<h2>简单尝试一下</h2>
+
+<p>我们来看一个实际的例子. 比如我们需要写下面的html代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;top-nav&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;top-nav-items&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;hr</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        @2010 linjunhalida, all right reserved
+</span><span class='line'>      <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>即使能够利用工具来自动生成很多文本, 上面的代码也非常难以阅读.
+但是用shpaml的方式就不一样了</p>
+
+<pre><code>html
+  body
+    #top-nav
+      #top-nav-items
+    &gt; hr
+
+    #wrapper
+      #header
+      #content
+      #sidebar
+      #footer
+        @2010 linjunhalida, all right reserved
+</code></pre>
+
+<p>是不是感觉一下清爽很多? 写起来也不那么废手指了?</p>
+
+<p>具体语法, 直接查阅
+<a href="http://shpaml.webfactional.com/tutorial/1">shpaml官方教程</a> , 很简单的,
+半小时搞定.</p>
+
+<h2>生成html代码</h2>
+
+<p>那么接下来我们如何把上面的文本生成html代码呢? 先保存成一个文件: xxx.shp,
+然后运行</p>
+
+<pre><code>python shpaml.py xxx.shp &gt; xxx.html
+</code></pre>
+
+<p>shpaml.py在 `这里`_ 下载.</p>
+
+<p>打开xxx.html, 是不是和上面的html一模一样? 其他生成方法, 可以见
+<a href="http://shpaml.webfactional.com/source_code">shpaml源码页面</a>.</p>
+
+<h2>结论</h2>
+
+<ul>
+<li>shpaml采用缩进的方式来表示层级的递进, 这个方法和python的方法一致,
+对于python程序员来说应该会很亲切.</li>
+<li>shpaml用python写成, 整个代码只在一个文件里面,
+感兴趣的同学可以学习学习. 它也非常容易嵌入到其他web框架中去.</li>
+<li>同样的, 如果你发现一个数据源存在很多的冗余信息(就像上面的html/xml),
+可以仿照shpaml的方法, 来实现一个上层的模板语言.</li>
+</ul>
+
+
+<p>希望你和我一样, 喜欢上shpaml.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1153,75 +1299,6 @@ nokia他们因此弄出了lgpl的pyside. 我现在一直在跟进.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/use-plain-text-for-documentation/">使用纯文本方式写文档</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-26T09:31:10+08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2010</time>
-        
-         | <a href="/blog/use-plain-text-for-documentation/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>大家用什么方式写文档?</h2>
-
-<h2>为什么要用纯文本</h2>
-
-<h2>WYSIWYG</h2>
-
-<h2>自由</h2>
-
-<h2>专注</h2>
-
-<h2>word</h2>
-
-<p><img src="http://www.viemu.com/ViEmu-Word-2007.gif" alt="image" /></p>
-
-<h2>xml</h2>
-
-<p><img src="http://www.kirupa.com/net/images/xml_doc2.gif" alt="image" /></p>
-
-<h2>应该是这样的</h2>
-
-<pre><code>Book:
-    name: pyqt book
-chapter:
-    - python introduce
-    - qt introduce
-</code></pre>
-
-<h2>reStructuredText</h2>
-
-<h2>rst2s5</h2>
-
-<h2>sphinx</h2>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -1239,6 +1316,10 @@ chapter:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ikea/">杭州宜家购物心得</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015-summary/">2015年度总结</a>
       </li>
     
@@ -1252,10 +1333,6 @@ chapter:
     
       <li class="post">
         <a href="/blog/design-home/">家装设计策略</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/choose-furniture/">乐从选购家具经验</a>
       </li>
     
   </ul>
