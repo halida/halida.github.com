@@ -9,11 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="以前我看维特根斯坦的书&lt;语言游戏>, 我印象很深的一个概念就是(非原文):
-词语的含义不是字面上的意思, 而是要看它的用法.
-词语本身的产生是有历史条件的, 字面上的含义可能蕴涵有非常复杂的历史成因,
-但是普通人不是历史学家,
-我们使用一个词语不是因为我们理解了这个词语的意思才去用它, &hellip;">
+  <meta name="description" content="这里整理一下设置mongodb访问权限的资料. 我们有通用的方法, 用iptable严格限制访问ip,
+以及mongodb自带的密码验证(key验证等有需求的时候再研究) iptable限制访问资源 服务器完全开放mongodb, 通过iptables来限制访问. 修改/etc/mongo. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +79,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/mongodb-privilege/">Mongodb访问权限设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-16T18:31:01+08:00" pubdate data-updated="true">Sep 16<span>th</span>, 2011</time>
+        
+         | <a href="/blog/mongodb-privilege/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里整理一下设置mongodb访问权限的资料.</p>
+
+<p>我们有通用的方法, 用iptable严格限制访问ip,
+以及mongodb自带的密码验证(key验证等有需求的时候再研究)</p>
+
+<h2>iptable限制访问资源</h2>
+
+<p>服务器完全开放mongodb, 通过iptables来限制访问.</p>
+
+<p>修改/etc/mongo.conf, host为0.0.0.0, 允许外部访问.</p>
+
+<p>设置规则:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo iptables -I INPUT 1 -p tcp --dport 27017 -s 允许的外部IP -j ACCEPT
+</span><span class='line'>iptables -A INPUT -p tcp --dport 27017 -j DROP
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>设置完毕后, 安装iptables-persistent 保证重启后iptables还是有效.</p>
+
+<h2>mongodb权限管理</h2>
+
+<p>有的时候还是需要限制权限, 方法整理如下:</p>
+
+<p>在服务器本地执行 mongo</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>use crawler_db
+</span><span class='line'>db.addUser<span class="o">(</span><span class="s1">&#39;admin&#39;</span>,<span class="s1">&#39;admin&#39;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后修改/etc/mongo.conf, 设置 auth = true 需要重启mongo</p>
+
+<p>连接上的时候, 需要db auth一下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$db</span>.authenticate<span class="o">(</span><span class="s1">&#39;admin&#39;</span>, <span class="s1">&#39;admin&#39;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -892,75 +969,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/everyone-should-learn-one-musical-instrument/">人人都应该掌握一门乐器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-08-03T22:39:51+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2011</time>
-        
-         | <a href="/blog/everyone-should-learn-one-musical-instrument/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.rocketpiano.com/images/grandpiano.jpg" alt="image" /></p>
-
-<p>作为一名程序员, 我最近开始下定决心掌握一门乐器,
-我跟风一个朋友franky开始学习钢琴. 我去附近的一个琴行报了班, 开始了练习.</p>
-
-<p>现在基本能弹一些非常简单的练习曲, 比起franky能弹&lt;放牛班的春天>,
-我还差远了. 但是我已经计划好了学习钢琴的时间: 一辈子.</p>
-
-<h2>为什么要掌握乐器</h2>
-
-<p>那么为什么我要开始学习乐器了呢? 我觉得音乐是人类社会非常重要的伟大成就,
-绝大多数人都喜欢听音乐.</p>
-
-<p>而演奏音乐是欣赏音乐的一个重要组成部分, 音乐在自己手中变化,
-更能体验到音乐的魅力.</p>
-
-<p>如果说一生中没有尝试过这个过程, 那么我觉得人生体验是很不完整的.
-而学习音乐几乎不需要基础, 只需要时间和若干请老师的钱.</p>
-
-<h2>如何掌握一门乐器</h2>
-
-<p>如果你决定开始学习乐器了, 你基本上完成了大部分的工作.
-下面你只需要去本地的琴行, 选择一个你中意的乐器, 掏钱出来就可以了.</p>
-
-<p>比起掌握乐器带来的乐趣和收益, 这点钱不算什么(除非你真的非常非常缺钱,
-你还是专心赚钱去吧..)</p>
-
-<h2>结论</h2>
-
-<p>我从2011/03/26开始, 已经断断续续学了4个多月了, 工作和精力原因,
-我平均每天练半个小时. 我希望和预期能够在单位年底活动的时候, 献艺一曲.
-这样绝对能够树立我新的形象. 希望大家也都加入到学习乐器的队伍中来.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -978,6 +986,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/bicycle-body-building/">骑折叠自行车健身</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/recreational-vehicle/">如何选择房车</a>
       </li>
     
@@ -991,10 +1003,6 @@
     
       <li class="post">
         <a href="/blog/2015-summary/">2015年度总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/happy-new-world/">赛博朋克化的世界</a>
       </li>
     
   </ul>
