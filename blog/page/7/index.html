@@ -9,7 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在趋势是移动互联网，这方面的需求比较多，如何写一个适应手机的html页面？ 首先要能够根据浏览器端的user-agent来判断设备是否是手机，有一个Gem mobile-fu来做这个事情。 然后是写对应的页面模板，要让页面的宽度适应屏幕。在header里面加上设置： &lt;meta name &hellip;">
+  <meta name="description" content="最近回到老家干IT，工作中遇到很多安装无聊软件的事情，为了能够自动化操作，我去寻找了一下类似按键精灵这种自动化工具，被我发现了autoit这个工具兼脚本语言。 简单介绍一下核心逻辑。比如说每次你希望每次打开记事本，都会自动输入一个抬头信息，比如”author: halida”， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,90 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/introduce-autoit/">Autoit介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-19T20:47:06+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
+        
+         | <a href="/blog/introduce-autoit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_01_19_autoit.jpg"></p>
+
+<p>最近回到老家干IT，工作中遇到很多安装无聊软件的事情，为了能够自动化操作，我去寻找了一下类似按键精灵这种自动化工具，被我发现了<a href="http://www.autoitscript.com/site/">autoit</a>这个工具兼脚本语言。</p>
+
+<p>简单介绍一下核心逻辑。比如说每次你希望每次打开记事本，都会自动输入一个抬头信息，比如”author: halida”，那么你可以写以下的autoit脚本：</p>
+
+<pre><code>Run('notepad.exe')
+WinWaitActive("无标题 - 记事本", "")
+Send("author: halida")
+</code></pre>
+
+<p>简单的三部曲。执行命令，等待特定窗口出现，发送内容给窗口。 autoit也可以直接发送内容和操作给特定的窗口中的控件。</p>
+
+<p>一些核心特性：</p>
+
+<ul>
+<li>能够把脚本解释执行，或者编译成exe。exe非常小以及无其它依赖。</li>
+<li>autoit脚本是完备的语言，控制流，函数，数据结构都有，可能不如现代动态语言那么强大，但是足够方便地编写程序了。</li>
+<li>带有丰富的API支持，随机数，进程处理，文件操作，窗口操作，网络，硬件，鼠标键盘，COM，声音，剪贴板。。应有尽有。</li>
+<li>可以用autoit来做简单和稍微有一些些复杂的GUI界面。</li>
+<li>足够大的社区支持。同时有<a href="http://www.autoitscript.com/forum/">官方社区</a>和<a href="http://www.autoitx.com/">中文社区</a>。</li>
+</ul>
+
+
+<p>那么autoit可以做哪些事情呢？我觉得可以做的事情有：</p>
+
+<ul>
+<li>自动化windows下面的操作。节省人力。</li>
+<li>编写脚本来自动化软件安装和删除，方便运维管理。</li>
+<li>编写大型软件的加载页面，提升用户体验。</li>
+<li>写简单的windows程序，和复杂的MFC说再见。</li>
+</ul>
+
+
+<p>对于我来说，可以填补windows下面自动化操作的空白，从此我在所有领域都不再担心不能自动化操作了。</p>
+
+<p>那么如何学习呢？我的建议是按照下面的顺序：</p>
+
+<ul>
+<li>过一遍<a href="http://www.autoitscript.com/autoit3/docs/">官方教程</a>，按照官方教程写点简单的用例。</li>
+<li>过一遍<a href="http://www.autoitscript.com/autoit3/docs/">官方文档</a>，对于autoit能够干什么有概念。</li>
+<li>开始编写你自己需要的简单程序，巩固上面学习到的东西。</li>
+<li>然后多翻翻社区和<a href="http://www.autoitscript.com/wiki">wiki</a>，收集一些最佳实践，成为一个靠谱的autoit开发者。</li>
+</ul>
+
+
+<p>前3步我想任何一个程序员一周内都就可以搞定，带来的收益是节省下无数枯燥的重复操作时间。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1016,161 +1100,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/daemonize-process/">如何让进程后台执行</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-20T03:51:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2013</time>
-        
-         | <a href="/blog/daemonize-process/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2013_11_20_daemon.jpg"></p>
-
-<p>很多时候我们需要让一个进程在后台执行。</p>
-
-<h2>终端下面执行命令</h2>
-
-<p>比如我们要执行<code>cmd</code>，可以简单地在命令行运行<code>cmd &amp;</code>。</p>
-
-<p>如果我们希望重定向输出到其他的地方，可以用：</p>
-
-<p><code>cmd 2&gt;&amp;1 &gt; run.log &amp;</code></p>
-
-<p>里面 <code>2&gt;&amp;1</code> 是把<code>stderr</code>重导向到<code>stdout</code>，然后<code>&gt; run.log</code>把<code>stdout</code>重导向到文件。</p>
-
-<p>但是如果关闭当前终端，后台跑的进程还是会被退出掉，这个时候需要<a href="http://libslack.org/daemon/manpages/daemon.1.html">工具</a>：</p>
-
-<p><code>daemon cmd</code></p>
-
-<p>如果你是用ruby写的程序，也可以<a href="https://github.com/ghazel/daemons">有一个Gem</a>来帮你完成这个工作。</p>
-
-<h2>原理</h2>
-
-<p>后台化主要做的事情就是让生成的后台进程不被你的命令行以及调用者影响到，
-具体需要做的步骤如下：</p>
-
-<ul>
-<li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
-<li><code>setsid()</code>让新的进程成为session group leader，这样发送给父进程process group的信号就不会影响到子进程。</li>
-<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，不会重开终端（PGID和PID不同了）。</li>
-<li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
-<li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
-<li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
-</ul>
-
-
-<p>示例代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Daemon</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span>
-</span><span class='line'>    <span class="mi">5</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
-</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">start</span>
-</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
-</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
-</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
-</span><span class='line'>        <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
-</span><span class='line'>        <span class="no">File</span><span class="o">.</span><span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="vg">$stdin</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="vg">$stdout</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;s.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="vg">$stderr</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">run</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nb">exit</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>      <span class="nb">exit</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Daemon</span><span class="o">.</span><span class="n">start</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>保存成daemon.rb，然后执行<code>ruby daemon.rb</code>。</p>
-
-<p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
-所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
-
-<p>更新疑问：</p>
-
-<p>有朋友回复，<code>setsid</code>用来设置成新的session和process group，这样就不会被来自父进程的killpg等操作影响，
-还有就是，第二遍fork是让进程不再是process group leader，这样不能重新获得一个终端。这个操作是可选的。</p>
-
-<p>引用材料：</p>
-
-<ul>
-<li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
-<li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
-<li><a href="http://blog.csdn.net/luckyaslan/article/details/9094523">daemon为什么要fork两次</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1188,6 +1117,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/recreational-vehicle/">如何选择房车</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/how-to-choose-a-car/">如何挑选汽车</a>
       </li>
     
@@ -1201,10 +1134,6 @@
     
       <li class="post">
         <a href="/blog/happy-new-world/">赛博朋克化的世界</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/long-article/">为什么要阅读长文章</a>
       </li>
     
   </ul>
