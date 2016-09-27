@@ -9,11 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是minecraft? 随机生成的世界, 完全自由建设, 合成系统, 晚上的怪物, 铁路 下雪了 未来世界 6英里 视频 youtube视频
-优酷视频 图片 专门的图片站
-多人模式图片
-很多用户在发自己造的房子 多说无益, 直接点开来玩吧 单人自由模式 可以随意建造, 资源无限
-多人自由模式 &hellip;">
+  <meta name="description" content="qt的多国语言支持方案 qt在设计的时候就考虑到了多国语言应该如何处理, 原理以及使用方法很简单.
+如下: 第一步: 写代码的时候, 对于需要翻译的词语, 用tr()包起来, 比如: QPushButton hello(QPushButton::tr("Hello world!")); &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +79,154 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pyqt-i18n/">Pyqt多国语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-21T16:44:39+08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2010</time>
+        
+         | <a href="/blog/pyqt-i18n/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>qt的多国语言支持方案</h2>
+
+<p>qt在设计的时候就考虑到了多国语言应该如何处理, 原理以及使用方法很简单.
+如下:</p>
+
+<p>第一步: 写代码的时候, 对于需要翻译的词语, 用tr()包起来, 比如:</p>
+
+<pre><code>QPushButton hello(QPushButton::tr("Hello world!"));
+</code></pre>
+
+<p>这样qt就知道这些词语是需要翻译的了. 然后qt需要把这些词语取出来,
+放到一个文件里面去, 好进行下一步的翻译工作.</p>
+
+<p>在你的pro文件里面说明这个文件的名称:</p>
+
+<pre><code>TRANSLATIONS    = clabel_zh_CN.ts
+</code></pre>
+
+<p>这样就可以利用lupdate这个工具来把需要翻译的词语取出来:</p>
+
+<pre><code>lupdate-qt4 clabel.pro
+</code></pre>
+
+<p>然后, 我们就可以开始翻译工作了. qt提供了一个配套的翻译工具: linguist:</p>
+
+<pre><code>linguist-qt4 clabel_zh_CN.ts
+</code></pre>
+
+<p>其实ts文件是xml的格式, 你想直接编辑文本也是可以的.</p>
+
+<p>当做完翻译工作之后, 我们需要把ts文件编译一下, 方便程序使用:</p>
+
+<pre><code>lrelease-qt4 clabel_zh_CN.ts
+</code></pre>
+
+<p>这样就会生成clabel_zh_CN.qm. 最后, 在代码里面加上选择语言的代码:</p>
+
+<pre><code>QTranslator trans;
+trans.load("clabel_zh_CN");
+app.installTranslator(&amp;trans);
+
+QPushButton hello(QPushButton::tr("Hello world!"));
+hello.show();
+
+app.exec();
+</code></pre>
+
+<p>qt多国语言更详细的介绍在:
+<a href="http://doc.qt.nokia.com/4.6/i18n-source-translation.html">http://doc.qt.nokia.com/4.6/i18n-source-translation.html</a></p>
+
+<h2>pyqt下面如何实现多国语言</h2>
+
+<p>pyqt里面实现的过程和qt里面的类似, 只是因为第一步需要扫描的不是c++代码,
+所以需要利用一个pyqt的工具: pylupdate4, 用法和lupdate一样.</p>
+
+<p>首先写程序</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">trans</span> <span class="o">=</span> <span class="n">QTranslator</span><span class="p">()</span>
+</span><span class='line'><span class="n">trans</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;plabel_zh_CN&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">app</span><span class="o">.</span><span class="n">installTranslator</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">tr</span><span class="p">(</span><span class="s">&quot;hello world!&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="n">button</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>等等, 里面的tr是什么?</p>
+
+<pre><code>def tr(msg):
+    return QCoreApplication.translate("@default", msg)
+</code></pre>
+
+<p>qt翻译是根据类的名称来走的, 调用了什么类的tr, 就取这个类里面设置的翻译.</p>
+
+<p>qt里面是可以利用QObject::tr来翻译, 但是pyqt里面不能,
+pylupdate4只是做字符串查找, 看有什么字符串是在tr后面的,
+然后根据tr调用者来把这个词语归类, 如果没有调用者, 就把它归类到
+&ldquo;@default&rdquo; 里面. 于是我就只好利用上面的方法来做一个规避..有点恶心,
+看看以后是否会有更好的方法来处理.</p>
+
+<p>对于类里面的翻译, 不需要那么麻烦:</p>
+
+<pre><code>class Input(QWidget):
+    def __init__(self):
+        super(Input, self).__init__()
+        label = QLabel(self.tr("input:"))
+</code></pre>
+
+<p>这里面的tr, 就可以被正确翻译出来.</p>
+
+<p>然后运行pylupdate, 因为我们是python程序, 没有pro, 就只能手动指定文件了</p>
+
+<pre><code>pylupdate4 main.py -ts plabel_zh_CN.ts
+</code></pre>
+
+<p>好了, 下面的步骤和c++的方法一样</p>
+
+<pre><code>linguist-qt4 clabel_zh_CN.ts
+lrelease-qt4 plabel_zh_CN.ts
+</code></pre>
+
+<p>然后执行代码, 程序按照我们期望的方式翻译过来了, 是不是很简单?</p>
+
+<p>上面的示例代码放在这里:
+<a href="http://bitbucket.org/linjunhalida/pyqt-i10n-example">http://bitbucket.org/linjunhalida/pyqt-i10n-example</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1518,306 +1663,6 @@ method3性能比method2好，method1在not hit的情况下时间消耗最多，
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/PyQt4-async-message/">PyQt4的异步消息机制</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-29T20:37:00+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
-        
-         | <a href="/blog/PyQt4-async-message/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>因为工作需要，要在GUI的后台维护一个监控线程，该线程需要和主线程做通讯。为了完成这个需求，需要采用一种线程安全的消息机制。因为我采用PyQt4作为GUI的库，因此，直接使用PyQt4的消息机制成为我考虑的首选。</p>
-
-<p>在PyQt4里面，发出消息采用emit的方式。比如:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 新的pythonic的方式</span>
-</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">setValue</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
-</span><span class='line'><span class="c"># 旧的</span>
-</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;setValue(int)&quot;</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>但是放到多线程里面，会发生什么事情呢？</p>
-
-<p>先解释一下消息处理的原理。我们知道，GUI之所以能够处理消息，是因为GUI主线程在初始化完毕的时候，会运行一个ecec_()方法，在这个方法里面，线程不断地检查消息队列，看是否有新的消息发出来，如果有，就处理它。这就是我们说的：event
-loop。</p>
-
-<p>然后看文档。
-<a href="http://doc.trolltech.com/4.1/threads.html#synchronizing-threads">Qt在多线程下的消息传递机制</a>
-:</p>
-
-<p><img src="http://doc.trolltech.com/4.1/images/threadsandobjects.png" alt="image" />
-里面一段话:</p>
-
-<p>Qt supports three types of signal-slot connections: * With direct
-connections, the slot gets called immediately when the signal is
-emitted. The slot is executed in the thread that emitted the signal
-(which is not necessarily the thread where the receiver object lives).
-* With queued connections, the slot is invoked when control returns to
-the event loop of the thread to which the object belongs. The slot is
-executed in the thread where the receiver object lives. * With auto
-connections (the default), the behavior is the same as with direct
-connections if the signal is emitted in the thread where the receiver
-lives; otherwise, the behavior is that of a queued connection.</p>
-
-<p>也就是说，有3种机制： * 采用直接调用的方式。类似于callback。
-调用者线程直接去执行被调用的方法。 *
-队列方式。调用者线程把消息丢给消息队列，然后就不管它了。被调用者的线程在处理消息队列的时候，就会处理它。
-*
-自动方式（默认）。如果调用者和被调用者是属于一个线程的，系统选择直接调用，不然就采用队列的方式。</p>
-
-<p>而机制的选择，可以在connect方法里面设置type:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">bool</span> <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span> <span class="p">(</span><span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">sender</span><span class="p">,</span>
-</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">signal</span><span class="p">,</span>
-</span><span class='line'>                       <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
-</span><span class='line'>                       <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">method</span><span class="p">,</span>
-</span><span class='line'>                       <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>那麽，我们可以开始做实验验证这样是否在PyQt4里面行得通了。</p>
-
-<p>测试代码1：测试在单线程下，修改type之后，emit消息是否会立刻执行下一行代码:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
-</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
-</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">线程中发消息</span>
-</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;amp;amp;OK&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
-</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
-</span><span class='line'>                     <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
-</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>点击按钮，&#8221;sended!&ldquo;要过一段时间才出现在命令行。 把上面的注释部分改为:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">self</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
-</span><span class='line'>             <span class="n">self</span><span class="p">.</span><span class="n">waitProcess</span><span class="p">,</span> <span class="n">Qt</span><span class="p">.</span><span class="n">QueuedConnection</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>再执行一次，点击按钮，&#8221;sended!&ldquo;立刻就出现了。</p>
-
-<p>测试代码2：现在转到线程里面:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
-</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
-</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="sd">线程中发消息</span>
-</span><span class='line'><span class="sd">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">threading</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Main</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s">&quot;&amp;amp;OK&quot;</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbProcess</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;clicked()&quot;</span><span class="p">),</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">),</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">waitProcess</span><span class="p">)</span><span class="c">#, Qt.QueuedConnection)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">threadRun</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">threadRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;waitProcess()&quot;</span><span class="p">))</span>
-</span><span class='line'>        <span class="k">print</span> <span class="s">&quot;sended..&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">waitProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leResult</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;hello！&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
-</span><span class='line'>    <span class="n">Main</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-</span><span class='line'>    <span class="c">#app.exec_()</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>执行后，前3秒线程等待，GUI不会卡死。然后线程打印：&#8221;sended..&ldquo;，然后GUI卡死3秒，然后GUI显示&#8221;hello!&#8221;。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/23/">&larr; Older</a>
@@ -1835,6 +1680,10 @@ lives; otherwise, the behavior is that of a queued connection.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/buy-insurance/">关于保险</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/bicycle-body-building/">骑折叠自行车健身</a>
       </li>
     
@@ -1848,10 +1697,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
     
       <li class="post">
         <a href="/blog/ikea/">杭州宜家购物心得</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-summary/">2015年度总结</a>
       </li>
     
   </ul>

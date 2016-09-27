@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我们假设你是一个初级程序员, 只懂得一点点的基础知识,
-希望能够用python来做开发. 这篇文档就是为了满足以上目标而写的. 大纲 按照这篇文档所指示的任务过一遍, 你就能够做到: 熟悉python语言, 以及学会python的编码方式.
-熟悉python库, &hellip;">
+  <meta name="description" content="今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下: 什么是UCS? 我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
+叫UCS, 全称: Universal Character Set, 它是关于所有字符编码的标准. 简单地说, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,142 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/utf8/">Utf8介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+        
+         | <a href="/blog/utf8/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
+
+<h2>什么是UCS?</h2>
+
+<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
+叫UCS, 全称: Universal Character Set,</p>
+
+<p>它是关于所有字符编码的标准. 简单地说,
+为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
+每个字符都指代单独的一个数字做标识.</p>
+
+<h2>什么是UTF-8?</h2>
+
+<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
+所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
+方便解析和除错做了优化. 具体表示方式如下:</p>
+
+<ul>
+<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
+<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
+第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
+<li>以此类推&hellip;</li>
+</ul>
+
+
+<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
+
+<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
+U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
+U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
+U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+</code></pre>
+
+<p>同时, 长的表示方式不能涵盖短的表示方式,
+所以下面的范围是错误的(可以快速排除错误):</p>
+
+<pre><code>1100000x (10xxxxxx)
+11100000 100xxxxx (10xxxxxx)
+11110000 1000xxxx (10xxxxxx 10xxxxxx)
+11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
+11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
+</code></pre>
+
+<p>我们来看具体的例子(python代码):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
+</span><span class='line'><span class="err">©</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
+</span><span class='line'><span class="err">≠</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
+</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
+</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
+</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>现在还没有什么心得, 总之, 了解了上面的概念,
+才能处理好平时遇到的字符编码问题.</p>
+
+<p>参考资料: &ndash;
+<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1464,76 +1599,6 @@ painters</a> 这本书,
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/how-to-organize-day-time/">如何度过每天的24小时</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-22T11:16:08+08:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2011</time>
-        
-         | <a href="/blog/how-to-organize-day-time/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨天, 某个朋友给我推荐了一本书: 书名是
-<a href="http://book.douban.com/subject/4243207/">悠游度过一天的24小时</a>.</p>
-
-<p>这本书不错. 如果你觉得自己每天虚度光阴, 可以看这本书,
-这本书提供了一些改变的方法, 简单易行.</p>
-
-<p>上周在 <a href="http://www.primesplus.com/">primesplus</a> 里面和他们聊天,
-提到一个问题: 中国的程序员大多没有生活. 每天上班下班两点一线,
-晚上在住的地方宅起, 要么就是一直都钻在技术里面, 长此以往, 人会憋坏的.
-如果你觉得自己就是这样的人, 可以读读这本书.</p>
-
-<p>下面是我整理出来的一些要点, 如果你不想被剧透, 那么就不要往下看了,
-直接去买本来看吧.</p>
-
-<ul>
-<li>我们每个人都拥有同样的时间: 每天24小时</li>
-<li>但是我们一般来说, 都很难利用好这些时间.</li>
-<li>开始前提醒: 这个过程很艰难, 不要期望过高, 要有心理准备,
-不要被失败压垮了.</li>
-<li>一个示例: 人们往往没有利用好每天的时间, 在时间处理上态度不对,
-工作的时候有抵触情绪, 下班后宝贵的自由时间以休息的理由,
-随意消耗掉了.</li>
-<li>除去上班8小时, 休息8小时, 损耗2小时, 人还有大约6小时的自由时间,
-好好利用.</li>
-<li>上下班的时间不要消磨掉, 利用好这段时间.</li>
-<li>上班途中的时间用来锻炼心智, 约束自己的大脑想特定的事情.</li>
-<li>下班途中的时间用来反省.</li>
-<li>下班后承认自己并不累, 好好计划下班后的时间, 过真正充实的生活.</li>
-<li>幸福并非源于肉体或精神上的享乐, 而在于充实自己的理性思考,
-并采取符合自己原则的行为方式.</li>
-<li>诗歌可能是最高形式的文艺形式, 给人以最大的愉悦并予人以最深邃的智慧.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/20/">&larr; Older</a>
@@ -1551,6 +1616,10 @@ painters</a> 这本书,
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/buy-insurance/">关于保险</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/bicycle-body-building/">骑折叠自行车健身</a>
       </li>
     
@@ -1564,10 +1633,6 @@ painters</a> 这本书,
     
       <li class="post">
         <a href="/blog/ikea/">杭州宜家购物心得</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-summary/">2015年度总结</a>
       </li>
     
   </ul>

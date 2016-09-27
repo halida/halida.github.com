@@ -9,10 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是宣告式编程? 我们编程的时候, 往往是实现某个领域的业务逻辑, 而这些业务逻辑,
-往往可以用定义的方式来表述. 程序员需要做的工作是,
-如何把把这些业务逻辑的表述(信息), 用写程序的方式又好又快地实现出来.
-如果你是一个资深程序员, 你会发现, 自己会从: 根据需求, 命令式地写代码, &hellip;">
+  <meta name="description" content="什么是pyside? `pyside`_ 是一个Qt4在python下面的绑定, 是PyQt4的取代.
+它和PyQt4不同的地方是, 支持商业闭源应用, 以及是Qt4官方支持的. pyside现在状况怎么样? 第一个beta版本已于2010/12/26释放. 处于火热开发中. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +79,190 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pyside/">Pyside介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-08T22:37:34+08:00" pubdate data-updated="true">Dec 8<span>th</span>, 2010</time>
+        
+         | <a href="/blog/pyside/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是pyside?</h2>
+
+<p>`pyside`_ 是一个Qt4在python下面的绑定, 是PyQt4的取代.
+它和PyQt4不同的地方是, 支持商业闭源应用, 以及是Qt4官方支持的.</p>
+
+<h2>pyside现在状况怎么样?</h2>
+
+<p>第一个beta版本已于2010/12/26释放. 处于火热开发中. pyside是完全跟进qt的.
+beta里面带有qml的支持.</p>
+
+<h2>如何获取pyside?</h2>
+
+<p>如果你用ubuntu, 加一下ppa的源就好了. 网址:
+<a href="https://launchpad.net/~pyside/+archive/ppa">https://launchpad.net/\~pyside/+archive/ppa</a></p>
+
+<p>执行命令:</p>
+
+<p>也可以去clone `pyside源码库`_.</p>
+
+<h2>尝试pyside</h2>
+
+<p>我们通过几个示例来看pyside的状况:</p>
+
+<h2>简单示例</h2>
+
+<p>一个简单的示例, pyside提供和pyqt API级别的互通, 方便pyqt用户迁移.
+与pyqt代码的区别, 只在import的时候把PyQt4改成PySide就好了:</p>
+
+<h2>UI</h2>
+
+<p>看起来写代码还OK, 我们看一些其他的功能, 比如如何支持ui.
+我们用qtdesigner写好了ui文件, 如何在pyside下面使用?</p>
+
+<p>pyqt有几种方式:</p>
+
+<ul>
+<li><p>采用pyuic4把ui文件转换为python代码. pyside也有一个这样的工具,
+名称是pyside-uic.(还有pyside-rcc, pyside-lupdate与pyqt对应)</p></li>
+<li><p>代码中动态导入, pyqt的代码是这样写的:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">form</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="s">&quot;score.ui&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ScoreDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">ScoreDlg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在pyside里面, 直接生成一个对象的方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">PySide.QtUiTools</span> <span class="kn">import</span> <span class="n">QUiLoader</span>
+</span><span class='line'><span class="n">loader</span> <span class="o">=</span> <span class="n">QUiLoader</span><span class="p">()</span>
+</span><span class='line'><span class="n">widget</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;mywidget.ui&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我上pyside的maillist, 找到了动态生成的方式, 把代码放在这里吧:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">MyQUiLoader</span><span class="p">(</span><span class="n">QUiLoader</span><span class="p">):</span>
+</span><span class='line'>   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseinstance</span><span class="p">):</span>
+</span><span class='line'>       <span class="nb">super</span><span class="p">(</span><span class="n">MyQUiLoader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>       <span class="bp">self</span><span class="o">.</span><span class="n">baseinstance</span> <span class="o">=</span> <span class="n">baseinstance</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="k">def</span> <span class="nf">createWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+</span><span class='line'>       <span class="n">widget</span> <span class="o">=</span> <span class="n">QUiLoader</span><span class="o">.</span><span class="n">createWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">className</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'>       <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>           <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseinstance</span>
+</span><span class='line'>       <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>           <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseinstance</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
+</span><span class='line'>           <span class="k">return</span> <span class="n">widget</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">loadUi</span><span class="p">(</span><span class="n">uifile</span><span class="p">,</span> <span class="n">baseinstance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>   <span class="n">loader</span> <span class="o">=</span> <span class="n">MyQUiLoader</span><span class="p">(</span><span class="n">baseinstance</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">ui</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">uifile</span><span class="p">)</span>
+</span><span class='line'>   <span class="n">QMetaObject</span><span class="o">.</span><span class="n">connectSlotsByName</span><span class="p">(</span><span class="n">ui</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">ui</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后, 我们就可以用loadUi来扩展一个类了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Inputer</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">Inputer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">loadUi</span><span class="p">(</span><span class="s">&#39;draw.ui&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QML, QML!</h2>
+
+<p>pyside可以和qml一起使用, 不过我对qml不熟悉,
+等以后熟悉了再来修改具体的示例吧. 你可以直接看 `pyside示例代码`_
+里面关于declarative的部分.</p>
+
+<h2>结论</h2>
+
+<p>经过测试, pyside现在大致可用, 不过在一些地方会有bug, 现在是beta版本,
+根据这个态势, 很快就能稳定了. 如果因为pyqt价格问题观望的同学,
+现在可以下手pyside了, 也可以当当小白鼠, 为开源社区做点贡献(从我做起吧).</p>
+
+<h2>资源</h2>
+
+<ul>
+<li><a href="http://www.pyside.org/">pyside</a> 官方网站</li>
+<li><a href="http://developer.qt.nokia.com/wiki/PySideDocumentation/">pyside文档</a></li>
+<li><a href="http://qt.gitorious.org/pyside/pyside-examples">pyside示例代码</a></li>
+<li><a href="http://qt.gitorious.org/pyside">pyside源码库</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1923,154 +2105,6 @@ linux下面的桌面系统KDE是基於Qt的.</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pyqt-i18n/">Pyqt多国语言</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-21T16:44:39+08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2010</time>
-        
-         | <a href="/blog/pyqt-i18n/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>qt的多国语言支持方案</h2>
-
-<p>qt在设计的时候就考虑到了多国语言应该如何处理, 原理以及使用方法很简单.
-如下:</p>
-
-<p>第一步: 写代码的时候, 对于需要翻译的词语, 用tr()包起来, 比如:</p>
-
-<pre><code>QPushButton hello(QPushButton::tr("Hello world!"));
-</code></pre>
-
-<p>这样qt就知道这些词语是需要翻译的了. 然后qt需要把这些词语取出来,
-放到一个文件里面去, 好进行下一步的翻译工作.</p>
-
-<p>在你的pro文件里面说明这个文件的名称:</p>
-
-<pre><code>TRANSLATIONS    = clabel_zh_CN.ts
-</code></pre>
-
-<p>这样就可以利用lupdate这个工具来把需要翻译的词语取出来:</p>
-
-<pre><code>lupdate-qt4 clabel.pro
-</code></pre>
-
-<p>然后, 我们就可以开始翻译工作了. qt提供了一个配套的翻译工具: linguist:</p>
-
-<pre><code>linguist-qt4 clabel_zh_CN.ts
-</code></pre>
-
-<p>其实ts文件是xml的格式, 你想直接编辑文本也是可以的.</p>
-
-<p>当做完翻译工作之后, 我们需要把ts文件编译一下, 方便程序使用:</p>
-
-<pre><code>lrelease-qt4 clabel_zh_CN.ts
-</code></pre>
-
-<p>这样就会生成clabel_zh_CN.qm. 最后, 在代码里面加上选择语言的代码:</p>
-
-<pre><code>QTranslator trans;
-trans.load("clabel_zh_CN");
-app.installTranslator(&amp;trans);
-
-QPushButton hello(QPushButton::tr("Hello world!"));
-hello.show();
-
-app.exec();
-</code></pre>
-
-<p>qt多国语言更详细的介绍在:
-<a href="http://doc.qt.nokia.com/4.6/i18n-source-translation.html">http://doc.qt.nokia.com/4.6/i18n-source-translation.html</a></p>
-
-<h2>pyqt下面如何实现多国语言</h2>
-
-<p>pyqt里面实现的过程和qt里面的类似, 只是因为第一步需要扫描的不是c++代码,
-所以需要利用一个pyqt的工具: pylupdate4, 用法和lupdate一样.</p>
-
-<p>首先写程序</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">trans</span> <span class="o">=</span> <span class="n">QTranslator</span><span class="p">()</span>
-</span><span class='line'><span class="n">trans</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;plabel_zh_CN&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">app</span><span class="o">.</span><span class="n">installTranslator</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">tr</span><span class="p">(</span><span class="s">&quot;hello world!&quot;</span><span class="p">))</span>
-</span><span class='line'><span class="n">button</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>等等, 里面的tr是什么?</p>
-
-<pre><code>def tr(msg):
-    return QCoreApplication.translate("@default", msg)
-</code></pre>
-
-<p>qt翻译是根据类的名称来走的, 调用了什么类的tr, 就取这个类里面设置的翻译.</p>
-
-<p>qt里面是可以利用QObject::tr来翻译, 但是pyqt里面不能,
-pylupdate4只是做字符串查找, 看有什么字符串是在tr后面的,
-然后根据tr调用者来把这个词语归类, 如果没有调用者, 就把它归类到
-&ldquo;@default&rdquo; 里面. 于是我就只好利用上面的方法来做一个规避..有点恶心,
-看看以后是否会有更好的方法来处理.</p>
-
-<p>对于类里面的翻译, 不需要那么麻烦:</p>
-
-<pre><code>class Input(QWidget):
-    def __init__(self):
-        super(Input, self).__init__()
-        label = QLabel(self.tr("input:"))
-</code></pre>
-
-<p>这里面的tr, 就可以被正确翻译出来.</p>
-
-<p>然后运行pylupdate, 因为我们是python程序, 没有pro, 就只能手动指定文件了</p>
-
-<pre><code>pylupdate4 main.py -ts plabel_zh_CN.ts
-</code></pre>
-
-<p>好了, 下面的步骤和c++的方法一样</p>
-
-<pre><code>linguist-qt4 clabel_zh_CN.ts
-lrelease-qt4 plabel_zh_CN.ts
-</code></pre>
-
-<p>然后执行代码, 程序按照我们期望的方式翻译过来了, 是不是很简单?</p>
-
-<p>上面的示例代码放在这里:
-<a href="http://bitbucket.org/linjunhalida/pyqt-i10n-example">http://bitbucket.org/linjunhalida/pyqt-i10n-example</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/22/">&larr; Older</a>
@@ -2088,6 +2122,10 @@ lrelease-qt4 plabel_zh_CN.ts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/buy-insurance/">关于保险</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/bicycle-body-building/">骑折叠自行车健身</a>
       </li>
     
@@ -2101,10 +2139,6 @@ lrelease-qt4 plabel_zh_CN.ts
     
       <li class="post">
         <a href="/blog/ikea/">杭州宜家购物心得</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-summary/">2015年度总结</a>
       </li>
     
   </ul>
