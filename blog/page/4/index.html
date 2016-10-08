@@ -9,7 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（Linux From Scratch）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。 LFS的过程做成了书籍，可以下载阅读。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。 &hellip;">
+  <meta name="description" content="chef是一个服务器自动化构建工具。最近我花了好多时间来研究它，
+慢慢弄懂了如何使用，这里整理一下介绍。 为什么要自动化构建 我们搭建一台服务器，一般情况下是用ssh登录上去，手动执行一系列的安装脚本。这种方式有一些问题： 手动操作费时：安装一台rails服务器，等待和操作的时间可能有一个小时。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +79,108 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/introduce-chef/">Chef介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-05T12:34:16+08:00" pubdate data-updated="true">Mar 5<span>th</span>, 2015</time>
+        
+         | <a href="/blog/introduce-chef/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://www.chef.io/">chef</a>是一个服务器自动化构建工具。最近我花了好多时间来研究它，
+慢慢弄懂了如何使用，这里整理一下介绍。</p>
+
+<h2>为什么要自动化构建</h2>
+
+<p>我们搭建一台服务器，一般情况下是用ssh登录上去，手动执行一系列的安装脚本。这种方式有一些问题：</p>
+
+<ul>
+<li>手动操作费时：安装一台rails服务器，等待和操作的时间可能有一个小时。</li>
+<li>容易出现失误：不小心写错了一个参数或者执行错了一个命令，可能损失好久的调试和重新安装时间。</li>
+<li>难以复用：每次安装都需要重新手动操作一遍，虽然可以记录下操作的脚本，但是每台服务器多多少少不一样，还需要针对性地修改。</li>
+<li>难以跟踪改动：运行了一段时间之后，会因为某些需要作出修改。除非流程上面控制必须整理文档，后期完全不知道改了什么。</li>
+</ul>
+
+
+<p>如果把服务器当作一个应用，针对服务器的操作就是应用的源代码，我们可以用代码库的思路来考虑服务器构建，这就是自动化构建。</p>
+
+<h2>chef的解决方案</h2>
+
+<p>服务器的一个状态（比如一个特定内容的文件，一个需要跑的进程服务），可以定义成一个<code>resource</code>，
+用<code>provider</code>控制<code>resource</code>的状态（比如删除文件，创建文件，启动进程），
+一系列这样的描述，定义了我们想要做的事情，比如安装postgresql，构成了一个<code>cookbook</code>。
+这些描述和操作，都用ruby语言编写，<code>cookbook</code>用源码管控。</p>
+
+<p>在每个服务器（<code>node</code>）上面，会跑一个<code>chef-client</code>，从<code>chef-server</code>获得cookbook，
+自己需要跑的东西（<code>run_list</code>），服务器给自己设置的属性（<code>attributes</code>），通知服务器自己的状态。</p>
+
+<p>更多的文档，请见：<a href="http://docs.chef.io/">http://docs.chef.io/</a></p>
+
+<h2>如何学习</h2>
+
+<p>chef相当的复杂，我花费了好多时间来学习它。这里是我建议的学习过程：</p>
+
+<ul>
+<li>跟随<a href="https://learn.chef.io/">官方教程</a>走一遍，因为期间需要下载很多库，建议用<a href="https://www.digitalocean.com">Digital Ocean</a>等云平台进行教程的学习，这样不需要太长的下载等待时间。</li>
+<li>自己写一个cookbook（比如我就写了<a href="https://supermarket.chef.io/cookbooks/pptp_server">pptp_server</a>），期间遇到什么概念不明白，去<a href="http://docs.chef.io/">官方文档</a>阅读，并且可以借鉴第三方cookbook的写法。</li>
+<li>chef引入了一个生态系统，基于chef的工具和概念相当多，请静下心来，一个个弄懂弄透。</li>
+</ul>
+
+
+<h2>个人的实践</h2>
+
+<p>掌握了工具仅仅是开始，更难的在于如何使用工具。这里整理我的一些实践操作。</p>
+
+<ul>
+<li>如果是很简单的服务器搭建，可以登录到服务器上面去，直接按照recipe的写法创建一个文件<code>install.rb</code>，然后用chef-apply执行。</li>
+<li>如果稍微复杂一些，可以用<code>chef-client --local-mode</code>，在服务器上面写一个cookbook。</li>
+<li>如果需要写cookbook，也可以用local-mode在服务器上面测试好，再保存到本地。</li>
+<li>如果你服务器比较多，或者需要快速搭建不经过server，你可以用<a href="https://docs.chef.io/chef_solo.html">chef-solo</a>，<a href="http://matschaffer.github.io/knife-solo/">knife-solo</a>是chef-solo的knife插件。</li>
+<li>创建服务器也可以自动化，比如<a href="https://github.com/rmoriz/knife-digital_ocean">knife-digital_ocean</a>。</li>
+<li>一般可以写一个cookbook构建一个基础系统，带有自动更新，安全管理，创建发布用户，监控等。然后基于这个基础系统来搭建服务。</li>
+</ul>
+
+
+<h2>个人的一些思考</h2>
+
+<ul>
+<li>chef很复杂，学习成本比较高，它可能解决一些问题，但是自己的复杂度可能也会引入更多的问题。</li>
+<li>普通程序员可能只是用chef来搭建一个或几个服务器，用chef可能有点杀鸡用牛刀，但是自动化构建是很有必要的，chef引入的复杂概念，很可能是领域的原生复杂度。</li>
+<li>cookbook的调试过程太痛苦了，等待服务器执行操作，重新创建一个服务器来执行操作花费了好多时间。</li>
+<li>第三方cookbook库里面比较混乱，安装一个东西可能有好几个cookbook，大家对于如何安装一个东西有不同的理解。</li>
+<li>cookbook可以通过node的attribute配置，也可以重新定义LWRP，我觉得这两个概念有一定程度的覆盖，设计不是很好，可能规整成一个概念。</li>
+<li>有听说docker，在操作系统上层加上一个容器层，容器层类似集装箱，可以快速导入导出应用的环境，听说docker会取代大部分chef的使用场景。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -778,72 +881,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/english-gem/">How to Use Gem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-12-07T09:48:29+08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2014</time>
-        
-         | <a href="/blog/english-gem/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
-Gem is flaring, but handle without enough care, it may cut your finger bleeding.
-As a jeweler, I can share some knowledge about it.</p>
-
-<h2>Search</h2>
-
-<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
-or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
-
-<h2>Pick</h2>
-
-<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
-you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
-
-<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
-Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
-Some gem may change rails module, handle them with caution.</p>
-
-<h2>Use</h2>
-
-<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
-
-<p>You must know what you have done, read gem documents, wiki, know how to use it.
-I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
-
-<p>When something bad happens, check the gem project issue page,
-or you can debug it yourself by add log to the gem source code.</p>
-
-<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -861,6 +898,10 @@ or you can debug it yourself by add log to the gem source code.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/better-house-market/">更好的住宅行业</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
@@ -874,10 +915,6 @@ or you can debug it yourself by add log to the gem source code.</p>
     
       <li class="post">
         <a href="/blog/how-to-choose-a-car/">如何挑选汽车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ikea/">杭州宜家购物心得</a>
       </li>
     
   </ul>

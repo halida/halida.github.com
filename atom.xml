@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2016-09-27T15:28:55+08:00</updated>
+  <updated>2016-10-08T10:52:18+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[更好的住宅行业]]></title>
+    <link href="http://halida.github.com/blog/better-house-market/"/>
+    <updated>2016-10-08T10:47:33+08:00</updated>
+    <id>http://halida.github.com/blog/better-house-market</id>
+    <content type="html"><![CDATA[<p>我们国内现在的房子开发流程是这样：政府出让土地，开发商找银行贷款，缴纳大量的土地出让金，然后开发房子，
+卖出裸房，回收投资，赚钱。消费者购买高价的裸房，找装修公司装修。
+但是其他国家的模式一般是这样（在美国）：</p>
+
+<ul>
+<li>房地产商购买土地，造房子，然后直接卖装修好的房子。</li>
+<li>房地产商购买土地，造楼房，出租或者出售公寓房。</li>
+<li>个人购买土地，找房屋承建商，设计和建设房子（设计可以是专门的设计公司）</li>
+</ul>
+
+
+<p>模式不同在于，我们购买的是裸房，只是一个框架，之后才找装修公司装修，类似零售。
+他们的模式在于要么提供统一的标准化住房，要么根据用户需求定制造房并装修。</p>
+
+<p>我觉得他们的模式更合理。因为标准化造房可以利用批量化优势，降低材料采购成本，能够工业化生产提升质量和减少建设成本。
+比较一下：</p>
+
+<ul>
+<li>我们需要自己去采购施工材料，他们统一采购成本节省很多。</li>
+<li>我们施工的工人基本都是散工良莠不齐，他们施工可以长期雇佣施工队提高施工水平，积累施工技术规范和经验。</li>
+<li>我们基本都是现场施工，他们可以做到工厂预制件现场安装。</li>
+<li>住宅设计我们也就是制图员画画图，他们有积累（大量历史资料）和标准。</li>
+<li>我们很多住宅只能保证装起来，不能保证一些性能：比如空气流通率，住宅节能，火灾防护，他们可以达到这些要求。</li>
+</ul>
+
+
+<p>简单地说，我们现在是手工作坊阶段，他们是后工业化精益生产阶段。
+造成的结果是现在我们到处都是房子，但是缺省心省钱住起来舒服的好房子。
+大家买房装修过程基本上是劳民伤财，首先要变成一个装修专家，然后被装修公司和各大建材公司黑一遍，
+然后自己做监工累一遍，完工之后还得等一遍，最后因为设计只是根据自己需要以及自己耗费大量心血有感情了，卖房也不好卖。</p>
+
+<p>那么为什么我们国家的开发商大多不卖精装修的房子呢？
+我觉得：
+一个是消费者需求差异很大，家庭结构，经济水平，社会阶层，品味等，造成房子很难标准化。
+另外一个是因为房子有金融属性，裸房更好交易和保值。</p>
+
+<p>现在国内也有精装修的房子，一般分为两种：酒店式公寓，大城市新开发楼盘豪宅。
+它们的需求会明确一些，所以可以采用同样的设计，施工方批量施工节省成本提升利润。
+但是开发商利益和购房者利益不一致，以及信息不对称，这些精装修的房子往往质量堪忧。</p>
+
+<p>希望我们国家的住宅行业能够早日进步，端正目标造好房子（个人估计难）。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于保险]]></title>
@@ -903,12 +952,13 @@
 下面分享一些自己的心得，希望对大家有用。(不定期更新中)</p>
 
 <ul>
+<li><a href="http://blog.linjunhalida.com/blog/design-home/">家装设计策略</a></li>
 <li><a href="http://blog.linjunhalida.com/blog/zhuangxiugongshi/">是否要用装修公司</a></li>
 <li><a href="http://blog.linjunhalida.com/blog/window/">装修如何选择窗户</a></li>
 <li><a href="http://blog.linjunhalida.com/blog/vrv/">是否要用中央空调</a></li>
-<li>热水系统</li>
-<li>钱花在软装还是硬装上面</li>
-<li>买家具</li>
+<li><a href="http://blog.linjunhalida.com/blog/choose-furniture/">乐从选购家具经验</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/ikea/">杭州宜家购物心得</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/better-house-market">更好的住宅行业</a></li>
 </ul>
 
 ]]></content>
@@ -1397,142 +1447,6 @@
 
 <p>微软的操作系统也是，国内基于微软的生态系统乱七八糟，作为程序员自己可以用linux或者apple的生态圈，但是总是免不了被其他人拉回来，
 重装系统，解决问题。看到操作系统差劲的用户体验，漫天飞的木马病毒，大大小小的流氓软件，死活找不到东西的搜索引擎，不由觉得普通人真辛苦。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[用chef对少量服务器进行配置管理]]></title>
-    <link href="http://halida.github.com/blog/chef-manage-small-group-of-servers/"/>
-    <updated>2015-05-05T10:12:09+08:00</updated>
-    <id>http://halida.github.com/blog/chef-manage-small-group-of-servers</id>
-    <content type="html"><![CDATA[<p>原先<a href="http://blog.dev/blog/introduce-chef/">介绍了chef</a>，现在需要面对一个实际的问题：如何用chef管理少量的服务器。</p>
-
-<p>我希望：</p>
-
-<ul>
-<li>能够对几台或者十几台服务器进行配置管理。</li>
-<li>针对每台服务器，写yml格式的配置文件，执行一个命令之后，就可以配置好这台服务器，同时源码管控这个yml文件的变更。</li>
-<li>支持复杂的服务器配置，包括启动项目管理，自动告警，日志归总等。</li>
-<li>不需要管理服务器，比如chef-server这样的东西，只需要留有本地的配置文件。</li>
-</ul>
-
-
-<p>我采用的解决方案：</p>
-
-<ul>
-<li>用<a href="https://github.com/tobami/littlechef">littlechef</a>，这个项目可以把<a href="https://docs.chef.io/chef_solo.html">chef-solo</a>，一个本地跑chef的方法，部署到远端服务器上面去，同时拷贝本地的recipe和配置文件到远端，执行需要的操作。</li>
-<li>写recipe，让部署能够通过写node配置文件进行配置，比如启动服务，日志归总，服务器管理员用户，自动重启更新等。</li>
-<li>用yml格式撰写node配置文件，以及datatag配置文件，然后用自动化脚本转换成json格式。手动写json太反人类了。</li>
-<li>远端的脚本用ruby写，脚本里面的参数不是用erb渲染出来的，而是把配置序列化成yml，ruby脚本再读取它们。这样远端服务器上面的执行代码是规整的，人可以阅读。</li>
-</ul>
-
-
-<p>都弄好之后，可以写这样的服务器配置文件：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
-</span><span class='line'>  <span class="c1"># 服务器名字</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="s">&quot;test&quot;</span>
-</span><span class='line'>  <span class="c1"># 基础配置的recipe</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">base-system</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="c1"># 是否跑软件包更新</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">update</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-</span><span class='line'>    <span class="c1"># 是否设置自动更新</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">auto-upgrade</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># base-system会自动创建一个deployer管理员用户，谁可以通过公钥的方式访问这个用户</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">authorized_keys</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="p-Indicator">-</span> <span class="s">&quot;linjunhalida&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># 写在databags里面的配置参数，可以连接到slack发提醒</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">notify</span><span class="p-Indicator">:</span> <span class="s">&#39;test&#39;</span>
-</span><span class='line'>    <span class="c1"># 是否每天判断服务器是否需要重启或者更新</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">check</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">need_reboot</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">need_upgrade</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</span><span class='line'>    <span class="c1"># 设置服务器定期重启</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">schedule-reboot</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">minute</span><span class="p-Indicator">:</span> <span class="s">&#39;26&#39;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">hour</span><span class="p-Indicator">:</span> <span class="s">&#39;8&#39;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">weekday</span><span class="p-Indicator">:</span> <span class="s">&#39;2&#39;</span>
-</span><span class='line'>    <span class="c1"># 设置服务器自动升级安全更新</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">schedule-upgrade</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">reboot</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">minute</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">hour</span><span class="p-Indicator">:</span> <span class="s">&#39;0&#39;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">weekday</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
-</span><span class='line'>    <span class="c1"># 服务器启动的时候跑的应用</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="s">&quot;railsapp&quot;</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="s">&#39;deployer&#39;</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">pwd</span><span class="p-Indicator">:</span> <span class="s">&#39;/home/deployer/apps/railsapp/current&#39;</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">cmds</span><span class="p-Indicator">:</span>
-</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">thin</span><span class="nv"> </span><span class="s">restart</span><span class="nv"> </span><span class="s">-C</span><span class="nv"> </span><span class="s">config/thin.yml&#39;</span>
-</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">resque:restart_workers&#39;</span>
-</span><span class='line'>          <span class="p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">ts:restart&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="l-Scalar-Plain">run_list</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&quot;recipe[chef-solo-search]&quot;</span> <span class="c1"># so chef-solo search can work</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="s">&quot;recipe[base-system]&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>chef部署之后，会创建目录<code>/etc/base-system</code>，里面存放各种配置和执行脚本，同时安装到crontab，/etc/rc.local等各种地方。
-服务器的关键操作，比如重启，安全更新结果，都会通过notify功能汇报到slack上面。
-我可以通过node配置文件，清晰看到每台服务器是如何配置的。并且这个系统可以演化，更换一种配置方式，只需要重新跑一下部署。</p>
-
-<p>不过还是有一些难办的问题：</p>
-
-<ul>
-<li>littlechef项目成熟度不高，使用起来不是很舒服。</li>
-<li>架构复杂：chef已经很复杂了，远端还要部署一个ruby环境，架构复杂带来调试和理解上面的难度。</li>
-<li>学习成本高：维护者需要弄懂chef，远端编织起来的ruby框架，之后才能配置服务器，最后可能只是需要加上一个小东西。</li>
-<li>维护成本：又多了一个项目了。</li>
-</ul>
-
 ]]></content>
   </entry>
   
