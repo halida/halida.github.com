@@ -15,4 +15,5 @@ categories: 装修
 - [是否要用中央空调](http://blog.linjunhalida.com/blog/vrv/)
 - [乐从选购家具经验](http://blog.linjunhalida.com/blog/choose-furniture/)
 - [杭州宜家购物心得](http://blog.linjunhalida.com/blog/ikea/)
+- [更好的住宅行业](http://blog.linjunhalida.com/blog/better-house-market)
   
