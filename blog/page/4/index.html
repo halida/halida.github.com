@@ -9,8 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="chef是一个服务器自动化构建工具。最近我花了好多时间来研究它，
-慢慢弄懂了如何使用，这里整理一下介绍。 为什么要自动化构建 我们搭建一台服务器，一般情况下是用ssh登录上去，手动执行一系列的安装脚本。这种方式有一些问题： 手动操作费时：安装一台rails服务器，等待和操作的时间可能有一个小时。 &hellip;">
+  <meta name="description" content="为什么要用家用NAS 去年年底，我搭建了一台家用NAS服务器。我用它来存放视频漫画等数据资料，
+创建一些空间消耗大的虚拟机，备份笔记本电脑系统。
+有了NAS，资料可以给家里面所有设备使用（比如多台iPad，手机），
+可以跑一些消耗大量时间和空间的应用（比如虚拟机和下载），
+生活工作方便许多。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +82,136 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/nas-server/">家庭NAS服务器搭建</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-06T12:44:37+08:00" pubdate data-updated="true">Mar 6<span>th</span>, 2015</time>
+        
+         | <a href="/blog/nas-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<h2>为什么要用家用NAS</h2>
+
+<p>去年年底，我搭建了一台家用NAS服务器。我用它来存放视频漫画等数据资料，
+创建一些空间消耗大的虚拟机，备份笔记本电脑系统。
+有了NAS，资料可以给家里面所有设备使用（比如多台iPad，手机），
+可以跑一些消耗大量时间和空间的应用（比如虚拟机和下载），
+生活工作方便许多。</p>
+
+<h2>NAS硬件选购</h2>
+
+<p>我选购的是<a href="http://item.jd.com/1019704.html">N54L</a>，主要是考虑到性价比。
+设备买回来之后，发现做工不错，拓展性也很好。</p>
+
+<p>我把内存<a href="http://item.jd.com/783266.html">加到12G</a>，对于服务器来说，内存越大越好，尤其我这种希望使用虚拟机的情况。</p>
+
+<p>硬盘选择的是：一个SSD，一个<a href="http://item.jd.com/694106.html">服务器硬盘</a>。
+SSD用来安装系统，用来保证系统执行速度。其他资料和动态数据目录都放在服务器硬盘上面。</p>
+
+<p>N54L有4个硬盘位，方便拓展，到时候我会选择用RAID5方式，
+因为在保证资料安全性的同时，能够有比较大的空间利用率。</p>
+
+<h2>系统平台</h2>
+
+<p>考虑了一系列操作系统，包括<a href="http://www.freenas.org/">FreeNAS</a>，<a href="https://www.synology.com/en-us/dsm/5.1">群辉</a>等，我最后还是选择了Ubuntu Server，
+因为这是我最熟悉的系统，并且我会装好多实验工具，有一个专业的服务器平台更好一些。</p>
+
+<p>系统设置了<a href="https://help.ubuntu.com/community/AutomaticSecurityUpdates">自动更新</a>，我写了一个脚本，<a href="http://serverfault.com/questions/92932/how-does-ubuntu-keep-track-of-the-system-restart-required-flag-in-motd">当需要重启的时候</a>发消息通知我。</p>
+
+<p>分区<a href="http://blog.linjunhalida.com/blog/linux-disk-format/">我考虑了一下</a>,
+最后还是用lvm和btrfs结合的方案，没有搞懂zfs如何和lvm一起工作。</p>
+
+<h2>服务搭建</h2>
+
+<h3>外网访问</h3>
+
+<p>首先需要让外网可以知道自己家的IP地址，我用<a href="https://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client-on-ubuntu/">noip</a>来自动更新域名。</p>
+
+<p>外网访问家里的内网，需要给NAS装一个VPN系统。l2tp和pptp都对网络有要求(IP层允许ESP，PPP协议)，
+安装的时候调试了好久，最后还是选择了<a href="http://www.softether.org/">softether</a>，看起来比较简单一些，
+并且可以外网配置。
+VPN访问自身服务器有问题，不能同一个网卡出入，最后我还是购买了另外的一块网卡，用来提供给VPN使用。</p>
+
+<h3>防火墙</h3>
+
+<p>因为家里无线路由的开放性，服务器提供的服务都设置了密码，并且用防火墙ufw限制了开启的端口。</p>
+
+<h3>下载</h3>
+
+<p>考虑各种下载方案，最后我选择用<a href="https://github.com/ziahamza/webui-aria2">webui-aria2</a>，结合迅雷离线，
+迅雷离线插件ThunderLixianExporter。</p>
+
+<p>如果是电影等通用资源，用迅雷离线快速下载，然后用迅雷插件通知aria2下载回本地。
+非常见资源直接丢链接给webui-aria2慢慢下。</p>
+
+<h3>timemachine备份</h3>
+
+<p>因为OSX的timemachine会占用全部的磁盘资源，我专门做了一个分区。
+按照<a href="https://www.64bit.co.uk/ubuntu-as-a-osx-time-machine/">这里的教程</a>搭起来服务就好了。
+有的时候备份会提示已经占用磁盘，需要重启一下netatalk服务。</p>
+
+<h3>文件服务器</h3>
+
+<p>考虑了http，ftp，net，dlna，各种第三方的media server，最后发现还是<a href="https://help.ubuntu.com/community/Samba/SambaServerGuide">samba好用</a>，
+渲染视频音频的操作还是交给客户端来做吧。</p>
+
+<h3>格式转换</h3>
+
+<p>网上下载下来的东西格式比较多，手机上面看不是很方便，我用<a href="https://libav.org/avconv.html">avconv</a>来统一把视频转换成mp4的格式（视频h264，音频aac）。同时为了方便预览，我写了<a href="https://gist.github.com/halida/c7924e97cf50d61b3f8f">脚本</a>，自动给所有视频创建一个gif的预览，然后做一个网页，可以快速查看它们。</p>
+
+<h3>监控</h3>
+
+<p>我直接给服务器装了<a href="http://newrelic.com/">New Relic</a>，它会自动通知我磁盘空间使用率，以及宕机状况。我也装了<a href="http://munin-monitoring.org/">munin</a>，但是用不太到。</p>
+
+<h3>虚拟机</h3>
+
+<p>我对<a href="https://www.virtualbox.org/">VirtualBox</a>比较熟悉，安装了命令行工具，然后再装上web前端<a href="http://sourceforge.net/p/phpvirtualbox/wiki/Home/#getting-started">phpVirtualBox</a>。</p>
+
+<p>创建了虚拟机之后，我可以设置端口映射访问虚拟机，或者用VirtualBox的<a href="https://www.virtualbox.org/manual/ch07.html#vbox-auth">远程桌面</a>功能。</p>
+
+<h3>web安全</h3>
+
+<p>所有通过http访问的服务，我全部都改成了https，保证传输安全性。采用<a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04">自授权</a>，
+自授权需要写host域名，我自己定义了一个nas的域名（比如local-nas-server.pc），然后增加到自己电脑的/etc/hosts，地址就是nas的内网地址。</p>
+
+<h3>备份</h3>
+
+<p>NAS的重要资料我都备份到云平台上面，不重要又大的资料（比如电影）就不管了。系统的配置一定要写脚本定期备份，不然丢了就好难找回来。</p>
+
+<h3>待实现</h3>
+
+<p>以后有时间可以买一个摄像头，实时监控家里或者门口的情况。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -813,74 +946,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/backup-method/">个人资料备份策略</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-12-13T17:33:29+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2014</time>
-        
-         | <a href="/blog/backup-method/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>思考了一下个人资料的备份策略。个人资料可以以重要程度，资料的大小，私密性作为区分。</p>
-
-<ul>
-<li>重要，文件大，私密性高：电脑全盘备份</li>
-<li>重要，文件小，私密性高：关键数据，比如日记</li>
-<li>不重要，文件中等，私密性高：图片</li>
-<li>不重要，文件大，私密性低：下载的电影，漫画</li>
-</ul>
-
-
-<p>根据不同的类型，可以选择不同的方式来备份。不同的备份方式有价格，空间，安全性，易用度等差异。</p>
-
-<ul>
-<li>加密网盘：价格高，空间小，安全性高，易用度低</li>
-<li>国外网盘：价格高，空间小，安全性中，易用度高</li>
-<li>国内网盘：价格低，空间大，安全性低，易用度高</li>
-<li>移动硬盘：价格低，空间大，安全性高，易用度低</li>
-<li>NAS：价格低，空间大，安全性高，易用度低</li>
-</ul>
-
-
-<p>因此，我现在选择的备份策略：</p>
-
-<ul>
-<li>备份电脑用timemachine备份到移动硬盘里面</li>
-<li><a href="https://lastpass.com/">lastpass</a>备份网站帐号密码和关键系统密码</li>
-<li>dropbox备份笔记和文档</li>
-<li>dropbox备份图片，因为我想办法把dropbox空间拓展到了20G。</li>
-<li>移动硬盘备份视频，漫画等</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -898,6 +963,10 @@ machine learning, statistics, UI design, etc&hellip;</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/better-house-market/">更好的住宅行业</a>
       </li>
     
@@ -911,10 +980,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
     
       <li class="post">
         <a href="/blog/recreational-vehicle/">如何选择房车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/how-to-choose-a-car/">如何挑选汽车</a>
       </li>
     
   </ul>
