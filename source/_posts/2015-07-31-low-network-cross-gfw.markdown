@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-(2015-08-29更新SS方法)
+(2015-12-14更新KCPTUN方法)
 
 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
 但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
@@ -62,3 +62,19 @@ categories:
 - 在你本地机器上面安装SS，执行`sslocal -s 微林服务器地址 -p 微林服务器分配给你的端口号 -k password -l 1080`，这样连接到微林的端口转接，同时在本地启动了一个1080的sock5服务。
 - 设置浏览器的sock5代理，指向本地服务器的1080端口。
 - 如果你希望在命令行下面翻墙，可以安装[proxychains-ng](https://github.com/rofl0r/proxychains-ng)，OSX下面可以用brew安装。
+
+2016-12-14更新：
+
+ss翻墙中间网络传输的速度不行，我发现了[kcptun](https://github.com/xtaci/kcptun)这个神器，针对链路进行加速，看youtube高清视频一点问题都没有。
+
+使用方法：
+
+- 在你的服务器上面安装kcptun，直接下载官方的[二进制包](https://github.com/xtaci/kcptun/releases/latest)就好。
+- 整体逻辑：`服务器ssserver - 服务器kcptun - 本地kcptun - 本地sslocal`，kcptun提供一个加速的链路，ss负责加密传输。
+- 服务器上面跑ss：`ssserver -p 4431 -k sskey`
+- 服务器上面跑kcptun：`./server_linux_amd64 -t "127.0.0.1:4431" -l ":42871" -key "sharedkey" -mtu 1400 -sndwnd 2048 -rcvwnd 2048 -mode fast2`
+- 本地机器上面跑kcptun： `./client_linux_amd64 -r "server.com:42871" -l ":4432" -key "sharedkey" -mtu 1400 -sndwnd 106 -rcvwnd 2048 -mode fast2`
+- 本地机器上面跑ss：`sslocal -s 127.0.0.1 -p 4432 -k sskey -b 0.0.0.0 -l 1081`
+- 里面42871是kcp的端口，kcptun把服务器sserver的4431端口映射到本地的4432端口让sslocal访问。sharedkey是你kcptun本地和服务器共享的密钥，sskey是ss共享的密钥，server.com是你vps的地址，都要修改一下。其它的参数你感兴趣可以去官方网站上面看解释。
+- 打开浏览器，设置SOCK5代理，端口1081就可以了。
+
