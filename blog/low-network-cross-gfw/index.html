@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="(2015-08-29更新SS方法) 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
+  <meta name="description" content="(2015-12-14更新KCPTUN方法) 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
 但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
-访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。 要解决访问国外网站的问题， &hellip;">
+访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -108,7 +108,7 @@
   </header>
 
 
-<div class="entry-content"><p>(2015-08-29更新SS方法)</p>
+<div class="entry-content"><p>(2015-12-14更新KCPTUN方法)</p>
 
 <p>我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
 但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
@@ -171,6 +171,24 @@
 <li>在你本地机器上面安装SS，执行<code>sslocal -s 微林服务器地址 -p 微林服务器分配给你的端口号 -k password -l 1080</code>，这样连接到微林的端口转接，同时在本地启动了一个1080的sock5服务。</li>
 <li>设置浏览器的sock5代理，指向本地服务器的1080端口。</li>
 <li>如果你希望在命令行下面翻墙，可以安装<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a>，OSX下面可以用brew安装。</li>
+</ul>
+
+
+<p>2016-12-14更新：</p>
+
+<p>ss翻墙中间网络传输的速度不行，我发现了<a href="https://github.com/xtaci/kcptun">kcptun</a>这个神器，针对链路进行加速，看youtube高清视频一点问题都没有。</p>
+
+<p>使用方法：</p>
+
+<ul>
+<li>在你的服务器上面安装kcptun，直接下载官方的<a href="https://github.com/xtaci/kcptun/releases/latest">二进制包</a>就好。</li>
+<li>整体逻辑：<code>服务器ssserver - 服务器kcptun - 本地kcptun - 本地sslocal</code>，kcptun提供一个加速的链路，ss负责加密传输。</li>
+<li>服务器上面跑ss：<code>ssserver -p 4431 -k sskey</code></li>
+<li>服务器上面跑kcptun：<code>./server_linux_amd64 -t "127.0.0.1:4431" -l ":42871" -key "sharedkey" -mtu 1400 -sndwnd 2048 -rcvwnd 2048 -mode fast2</code></li>
+<li>本地机器上面跑kcptun： <code>./client_linux_amd64 -r "server.com:42871" -l ":4432" -key "sharedkey" -mtu 1400 -sndwnd 106 -rcvwnd 2048 -mode fast2</code></li>
+<li>本地机器上面跑ss：<code>sslocal -s 127.0.0.1 -p 4432 -k sskey -b 0.0.0.0 -l 1081</code></li>
+<li>里面42871是kcp的端口，kcptun把服务器sserver的4431端口映射到本地的4432端口让sslocal访问。sharedkey是你kcptun本地和服务器共享的密钥，sskey是ss共享的密钥，server.com是你vps的地址，都要修改一下。其它的参数你感兴趣可以去官方网站上面看解释。</li>
+<li>打开浏览器，设置SOCK5代理，端口1081就可以了。</li>
 </ul>
 
 </div>
