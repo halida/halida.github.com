@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="因为现在公司的一个网站项目是用ASP.NET写的，我周末抽时间学习了一下相关的概念，对于ASP.NET有了一定的了解。
-学习过程就是看一遍W3School的教程。
-我没有下载Visual Studio实际编写，因为只需要能够看懂项目代码就可以了。 总体来说，我觉得微软的技术有这些特点： 复杂： &hellip;">
+  <meta name="description" content="最近做了一些rails数据导出的工作，就是把一些特定的ActiveRecord数据挖出来，保存到表格里面。
+需要注意几件事：执行速度，内存消耗，以及调试速度。 执行速度 导数据的程序基本上就是一个循环体，外部获取数据集，内部把一条数据转换成表格。
+在内部，往往需要通过一条记录作为主体， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,259 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rails-export-data/">Rails导出数据经验整理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-20T08:42:25+08:00" pubdate data-updated="true">May 20<span>th</span>, 2015</time>
+        
+         | <a href="/blog/rails-export-data/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近做了一些rails数据导出的工作，就是把一些特定的ActiveRecord数据挖出来，保存到表格里面。
+需要注意几件事：执行速度，内存消耗，以及调试速度。</p>
+
+<h2>执行速度</h2>
+
+<p>导数据的程序基本上就是一个循环体，外部获取数据集，内部把一条数据转换成表格。
+在内部，往往需要通过一条记录作为主体，通过数据库逻辑关系顺藤摸瓜挖出一批数据，
+这样会形成一批短查询，因为是在循环体里面，会带来很大时间上的消耗，比如：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">out</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">company</span><span class="o">.</span><span class="n">name</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以先把这些查询汇总起来，一次查询掉，然后在循环体内部筛选出对应的数据：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">out</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">units</span> <span class="o">=</span> <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="n">company_names</span> <span class="o">=</span> <span class="no">Company</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:company_id</span><span class="p">)</span><span class="o">.</span><span class="n">uniq</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">)</span><span class="o">.</span><span class="n">to_h</span>
+</span><span class='line'><span class="n">units</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">company_names</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">company_id</span><span class="o">]]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>内存消耗</h2>
+
+<p>查询大量数据的时候，可以首先查所有的ID，然后分批查询，这样防止序列化大量的数据库对象：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">unit_ids</span> <span class="o">=</span> <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="n">group_size</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span class='line'><span class="n">unit_ids</span><span class="o">.</span><span class="n">in_groups_of</span><span class="p">(</span><span class="n">group_size</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">ids</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>数据全部缓存在一个array中的话，会占用大量内存，最好是通过数据流的方式一个个输出处理，用后即丢：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">export</span>
+</span><span class='line'>  <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;out.csv&#39;</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">export</span> <span class="p">{</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">row</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在循环体内部，尽量用局部变量，不用的资源会更早释放。</p>
+
+<p>跑数据导出的时候，最好同时注意一下服务器的剩余内存。不要把其它服务搞挂了。</p>
+
+<h2>调试速度</h2>
+
+<p>导数据最花费时间的往往还是调试过程。</p>
+
+<p>调试的时候，可以只返回几条数据，检查完毕之后再全部跑。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">debug</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">break</span> <span class="k">if</span> <span class="n">debug</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">10</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>需要考虑数据并不是很规整，做好预防性编程。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">company</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span><span class="o">]</span><span class="p">)</span> <span class="c1"># 公司可能不存在</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>很多时候难免特定数据不符合预设状况，最好循环体内部记录log，出现问题可以跟踪。
+比如下面的例子，unit没有oldest_driver的时候，会报错，记录了日志，就知道在哪条上面出现了问题。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">logs</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">logs</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;unit: </span><span class="si">#{</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="n">oldest_driver</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">drivers</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="s1">&#39;age desc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="c1"># </span>
+</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">ordest_driver</span><span class="o">.</span><span class="n">name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>导出数据可以生成两个版本，一个给客户，另外一个加上一些debug数据方便自己分析。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">export</span>
+</span><span class='line'>  <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;out.csv&#39;</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;out_debug.csv&#39;</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">debug_csv</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">export</span> <span class="p">{</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">debug_csv</span> <span class="o">&lt;&lt;</span> <span class="n">row</span>
+</span><span class='line'>      <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">row</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>架构设计</h2>
+
+<p>代码架构上面最重要的是职责清晰。导出数据的逻辑比较简单，分离出导数据类，以及处理数据类就可以了：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Exporter</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">iterator_to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">iterator</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">CSV</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">iterator</span><span class="o">.</span><span class="n">call</span> <span class="p">{</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">row</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">ExportActiveUnits</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:time</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">export</span>
+</span><span class='line'>    <span class="no">Unit</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;active_at&quot;</span> <span class="o">&lt;</span> <span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">unit</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">yield</span><span class="p">(</span><span class="o">[</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">eau</span> <span class="o">=</span> <span class="no">ExportActiveUnits</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">eau</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'><span class="no">Exporter</span><span class="o">.</span><span class="n">iterator_to_csv</span> <span class="s2">&quot;out.csv&quot;</span><span class="p">,</span> <span class="n">eau</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="ss">:export</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -789,77 +1042,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/into-systemd/">Systemd初探</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-12T12:03:05+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
-        
-         | <a href="/blog/into-systemd/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Systemd_components.svg/1440px-Systemd_components.svg.png" style="width: 600px" /></p>
-
-<p>最近<a href="http://www.zdnet.com/article/after-linux-civil-war-ubuntu-to-adopt-systemd/">ubuntu准备迁移到systemd</a>，基本上linux上面init纷争大局已定，<a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a>赢得了主要的市场。
-以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
-对于系统管理员们来说，systemd成为必须学习的一个模块。</p>
-
-<p>那么什么是systemd？我们知道linux系统里面启动各大进程的工作都是由<a href="http://en.wikipedia.org/wiki/Init">init</a>来完成的，
-机器启动有不同的级别（rc level），根据不同的级别设置启动进程的顺序。
-这种传统架构已经不适应现代的操作系统进程管理了，问题有：</p>
-
-<ul>
-<li>设备管理：传统架构架设设备是静态的，但是现代操作系统里面设备动态插入和拔出的状况非常常见。</li>
-<li>依赖管理：传统架构靠/etc/rc3.d/下面文件名显式制定启动顺序，无法适应复杂依赖关系。</li>
-<li>进程管理：传统架构没有进程管理，只负责启动，停止的时候也不能保证进程的子进程正常关闭，往往需要系统管理员单独配置。</li>
-</ul>
-
-
-<p>做过系统管理员的人，应该知道针对进程管理，需要写多少脚本，搭建各种各样的监控和管理系统。
-systemd是init的替代系统，有了它，可以说解决了很大一部分的问题，脚本可以丢掉一大部分了。
-systemd的解决方案：</p>
-
-<ul>
-<li>所有管理的对象都是<a href="http://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit</a>，包括系统服务，文件系统，设备等</li>
-<li>做到比较好的资源依赖管理</li>
-<li>利用cgroup等工具，做到进程管理和控制</li>
-<li>内置日志系统来接收和管理各个unit的日志</li>
-</ul>
-
-
-<p>systemd做的事情很多，体积也很大，网上对此也有争议。我对于它的涉及领域没有意见，因为进程管理相关的事情是很多，彼此也有依赖。
-用了systemd，管理一个进程，只需要写好对应的一个配置文件就好了，对于系统管理员来说，事情变得更简单了，
-配置文件的格式也不是很复杂。</p>
-
-<p>现在我的主力服务器发行版是ubuntu，等ubuntu正式引入systemd之后，我会用它来进行进程管理，到时候会有更多的心得可供分享。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -877,6 +1059,10 @@ systemd的解决方案：</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/new-desktop-computer/">考虑买电脑</a>
       </li>
     
@@ -890,10 +1076,6 @@ systemd的解决方案：</p>
     
       <li class="post">
         <a href="/blog/bicycle-body-building/">骑折叠自行车健身</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/recreational-vehicle/">如何选择房车</a>
       </li>
     
   </ul>
