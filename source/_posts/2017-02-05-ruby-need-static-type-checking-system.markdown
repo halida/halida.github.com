@@ -3,7 +3,7 @@ layout: post
 title: "ruby需要一个静态类型验证系统"
 date: 2017-02-05 10:33:54 +0800
 comments: true
-categories: 
+categories: ruby-sucks
 ---
 
 越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。
