@@ -1073,15 +1073,27 @@
         <lastmod>2016-12-29T10:33:11+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/ansible/</loc>
+        <lastmod>2017-02-05T10:32:06+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/ruby-need-static-type-checking-system/</loc>
+        <lastmod>2017-02-05T11:22:43+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://halida.github.com/blog/ruby-have-no-program-optimize/</loc>
+        <lastmod>2017-02-05T11:21:28+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/about/</loc>
         <lastmod>2014-04-15T08:15:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2016-12-29T10:33:11+08:00</lastmod>
+        <lastmod>2017-02-05T11:22:43+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2016-12-29T10:33:11+08:00</lastmod>
+        <lastmod>2017-02-05T11:22:43+08:00</lastmod>
     </url>
 </urlset>

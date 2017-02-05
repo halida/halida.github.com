@@ -9,7 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="2009年12月3号研究了一下如何发布pyqt的程序，整理内容如下： pyqt是qt图形库对于python编程语言的一个绑定，qt是著名的跨平台图形开发库，专业，易用，以及企业级别支持，文档齐全。python是一个简单易用的解释语言。不过这篇文章是关于如何发布pyqt程序的，那么读者应该都知道这些 &hellip;">
+  <meta name="description" content="什么是reStructuredText? 一种写文档的方式. 简称:
+ReST 简单, 现场学,现场会
+易读
+方便生成html/pdf等其他格式 怎么玩? 不多说, 直接用: http://goo.gl/1jNF4 语法 There should be one&mdash; and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +81,516 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/reStructuredText-intro/">reStructuredText介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-10T15:39:39+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
+        
+         | <a href="/blog/reStructuredText-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是reStructuredText?</h2>
+
+<p>一种写文档的方式. 简称:
+<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></p>
+
+<ul>
+<li>简单, 现场学,现场会</li>
+<li>易读</li>
+<li>方便生成html/pdf等其他格式</li>
+</ul>
+
+
+<h2>怎么玩?</h2>
+
+<p>不多说, 直接用: <a href="http://goo.gl/1jNF4">http://goo.gl/1jNF4</a></p>
+
+<h2>语法</h2>
+
+<p>There should be one&mdash; and preferably only one &mdash;obvious way to do it.</p>
+
+<p>google: rest</p>
+
+<p><a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">http://docutils.sourceforge.net/docs/user/rst/quickstart.html</a>
+<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></p>
+
+<h2>如何生成其他格式</h2>
+
+<p>需要安装docutils</p>
+
+<ul>
+<li><p>html: 有个东西叫rst2html:</p>
+
+<pre><code>rst2html xxx.rst xxx.html
+</code></pre></li>
+<li><p>pdf: 有个东西叫rst2pdf:</p>
+
+<pre><code>rst2pdf xxx.rst
+</code></pre></li>
+<li><p>latex: 有个东西叫rst2latex:</p>
+
+<pre><code>rst2latex --input-encoding=utf-8 --output-encoding=utf-8 xxx.rst &gt;&gt; s.tex
+</code></pre></li>
+</ul>
+
+
+<h2>python code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
+</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">publish_string</span><span class="p">(</span>
+</span><span class='line'>    <span class="n">source</span><span class="o">=</span><span class="s">&quot;doc here&quot;</span>
+</span><span class='line'>    <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;html&#39;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>我用它来干什么?</h2>
+
+<ul>
+<li>写博客</li>
+<li>写文档</li>
+<li>问题: 好像没有支持ReST的网站..</li>
+</ul>
+
+
+<h2>连接</h2>
+
+<ul>
+<li>官方网站:
+<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pyqt-intro/">Pyqt介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-10T08:59:03+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
+        
+         | <a href="/blog/pyqt-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>最强大的GUI库 &mdash; PyQt4</h2>
+
+<p>Authors
+  ~ 机械唯物主义</p>
+
+<pre><code>&lt;[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\&gt;
+</code></pre>
+
+<h2>一个简单的实例</h2>
+
+<ul>
+<li>计算器</li>
+<li>10分钟</li>
+</ul>
+
+
+<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnrsk8C64I/AAAAAAAADMc/TMTjkv1is7k/s800/caculator_ui.png" alt="image" /></p>
+
+<h2>代码</h2>
+
+<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnooDH5dtI/AAAAAAAADLo/KK7FwKekTRo/s800/caculator.JPG" alt="image" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Caculator</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">Caculator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="c">#widgets</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+</span><span class='line'>        <span class="c">#layouts</span>
+</span><span class='line'>        <span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>        <span class="c">#events</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">caculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">data</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span> <span class="k">return</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Caculator</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>类层级</h2>
+
+<pre><code>QObject
+   |----- QWidget
+             |----- QDialog
+             |----- QLineEdit
+             |----- QListWidget
+</code></pre>
+
+<h2>layout</h2>
+
+<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnoon5j6aI/AAAAAAAADLw/ITJ9fVU9YtE/s800/layout.JPG" alt="image" /></p>
+
+<h2>layout</h2>
+
+<ul>
+<li><p>层级:</p>
+
+<pre><code>QDialog (QVBoxLayout)
+   |----- QLineEdit
+   |----- QListWidget
+</code></pre></li>
+<li><p>代码:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Signal and Slot in Qt</h2>
+
+<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoo68TzKI/AAAAAAAADL4/jPjbRhwQEI8/s800/signal_and_slot.JPG" alt="image" /></p>
+
+<h2>Qt和PyQt 事件机制区别</h2>
+
+<ul>
+<li>Qt:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">this</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">(</span><span class="n">leInput</span><span class="p">,</span> <span class="n">SINGAL</span><span class="p">(</span><span class="n">returnPressed</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">caculate</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>PyQt:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>一个复杂的实例: 扫雷</h2>
+
+<ul>
+<li>花费时间: 2个晚上, 基础:2.5小时, 一点点提升:1小时</li>
+<li>扫雷下载: <a href="https://bitbucket.org/linjunhalida/pyqtmine/">pyqtmine</a></li>
+</ul>
+
+
+<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnoooQuryI/AAAAAAAADL0/MLwyt5qromk/s800/pyqtmine.JPG" alt="image" /></p>
+
+<h2>UI designer</h2>
+
+<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoodk5clI/AAAAAAAADLs/cbHdyQCMco8/s800/designer.JPG" alt="image" /></p>
+
+<h2>UI with Code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">form</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="s">&quot;score.ui&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ScoreDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">ScoreDlg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Event</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
+</span><span class='line'>        <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">p</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">sy</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>其他强大特性</h2>
+
+<ul>
+<li>足够多和好用的控件/自定控件/整合到designer中</li>
+<li>webkit/script支持</li>
+<li>强大/方便/快速的绘图控件</li>
+<li>富文本/文本解析</li>
+<li>多国语言支持</li>
+<li>其他第三方控件支持: pyqwt</li>
+</ul>
+
+
+<h2>发布</h2>
+
+<p><a href="http://www.pyinstaller.org/">pyinstaller</a>!</p>
+
+<h2>资源</h2>
+
+<ul>
+<li><p>PyQt安装
+  ~ &ndash;   ubuntu:</p>
+
+<pre><code>        sudo apt-get install pyqt4-dev-tools
+
+-   windows可以下载一个python包:
+    [pythonxy](http://www.pythonxy.com)
+</code></pre></li>
+<li><p>学习材料
+  ~ &ndash;   <a href="http://qt.nokia.com/products/">qt</a> 以及
+        <a href="http://www.riverbankcomputing.co.uk/software/pyqt/intro">pyqt</a>
+        官方网站</p>
+
+<pre><code>-   书籍请google: pyqt book or qt book
+
+-   中文资料: [qteverywhere](http://www.qteverywhere.com/)
+</code></pre></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fair-game/">所谓的你情我愿</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-29T22:18:18+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
+        
+         | <a href="/blog/fair-game/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TMrZRW4Tz1I/AAAAAAAADLM/XC66Y6vsz4I/s800/W020080904536416398854.jpg" alt="image" /></p>
+
+<p>今天看到帖子:
+<a href="http://www.douban.com/note/97807441">http://www.douban.com/note/97807441</a>/
+, 带来不少争议, 一句两句说不清楚, 特此专门发文阐述.</p>
+
+<p>全文转载:</p>
+
+<blockquote><p>今天跟某留学海外的经济学高材博士生简短对话，是从去沃尔玛买东西是不是不道德开始的（其实我也是去沃尔玛的，所以完全没有任何道德优越感）。</p>
+
+<p>我说起有个纪录片是控诉沃尔玛的。她骤然很激动，说最受不了的就是这种了，这是你情我愿的事情，你既然接受了这工作，就没什么好抱怨的。</p>
+
+<p>我对经济学一窍不通，很傻很天真的问：那不能老板拿少点，给员工多一点吗？</p>
+
+<p>她说：你凭什么要让老板少拿呢？</p>
+
+<p>我说：那你凭什么不让工人多拿呢？为什么老板不需要限制自己的欲望，而工人要限制自己的欲望呢？</p>
+
+<p>她说：这是你情我愿的事，你可以到别的地方去工作啊。</p></blockquote>
+
+<p>转载完了. 你支持哪一方?</p>
+
+<p>作为一名普通人, 很少有机会能够以企业家的视角来思考问题,
+往往是把自己带入到员工这个角色中, 感受员工的情绪:</p>
+
+<ul>
+<li>每天辛苦工作</li>
+<li>拿到的工资却很少</li>
+<li>会有被炒掉的危险</li>
+</ul>
+
+
+<p>但是, 作为一个明事理的人, 可以利用情绪来感受环境, 但是不能被情绪所左右,
+不能成为情绪的奴隶, 在思考问题的时候, 要静下心来, 想清楚, 弄明白.</p>
+
+<p><strong>先看清楚问题</strong>: 员工工作辛苦, 企业家是不是应该给员工更多的好处?
+是不是应该给员工更多的保障?</p>
+
+<p>我们眼中的很多企业家, 往往一毛不拔, 压榨员工, 给我们一个很不好的印象,
+并且, 我们从小就得到教育: 企业家是靠榨取剩余价值来获得利润的.
+但是我们有没有想过, 事实是不是这样?</p>
+
+<p>回到真实世界. 如果你有观察过做小生意的人, 一开始都是自己辛苦工作,
+然后摊子做大, 人手不够, 再去雇人. 因为成本因素, 会去让员工努力工作.
+如果你做过生意, 应当知道: <strong>雇人不好雇</strong>: 工资少了人不来,
+不去监管人偷懒.</p>
+
+<p>我们都认为企业家剥削员工, 那么有没有见过:<strong>员工剥削企业家</strong>?
+作为员工的自己, 是不是找到机会就会偷懒? 是不是能多拿点工资就多拿?
+从不会期望减少工资? 想想.</p>
+
+<p>现在回到沃尔玛. 假如世界上没有沃尔玛, 那么原先那些沃尔玛的员工,
+是不是更不好找工作? 是不是有人强迫他们去沃尔玛工作, 有了沃尔玛,
+他们是不是多了更多的工作机会, <strong>多了更多的选择</strong>?</p>
+
+<p>再进一步. 在沃尔玛雇用员工之前, 对员工有没有义务?
+雇用之后是不是有义务了? 这个义务是否是交换员工的服务?
+在雇用员工的合约签订的时候, 员工是否有自主权? 如果待遇少了,
+员工是不是能不签合约? 签了合约, 员工是不是应该服务以换取企业给的薪资,
+是不是说, 既然签订了合约, 就是员工和企业家达成了:<strong>公平交易</strong>?</p>
+
+<p>那么回到最开始的问题: 员工工作辛苦, 企业家是不是应该给员工更多的好处?
+是不是应该给员工更多的保障?</p>
+
+<p>如果说当初员工签约的时候已经是公平交易了, 那么为什么企业家应该付出更多?
+这样是不是不公平? 为什么我们会希望这样的事情? 是不是因为情绪的影响?
+还是什么其他更重要的原因?</p>
+
+<p>这是我们每个人都应该想, 并且应该想清楚的问题,
+这关乎我们的人生观和世界观, 虽然不会有直接的影响,
+但是会潜移默化到我们自己将来会走的路, 甚至影响到其他人走的路.</p>
+
+<p>如果你想要弄清楚这些问题, 应该看看张五常的
+<a href="http://book.douban.com/subject/1394399/">经济解释</a> , 以及曼昆的:
+<a href="http://book.douban.com/subject/1028842/">经济学原理</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1387,245 +1900,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/can-we-do-this/">可以这样做吗</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-29T16:37:20+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
-        
-         | <a href="/blog/can-we-do-this/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TMqygkKlBLI/AAAAAAAADKg/1XLcDk3_uk8/s800/out-of-the-box.jpg" alt="image" /></p>
-
-<p>在超市里, 肚子饿了, 直接拿袋食物开封就吃, 但是不要忘了出去的时候付账.</p>
-
-<p>一本书感觉不错/糟糕, 直接通知作者本人, 告诉他哪里不错/糟糕.</p>
-
-<p>走在路上, 发现一个人吸引了自己的注意力, 走上前去告诉他/她,
-你吸引了我,以及为什么吸引我.</p>
-
-<p>不在意亲戚的想法, 做自己想要做的事情, 等做成了, 再通知他们.</p>
-
-<p>路上遇到一个陌生人, 假装认识他, 和他寒暄.</p>
-
-<p>如果已经离开了校园, 找一所大学正在上课的教室进去听课, 提问,
-和其他同学交流.</p>
-
-<p>到一个公司/单位/政府部门, 观察其中的一个人, 去和他交朋友.</p>
-
-<p>每个月把家里重新装饰一遍</p>
-
-<p>没钱买房, 去租一个别墅住一段时间.</p>
-
-<p>工作无聊了就辞职.</p>
-
-<p>让自己领域里面的人知道自己的存在, 如果不是通过实力, 至少通过特立独行.</p>
-
-<p>把自己的一段时间卖给陌生人.</p>
-
-<p>如果想做什么事情, 立刻就去做, 即使是离开自己当前住的地方,
-即使是离开自己当前的工作, 即使自己当前的工作收入不菲</p>
-
-<p>尝试同性爱, 异性爱, 以及嫖妓.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/C-RAII/">C语言如何实现RAII</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-29T14:25:54+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
-        
-         | <a href="/blog/C-RAII/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>资源的获取与释放，C语言里面是要让程序员考虑的，比如</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在C++里面，有raii这样很方便的特性，当离开作用域的时候，自动释放资源，如</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我在想，如何让C支持这样的特性？于是就有了下面这个宏</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#define using(b) \</span>
-</span><span class='line'><span class="cp">for(int i=0; i&lt;2; i++){\</span>
-</span><span class='line'><span class="cp">if (i==0) \</span>
-</span><span class='line'><span class="cp">  { init(b); } \</span>
-</span><span class='line'><span class="cp">else \</span>
-</span><span class='line'><span class="cp">  { if (i==1) \</span>
-</span><span class='line'><span class="cp">    { del(b); \</span>
-</span><span class='line'><span class="cp">      break; \</span>
-</span><span class='line'><span class="cp">    }; \</span>
-</span><span class='line'><span class="cp">  }; </span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">work</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">using</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;working..</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>edit: 被批了，C就按照C的方式干活，RAII交给C++.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/DwarfFortress-intro/">DwarfFortress介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-28T21:25:29+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2010</time>
-        
-         | <a href="/blog/DwarfFortress-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>什么是dwarf fortress?</h2>
-
-<p>一个建设矮人部落的游戏. 随机生成世界地图, 历史, 超级复杂的建设…</p>
-
-<p><a href="http://www.bay12games.com/dwarves/screens.html">http://www.bay12games.com/dwarves/screens.html</a></p>
-
-<p>有人甚至用部落和矮人实现出了一个
-<a href="http://www.pcworld.com/article/194434/dwarf_fortress_player_creates_a_working_ingame_digital_computer.html">计算机</a>
-(有种3体里面那个人计算机的感觉)</p>
-
-<p>免费的. 有linux版本可以下.</p>
-
-<p>一个漂亮的
-<a href="http://www.bay12forums.com/smf/index.php?topic=43260.0">显示工具</a>:</p>
-
-<p><img src="/images/posts/WT0jH.png">
-<img src="http://i481.photobucket.com/albums/rr172/nil2008/screenshot1.jpg" alt="image" />
-这个工具可以在linux下面用cmake编译,但是我没有编译成功, 摸索中.</p>
-
-<p>有一些其他的类似的游戏， 整理在这里：</p>
-
-<p><a href="http://www.townsgame.com">http://www.townsgame.com</a>/</p>
-
-<p><a href="http://www.goblincamp.com">http://www.goblincamp.com</a>/</p>
-
-<p><a href="http://www.paradoxplaza.com/games/a-game-of-dwarves">http://www.paradoxplaza.com/games/a-game-of-dwarves</a></p>
-
-<p><a href="http://gnomoria.com/?page_id=15">http://gnomoria.com/?page_id=15</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/24/">&larr; Older</a>
@@ -1643,23 +1917,23 @@ lives; otherwise, the behavior is that of a queued connection.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016-summary/">2016年度总结</a>
       </li>
     
       <li class="post">
         <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/better-house-market/">更好的住宅行业</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
   </ul>
@@ -1704,7 +1978,7 @@ lives; otherwise, the behavior is that of a queued connection.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 机械唯物主义 -
+  Copyright &copy; 2017 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

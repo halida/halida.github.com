@@ -9,17 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我已经习惯加班了。
-年轻人不加班怎么行
-不加班做不好事情
-加班是种生活习惯
-反正下班了也是做上班的事情
-有的时候不是想加班，而是不上班就不知道日子怎么过
-不天天加班的人生是不完整的
-10点之前下班不算加班
-为了增加加班时间，我搬到办公桌下面睡觉去了。
-什么是加班？
-工作是生活，加班是乐趣 &hellip;">
+  <meta name="description" content="Capistrano是一个ruby写的远程服务器自动化和部署工具。 虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点： 多台服务器任务量巨大。
+手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +79,198 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/capistrano/">Capistrano介绍和入门</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-16T10:28:51+08:00" pubdate data-updated="true">Jun 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/capistrano/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_06_16_cap.png"></p>
+
+<p><a href="http://capistranorb.com/">Capistrano</a>是一个ruby写的远程服务器自动化和部署工具。</p>
+
+<p>虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点：</p>
+
+<ul>
+<li>多台服务器任务量巨大。</li>
+<li>手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。</li>
+<li>写脚本自动操作不能重用到其他项目里面去。</li>
+</ul>
+
+
+<p>用了自动化工具，可能第一次配置比较复杂，但是配置好了之后，发布工作就简单得只需要执行一个命令，轻松愉快。
+它也有学习复杂，因为有抽象出现问题难以找到原因，造成额外心智负担的问题，
+这个要开发者根据项目大小和类型来做权衡。</p>
+
+<p>看了官方文档，wiki，看了一天都没有看出门道，后来看官方网站上面的文档才慢慢弄懂。</p>
+
+<p>Capistrano的原理是这样：</p>
+
+<ul>
+<li>需要部署的服务器根据角色(role)区分: 比如有app，db，web，然后每个角色可以有多台服务器。</li>
+<li>针对不同角色，设置各类的任务，设置执行一些命令。</li>
+<li>可以根据阶段设置不同的stage，比如staging/production，staging用来本地测试环境的部署，production用来进行生产环境的部署。</li>
+<li>默认的一套发布流程包括了检查服务器环境，更新代码，初始化，上线等各种过程。</li>
+<li>每个过程都提供了钩子，把任务链接到钩子上面，就能够保证部署过程按照期待的状况进行。</li>
+</ul>
+
+
+<p>弄懂如何用cap比较麻烦，我整理了一下如何学习的资料：</p>
+
+<ul>
+<li>首先是去看<a href="http://capistranorb.com/">官方文档</a>，对于基础概念，有一定的了解。</li>
+<li>一定要实际部署一下，可以用本地环境测试，repo_url设置成本地，比如&#8221;user@localhost:/home/user/testapp&#8221;。</li>
+<li>弄清楚发布到服务器上面的文件架构。本地测试部署一次就清楚概念了。</li>
+<li>如果需要自动部署rails，可看<a href="https://ruby-china.org/topics/18616?page=2#replies">别人整理的一份详细文档</a>。</li>
+</ul>
+
+
+<p>然后学习一些原理性质的资料：</p>
+
+<ul>
+<li>弄清楚<a href="http://capistranorb.com/documentation/getting-started/flow/">发布过程和逻辑</a>。</li>
+<li>如何在服务器上面执行代码是用SSHKit库，需要<a href="https://github.com/capistrano/sshkit">看一遍文档</a>。</li>
+<li>看一遍用到的cap相关Gem，包括<a href="https://github.com/capistrano/capistrano/tree/master/lib/capistrano/tasks">capistrano</a>, <a href="https://github.com/capistrano/bundler/blob/master/lib/capistrano/tasks/bundler.cap">capistrano-bundle</a>, <a href="https://github.com/capistrano/rvm/blob/master/lib/capistrano/tasks/rvm.rake">capistrano-rvm</a>, <a href="https://github.com/capistrano/rails/blob/master/lib/capistrano/tasks/">capistrano-rails</a>里面rake是怎么执行的，弄清楚原理。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fitting/">如何减肥</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-09T14:03:00+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2014</time>
+        
+         | <a href="/blog/fitting/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>减肥第一步，是真正想减肥。
+真正想减肥的意思是，你可以下决心放弃美食，放弃晚上舒服地躺在沙发上面看电视剧。</p>
+
+<p>减肥是全身性的，不能局部减。
+减肥的要义很简单，就是减少能量摄入，增大能量输出。</p>
+
+<p>需要做的事情有几个：</p>
+
+<p>营养均衡保证热量摄入少，以及长时间保持血糖平衡。
+保持全天的血糖平衡，就可以长时间维护好身体的能量消耗等级，保证持续的热量消耗，
+不至于因为血糖少而减低热量消耗等级。
+千万不能饿到肚子，因为饿肚子会减低人的能量消耗水平，反而瘦不下来。</p>
+
+<p>还有就是每天保持高能量输出，这样让身体维护一个比较高的热量消耗水平。
+方法是通过每天高强度运动（时间不一定很长，40分钟足够了），
+高强度就是你的心率很高，可以感觉到心跳厉害。
+散步，慢跑效果都不够好，要做一些快速跑跳的全身动作。</p>
+
+<p>坚持两个月就会有明显的效果。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fast-food/">大城市快捷美食解决方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-07T09:27:44+08:00" pubdate data-updated="true">Jun 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/fast-food/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在大城市里面吃饭是一个头疼的问题。首先没有足够的时间做饭：每次做饭都需要花费一个小时，不管是给4个人做，还是一个人做。如果在外面吃，就需要花费很多钱，并且往往需要走很远以及等好久。
+我是一个注重效率的人。我找到了自己的一套解决方案。解决的思路注重效率，金钱以及营养均衡。</p>
+
+<p>首先是早餐。早餐要一个鸡蛋，足够的碳水化合物，以及蔬菜。
+煮鸡蛋需要花费一些时间，一个很方便的解决方案：用微波炉来做。把鸡蛋打在小碗里面，筷子拌匀，用另外一个碗盖着，放到微波炉里面，1分钟即可。可能有一点小爆炸，但是有碗盖着，不会爆出来。
+也可以把鸡蛋打到面包里面，混着面包一起。如果觉得口味不好，可以在搅拌的时候加上一点糖。
+然后是早上的主食。我的主食是日清方便面。方便面之父创立了日清，在所有的方便面里面，日清是我觉得最好吃的，强烈推荐。
+也可以购买冷冻批萨，也可以放很久，我有朋友的冰箱里面都是冷冻批萨，不过价格就贵了一些。</p>
+
+<p>然后是中午和晚上。我的解决方案是找到最近的一家农民餐小食堂。因为是农民餐，分量大，肉多。我一般花费15元或者20元买一份（20元2个鸡腿），然后拆分成2份，分成午餐和晚餐来吃。因为我并不做大体力活，这样的份量刚好八分饱，很健康。
+至于口感的问题，我提供2个解决方案：一个是老干妈调料，非常有效。另外一个是用iPad看电视剧，看得精彩就不觉得口感差了。</p>
+
+<p>我是一个坚持的人，周末坚持按照我的食谱进行，社交活动会去聚餐，然后腻味了会更换伙食，购买全家盒饭或者罗森盒饭。7/11的盒饭也很好吃。
+可能有人觉得这样吃饭太不会享受生活了，对于我来说，吃饭只是满足身体的基本需要，可以投入更多的时间精力到其他方面的享受上面去。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -566,230 +749,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/view-point/">求视线范围的算法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-29T10:55:02+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
-        
-         | <a href="/blog/view-point/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>前段时间看到<a href="https://back.nothingtohide.cc/">有一个游戏</a>，玩家必须保持自己在监控设备的视线范围内。
-画面上面展示的效果是高亮出监视器的视线范围。如图：</p>
-
-<p><img src="/images/posts/2014_03_30_view.png"></p>
-
-<p>我思考了一下如何做到这点。首先定义问题：
-给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
-（可以用一系列的三角形表示）。</p>
-
-<p>求视线范围的三角形列表，可以从房间所有墙壁的顶点往监控点做视线线段，
-找视线线段和墙壁边的连接中距离监控点最近的点，
-然后可视范围就是这些点和监控点组成的三角形了。</p>
-
-<p>填充三角形，可以用扫描线算法。把三角形根据水平线拆分成2个，
-然后从顶点往下做扫描线，求扫描线和两条边的交点，然后填充里面的区域。
-如下图所示：</p>
-
-<p><img src="/images/posts/2014_03_30_scan.png"></p>
-
-<p>求线段相交点的算法网上搜索一下就可以得到。</p>
-
-<p>估计一下算法复杂度，墙壁边是m(4&lt;m&lt;240)，求交点是m*m，应该是上界。
-常数应该比较大，包括求交点，找出距离监控点最近的点。
-可以优化一下参数，比如变形求交点算法（做垂线），快速找到距离监控点最近的点。</p>
-
-<p>大家想想看有什么更好的解法？</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pitfalls-of-programming/">Pitfalls of Programming</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-09T21:19:12+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
-        
-         | <a href="/blog/pitfalls-of-programming/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2014_03_09_siren.jpg"></p>
-
-<p>There are some dangerous zones there, waiting for a careless programmer to fall,
-I list some of them, see what you get.</p>
-
-<p>First one: <strong>spend too much time on the detail</strong>. We all say the Devil is in the detail, and it is so as we write program.
-Some tiny little misunderstood of concept, or miss taking care of one small condition will lead to a fatal error.
-And it makes programmer addictive to the detail: each fraction of detail brings some joy.
-Lots of programmers spend enormous hours on seek more details, in the language, in the library, in the code,
-so forget to do the most important job: getting things done.</p>
-
-<p><img src="/images/posts/2014_03_09_magnify.png"></p>
-
-<p>Second one: <strong>Chase new things</strong>. Yes, nodejs is cool, angularjs is cool, mongodb is cool, html5 is cool too.
-But is it stable? Is it fits your needs? Can it survive long or just a flash in the sky?
-Think twice before you use it (or even start to learn it).</p>
-
-<p><img src="/images/posts/2014_03_09_baby.jpg"></p>
-
-<p>And the third: <strong>language or tech hater</strong>. Windows sucks, PHP is not cool, Java is ugly.
-Maybe that&rsquo;s true, and take it with no deep thinking brings you a pair of coloured glasses.
-Rational people think at the margin, consider things in different angles,
-Maybe the thing you hates is the best solution, even compare with your favorites.</p>
-
-<p><img src="/images/posts/2014_03_09_glasses.jpg"></p>
-
-<p>There are also other pitfalls, like: be a jack of all trades, code before think, etc.
-Senior programmer meets them all, and with experiences of the past, they learn not to listen to the siren&rsquo;s songs.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/guan-yu-rails/">关于Rails</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-09T19:56:01+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
-        
-         | <a href="/blog/guan-yu-rails/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2014_03_09_twitter.jpg"></p>
-
-<p>这几年世界上很多东西都被软件改变了（当然前几年也是），
-软件开发成为了一个很酷的职业。对于一个程序员来说，就算改变世界的软件不是自己做的，一般来说也还是会有一定的自豪感。</p>
-
-<p>我们<a href="http://ruby-china.org/">Rails程序员</a>也是，<a href="http://rubyonrails.org/">Rails</a>基本上代表了网站开发领域的最先进技术吧。而网站开发又是软件领域潮流最前的方向之一。
-Rails很酷，<a href="https://www.ruby-lang.org/">Ruby语言</a>也很酷，开发效率非常高，工作得很开心。</p>
-
-<p>但是这只是我们的想法。实际工作中，我们大部分的时间在做前端，写一些简单的<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>，
-然后做出来一个<a href="http://spreecommerce.com/">电商网站</a>，丢给老板或者客户。做一次还好，但是学了Rails就要重复做这些，
-不然怎么对得起学习Ruby，Rails，Javascript，<a href="http://haml.info/">haml</a>，<a href="http://sass-lang.com/">sass</a>，<a href="http://coffeescript.org/">coffeescript</a>，<a href="http://jquery.com/">jQuery</a>，<a href="http://getbootstrap.com/">bootstrap</a>，<a href="http://angularjs.org/">angularjs</a>。。。这些鬼东西投入的学习成本？</p>
-
-<p>作为一个Rails开发者，做了这么久，我不由反思自己在干什么。我在做网站。我在用Rails开发网站。
-从本质上面来说，不管Rails多酷，做网站多酷，写Ruby多酷，都不能改变我在做一件低技术含量的活的事实。</p>
-
-<p>对的，做网站是一个低技术含量的事情。</p>
-
-<p><img src="/images/posts/2014_03_09_low.jpg"></p>
-
-<p>做网站不容易，需要学习类似于html，css，服务端开发，Ruby，mysql等等东西。
-做网站很复杂，因为你需要把这些东西结合起来。</p>
-
-<p>所以网站开发者的工资会很高。但是，这也改变不了做网站是一个低技术含量事情的事实。</p>
-
-<p>上面列出来的技术，心智正常的人，拥有初等的英语读写能力，只要愿意投入时间，都能够掌握。
-这也是为什么有那么多的人，不管他是医生，老师，卡车司机，都能够成功转职成网站开发者。</p>
-
-<p>而其它行业？比如行医，需要进入医学院，经过长时间的学习，训练，阶段性地考核，
-最后生存下来的才能成为医生，并且职业过程中每年都有各种<a href="http://www.med66.com/webhtml/zhinan/yishi.shtml">审核和考试</a>。
-比如电气工程师。有多少网站程序员能够掌握微积分？没有需要对吧。网站程序员只要<a href="http://programmers.stackexchange.com/questions/89158/do-you-have-to-be-good-at-math-to-be-a-good-programmer">会加减乘除就好了</a>。
-就算是本行业，知识也分容易掌握的和不容易掌握的。
-比如不是写脚本语言的那种真正的程序员，至少<a href="http://en.wikipedia.org/wiki/Computer_architecture">懂机器</a>，至少知道<a href="http://en.wikipedia.org/wiki/Compiler">程序是怎么编译的</a>。
-Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Ruby程序可执行文件</a>里面到底有什么东西的？都被抽象掉了吧。</p>
-
-<p>从掌握的知识深度而言，Rails程序员，其实和木工类似。</p>
-
-<p><img src="/images/posts/2014_03_09_wood.jpeg"></p>
-
-<p>人人只要愿意学，就可以当木工。手艺好坏有区别，但是再怎么有差异，做的都是木工活。
-你可以说自己的工具多么好用，自己掌握了很多技巧，做东西多么快多么好，最后带来的价值就还是一个木工的价值。</p>
-
-<p>但是确确实实有很多网站改变了世界，它们的价值是从哪里出来的？
-这是一个玄妙的问题。为什么都是木工活，有的木工活就是那么值钱？</p>
-
-<p>有的是发现了巨大的需求，并且想办法满足了；
-有的是对行业深刻的洞见，把行业颠覆了；
-有的是做高技术含量的东西，碰巧用了网站这个形式；
-但不管怎样，有玄机的地方都不在木工活上面。</p>
-
-<p>最后，结论是什么？</p>
-
-<ul>
-<li>首先，看看自己掌握的技能，是不是和木工活一样，任何人花时间都能学会，如果是的话，就不要骄傲。</li>
-<li>然后，因为基于自己技能，创造出的东西是木盒子还是<a href="http://zh.wikipedia.org/zh/%E6%89%98%E5%8D%A1%E9%A9%AC%E5%85%8B">托卡马克引擎</a>，靠的是非木工活其他的技能，因此要多看书，多向其他专家请教，多思考多实践。</li>
-<li>工作的时候要时刻警惕，自己是在做木工活的部分，还是有价值的部分？尽量不要浪费时间。</li>
-</ul>
-
-
-<p>以上内容纯属本人每周写作练习，里面有很多逻辑谬误和语法错误，请勿动气请勿当真，谢谢。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -807,23 +766,23 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016-summary/">2016年度总结</a>
       </li>
     
       <li class="post">
         <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/better-house-market/">更好的住宅行业</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
   </ul>
@@ -868,7 +827,7 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 机械唯物主义 -
+  Copyright &copy; 2017 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

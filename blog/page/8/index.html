@@ -9,7 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="There is a common myth in China: After programmer turns 30, he is too old to keep programming, need change direction, to management or other domains &hellip;">
+  <meta name="description" content="现在趋势是移动互联网，这方面的需求比较多，如何写一个适应手机的html页面？ 首先要能够根据浏览器端的user-agent来判断设备是否是手机，有一个Gem mobile-fu来做这个事情。 然后是写对应的页面模板，要让页面的宽度适应屏幕。在header里面加上设置： &lt;meta name &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,296 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/mobile-html/">针对手机端写网页的方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-12T18:33:37+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
+        
+         | <a href="/blog/mobile-html/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在趋势是移动互联网，这方面的需求比较多，如何写一个适应手机的html页面？</p>
+
+<p>首先要能够根据浏览器端的user-agent来判断设备是否是手机，有一个Gem <a href="https://github.com/brendanlim/mobile-fu">mobile-fu</a>来做这个事情。</p>
+
+<p>然后是写对应的页面模板，要让页面的宽度适应屏幕。在<code>header</code>里面加上设置：</p>
+
+<pre><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1"&gt;
+</code></pre>
+
+<p>就是让页面宽度适应屏幕，同时锁定客户端不让屏幕缩放。</p>
+
+<p>html里面的元素设置<code>width: 100%</code>，让它们自动撑大到整个屏幕范围。
+同时最好设置一个<code>max-width</code>，这样万一电脑访问到这个页面，不至于显得太丑。</p>
+
+<p>如果有一个标题图片，需要这样设置，保证根据屏幕大小自动等比例缩放：</p>
+
+<pre><code>img
+  width: 100%
+  height: auto
+</code></pre>
+
+<p>如果你觉得不要放得太大，可以加上一个<code>max-width</code>。</p>
+
+<p>chrome最新版本支持<a href="https://developers.google.com/chrome-developer-tools/docs/mobile-emulation">手机模拟</a>，出来的结果就是这个样子：</p>
+
+<p><img src="/images/posts/2014_01_12_demo.jpg"></p>
+
+<p>参考文档：</p>
+
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">viewport</a></li>
+<li><a href="http://stackoverflow.com/questions/12991351/css-force-image-resize-and-keep-aspect-ratio">图片保持比例缩放</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-summary/">2013总结与2014计划</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-04T10:25:35+08:00" pubdate data-updated="true">Jan 4<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2013-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_01_04_summary.jpg"></p>
+
+<p>一个人真正拥有的资源是时间。人不能控制时间的获得和消逝。
+在时间投入的方式上面，体现出每个人的水平：
+用时间换取什么，以及换取的东西是否能够积累。</p>
+
+<h2>2013年总结</h2>
+
+<p>回到正题。2013年发生了一些改变，又好像什么都没有改变。
+这一年里面决定了我的一些命运，可能需要过很多年我才能看清楚。</p>
+
+<h3>工作</h3>
+
+<p>我在年底离开了GuruDigger，被家里人拉回老家，进入了医院信息科。具体细节不便阐述。
+因为创业，这一年没有收入，还贴了不少的钱。</p>
+
+<p>在一年的开发过程中，我基本上面延续旧的老路，生产力总体不高，开发的效率还是很低。
+观念上面加深了认识：项目管控要把握风险，做事情要细致认真。
+在这几点上面我交了不少的学费。还有其他一些观念变更，我的学费没有交足。这里就不多说了。</p>
+
+<h3>技术</h3>
+
+<ul>
+<li>上半年学了机器学习，但是没有成果，学习深度不够。</li>
+<li>继续开发网站，熟练度有提高，但是没有本质的提升。</li>
+<li>零零散散学了一些东西，比如D语言，动态规划，eventmachine等，但是都是一些点，没有形成实质的生产力。</li>
+</ul>
+
+
+<h3>谈朋友</h3>
+
+<ul>
+<li>谈了两场，但是没有多久就草草收场了。以及因为工作和家里人的冲突，两个非常好的女生错过了。</li>
+<li>有遇到一些觉得合适的，但是都没有搞定。</li>
+</ul>
+
+
+<p>回顾了一下，机会还是不少的，只是我执行力太差，把握不住。</p>
+
+<h3>健康</h3>
+
+<p>因为有一直运动，健康状况良好。并且自己在身材上面有了一定的自信心。
+不过年底痔疮的状况还是不容乐观。</p>
+
+<h3>活动</h3>
+
+<p>参加了各种活动，包括暴走，各类技术聚会，各类其他类型聚会，去台湾等。
+养成了出去娱乐交友的好习惯。生活变得更加有意思了。</p>
+
+<h3>看书</h3>
+
+<p>总体看了30本左右。比较杂，学到的东西：</p>
+
+<ul>
+<li>从方舟子这边学到中医不靠谱，科学方法论，韩寒假货。</li>
+<li>lean startup 关于创业的一些常识：消除不确定性。</li>
+<li>选择的悖论里面了解了一些认知心理学的知识，对自己更了解了（以及自己看书多么不认真）。</li>
+</ul>
+
+
+<h3>英语</h3>
+
+<p>因为有看奶爸的英语教室，每天跟读，感觉英语发音上了一个台阶，但是后面还有很多路要走。
+现在自己连熟练地回复英文邮件都做不到。</p>
+
+<h2>2014年计划</h2>
+
+<p>回顾<a href="http://blog.linjunhalida.com/blog/2012-summary/">2013年计划</a>，
+发现还是可以直接拉过来。因为几个目标都没有完成。</p>
+
+<ul>
+<li>技术。现在回到老家，白天的工作用不到技术。一定要强迫自己晚上钻研，不然真的废掉了。并且要和外面的人合作，自己学习效率非常低。计划年底能够继续技术领域的深入（能够做一些一流程序员做的事情，比如一些著名开源项目等级的事情，当然自己做不到那么好），在技术基础上面有信心（算法，开发能力），有一些能够写在自己简历里面的东西（给著名开源项目提交补丁，做出一些有业界声望的应用）。</li>
+<li>计划现有的医院信息科工作做稳定。医院这一块领域我觉得还是挺有意思的，未来行业前景也很大。就是信息科工作太杂了，做一年积累一些行业经验。</li>
+<li>英语。去年优先级放得非常低。今年一定要制定可行的目标和计划。目标是能够深入到外国技术圈中交流，能够和外国人网上语音对话，能够做英文演讲，能够写文章，保持英文邮件交流。今年不知道能够达成多少。</li>
+<li>健康。我有信心继续保持。加上上身训练。计划年底练出上身肌肉。</li>
+<li>找对象。回到老家见的人就多了，但是质量比较低。我想面100个，总归能够解决问题吧？保持两周相亲一个的节奏。</li>
+<li>钢琴。现在中午有时间了，每天练半小时，明年底应该可以弹简单的乐曲了。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/how-to-read-ruby-source-code/">如何阅读ruby源码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-03T19:55:17+08:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/how-to-read-ruby-source-code/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_01_03.jpg"></p>
+
+<p>最近阅读ruby源码非常顺手，这里整理一下阅读心得。</p>
+
+<p>首先，为什么要阅读源码？因为几点：</p>
+
+<ol>
+<li><p>用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
+最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点，不需要浪费那么多的时间。</p></li>
+<li><p>熟悉实现也是一个学习的过程。在看源码的过程中，我对于ruby的使用，如何做架构，都有了更深刻的认识。
+写代码水平靠自己磨练，同时借鉴别人的代码也必不可少。很多知识和技巧自己悟出来就慢了，看别人的东西能够学到更多。</p></li>
+</ol>
+
+
+<p>然后是重点：如何阅读。</p>
+
+<p>读懂代码之前，我们要把项目的文档看一遍，知道如何使用它。
+使用方法是项目的接口，熟悉它们，我们就把“未知”限定在项目的源代码之内，
+对于理解源码有了坚实的基础。</p>
+
+<p>之后我们要熟悉源代码的文件树结构。好的项目的文件安排是模块化的，
+一个文件就是一个系统模块，ruby项目，一般是一个文件一个类。
+这样一个复杂项目，就被切分成一小块一小块人能够理解的部分了。</p>
+
+<p>在这里要停一下，回顾前面看到的文档，列出一些核心的入口，
+然后基于这些入口，对于项目的实现提出一些猜想，
+然后从这些入口出发，寻找对应的函数，一步步顺着方法调用，看对应的代码。</p>
+
+<p>举个实际的例子。
+我看sinatra源码的时候，关注了几个入口：<code>get/post</code>方法，如何被rack调用。
+我会列出猜想：get/post代码应该是记录这些block到一个内部的数据结构中，
+在代码里面，有针对rack做一个接口，调用的时候会去解析http请求，分发到对应的block里面。</p>
+
+<p>然后我开始用<code>find</code>和<code>grep</code>寻找<code>get</code>，遇到函数调用，就用同样的方法一路看过去。
+最后发现<code>get</code>方法实际上是给类创建了一个方法：<code>#{verb} #{path}</code>，然后绑定它。
+和我想的不太一样，并不是用一个数据结构。</p>
+
+<p>然后我又去看rack调用过程，最后弄清楚了如何分发请求，如何调用请求，以及在执行中快速跳出，
+并且学到了<a href="http://ruby-china.org/topics/16349">一个小技巧</a>。</p>
+
+<p>在阅读源码的过程中，我弄清楚了：调用栈，数据结构，类架构，以及验证了阅读代码前的各种猜想，
+通过了解里面一些看不懂的部分，学到了新的知识。整个顺藤摸瓜过程是非常愉快的。</p>
+
+<p>对了，最后还有一点，记得记笔记。研究过程不记录就白研究了，下次你是绝对想不起来的。
+我会把上面跟踪函数调用栈中遇到的核心区块记录下来，整理成一个执行过程文档，
+下次需要的时候直接看这个文档就可以了。这是一个示例（当然只有我自己才看得懂啦）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>call =&gt; dup.call! 复制自己一份。。
+</span><span class='line'>call!(env) =&gt;
+</span><span class='line'>@request  = Request.new(env)
+</span><span class='line'>@response = Response.new
+</span><span class='line'>invoke { dispatch! } =&gt; route!
+</span><span class='line'>route! =&gt;
+</span><span class='line'>base.routes 遍历
+</span><span class='line'>returned_pass_block = process_route(...) 
+</span><span class='line'>process_route 里面检查pattern是否匹配，返回对应的block</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -881,315 +1171,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/boolean-retrieval/">最简单的搜索引擎</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-30T23:52:00+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2013</time>
-        
-         | <a href="/blog/boolean-retrieval/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2013_07_27_iir.jpg"></p>
-
-<p>有一堆文本，我们需要能够根据一个或者好几个词语，搜索到含有这些词语的文本。
-我们可以简单粗暴地用<code>find .|xargs grep word</code>的方式来这样做。
-但是每次搜索都需要遍历全部文本，只是搜索一次可以承受，但是重复搜索的话就不能承受了。</p>
-
-<p>处理这种任务，我们用到搜索引擎。可以大如google，也可以小到嵌入在浏览器里面的文本搜索功能。</p>
-
-<h2>Boolean model</h2>
-
-<p>一个简单的模型，叫<a href="http://en.wikipedia.org/wiki/Standard_Boolean_model">Boolean model</a>，
-思路是这样的。</p>
-
-<p>我们把要搜索的全体文本叫做corpus，一份文本叫做document，文本可以拆分成一个个的关键字，叫做terms。</p>
-
-<p>为了能够搜索文本，我们需要对文本预处理，把document里面的字一个个拆出来，预处理一番，形成terms。</p>
-
-<p>如果用布尔值来标示一个document是否存在一个terms，我们可以做出来一个矩阵：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>        term1   term2   term3   ...
-</span><span class='line'>Document1     X       .       X
-</span><span class='line'>Document2     .       X       .
-</span><span class='line'>Document3     X       .       X
-</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
-
-
-<p>利用这个矩阵进行搜索，只要进行查表工作就可以了。</p>
-
-<p>因为terms的数量远远大于Document数量和长度，这个矩阵是稀疏的。为了节省空间，矩阵可以采用list表示。
-我们给document标示上ID：D1, D2, &hellip;，
-还有，我们也需要记录一下term出现在所有document里面的次数(document frequency)，列在term名字后面，
-缓存用来进行后续的运算。</p>
-
-<p>这样：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>term1(2) -&gt; D1, D3
-</span><span class='line'>term2(1) -&gt; D2
-</span><span class='line'>term3(2) -&gt; D1, D3</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后是具体的搜索工作。</p>
-
-<p>搜索的语法我们可以支持AND和OR，比如term1 AND term2，
-处理的方法就是获取上面term1和term2的document列表，然后求交集即可。
-列表可以先排好序，这样交集操作消耗的时间，就和这两个列表元素的和相关。</p>
-
-<p>搜索语句可以归并成<code>(term or term) and term and ...</code>这样的形式，
-这样搜索语法的执行过程，就是每次取两个document列表，进行集合合并操作，一直到最后只剩下一个结果集合。</p>
-
-<p>这个操作的性能，取决于所有操作中，每次集合操作中两个集合的大小，
-而操作的顺序是可以变化的，
-一种启发式算法优化就是按照集合大小升序来做交集操作，这样尽量让每次生成的新集合小一些。
-这就是为什么要在前面记录document frequency。</p>
-
-<p>总体的思路就是这样。实际实现的话，会有很多东西需要考虑的：</p>
-
-<ul>
-<li>把document拆分成terms，需要处理英文文本里面时态变化，缩写，同义词合并，中文文本就要处理分词的问题。</li>
-<li>要能够根据搜索结果进行排序，比如根据term在文本中出现的词频，term在文本中出现的顺序和区域等。</li>
-<li>数据结构的保存方法，如何支持动态增加文本和更新文本。</li>
-<li>搜索语法需要支持更多的语法，两个terms间距搜索，模糊查询。</li>
-</ul>
-
-
-<p>更多关于这些问题的处理，还是去看教科书比较合适：
-<a href="http://nlp.stanford.edu/IR-book/html/htmledition/boolean-retrieval-1.html">Introduction to Information Retrieval</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ordinary-or-extraordinary/">牛逼或怂逼</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-27T19:45:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
-        
-         | <a href="/blog/ordinary-or-extraordinary/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2013_10_27_tired.jpeg"></p>
-
-<p>不知啥时开始，举目皆是英雄。</p>
-
-<p>他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
-地球跟随他们转动，历史就是他们的故事。</p>
-
-<p>这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
-英雄开创出来的基业，里面一个个坑还要普通人去填的。
-但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住，还有点小玩头。</p>
-
-<p>英雄多了，普通人亦不值钱了，
-那些坑已然都挖好，谁人来站没啥区别，换换也就铲子的事儿，犯不着滴多点油水。
-真要耗油水抢地盘的地方不是蓝海就是红海，战刺刀的不是海盗就是海军陆战队，
-要和他们争，也非得上英雄不可，没超能力的还是靠边站吧。</p>
-
-<p>坑里面油水再少，也算过得下去，一家几口挤个公寓，交齐了月租也能其乐融融，
-本朝政府虽说变扭难养，至少也留口气给你呼吸或者说话，比起上世纪的伟人时代好过活许多，
-外面还有国内外的英雄们开疆扩土，坐着也能等着日子一天天变好。</p>
-
-<p>但人本性还是矫情，自己小日子过得不行，还要发贱探头去外面比，一比就完了。
-举目皆是英雄人英雄事，相较之下生活就粗鄙不堪，连带身边婆娘或汉子也俗气了，着实难过。
-难过也就罢了，落下一病，名为不甘心，
-发起病来容易抛妻弃子背井离乡去当英雄，结果底子弱没有超能力，
-英雄当不成，成了狗熊，连自己的一某三分地都丢了。
-只留得脑壳后面印下三个字：不后悔。</p>
-
-<p>所以咋办？
-要么牛逼，要么怂逼，不上不下还是认怂吧，
-没有超能力就不要戴面罩当英雄，不然脸被打得亲妈都认不出来。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-customize-error-page/">Rails定制报错页面</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T10:58:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-         | <a href="/blog/rails-customize-error-page/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2013_10_20_404.jpg"></p>
-
-<h2>需求</h2>
-
-<p>rails的默认报错处理，是返回<code>public/400.html</code>，<code>public/500.html</code>的内容。
-我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。</p>
-
-<p>我们一般希望能够定制：500服务器错误，400地址不存在。</p>
-
-<h2>解决方案</h2>
-
-<p>在你的<code>app/controllers/application_controller.rb</code>的<code>ApplicationController</code>里面用<code>rescue_from</code>捕捉他们，并且只在生产环境这样做：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
-</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">Exception</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">render_error</span> <span class="mi">500</span><span class="p">,</span> <span class="n">exception</span>
-</span><span class='line'>      <span class="no">ExceptionNotifier</span><span class="o">::</span><span class="no">Notifier</span><span class="o">.</span><span class="n">exception_notification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
-</span><span class='line'>      <span class="kp">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">UnknownController</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="n">exception</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>500报错需要能够通知管理员，上面的<code>exception_notification</code>是我利用<a href="https://github.com/smartinez87/exception_notification">exception_notification</a>gem2.6版本中发送报错信息邮件的功能来做到这件事。</p>
-
-<p>然后加上<code>render_error</code>方法，用来渲染报错页面，你可以在这里做定制渲染：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="n">template</span><span class="p">:</span> <span class="s2">&quot;errors/error_</span><span class="si">#{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="s1">&#39;layouts/application&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">render</span> <span class="n">nothing</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>还是有一个问题，无法捕捉<code>ActionController::RoutingError</code>和<code>AbstractController::ActionNotFound</code>，需要在<code>config/route.rb</code>里面最后捕捉：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
-</span><span class='line'>  <span class="n">match</span> <span class="s1">&#39;*not_found&#39;</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="s1">&#39;errors#error_404&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>加上<code>errors_controller.rb</code>，里面：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ErrorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">error_404</span>
-</span><span class='line'>    <span class="vi">@not_found_path</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:not_found</span><span class="o">]</span>
-</span><span class='line'>    <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="kp">nil</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>资源引用：</p>
-
-<ul>
-<li><a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages">http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages</a></li>
-<li><a href="http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404">http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -1207,23 +1188,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016-summary/">2016年度总结</a>
       </li>
     
       <li class="post">
         <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/better-house-market/">更好的住宅行业</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
   </ul>
@@ -1268,7 +1249,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 机械唯物主义 -
+  Copyright &copy; 2017 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

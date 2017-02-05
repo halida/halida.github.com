@@ -9,11 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这里整理一下rails deploy的几种方法. Passenger 首先是最简单的采用 Phusion
-Passenger,
-现在大家都用nginx了吧, 那么下面主要还是看
-passenger和nginx的配置. 首先安装passenger: 1
-gem install passenger &hellip;">
+  <meta name="description" content="今天去 hacking thursday 的活动,
+听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
+整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下. 我们先从显示器说起. 显示器负责真正把图像呈现给我们,
+一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +81,342 @@ gem install passenger &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/GUI-under-the-hood/">电脑是如何实现图形显示的</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T16:04:16+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time>
+        
+         | <a href="/blog/GUI-under-the-hood/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>今天去 <a href="http://www.shlug.org/?page_id=523">hacking thursday</a> 的活动,
+听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
+整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下.</p>
+
+<p>我们先从显示器说起. 显示器负责真正把图像呈现给我们,
+一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号, 数字的一般用
+<a href="http://en.wikipedia.org/wiki/Digital_Visual_Interface">DVI</a>, 模拟的一般
+<a href="http://en.wikipedia.org/wiki/VGA_connector">VGA</a> 的接口.
+传给显示器的数据不神奇, 就是图像数据流,
+每个点拆分成RGB红绿蓝3原色的数值表示. VGA还要带的是 horizontal sync,
+vertical sync, 这个是水平和垂直扫描率, 就是每秒钟横竖扫描多少条,
+就是我们说的屏幕分辨率再乘上没秒钟屏幕的刷新率. 这个数据丢给显示器,
+显示器里面也有CPU, 负责控制屏幕把这样的数据显示出来,
+也可能对这个数据做一点微调什么的,
+比如我们显示器一般都有的对颜色位置亮度饱和度的调整.</p>
+
+<p>要传给显示器的数据量是非常巨大的(根据屏幕尺寸),
+也需要不断地传数据给显示器. 具体负责这些操作的是显卡.
+现代的显卡要做相当多的事情. 不止是不间断地发送视频,
+还会有渲染(3d游戏场景的渲染主要工作是交给显卡来做的),
+视频数据解码等工作.
+与上层的接口一般是通过显卡来读取特定的内存区块(DMA等方式)来实现.
+简单地说, 告诉显卡, 主内存里面一个区块存放了需要显示的数据,
+然后显卡自己过来取数据, 上层应用定时往这个内存区块放数据.</p>
+
+<p>显卡会有自己的一些做事情的方式, 对于上层应用来说, 这些都是实现细节,
+不需要知道. 显卡厂商会把功能抽象成opengl的API,
+然后上层应用就调用这样的API即可. 在linux里面,
+Xwindow做的事情就是提供一个server/client的接口, 具体接口还是opengl.</p>
+
+<p>然后我们到了更上层的gnome/kde, 它们是提供关于窗口绘制的api,
+再往上面就是应用程序了, 调用gui的库来设置控件, 交互什么的.</p>
+
+<p>如果上层应用需要直接发送显示的东西怎么办? 比如视频.
+这个时候调用opengl的api, 申请一块内存区,
+把渲染好的特定数据结构的图像放到这个内存区,
+然后用opengl通知下层显示即可. 上层应用的进程需要控制刷新率,
+一秒30桢的话就要刷30次, 如果应用是一个播放器的话, 可能需要多个线程,
+一个线程用来做用户交互, 一个线程用来刷屏幕, 一个线程用来处理数据编码.
+显卡也可以做解码的工作, 播放器可以控制显卡来解码,
+这样显卡直接解码后写到显卡的缓存区块里面去.</p>
+
+<p>具体技术细节非常复杂, 但是对于我来说, 对整体的过程有一个概念即可.
+知道了原理就行了.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/Metaprogramming-Ruby/">Metaprogramming_Ruby学习笔记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-01T22:31:19+08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2012</time>
+        
+         | <a href="/blog/Metaprogramming-Ruby/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>虽然我现在一直在用ruby做rails开发, 但是ruby基本上是属于拿起来用的那种,
+很多东西都不是很熟悉.</p>
+
+<p>现在发现有一本Metaprogramming Ruby的书, 就看起来了.
+这里整理一下学习笔记, 省得学了白学. 下面其实只是一些tips,
+只是给我自己看看的. 所以大家就不要抱有什么期待了.</p>
+
+<h2>星期一</h2>
+
+<p>Ruby是全运行态, 没有编译态(对于程序员而言).</p>
+
+<p>Class本身也能运行时创建.</p>
+
+<p>Ruby里面的Class继承自Module, 多了一些实例化, 继承的东西.</p>
+
+<p>所有Class的class是Class, Class继承Module继承Object继承BasicObject.</p>
+
+<p>method的查找方式, 先看object, 然后查Class树, 中间会穿插class
+include的Module.</p>
+
+<p>所有位置都隐含一个self, 调用方法就是把调用者当作self, irb默认self是main.</p>
+
+<p>private的method只能被隐含self的方式调用,
+self.private_method是不能调用的.</p>
+
+<h2>星期二</h2>
+
+<p>obj.send(:my_method, 3) 用来做动态方法调用.</p>
+
+<p>define_method用来动态定义方法.</p>
+
+<p>method_missing用来处理找不到方法的时候的状况.</p>
+
+<p>还有undef_method, 这些方法可以用来做很多有意思的事情了.</p>
+
+<h2>星期三</h2>
+
+<p>回顾了block和using.</p>
+
+<p>scope在class, model, def这3个阶层. 可以用Class.new, Module.new,
+Module@define_method动态生成.</p>
+
+<p>有了instance_eval可以切换到object的scope里面去.</p>
+
+<p>Proc, lambda可以保存block, &amp;用来转换Proc和block.</p>
+
+<p>Proc里面return是从定义Proc的scope里面return, 这个太恶心了吧?
+还有不严格判断参数. 还是用lambda比较好.</p>
+
+<h2>星期四</h2>
+
+<p>class 也是 module, 在它们的作用域里面执行代码, 用module_eval.</p>
+
+<p>我有点明白为什么不用缩进来限制作用域了, 缩进没有明确限制作用域来得灵活.</p>
+
+<p>def并不会开启一个新的scope, 还是在class的scope里面.</p>
+
+<p>在class里面用&#8221;@&ldquo;定义instance variable, 用&rdquo;@@&ldquo;定义Class instance
+variable(真绕). 因为@@定义在类树里面, 容易产生bug, 不建议使用.</p>
+
+<p>class method其实是singleton methods, 有趣.</p>
+
+<p>每个object还有eigenclass. 用class &lt;&lt; obj; self end; 这样的方式访问.</p>
+
+<p>加上eigenclass, ruby的类树就比较复杂了, 不过看图就好理解一些.</p>
+
+<p>alias和alias_method创建别名.</p>
+
+<h2>星期五</h2>
+
+<p>binding用来缓存作用域, 给eval用. TOPLEVEL_BINDING是最上层的binding.</p>
+
+<p>class里面有无数事件的hook, 比如inherited, included, method_added.</p>
+
+<p>最后一部分activerecord用到的魔法, 我就稍微带过了,
+因为具体的方法我兴趣不是很大.</p>
+
+<h2>结论</h2>
+
+<p>上面只是给我自己总结的一些tip, 一些我已经知道的东西,
+但是对其他人非常重要的地方没有写出来. 所以需要理解的话大家还是看书吧.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-year-summary/">2011年度总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-01T15:40:39+08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2012</time>
+        
+         | <a href="/blog/2011-year-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有好几个朋友都写了年度总结, 我想如果没有反思的话就没有成长,
+也写写年度总结吧.</p>
+
+<p>分几个方面, 工作上, 生活上, 情感上什么的.</p>
+
+<h2>工作上</h2>
+
+<p>我这一年大部分的时间都在 <a href="http://www.simaxtechnology.com">新漫传感</a>
+这家公司工作. 今年11月底正式离职. 总共2年的时间. 我当时去到新漫的时候,
+也是家里人朋友的介绍, 我也就去了. 总体上面来, 这份工作的自由度非常大,
+任务其实也很明确. 闲暇时间非常多. 但是对于我来说是一个败笔. 在这家公司,
+我做的事情没有什么可以说的(只是一份工, 不能让人对我做的事情眼前一亮,
+更不能改变世界), 而公司也不能给我职业发展上面的支持, 而平时很多空闲时间,
+我也没有充分利用起来. 在这里的2年是失败的. 不过我现在离职了,
+算是止损了吧.</p>
+
+<p>然后从今年的4月份左右, 我算是一直从事 gurudigger.com 的兼职工作,
+从网站的重构到rails开始, 一直做到现在, 11月底正式加入进来.
+虽然我一直从事编程工作, 但是现在才算是正式进入互联网圈了.</p>
+
+<h2>生活</h2>
+
+<p>2011年我的生活品质比以往高了一些. 至少生活中除了电脑, 网络, 游戏,
+还多了很多东西.</p>
+
+<p><a href="http://blog.linjunhalida.com/article/%E4%BA%BA%E4%BA%BA%E9%83%BD%E5%BA%94%E8%AF%A5%E6%8E%8C%E6%8F%A1%E4%B8%80%E9%97%A8%E4%B9%90%E5%99%A8">今年决定开始练习钢琴</a>,
+花了钱上了10节课, 本来期望能够每天半个小时的练习时间,
+现在慢慢地落下来了. 这个与我期望不符. 我还是决定1/1开始,
+每天半小时的练习时间. 然后能练多久就多久.</p>
+
+<p>锻炼身体的项目一直在草拟当中, 夏天的时候还是游过一段时间的泳,
+不过现在没有坚持, 一个是锻炼身体比较枯燥, 一个就是感觉比较浪费时间.
+枯燥好解决(比如从跑步换做有氧健身操), 感觉浪费时间是我观念上面的问题,
+解决起来就比较麻烦了. 但是这件事情一定要开始做起来. 时间也应该是一辈子.</p>
+
+<p>线下组织python定期聚会活动. 我原先是希望大家做技术的人士能够出来多聚聚.
+忘记什么时候我开始号召大家出来聚会了, 我属于想清楚要做什么事情,
+而这个事情需要的条件只是决定去做, 那么我就能够开始做的人.
+不过后续事宜就是我的短板. python聚会算是坚持了一段时间, 不过到了后期,
+因为没有考虑好如何做好运营, 不能给参与者带来价值, 一次比一次人少,
+一次比一次差劲, 到最后还是只有部分骨干留下来了.
+明年我觉得还是先停一段时间, 办得不好, 还不如不办.</p>
+
+<p>外出旅游的话, 就
+<a href="http://blog.linjunhalida.com/article/%E5%8D%97%E4%BA%AC%E6%B8%B8%E8%AE%B0">南京</a>
+有点可以说的地方. 我没有从旅游中获得太多的乐趣.
+虽然因为我没有去过很多地方感到有点遗憾, 但是因为对我自己的改变不是很大,
+以后旅游也不会成为我的一个高优先级项目. 当然,
+还是可以作为丰富生活品质的项目.</p>
+
+<h2>技术领域</h2>
+
+<p>这一年, 算起来能够是成长的, 就是我能够用起来了rails,
+以及开始做起来了前端开发. 其他方面, linux底层, 算法, tcp/ip基础,
+这些都是计划要弄懂的, 结果由于我欠缺计划和执行能力而没有涨经验值,
+是非常值得检讨的. 从历史上来看, 这方面我一直都欠缺,
+因此浪费了大量的时间(9年), 我要在2012年好好改变这样的状况,
+不然我的人生会变得非常悲惨.</p>
+
+<p>我一直在考虑以后未来自己往什么方向发展, 嵌入式, 手机, 服务器后端应用,
+前端. 我发现自己的兴趣点还是在作出能够给终端用户使用的产品上面,
+应用性能調优, 算法架构这2个我还是比较无爱的,
+未来我计划在保住后端技术基础的前提下, 发展前端, 掌握设计能力.</p>
+
+<h2>私生活</h2>
+
+<p>2011年初, 在老家的时候, 父母给我介绍了一个相亲对象.
+因为我这个时候对于选择对象没有多少思路, 就抱着先交往一段时间,
+深入发掘优秀点的方式谈了一段时间. 然后回到上海, 继续谈了一个月,
+发现实在没有感觉, 就主动说明情况结束这样的关系. 之后好像也相亲过几次,
+但是都没有进一步的发展. 然后我有尝试过其他方式的搭讪, 效果都不是很好.
+然后就是朋友圈之类的方式来进行. 因为我在社交方面没有什么经验和心得,
+结果也不如意.</p>
+
+<p>我个人对于这方面的理论理解模型是这样的:
+资源总体上是有限的(谈得起的年龄段访问是固定的), 随着时间过去,
+资源总数会减少(成交了), 然后剩下来的是非合适资源(要求高过可提供的价值).
+当然还有一种, 就是我个人价值增值的速度比较高, 在未来能够有更多的option,
+这个我现在不太期待, 并且这方面领域经验的缺陷可能对我人生发展有阻碍&hellip;.
+说得有点多了.</p>
+
+<p>总体上IT男社交经验积累很慢, 对于我来说, 程序员气场很明显,
+我希望能够改善这种现象,
+不要让&#8221;程序员老婆都是别人挑剩下的&#8221;这样的事情发生在我身上.</p>
+
+<p>现在得到一本教学书, 好好学习和练习. 合适的伴侣可遇不可求,
+我不能改变概率, 但是可以增加量. 2012年要经常锻炼对应的能力,
+以及投入时间, 创造更多的机会.</p>
+
+<h2>结论</h2>
+
+<p>总体上面, 我的2011年浪费了不少时间(好吧, 总是会有时间浪费的),
+方向也不是很明确, 不过还是渐渐清晰起来了:</p>
+
+<p>我的目标是能够设计出好的产品. 改变世界.
+感兴趣的领域是能够改变最终用户的生活方式,
+更感兴趣的是改变人们的学习方式(很想把理想中的大学做到网络上面,
+不过没有经验没有思路).</p>
+
+<p>完成这样目标需要非常多的修行, 一步步改变吧.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -728,278 +1063,6 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ceremony/">仪式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-15T08:56:57+08:00" pubdate data-updated="true">Sep 15<span>th</span>, 2011</time>
-        
-         | <a href="/blog/ceremony/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://3.bp.blogspot.com/_TvbzIAsIkCg/S_U_A50AuaI/AAAAAAAAB7M/aEorhmCiJSk/s1600/pray.jpg" alt="image" /></p>
-
-<p>为了能够贯彻自己的理念和思维,
-我们需要找到一种方式能够让知识转化为行为方式,
-以及时刻调整自己的生存状态. 因此, 我打算遵循一套仪式,
-来保证我能够贯彻决定以及提供精神动力.</p>
-
-<p>这套仪式需要达成的具体目标和过程如下:</p>
-
-<h2>早晨重置</h2>
-
-<p>每天早晨要经过一套仪式来重置自己的精神状态, 查漏补缺,
-和回复遗忘的行为模式. 同时从上至下制定一天的事宜.</p>
-
-<p>具体过程</p>
-
-<ul>
-<li><p>念祷词</p>
-
-<p>&ldquo;人的生命只有一次, 死亡之后是虚无, 享乐是奖励,
-重要的是把脑中理念带入现实. 什么理念:&rdquo;</p>
-
-<p>&ldquo;世界应该是这样的: 自由, 责任对等义务, 丰富多彩, 人们解决问题,
-创造新事物, 享受生活.&rdquo;</p>
-
-<p>&ldquo;我的目标是实现这样的世界, 为此我需要坚定目标, 正视恐惧, 远离诱惑,
-敏于行, 勤修炼, 实现我的价值.&rdquo;</p></li>
-<li><p>整理一天要做的事情</p></li>
-<li><p>回顾需要坚持的习惯</p>
-
-<ul>
-<li>远离sns.</li>
-<li>做事先计划</li>
-<li>阶段性停止和分析当前做的事情.</li>
-<li>以及其他需要养成的习惯.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>晚上重置</h2>
-
-<p>每天晚上睡觉前, 需要整理一天实现的事宜, 以及采用分析模型来看缺陷,
-找优点, 用来回馈调整行为模型.</p>
-
-<ul>
-<li><p>念悼词</p>
-
-<p>重念早祷词.</p></li>
-<li><p>回顾</p>
-
-<p>我今天浪费了哪些时间? 为什么而浪费? 我今天利用好了哪些时间?
-为什么利用好了? 如何消除浪费? 如何重复好的利用方式?</p></li>
-<li><p>休息准备</p>
-
-<p>每日都是一个单独的生命过程. 早晨新生, 夜晚死去. 该到死去的时间了.</p></li>
-</ul>
-
-
-<h2>日常重置</h2>
-
-<p>当日常发现风险的时候, 需要默念祷词,
-并利用通过默念祷词获得的精神力量处理风险.</p>
-
-<p>主要风险以及应对祷词:</p>
-
-<ul>
-<li><p>失去控制</p>
-
-<p>无法控制自己正在做的事情. &ldquo;光明三原则: 停止, 建立, 重复&rdquo;</p></li>
-<li><p>遗忘目标</p>
-
-<p>忘记自己需要做什么了. &ldquo;我要改变世界.&rdquo;</p></li>
-<li><p>遇到难题</p>
-
-<p>面对一个难题无法解决. &ldquo;把问题放到脑子里, 让潜意识帮助解决.&rdquo;</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/how-to-learn-computer-science/">如何学习计算机科学</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-06T13:58:44+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2011</time>
-        
-         | <a href="/blog/how-to-learn-computer-science/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-171-software-engineering-for-web-applications-fall-2003/6-171f03.jpg" alt="image" /></p>
-
-<p>在
-<a href="http://blog.linjunhalida.com/blog/CS-roadmap/">计算机领域学习路线图</a>
-里面, 我们知道了需要做的事情, 那么我们如何开始呢?
-这里面是一个总的路线规划.</p>
-
-<h2>入门</h2>
-
-<p>首先, 我们需要学会编程, 以及对应的思考和解决问题的方式. 所以,
-我们需要完成:
-<a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00-introduction-to-computer-science-and-programming-fall-2008">6.00</a>
-入门课.</p>
-
-<p>这里需要重点提示一下: 公开课只是看看是不行的. 需要做的事情是:
-按照公开课里面的calendar, 听课, 看书, 做习题. 安排好时间,
-保证能够坚持下去. 如果个人的意志力不够, 可以找人帮忙督导.
-这样才能确保学好里面的内容.</p>
-
-<p>6.00学完后, 基本上能够用python写代码了. 这个时候, 2条线并行:</p>
-
-<ul>
-<li>学习基础. 按顺序学习: 6.002 计算机组成原理, 6.046J 算法基础, 6.828
-操作系统, 6.035 编译原理, 这些是我们的基础知识. 可能你觉得枯燥,
-但是这些课程学到的东西, 是基础. 它们决定你能走多远.</li>
-<li>开始项目. 我建议: 看6.171, 开始学习如何做一个网站.
-在这个课程中学习使用linux系统, 学习web, 做网站. 当然,
-其他类型的项目也可以, 不过需要学过了部分基础内容才能够写代码.
-那个比较久了. 所以我建议从入门比较简单的web方面开始.</li>
-</ul>
-
-
-<p>然后随着基础课程的推进, 不断根据基础课程做对应的项目.</p>
-
-<ul>
-<li>学到计算机组成原理, 就做后面的实验, 设计自己的CPU.</li>
-<li>学到算法, 就去优化常见的库程序.</li>
-<li>学到操作系统, 就去自己写一个操作系统的模块.</li>
-<li>学到编译原理, 就自己设计一个语言.</li>
-</ul>
-
-
-<p>然后, 经过了这些过程, 你现在需要自己计划一个项目, 真正能够有用的项目,
-然后投入精力完成它, 作为自己的毕业设计.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/no-name/">无题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-05T18:45:38+08:00" pubdate data-updated="true">Sep 5<span>th</span>, 2011</time>
-        
-         | <a href="/blog/no-name/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://flowtv.org/wp-content/uploads/2009/05/resurrection-ship.png" alt="image" /></p>
-
-<p>我是一个有一点点现象力的人, 从小的时候,
-我就喜欢在上学的路上一边走路一边幻想:
-自己是一艘飞船在一个非常大的星球表面飞翔.
-前方的道路上一个个的障碍物都是巨大的建筑物, 或者敌方的武装工事,
-然后我就躲开它们射出的子弹, 然后优雅地飞过, 丢下一颗炸弹,
-然后听那后方传来的爆炸声, 如果边上有人看到我的话,
-只看到一个学生跳来跳去的, 嘴巴里面发出不明其意的声音..</p>
-
-<p>那时候, 我习惯挑战自己的走路速度, 上下学的时候就以非人的走程,
-选择最近的道路, 有的时候甚至会赶上绕一点远路的自行车.
-那个时候我单纯地以走路时间更少而快乐.</p>
-
-<p>长大之后, 这些神奇的能力离我而去, 每天上下班走的是同样的道路,
-只会感觉厌烦, 可能会不定时间换一条. 即使现在我没有以前那么奇特了,
-但是我还是保留了不少特质, 能够让我从人群中凸显出来, 是我的好也是我的坏.
-我庆幸过去没有杀害我的&#8221;病&#8221;, 让我获得了勋章一般的伤痕.</p>
-
-<p>说道&#8221;病&#8221;, 我以前不是能够和同学们合得来, 可能是我特殊个性, 岁数,
-或者其他什么原因, 我现在也无法考证, 总之我得到一个&#8221;癫子&#8221;的外号,
-让我非常困扰. 更让我困扰的是合群. 直到现在我也没有很好地学会投入感情,
-以及把握朋友关系.</p>
-
-<p>大学前, 生活比较简单, 上学放学, 做作业打游戏. 矛盾是家长管教.
-天资不错的我, 即使高考前, 都没有放弃天天打电脑游戏.
-考试也算是进到一个好的学校. 但是大学暴露出我意志力薄弱的天性.
-四年颓废生活. 面对毕业工作的恐惧, 很多次计划选择死亡. 宿舍就在11楼.
-跳出窗口就可以了. 意志力薄弱又救了我.</p>
-
-<p>我很奇怪我竟然能够找到工作. 工作之后, 情况好了很多,
-即使是一份不太好的工作. 虽然酬劳说不过去, 至少我活下来了.
-我尝试展开我的天性, 开始学会追逐自己喜欢的东西, 从最简单的开始.
-特立独行让我没有从众的压力,
-意志力薄弱让我做不出必要的决定和抵制不住诱惑.</p>
-
-<p>不过, 最终我还是这样过下来了. 一天又一天. 生活轨迹往上.
-我猜测未来的我成就有限, 但是谁又能知道未来呢? 说不定我能活到审判日,
-见证新智慧的产生和旧智慧的消亡.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -1017,23 +1080,23 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016-summary/">2016年度总结</a>
       </li>
     
       <li class="post">
         <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/better-house-market/">更好的住宅行业</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
   </ul>
@@ -1078,7 +1141,7 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 机械唯物主义 -
+  Copyright &copy; 2017 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

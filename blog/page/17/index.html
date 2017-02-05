@@ -9,10 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我最早开始听死亡金属可能是大学的时候, 到现在也有一段时间了,
-但是听的机会不是特别多. 喜欢是喜欢, 但是也没有喜欢到fans的程度.
-最近看到豆瓣友邻分享出来的旋律死亡金属的现场演出:
-http://www.douban.com/event/14129983/discussion/ &hellip;">
+  <meta name="description" content="7/23号, 因为公司有仪器要出货, 最后阶段需要安装程序等等,
+我需要随着公司的安装队伍一起出行, 目的地是东莞的沙田镇. 这一行,
+对我来说是非常失败, 非常浪费时间, 非常没有效率. 我们7/23号出发, 7/24号到达沙田, 安顿在了一个小旅店里面, 然后去勘测现场. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,1592 @@ http://www.douban.com/event/14129983/discussion/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/coder-under-building-site/">程序员在工地</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-31T20:09:31+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2011</time>
+        
+         | <a href="/blog/coder-under-building-site/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://i2.sinaimg.cn/dy/c/p/2008-03-24/U2414P1T1D15213484F21DT20080324144305.jpg" alt="image" /></p>
+
+<p>7/23号, 因为公司有仪器要出货, 最后阶段需要安装程序等等,
+我需要随着公司的安装队伍一起出行, 目的地是东莞的沙田镇. 这一行,
+对我来说是非常失败, 非常浪费时间, 非常没有效率.</p>
+
+<p>我们7/23号出发, 7/24号到达沙田, 安顿在了一个小旅店里面, 然后去勘测现场.
+发现仪器安装需要的种种条件都没有满足: 地基没有搭建好, 电没有上,
+于是我们带队的领导和当地的甲方紧急沟通, 等待了2天, 终于可以施工了.
+施工过程基本上是我们的安装小组在做, 我作为一个闲人, 前几天完全没有任务,
+却也在领导的指示下, 留守工地. 只有最后一天才上场, 花费2/3个小时就搞定了.</p>
+
+<p>总体而言, 这么多天的工地留守对我而言是完全没有效率的. 如果有机会,
+下次绝对需要避免这样的状况发生. 留守期间, 我通过看书抢救了部分时间,
+但是因为场地关系, 飞沙走石, 暴雨烈日, 书只是看了一部分.
+作为一个优秀的代码生产机器, 这样的空转让我十分痛心.</p>
+
+<p>以上是本次出差的总结, 我像以前一样确定,
+我不愿意做那些无法体现我特殊价值的的工作, 以及,
+我在恶劣条件下完全没有产能. 人生苦短,
+我需要通过以我的方式来改变世界来体现我的价值,
+以后我也会继续往这个方向努力!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/write-a-compiler-by-python-in-one-day/">一天时间用python写门语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-25T19:53:29+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2011</time>
+        
+         | <a href="/blog/write-a-compiler-by-python-in-one-day/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://www.hrsolutionsinc.com/engagementcalculator/calculator.jpg" alt="image" /></p>
+
+<p>今天我在广州加班, 上午其他同事去干活我一个人在旅店,
+没事做就又练习写计算器程序了.
+本来打算用python来写一个简单的支持加减乘除括号的计算器,
+后来有加上了变量复制, 比较符, 条件判断, 循环, 最后还加上了函数,
+几乎可以说是一个简单的语言了. 以后我也可以说写过一门语言了哈哈.</p>
+
+<p>回到正题. 这里面整理一下这个简单的程序用到的方法, 代码在:
+<a href="https://bitbucket.org/linjunhalida/code-example/src/tip/python/calculator">https://bitbucket.org/linjunhalida/code-example/src/tip/python/calculator</a>/</p>
+
+<p>一开始, 我希望实现一个简单的支持加减乘除括号的计算器,
+我不打算用python自带的方式(eval), 而是自己写一个. 虽然有种种取巧的方式,
+我还是采用教科书般的方法, 首先词法分析, 然后语法分析+计算结果.</p>
+
+<h2>词法分析</h2>
+
+<p>词法分析的函数是syntax_analysis, 输入一个字符串, 拆分成一个个的词,
+解析整型和浮点. 比如: &ldquo;2 * 3 + 1&rdquo; 就拆分成 [2, &lsquo;*&rsquo;, 3, &lsquo;+&rsquo;, 1],
+没什么好说的, 从头开始解析即可. 没有用到状态机,
+只是简单的根据字符串的首字母做条件判断, 然后一个个往下读, 根据状况拆分.</p>
+
+<h2>语法分析</h2>
+
+<p>我采用的方法是从the C++ programming
+language里面那个计算机程序学来的方法: 首先写出基本的语法,
+然后每个语法模块写一个函数,
+然后通过函数的递归调用来模拟语法树的生成和解析, 不需要显式地生成语法树.</p>
+
+<p>我用了一个类Caculator来保存词法分析后的list, 以及当前处理到的符号位置,
+变量表等东西, 语法模块都是这个类的方法, 这样写起来方便一点.</p>
+
+<p>我们一部分一部分来吧. 首先我先实现加减乘除括号. 整理基本的语法:</p>
+
+<pre><code>l0 = (ltop) | n | - n 
+l1 = l1 * l0 | l1 / l0 | l0
+l2 = l2 + l1 | l2 - l1 | l1
+ltop = l2
+</code></pre>
+
+<p>n 是数字. 里面l0, l1, l2, 是根据优先级做了分割,
+保证优先级高的操作首先执行. ltop的目的是为了方便扩充新的运算符号.</p>
+
+<p>l2函数如下, 整体的逻辑是, 当发现下一个符号是&#8217;+&ndash;&lsquo;的时候,
+就一直解析和计算v, 然后返回v. self.ls是词法分析后的词列表,
+self.p是表示当前处理到的词位置. inc()表示解析下一个词,
+get()获取下一个词, has_next()判断下面还有没有.</p>
+
+<p>所有的函数都类似这样的方式, 不传参数进去, 解析词列表, 返回计算后的结果.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">l2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">()</span>
+</span><span class='line'>           <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">isstr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+</span><span class='line'>           <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">in</span> <span class="s">&#39;+-&#39;</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">+=</span> <span class="n">v2</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">-=</span> <span class="n">v2</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>赋值</h2>
+
+<p>然后我开始实现赋值功能, 同时考虑扩展成为能够解析多个表达式的语法,
+这个基本也是抄the C++ programming language的方法, 改了几点:</p>
+
+<ul>
+<li>加了program, exp_list, exp, 更像一个语言了.</li>
+<li>l0加上NAME, 能够获取NAME对应变量的值.</li>
+<li>assignment赋值的操作. 为了通用, 赋值也是有返回值的.</li>
+</ul>
+
+
+<!-- -->
+
+
+<pre><code>l0 = (ltop) | n | NAME 
+
+program = END | exp_list END
+exp_list = exp_list ; exp
+exp = ltop | assignment
+
+assignment = NAME = exp
+</code></pre>
+
+<p>赋值和计算都是exp的一种, 代码是这样写的:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;=&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignment</span><span class="p">()</span>
+</span><span class='line'>        <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ltop</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我在Caculator类里面加了一个values的dict, 用来保存赋值的值,
+赋值和获取值的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">assignment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+</span><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">l0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">issymbol</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">g</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>条件判断</h2>
+
+<p>现在我的简单语法变得有点像一门真正的语言了, 但是还缺少很多必要的东西,
+我思考如何实现条件判断. 首先实现判断语句, 语法:</p>
+
+<pre><code>l3 = l2 &lt; l2 | l2 &gt; l2 | l2 == l2 | l2
+ltop = l3
+</code></pre>
+
+<p>实现很简单, 判断下一个符号是什么而已, 为了简单, 我没有加上True/False,
+而是统一用1/0的方式来做, 真返回1, 假返回0.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">l3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">v2</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">v2</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;==&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">v2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">v2</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后实现条件判断. 语法如下:</p>
+
+<pre><code>exp = ltop | assignment | condition
+condition = if ltop {exp_list} else {exp_list}
+</code></pre>
+
+<p>exp里面判断第一个词是不是if, 然后跳转到condition函数(循环,
+函数也采用类似的方法来判断), 然后解析条件判断的值, 如果大于一,
+解析第一个exp_list, 不然解析第2个exp_list. 里面做了一些语法错误的判断.
+还有else部分是可选的, 为了简单没有实现elif的方式.
+对于不需要解析的exp_list, 我利用goto_next_block来跳转,
+要注意的是处理嵌套{}的问题.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;=&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignment</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;if&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">()</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ltop</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;{&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : no {&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp_list</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">goto_next_block</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;}&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : not }&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;else&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;{&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : no {&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp_list</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">goto_next_block</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;}&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : not }&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">goto_next_block</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;}&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">break</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;{&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>循环</h2>
+
+<p>好了, 条件判断实现了, 下面该是循环了. 语法:</p>
+
+<pre><code>exp = ltop | assignment | condition | loop 
+loop = while ltop {exp_list}
+</code></pre>
+
+<p>具体实现上, 我缓存了loop开始的位置, 先判断ltop, 如果发现满足,
+执行exp_list, 然后设置self.p为loop开始, 然后继续判断ltop.
+不满足的话就跳出来.. 比我现象中的容易实现.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+</span><span class='line'>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ltop</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;{&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : no {&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp_list</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">goto_next_block</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;}&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;exp error : not }&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">break</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>函数</h2>
+
+<p>好了, 没有函数的语言是不完整的. 为了实现函数, 需要做很多工作.</p>
+
+<p>先看语法, l0上面加的是调用函数, function_args是函数调用的参数,
+exp里面加上函数定义的部分, function_args_names是形参.</p>
+
+<pre><code>l0 = (ltop) | n | NAME | - n | NAME ( function_args )
+
+exp = ltop | assignment | condition | loop | function 
+
+function = def NAME(function-args-names){exp_list}
+function_args_names = function_args , NAME | NAME  | None
+function_args = function_args , exp | exp | None
+</code></pre>
+
+<p>根据我看SICP学来的经验, 函数可以采用环境来实现. 所谓环境的概念,
+就是函数本身是嵌套的, 每个函数内部就是一个环境, 保存有一些局部变量,
+只在函数内部有效. 传给函数的参数就是在函数的环境里面做对应的赋值.</p>
+
+<p>比如: def f1(a, b) {&hellip;}; f1(1, 2) , f1的环境是env1, f2的环境是env2,
+在调用f1的时候, 执行到f1内部时, Caculator的self.env是env1,
+env1.values含有a, b 2个变量, 值分别是调用f1(1, 2)时传进来的1和2.</p>
+
+<p>我们看Env类的定义. 现在我们删除掉Caculator的values, 让Env的
+get_value()和set_value来获取和设置变量. Env是嵌套的,
+因为函数调用的时候, 也可以访问上层赋值过的变量.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Env</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;cannot find value: </span><span class="si">%s</span><span class="s">, current_values: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是函数赋值, 我把函数抽象成了一个类, 保存函数名, 开始位置,
+以及缓存词列表, 因为caculator类是可以执行多次代码的.
+最后我利用赋值的方式把函数保存下来.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">Func</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">pass</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">func</span> <span class="o">=</span> <span class="n">Func</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">issymbol</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;function error name : </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">func</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;(&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;function error not (&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span><span class="o">.</span><span class="n">arg_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_args_names</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;)&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;function error not )&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;{&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;function error not {&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">func</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+</span><span class='line'>    <span class="n">func</span><span class="o">.</span><span class="n">ls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">goto_next_block</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;}&#39;</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;function error not }&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是函数执行的部分了. l0里面根据语法识别到函数调用,
+然后执行function_all, 里面首先生成一个新的环境, 然后在新的环境里面,
+把实际参数赋值给形参, 然后保存现在的ls, p, env, 然后执行函数体,
+然后回复ls, p, env. function_args解析和返回实际参数列表,
+function_args_names解析和返回形参名称, 保存在Func.names里面,
+都比较简单就不列出来了.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">l0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>          <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">issymbol</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</span><span class='line'>          <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;(&#39;</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_args</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;)&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;l0 function call error&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function_call</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">env</span> <span class="o">=</span> <span class="n">Env</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">arg_names</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">env</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">push_p</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">ls</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp_list</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">push_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ls</span><span class="p">):</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">pre_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">pre_ls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ls</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">ls</span> <span class="o">=</span> <span class="n">ls</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">pop_p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;pop_p: no parent for env!&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">parent</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_p</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">ls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_ls</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>写完后才知道, 真的&hellip; 不复杂!</p>
+
+<h2>函数可以返回</h2>
+
+<p>现在函数还是一直执行到结尾才返回, 我希望能够支持return语句,
+原本考虑了半天, 不知道如何通过重重的函数调用, 返回到最上面, 后来经过
+<a href="http://www.douban.com/people/learno/">岚临</a> 同学的提醒, 用抛出异常,
+在上层捕捉的方式实现了, 加的代码只有4行!</p>
+
+<p>语法:</p>
+
+<pre><code>exp = ltop | assignment | condition | loop | function | return
+return_exp = return ltop
+</code></pre>
+
+<p>进到return_exp里面后, 会抛出ReturnException, 在function_call里面捕捉,
+正好是当前调用函数的部分.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">ReturnException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;for implement return expression&quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+</span><span class='line'>        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">v</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">function_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp_list</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">pop_p</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">except</span> <span class="n">ReturnException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">v</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+</span><span class='line'>        <span class="o">...</span>
+</span><span class='line'>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;return&#39;</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_exp</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">return_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+</span><span class='line'>    <span class="bp">self</span><span class="o">.</span><span class="n">pop_p</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="n">ReturnException</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>我一开始没有想到能够写那么多的,
+结果一个语法一个语法加下来就变成这样了&hellip; 虽然没有性能优化,
+以及其他的错误处理什么的东西, 能够写出一个简单的语言,
+还是让我很有成就感的. 我不是一个很强的程序员, 也能写出一个简单的语言,
+相信你也可以写一个来玩玩!</p>
+
+<p>下一步: 虚拟机+字节码+编译 方式的语言, 实现协程+原生同步!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/python-epoll/">Python下使用epoll</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-19T13:11:34+08:00" pubdate data-updated="true">Jul 19<span>th</span>, 2011</time>
+        
+         | <a href="/blog/python-epoll/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://lse.sourceforge.net/epoll/dph-smp.png" alt="image" /></p>
+
+<p>因为最近想学习如何用epoll写服务器, 于是找到了一篇介绍的文章.
+因为我最近一直看不进技术文章, 于是打算通过翻译来强迫自己学习.
+原文在这里:
+<a href="http://scotdoyle.com/python-epoll-howto.html">http://scotdoyle.com/python-epoll-howto.html</a></p>
+
+<p>文章里面的代码可以
+<a href="http://scotdoyle.com/python-epoll-examples.tar.gz">在这里下载</a>.</p>
+
+<h2>介绍</h2>
+
+<p>从2.6版本开始, <a href="http://www.python.org/">python</a> 提供了使用linux
+<a href="http://linux.die.net/man/4/epoll">epoll</a> 的功能.
+这篇文章通过3个例子来大致介绍如何使用它.
+<a href="http://scotdoyle.com/">欢迎提问和反馈</a>.</p>
+
+<h2>阻塞式socket通讯</h2>
+
+<p>第一个例子是一个简单的python3.0版本的服务器代码, 监听8080端口的http请求,
+打印结果到命令行, 回应http response给客户端.</p>
+
+<ul>
+<li>行 9: 建立服务器的socket</li>
+<li>行 10: 允许11行的bind()操作, 即使其他程序也在监听同样的端口.
+不然的话,
+这个程序只能在其他程序停止使用这个端口之后的1到2分钟后才能执行.</li>
+<li>行 11: 绑定socket到这台机器上所有IPv4地址上的8080端口.</li>
+<li>行 12: 告诉服务器开始响应从客户端过来的连接请求.</li>
+<li>行 14: 程序会一直停在这里, 直到建立了一个连接. 这个时候,
+服务器socket会建立一个新的socket, 用来和客户端通讯.
+这个新的socket是accept()的返回值,
+address对象标示了客户端的IP地址和端口.</li>
+<li>行 15-17: 接收数据, 直到一个完整的http请求被接收完毕.
+<a href="http://www.jmarshall.com/easy/http/">这是一个简单的http服务器实现</a>.</li>
+<li>行 18: 为了方便验证, 打印客户端过来的请求到命令行.</li>
+<li>行 19: 发送回应.</li>
+<li>行 20-22: 关闭连接, 以及服务器的监听socket.</li>
+</ul>
+
+
+<p><a href="http://docs.python.org/3.0/howto/sockets.html">python官方 HOWTO</a>
+里面有具体如何使用socket编程的描述.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">connectiontoclient</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'><span class="n">request</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'><span class="k">while</span> <span class="n">EOL1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">EOL2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">request</span> <span class="o">+=</span> <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span><span class='line'><span class="n">connectiontoclient</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span><span class='line'><span class="n">connectiontoclient</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>第2个例子, 我们在15行加上了一个循环, 用来循环处理客户端请求,
+直到我们中断这个过程(在命令行下面输入键盘中断, 比如Ctrl-C).
+这个例子更明显地表示出来了, 服务器socket并没有用来做数据处理,
+而是接受服务器过来的连接, 然后建立一个新的socket, 用来和客户端通讯.</p>
+
+<p>最后的23-24行确保服务器的监听socket最后总是close掉, 即使出现了异常.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">connectiontoclient</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">request</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="n">EOL1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">EOL2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">request</span> <span class="o">+=</span> <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span>\<span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s">&#39;n&#39;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>            <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>异步socket和linux epoll的优势</h2>
+
+<p>第2个例子里面的socket采用的是阻塞方式,
+因为python解释器在出现事件之前都处在停止状态. 16行的accept()一直阻塞,
+直到新的连接进来. 19行的recv()也是一直阻塞,
+直到从客户端收到数据(或者直到没有数据可以接收). 21行的send()也一直阻塞,
+直到所有需要发送给客户端的数据都交给了linux内核的发送队列.</p>
+
+<p>当一个程序采用阻塞socket的时候,
+它经常采用一个线程(甚至一个进程)一个socket通讯的模式.
+主线程保留服务器监听socket, 接受进来的连接, 一次接受一个连接,
+然后把生成的socket交给一个分离的线程去做交互.
+因为一个线程只和一个客户端通讯, 在任何位置的阻塞都不会造成问题.
+阻塞本身不会影响其他线程的工作.</p>
+
+<p>多线程阻塞socket模式代码清晰,
+<a href="http://www.virtualdub.org/blog/pivot/entry.php?id=62">但是有几个缺陷</a>,
+可能很难确保线程间资源共享工作正常, 可能在只有一个CPU的机器上效率低下.</p>
+
+<p><a href="http://www.kegel.com/c10k.html">C10K(单机1万连接问题!)</a>
+探讨了其他处理并行socket通讯的模式. 一种是采用异步socket.
+socket不会阻塞, 直到特定事件发生. 程序在异步socket上面进行一个特定操作,
+并且立即得到一个结果, 不管执行成功或者失败. 然后让程序决定下一步怎么做.
+因为异步socket是非阻塞的, 我们可以不采用多线程.
+所有的事情都可以在一个线程里面完成. 虽然这种模式有它需要面对的问题,
+它对于特定程序来说还是不错的选择. 也可以和多线程合起来使用:
+单线程的异步socket可以当作服务器上面处理网络的一个模块,
+而线程可以用来访问阻塞式的资源, 比如数据库.</p>
+
+<p>Linux 2.6有一些方式来管理异步socket, python API能够用的有3种: select,
+poll和epoll. epoll和poll比select性能更好,
+因为python程序不需要为了特定的事件去查询单独的socket,
+而是依赖操作系统来告诉你什么socket产生了什么事件. epoll比poll性能更好,
+因为它不需要每次python程序查询的时候, 操作系统都去检查所有的socket,
+在事件产生的时候, linux跟踪他们, 然后在python程序调用的时候,
+返回具体的列表. 所以epoll在大量(上千)并行连接下, 是一种更有效率,
+伸缩性更强的机制. <a href="http://lse.sourceforge.net/epoll/index.html">图示</a>.</p>
+
+<h2>采用epoll的异步socket编程示例</h2>
+
+<p>采用epoll的程序一般这样操作:</p>
+
+<ol>
+<li>建立一个epoll对象</li>
+<li>告诉epoll对象, 对于一些socket监控一些事件.</li>
+<li>问epoll, 从上次查询以来什么socket产生了什么事件.</li>
+<li>针对这些socket做特定操作.</li>
+<li>告诉epoll, 修改监控socket和/或监控事件.</li>
+<li>重复第3步到第5步, 直到结束.</li>
+<li>销毁epoll对象.</li>
+</ol>
+
+
+<p>采用异步socket的时候第3步重复了第2步的事情. 这里的程序更复杂,
+因为一个线程需要和多个客户端交互.</p>
+
+<ul>
+<li>行 1: select模块带有epoll功能</li>
+<li>行 13: 因为socket默认是阻塞的, 我们需要设置成非阻塞(异步)模式.</li>
+<li>行 15: 建立一个epoll对象.</li>
+<li>行 16: 注册服务器socket, 监听读取事件.
+服务器socket接收一个连接的时候, 产生一个读取事件.</li>
+<li>行 19: connections表映射文件描述符(file descriptors,
+整型)到对应的网络连接对象上面.</li>
+<li>行 21: epoll对象查询一下是否有感兴趣的事件发生,
+参数1说明我们最多等待1秒的时间. 如果有对应事件发生,
+立刻会返回一个事件列表.</li>
+<li>行 22: 返回的events是一个(fileno, event code)tuple列表.
+fileno是文件描述符, 是一个整型数.</li>
+<li>行 23: 如果是服务器socket的事件, 那么需要针对新的连接建立一个socket.</li>
+<li>行 25: 设置socket为非阻塞模式.</li>
+<li>行 26: 注册socket的read(EPOLLIN)事件.</li>
+<li>行 31: 如果读取事件发生, 从客户端读取新数据.</li>
+<li>行 33: 一旦完整的http请求接收到, 取消注册读取事件,
+注册写入事件(EPOLLOUT), 写入事件在能够发送数据回客户端的时候产生.</li>
+<li>行 34: 打印完整的http请求, 展示即使通讯是交错的,
+数据本身是作为一个完整的信息组合和处理的.</li>
+<li>行 35: 如果写入事件发生在一个客户端socket上面,
+我们就可以发送新数据到客户端了.</li>
+<li>行s 36-38: 一次发送一部分返回数据,
+直到所有数据都交给操作系统的发送队列.</li>
+<li>行 39: 一旦所有的返回数据都发送完, 取消监听读取和写入事件.</li>
+<li>行 40: 如果连接被明确关闭掉, 这一步是可选的.
+这个例子采用这个方法是为了让客户端首先断开,
+告诉客户端没有数据需要发送和接收了, 然后让客户端断开连接.</li>
+<li>行 41: HUP(hang-up)事件表示客户端断开了连接(比如 closed),
+所以服务器这端也会断开. 不需要注册HUP事件,
+因为它们都会标示到注册在epoll的socket.</li>
+<li>行 42: 取消注册.</li>
+<li>行 43: 断开连接.</li>
+<li>行s 18-45: 在这里的异常捕捉的作用是,
+我们的例子总是采用键盘中断来停止程序执行.</li>
+<li>行s 46-48: 虽然开启的socket不需要手动关闭, 程序退出的时候会自动关闭,
+明确写出来这样的代码, 是更好的编码风格.</li>
+</ul>
+
+
+<p>例子3:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+</span><span class='line'><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+</span><span class='line'>         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
+</span><span class='line'>               <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
+</span><span class='line'>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>epoll有2种模式, 边沿触发(edge-triggered)和状态触发(level-triggered).
+边沿触发模式下, epoll.poll()在读取/写入事件发生的时候只返回一次,
+程序必须在后续调用epoll.poll()之前处理完对应事件的所有的数据.
+当从一个事件中获取的数据被用完了, 更多在socket上的处理会产生异常. 相反,
+在状态触发模式下面, 重复调用epoll.poll()只会返回重复的事件,
+直到所有对应的数据都处理完成. 一般情况下不产生异常.</p>
+
+<p>比如, 一个服务器socket注册了读取事件,
+边沿触发程序需要调用accept建立新的socket连接直到一个socket.error错误产生,
+然后状态触发下只需要处理一个单独的accept(),
+然后继续epoll查询新的事件来判断是否有新的accept需要操作.</p>
+
+<p>例子3采用默认的状态触发模式, 例子4展示如何用边沿触发模式. 例子4中的25,
+36和45行引入了循环, 直到错误产生(或者所有的数据都处理完了), 32, 38
+和48行捕捉socket异常. 最后16, 28, 41 和51行添加EPOLLET
+mask用来设置边沿触发.</p>
+
+<p>例子4:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+</span><span class='line'><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span> <span class="o">|</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLET</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+</span><span class='line'>         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+</span><span class='line'>            <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>                  <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'>                  <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                  <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span> <span class="o">|</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLET</span><span class="p">)</span>
+</span><span class='line'>                  <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
+</span><span class='line'>                  <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'>                  <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
+</span><span class='line'>            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">pass</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>                  <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">pass</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span> <span class="o">|</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLET</span><span class="p">)</span>
+</span><span class='line'>               <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>                  <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
+</span><span class='line'>                  <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
+</span><span class='line'>            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+</span><span class='line'>               <span class="k">pass</span>
+</span><span class='line'>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLET</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>因为比较类似, 状态触发经常用在转换采用select/poll模式的程序上面,
+边沿触发用在程序员不需要或者不希望操作系统来管理事件状态的场合上面.</p>
+
+<p>除了这两种模式以外, socket经常注册为EPOLLONESHOT event mask,
+当用到这个选项的时候, 事件只有效一次, 之后会自动从监控的注册列表中移除.</p>
+
+<h2>性能考虑</h2>
+
+<p>Listen Backlog Queue Size</p>
+
+<p>在1-4的例子中, 12行显示了调用serversocket.listen()方法.
+参数是监听等待队列的大小. 它告诉了操作系统, 在python代码accept前,
+缓存多少TCP/IP连接在队列中. 每次python代码调用accept()的时候,
+一个连接从队列中移除, 为新的连接进来空出一个位置. 如果队列满了,
+新的连接自动放弃, 给客户端带来不必要的网络延迟.
+一个生产环境下的服务器经常处理几十或者几百的同时连接数,
+所以参数不应该设置为1. 比如, 当采用
+<a href="http://httpd.apache.org/docs/2.0/programs/ab.html">ab</a>
+来对这些测试程序进行并发100个http1.0客户端请求时,
+少于50的参数容易造成性能下降.</p>
+
+<p>TCP Options</p>
+
+<p><a href="http://www.baus.net/on-tcp_cork">TCP_CORK</a>
+参数可以设置缓存消息直到一起被发送, 这个选项, 在例子5的34和40行,
+适合给一个实现 <a href="http://en.wikipedia.org/wiki/HTTP_pipelining">http/1.1pipelining</a>
+的服务器来使用.</p>
+
+<p>例子5:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+</span><span class='line'><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+</span><span class='line'>         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_CORK</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>               <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
+</span><span class='line'>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_CORK</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一方面,
+<a href="http://articles.techrepublic.com.com/5100-10878_11-1050878.html">TCP_NODELAY</a>
+可以用来告诉操作系统,
+任何发给socket.send()的数据必须不经过操作系统的缓存, 立刻发送给客户端.</p>
+
+<p>这个选项, 在第6个例子的14行,
+可以给SSH客户端或者其他实时性要求比较高的应用来使用.</p>
+
+<p>例子6:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">EOL1</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">EOL2</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span>  <span class="o">=</span> <span class="n">b</span><span class="s">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Date: Mon, 1 Jan 1996 01:01:01 GMT</span><span class="se">\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s">&#39;</span>
+</span><span class='line'><span class="n">response</span> <span class="o">+=</span> <span class="n">b</span><span class="s">&#39;Hello, world!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">TCP_NODELAY</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+</span><span class='line'><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+</span><span class='line'>         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;&#39;</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
+</span><span class='line'>               <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
+</span><span class='line'>            <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
+</span><span class='line'>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+</span><span class='line'>         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+</span><span class='line'>   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class='line'>   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>源码</h2>
+
+<p>本程序的源码属于共有领域,
+<a href="http://scotdoyle.com/python-epoll-examples.tar.gz">在这里下载</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -773,388 +2358,6 @@ linjunhalida</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/why-blogging/">为什么要写博客</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-03T10:54:37+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2011</time>
-        
-         | <a href="/blog/why-blogging/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.rylanclayne.com/wp-content/uploads/2010/05/Blogpic1.jpg" alt="image" /></p>
-
-<h2>关于博客</h2>
-
-<p>很久很久以前, 写博客是风潮, 几乎所有上网的人都过博客, 不管是自己搭建的,
-或者是依赖第三方平台的. 然后&mdash;&mdash;没有然后了, 大量开博的结果就是大量荒废,
-很多博客要么就是&#8221;你好世界&#8221;, &ldquo;天气不错&rdquo;, 要么就彻底不用了.</p>
-
-<h2>错误的写博客的目的</h2>
-
-<p>互联网上的很多东西就是这样, 潮流性质的, 一阵风地来, 一阵风地去,
-没有真正解决问题带来快感, 用户玩玩也就离开了.</p>
-
-<p>我们回到写博客. 大家写博客, 一般来说是希望满足自己的发布欲望,
-但是一般的结果是坚持了一段时间发现应者寥寥, 顶多小猫两三只发发&#8221;顶&#8221;,
-&ldquo;好文&rdquo;, 完全无法产生互动, 渐渐地作者就没有动力了, 无以为继,
-博客就荒废了.</p>
-
-<p>这样用博客的方法完全不对. 不错, 博客可以作为发布平台,
-但是有一个隐含前提, 要有人对自己感兴趣. 一般来说,
-只有2种可能性能够满足上面的前提: 你是名人或者是熟人然后大家愿意来了解你,
-或者你写的东西实在有意思. 前面一种状况的话普通人就别想了,
-后面的状况的话, 你要知道, 这个是个国际市场,
-准入门槛低得只要几块钱付点上网费, 一般人怎么会有出头机会?</p>
-
-<h2>正确的写博客的目的</h2>
-
-<p>那么, 博客写出来, 观者寥寥的话, 那还写博客干什么呢?</p>
-
-<p>无论什么博客, 一般来说, 都还是有一个读者的, 那就是自己(什么?
-你看不下去自己写的东西? 恩, 等会再说). 很多人用博客当作整理资料的平台,
-这样也能继续下去, 过段时间如果遗忘了或者想回顾下, 再回来看看,
-但是这样的用法, 只是一个私人日记, 为什么要放出来呢?
-这也不是好的使用方式. (当然, 这种用法的话可以使用一些私密空间的服务.)</p>
-
-<p>我们比较认同的使用方式是这样: 博客写, 还是按照给其他人看的方式写,
-但是重要的部分不是发布出来给其他人看, 而是写的这个过程. 我们通过写博客,
-来提高自己的写作水平, 以及整理自己的思路/知识.</p>
-
-<p>我们学习新的东西, 一个很重要的步骤就是把新的知识复述出来, 只有通过复述,
-才能说是真正吸收了知识. 而博客提供了一个很好的这样做的平台.
-如果只是自己整理, 一方面, 没有开放给外界的压力, 最后往往流于敷衍,
-开放之后, 如果写得不对, 也可能会有人指正(当然机会比较少). 另一方面,
-以写给其他人看的方式写作, 会强迫自己把事情理清楚, 写明白, 在这个过程中,
-能真正搞懂一件事情.</p>
-
-<p>博客本身也是写作, 通过这样的过程, 当然还能提高自己的写作能力. 在我看来,
-写作能力是种权柄, 是种杠杆. 掌握了写作, 就掌握了大量传播自己理念的能力.
-我是认为每个人都应该不断努力练习写作的.
-如果你觉得自己写的文章连自己都不忍卒读以至于不好意思写博客,
-那么我要恭喜你, 你发现了一个大的问题, 把这个问题解决掉,
-你会得到非常大的提升的. 至于不好意思放出来这点, 等文笔练好了之后,
-重新修改好了就可以了. 谁会在意呢?</p>
-
-<p>博客还有一个好处, 就是如果很长时间不更新, 你可以把它看作一个警告:
-你已经很久没有去学习新的东西了, 或者你的生活方式上已经趋于平庸,
-没有劲头了. 这个时候你应该做相应的调整, 然后继续更新博客.
-话说你的博客已经停止了多久了? 一个月, 还是一年?</p>
-
-<p>我们讨论了好处, 再来看看成本. 写博客的成本主要还是时间,
-但是因为写博客本身是一个整理的过程, 而这样的整理往往是必要的,
-这部分时间不算是浪费. 当然如果只是单纯地为了完成任务而写,
-那个是非常痛苦的, 时间上也不值得, 还是建议平时整理值得写的内容,
-如果没有? 请再看一遍上一段的内容.</p>
-
-<p>我个人还有一个建议: 博客要写大家感兴趣, 或者至少能够参与的事情,
-再不然满足大家的窥私欲望. 如果你真的想写非常个人的东西,
-不要放到博客上面来, 放到私人空间里面去. 维护博客,
-也是学习个人推销的一个过程.</p>
-
-<h2>结论</h2>
-
-<p>经过上面几个部分的考虑, 我真诚地建议所有人都写博客. (尤其是女孩子,
-有了博客能够让男孩子更了解你)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/thinking/">思考</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-31T11:31:26+08:00" pubdate data-updated="true">May 31<span>st</span>, 2011</time>
-        
-         | <a href="/blog/thinking/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这个世界上最难的事情就是思考了. 我们为了逃避思考,
-是什么事情都能够做得出来的.</p>
-
-<ul>
-<li>上学的时候, 为了逃避思考和理解课本的知识, 我们死记硬背, 记解题方案,
-考试一过, 就什么都不记得了.</li>
-<li>上班的时候, 为了逃避思考如何工作, 我们只按照老板要求做的事情去做,
-不管这个事情是不是真的能够帮老板解决问题.</li>
-<li>下班了之后, 我们为了逃避思考如何利用闲暇时间, 打开电脑,
-让生理上的愉悦填充空虚感.</li>
-<li>为了逃避思考自己想要的是什么, 我们遵从父母, 遵从社会期望,
-而不惜浪费掉自己的一生.</li>
-<li>我们直接接受第三方做出的评估, 而不愿意以自己的角度来揣摩.</li>
-<li>我们用直觉来代替思考, 用情感来对事物做判断, 却不会用思考来调整情感.</li>
-<li>我们期望万能钥匙, 瑞士军刀, 银弹, 领袖, 神, 父母, 领导, 彩票,
-却不愿意自己思考.</li>
-</ul>
-
-
-<p>真悲哀.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-ubuntu-install/">Rails Ubuntu 下安装</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-24T10:23:21+08:00" pubdate data-updated="true">May 24<span>th</span>, 2011</time>
-        
-         | <a href="/blog/rails-ubuntu-install/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://rubyonrails.org/images/rails.png" alt="image" /></p>
-
-<h2>安装rvm</h2>
-
-<p>首先, 安装源里面的ruby, git, curl等依赖</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo aptitude install ruby git-core curl zlib1g-dev libssl-dev libsqlite3-dev libreadline-dev g++ gcc libxml2-dev libxslt1-dev libmysqlclient-dev libyaml-dev autoconf build-essential
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后安装rvm (按照
-<a href="http://rvm.io">rvm.io</a>/
-)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="se">\c</span>url -L https://get.rvm.io | bash -s stable --ruby
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>把环境加到shell path里面</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s1">&#39;[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot; # Load RVM function&#39;</span> &gt;&gt; ~/.bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>不过我发现bash好像不调用.bash_profile, 所以还是用.bashrc吧</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s1">&#39;[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot; # Load RVM function&#39;</span> &gt;&gt; ~/.bashrc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>重新加载</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">source</span> .bash_profile
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果你用的是zsh，在~/.zshrc最后加上：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[[</span> -s <span class="s2">&quot;$HOME/.rvm/scripts/rvm&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> . <span class="s2">&quot;$HOME/.rvm/scripts/rvm&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/.rvm/bin <span class="c"># Add RVM to PATH for scripting</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>测试rvm是否装好了</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">type </span>rvm | head -1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装ruby1.9.3</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rvm install 1.9.3
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>设置默认环境</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rvm use 1.9.3 --default
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>安装rails</h2>
-
-<p>gem安装即可</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem install rails
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>mysql设置</h2>
-
-<p>rails默认db是sqlite, 为了调试, 也可能整成mysql的,
-这里也加上mysql方面的设置方式.</p>
-
-<p>安装mysql</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install mysql-server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>mysql默认编码是latin, 我们要改成utf8, 修改/etc/mysql/my.cnf,</p>
-
-<pre><code>[mysql]
-default-character-set=utf8
-[client]
-default-character-set=utf8
-[mysqld]
-character-set-server=utf8
-</code></pre>
-
-<p>设置完后需要重启mysql:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo service mysql restart
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后我们重置mysql root密码</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo dpkg-reconfigure mysql-server
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>进入命令行: mysql -u root -p</p>
-
-<p>然后在密码提示上面设置一个root密码.</p>
-
-<p>进入命令行后, 我们需要</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 创建一个数据库</span>
-</span><span class='line'>create database <span class="nb">test</span>;
-</span><span class='line'><span class="c"># 建立对应的mysql的用户</span>
-</span><span class='line'>create user tester identified by <span class="s1">&#39;密码&#39;</span>;
-</span><span class='line'><span class="c"># 设置权限</span>
-</span><span class='line'>grant all privileges on test.* to tester;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>postgresql设置</h2>
-
-<p>我们也可以设置采用postgresql。</p>
-
-<p>安装postgresql</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install postgresql postgresql-client
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>进入命令行后, 我们需要加上用户和数据库：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo -u postgres psql postgres <span class="s">&lt;&lt; EOF</span>
-</span><span class='line'><span class="s">CREATE DATABASE test;                           </span>
-</span><span class='line'><span class="s">CREATE USER test WITH PASSWORD &#39;test&#39;;          </span>
-</span><span class='line'><span class="s">GRANT ALL PRIVILEGES ON DATABASE test to test;  </span>
-</span><span class='line'><span class="s">EOF</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>好了, 现在东西都已经可以用了, 开始干活吧.</p>
-
-<h2>issues</h2>
-
-<p>如果sqlite安装出现问题, 需要</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install libsqlite3-dev
-</span><span class='line'>gem install sqlite3-ruby
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -1172,23 +2375,23 @@ character-set-server=utf8
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016-summary/">2016年度总结</a>
       </li>
     
       <li class="post">
         <a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-desktop-computer/">考虑买电脑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/better-house-market/">更好的住宅行业</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/buy-insurance/">关于保险</a>
       </li>
     
   </ul>
@@ -1233,7 +2436,7 @@ character-set-server=utf8
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - 机械唯物主义 -
+  Copyright &copy; 2017 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
