@@ -9,9 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="Another year has passed, time goes so fast with so little change to myself.
-Whether finished or not, new year resolution needs to be written.
-It can &hellip;">
+  <meta name="description" content="最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（Linux From Scratch）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。 LFS的过程做成了书籍，可以下载阅读。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +78,60 @@ It can &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-arch/">从零开始构建linux</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
+        
+         | <a href="/blog/linux-arch/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（<a href="http://www.linuxfromscratch.org/lfs">Linux From Scratch</a>）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。</p>
+
+<p>LFS的过程做成了书籍，可以<a href="http://www.linuxfromscratch.org/lfs/downloads/stable/">下载阅读</a>。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。</p>
+
+<p>首先需要有一个支持编译的类Unix宿主环境，创建编译目录和专门用来编译的用户，把系统需要的工具包下载下来。</p>
+
+<p>然后是在宿主机上面创建编译工具链，首先用宿主机的编译系统编译gcc工具链，然后用gcc自己编译一遍gcc，
+这样隔离宿主机编译系统的影响。</p>
+
+<p>LFS提出了一个SBU（标准编译时间）的概念，每个工具包会列出SBU，让你知道编译这个工具包大概需要多少时间。</p>
+
+<p>编译好gcc之后，用编译工具把linux需要的各种包，分门别类安装到目标文件系统中。</p>
+
+<p>各种工具都安装好了，就开始进行系统的配置。设置磁盘的引导区指向到grub引导工具，然后用grub来加载linux内核。
+设置udev设备管理器，设置fstab文件系统加载器，init进程启动器，shadow增加用户，网络等。</p>
+
+<p>一切顺利之后，系统就可以启动使用了。我个人只是看了一遍，通过阅读来了解系统的架构。走一遍的话比较消耗时间，如果你时间充足，可以跟着做一下。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -792,72 +844,6 @@ or you can debug it yourself by add log to the gem source code.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/gem/">如何使用Gem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-12-07T09:41:47+08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2014</time>
-        
-         | <a href="/blog/gem/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>作为rails开发者，无数好用的第三方Gem插件让工作变得更加简单。
-不过东西好用，也还是有一些需要注意的问题。这里整理一下我使用Gem的经验。</p>
-
-<h2>搜索</h2>
-
-<p>第一步是寻找到想要的Gem。最基础的方法是Google搜索，输入想要实现的功能，比如：<code>rails tagging</code>，
-也可以去<a href="https://www.ruby-toolbox.com/">ruby toolbox网站</a>上面根据分类寻找。</p>
-
-<h2>选择</h2>
-
-<p>找到Gem之后，需要选择质量高的Gem，不然会出现各种问题。主要看Github上面是否有很多人Follow，
-以及项目近期是否有足够的更新。</p>
-
-<p>不能随便引入Gem到项目里面，需要从增加的系统复杂度，拓展性，系统稳定性等方面综合考虑。
-除了引入Gem，可以考虑直接拷贝需要的代码文件到项目里面。一些会修改Rails等其他模块的Gem，需要谨慎引入。</p>
-
-<h2>使用</h2>
-
-<p>Gem导入之后，最好要固定版本，这样防止Gem功能变更引入Bug。</p>
-
-<p>选择好了Gem，需要对它有足够的了解。认认真真看一遍文档，wiki，如果文档不清晰，搜索一下使用教程。</p>
-
-<p>我个人偏好把Gem的实现原理弄懂，最好扫一遍源码，这样出现bug或者问题大概有一个方向，
-以及可以学会别人是怎么写ruby的。</p>
-
-<p>当使用Gem的时候出现了问题，可以去项目Github的Issue区块看看有没有人提交类似问题，
-没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
-
-<p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -875,6 +861,10 @@ or you can debug it yourself by add log to the gem source code.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/install-kdeneon/">在新笔记本上安装Kdeneon</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/link-domain-name-to-local-pc/">研究如何给本地机器绑定域名</a>
       </li>
     
@@ -888,10 +878,6 @@ or you can debug it yourself by add log to the gem source code.</p>
     
       <li class="post">
         <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ansible/">ansible介绍和服务器管理思考</a>
       </li>
     
   </ul>
