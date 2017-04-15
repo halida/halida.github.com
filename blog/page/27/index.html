@@ -9,9 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现状:
-有一定程度的软件开发经验(2年简单的程序开发经验),基础马马虎虎,看过SICP,CS:APP,
-有失败的项目开发经验. 目标:能够自主开发出创新型的应用.也就是在世上留个脚印. 问题: 1没有足够的动力坚持下去 2年纪也不小了,24 3创新能力不足 解决方案: 1多写垃圾应用. &hellip;">
+  <meta name="description" content="现在的自动文档生成系统很多了，今天我介绍一个：sphinx。sphinx是python官方文档所使用的一套很简单的文档自动生成系统。 官方网站： http://sphinx.pocoo.org/index.html 安装方式 ubuntu下面： sudo apt-get install &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +78,113 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/sphinx/">用sphinx写文档</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-10T22:08:26+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
+        
+         | <a href="/blog/sphinx/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在的自动文档生成系统很多了，今天我介绍一个：sphinx。sphinx是python官方文档所使用的一套很简单的文档自动生成系统。</p>
+
+<p>官方网站： <a href="http://sphinx.pocoo.org/index.html">http://sphinx.pocoo.org/index.html</a></p>
+
+<p><strong>安装方式</strong></p>
+
+<p>ubuntu下面：</p>
+
+<pre><code>sudo apt-get install python-sphinx
+</code></pre>
+
+<p>windows下面：因为我没有装过，不知道sphinx依赖什么，估计很多，很难装。</p>
+
+<p><strong>使用方法</strong></p>
+
+<p>打开命令行，找到你想要建立文档的位置，运行：</p>
+
+<pre><code>sphinx-quickstart
+</code></pre>
+
+<p>这是sphinx一个自带的快速配置工具，一路点回车，除了要你输入project名称的时候。（我就是这样的。。）</p>
+
+<p>然后就会在当前目录下面建立一些文档：</p>
+
+<ul>
+<li>build：自动生成的html，pdf之类都会放到这里。</li>
+<li>makefile：上面设置的时候，对于unix系统，会默认生成makefile，以后要做什么事情，只要make一下就好了。（不要告诉我你不知道什么是make。）</li>
+<li>source：当然是文档源文件目录了呀。</li>
+</ul>
+
+
+<p>source文件夹初始时里面会放这个东西：</p>
+
+<ul>
+<li>conf.py：sphinx-quickstart里面的设置都会放到这里。随便修改吧。</li>
+<li>index.rst：文档的最顶端。</li>
+</ul>
+
+
+<p>写文档：</p>
+
+<p>修改index.rst， 改为：</p>
+
+<pre><code>::
+  ~ 
+</code></pre>
+
+<p>上面增加了一个test的东西。sphinx是把文档当作一个树来看待的，你要加新的东西，需要在原先旧的地方添加你要加的东西的名称，在这个例子是test。现在可以在source目录下新建一个文件：test.rst</p>
+
+<p>内容为：</p>
+
+<pre><code>test
+==== 
+
+这个是一个测试。
+
+* This is a bulleted list.
+* It has two items, the second
+  item uses two lines.
+</code></pre>
+
+<p>回到目录最上层，运行make html，然后就会自动生成html的文档。</p>
+
+<p>再开启 build/html/index.html ，这就是显示的结果，是不是很简单？</p>
+
+<p><img src="http://dl.dropbox.com/u/1167873/images/sphinx.png" alt="image" /></p>
+
+<p>更多的文档在
+<a href="http://sphinx.pocoo.org/contents.html">http://sphinx.pocoo.org/contents.html</a>
+, 以后我会介绍sphinx文档具体怎么写。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -530,48 +635,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/why-ask-why/">为什么要问为什么</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-02-15T22:08:26+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
-        
-         | <a href="/blog/why-ask-why/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>世界上没有为什么，因为除了上帝，没有人知道为什么世界是这个样子的。</p>
-
-<p>我们只知道世界是怎么变成这个样子的。</p>
-
-<p>但为了交流方便，我们还是用“为什么”。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/28/">&larr; Older</a>
@@ -589,6 +652,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/gns3/">GNS3介绍,安装和使用</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/install-kdeneon/">在新笔记本上安装Kdeneon</a>
       </li>
     
@@ -602,10 +669,6 @@
     
       <li class="post">
         <a href="/blog/ruby-have-no-program-optimize/">ruby没有做到编程语言应该有的优化</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ruby-need-static-type-checking-system/">ruby需要一个静态类型验证系统</a>
       </li>
     
   </ul>
