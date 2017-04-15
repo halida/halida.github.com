@@ -1,0 +1,129 @@
+---
+layout: post
+title: "GNS3介绍,安装和使用"
+date: 2017-04-15 20:01:27 +0800
+comments: true
+categories: 
+---
+
+[GNS3](https://www.gns3.com/)是一个虚拟网络的工具,用它可以学习如何配置局域网,以及在实际进行物理配置之前测试是否工作正常.
+
+我为什么要研究这个工具呢? 因为现在我的家用网络有一些需求需要进行复杂的路由配置, 实际配置出现问题很浪费时间,
+不如用一个虚拟工具来测试研究. 如果你对如何搭建局域网或者有类似建网需求, 可以考虑用这个工具.
+
+文档[在这里](https://docs.gns3.com/), 我就不重复写怎么安装了.
+在安装之前, 我先讲一下原理, 知道了原理, 后面过程会顺利很多.
+
+# 原理
+
+GNS3的底层是[Dynamips](https://en.wikipedia.org/wiki/Dynamips), 一个虚拟Cisco路由器的模拟器.
+GNS3同时它也支持其他的虚拟系统, 比如Vmware, Qemu, Virtualbox, docker等, 用这些虚拟化工具来模拟路由和主机.
+
+Dynamips是基于Linux的, 所以在Windows和MacOS下面,
+为了能够正常使用, 需要安装一个GNS的虚拟机(里面安装的是Ubuntu),
+因为它里面需要跑虚拟化(虚拟路由设备或者主机), 所以会出现嵌套虚拟,
+推荐使用Vmware来安装, 用VirtualBox性能会比较差.
+如果你是Linux系统, 建议直接用GNS Server.
+
+GNS Server是GNS的后端, 一个python写的管理系统, 它会根据前端的配置, 创建对应的虚拟化系统,
+比如你创建了2个主机(VPCS), 一个路由(比如用Qemu虚拟的RouteOS),
+它会创建两个VPCS进程, 用Dynamips虚拟化一个路由, 把他们连接起来.
+
+实际执行的命令如下:
+
+```
+# qemu RouteOS
+/usr/bin/qemu-system-x86_64 -name RouteOS-1 -m 128M -smp cpus=1 -enable-kvm -machine smm=off -boot order=c \
+  -drive file=/home/halida/GNS3/projects/routeos_simple/project-files/qemu/f280f531-91cd-4290-a61b-98d3299a2bb7/hda_disk.qcow2,if=ide,index=0,media=disk \
+  -serial telnet:127.0.0.1:5000,server,nowait \
+  -monitor tcp:127.0.0.1:54263,server,nowait \
+  -net none -device e1000,mac=00:8f:b6:2b:b7:00,netdev=gns3-0 \
+  -netdev socket,id=gns3-0,udp=127.0.0.1:10002,localaddr=127.0.0.1:10001 \
+  -device e1000,mac=00:8f:b6:2b:b7:01,netdev=gns3-1 \
+  -netdev socket,id=gns3-1,udp=127.0.0.1:10003,localaddr=127.0.0.1:10000 \
+  -device e1000,mac=00:8f:b6:2b:b7:02 \
+  -device e1000,mac=00:8f:b6:2b:b7:03 \
+  -nographic
+
+# vpc
+/usr/bin/vpcs -p 5001 -m 0 -i 1 -F -R -s 10002 -c 10001 -t 127.0.0.1 startup.vpc
+```
+
+参数里面会做几件事情: 创建虚拟的网口, 绑定在本地机器的特定端口上面, 然后各个进程会通过这些端口来进行通讯.
+同时也会把管理端口用telnet暴露出来, 方便前端用Console命令连上去配置.
+
+## 安装过程
+
+因为GNS的工具链主要在Linux, 我倾向于用Linux来装这样的测试环境. 所以里面推荐的GNS VM我就没有去装了.
+
+安装完毕之后, GNS是不自带路由器的镜像的, 它提供一些简单的虚拟设备,
+比如VPCS, 它其实就是一个单独的进程, 模拟一个主机设备, 带有设置IP, Ping等简易网络工具.
+你需要自己导入路由的设备.
+
+如果你是要模拟Cisco的设备, 可以在[这里下载](http://protechgurus.com/download-gns3-ios-images/),
+我是用来测试RouteOS的环境的, 直接在[官方网站](https://mikrotik.com/download)下载ISO镜像, 本地用Qemu安装.
+
+选择虚拟系统: 如果是Cisco的路由器, 没得说, 只能用Dynamips, Dynamips一定要设置Idle-PC, 减少CPU性能消耗.
+如果是其他基于Linux的路由系统, 在Linux下面, 我觉得Qemu比VirtualBox和VMWare都好用, 它性能更好一些.
+当然用Docker这种内核共用虚拟性能会更好, 不过我没有尝试.
+
+GNS下安装RouteOS, 首先要去官方下载ISO镜像文件, 然后执行命令行:
+
+```
+# 创建镜像文件
+/usr/local/bin/qemu-img create -f qcow2 routeros-6.15.img 200M
+# 跑虚拟机, 安装系统
+/usr/local/bin/qemu-system-i386 -m 512 -enable-kvm -boot d -cdrom mikrotik-6.15.iso routeros-6.15.img
+```
+
+安装好之后, 就可以用GNS导入这个镜像, 进行使用了. 官方下载的ISO, 可以免费使用一天, 用来测试问题不大.
+
+## 模拟实验
+
+我做了两个模拟实验, 用来学习GNS的使用.
+
+第一个是简单的RouteOS连接两个主机, DHCP分配IP地址.
+
+![image](http://i.imgur.com/bmtDUDc.png)
+
+用Console连上RouteOS-1, 进行这样的配置:
+
+```
+# 创建一个bridge, 把端口都连接起来
+/interface bridge add
+/interface bridge port add interface=ether1 bridge=bridge1
+/interface bridge port add interface=ether2 bridge=bridge1
+# 创建 dhcp, 给大家分配IP地址
+/ip address add address=192.168.10.1/24 network=192.168.10.0 interface=bridge1
+/ip pool add name=dhcp-pool ranges=192.168.10.10-192.168.10.254
+/ip dhcp add name=dhcp-main interface=bridge1 address-pool=dhcp-pool
+/ip dhcp network add address=192.168.10.0/24 gateway=192.168.10.1 netmask=24
+/ip dhcp enable 0
+```
+
+然后就可以进到两台机器的Console里面, 执行`ip dhcp`自动获取IP地址, 用`ping`去看是否可以连接到另外一台机器.
+
+第二个是简单的多路由通讯方案:
+
+![image](http://i.imgur.com/GEDQVOf.png)
+
+三个路由分别管理一个网段, 然后每个网段都可以通过路由的设置, 联系到其他网段里面的机器.
+
+这里只列出来RouteOS-1的配置, DHCP部分和上面重复, 就不写了:
+
+```
+# 设置连接到其他路由器端口的IP
+/ip address add address=172.16.10.1/30 network=172.16.10.0 interface=ether1
+/ip address add address=172.16.12.1/30 network=172.16.12.0 interface=ether2
+# 增加路由, 对方网段从哪里走
+/ip route add dst-address=192.168.20.0/24 gateway=172.16.10.2
+/ip route add dst-address=192.168.30.0/24 gateway=172.16.12.2
+```
+
+
+
+
+
+
+
+
