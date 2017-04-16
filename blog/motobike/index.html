@@ -5,15 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>自动更新程序功能思考 - 网络寻租</title>
+  <title>考虑摩托车 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="对于有经验的程序员来说，
-很多看起来比较简单的功能，实际做起来会非常复杂。
-而对于有经验的工作者而言，任何事情都是这样的。
-把事情做好需要的精力，是把事情做完需要精力的无数倍。
-同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。 回到正题。 &hellip;">
+  <meta name="description" content="现在我用的小电驴很好用, 是爱玛摩卡, 现在已经停产了, 长得这样: 它的好处是: 非超标, 不需要上牌.
+可以载两个人, 后面的座位高度适合成人, 有靠背很安全.
+足够小, 可以上小型电梯, 城里面开起来非常顺畅.
+踏板上面可以放下很大的东西, 适合运货. 但是也有以下问题: 速度最高30, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/auto-update/">
+  <link rel="canonical" href="http://halida.github.com/blog/motobike/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -85,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">自动更新程序功能思考</h1>
+      <h1 class="entry-title">考虑摩托车</h1>
     
     
       <p class="meta">
@@ -101,7 +100,7 @@
   
 
 
-<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
+<time datetime="2017-04-16T19:26:06+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2017</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -110,34 +109,53 @@
   </header>
 
 
-<div class="entry-content"><p>对于有经验的程序员来说，
-很多看起来比较简单的功能，实际做起来会非常复杂。
-而对于有经验的工作者而言，任何事情都是这样的。
-把事情做好需要的精力，是把事情做完需要精力的无数倍。
-同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。</p>
+<div class="entry-content"><p>现在我用的小电驴很好用, 是<a href="http://www.qqddc.com/html/zt/moka.html">爱玛摩卡</a>, 现在已经停产了, 长得这样:</p>
 
-<p>回到正题。这里整理一下windows下面写一个可以自己自动更新的程序需要的考虑。</p>
+<p><img src="http://i.imgur.com/LEVW2YA.jpg" alt="image" /></p>
 
-<p>首先，windows下面程序不能自动更新自己，程序开启的时候会锁住程序的可执行文件。
-因此，需要先做一个启动器，通过启动器来负责调用程序和更新程序的事情。
-同时这个启动器必须足够快足够小。我选择的是autoit，
-如果有更多开发资源，最好还是用C++写一个windows原生程序。</p>
+<p>它的好处是:</p>
 
-<p>启动器的逻辑是这样，分成检查更新和更新部分。
-用户开启程序，实际是调用启动器的更新部分后再启动程序。
-程序本身运行的时候，再定时监控是否有更新，实际调用启动器的检查更新部分，
-这样关于更新的逻辑都丢给启动器，模块化好一些。</p>
+<ul>
+<li>非超标, 不需要上牌.</li>
+<li>可以载两个人, 后面的座位高度适合成人, 有靠背很安全.</li>
+<li>足够小, 可以上小型电梯, 城里面开起来非常顺畅.</li>
+<li>踏板上面可以放下很大的东西, 适合运货.</li>
+</ul>
 
-<p>检查更新的逻辑比较简单，会去访问更新服务器上面一个版本文件，
-和本地程序的版本做比较，如果本地更旧，就下载程序到一个new_program目录下面。
-定时检查更新的时候需要随机化检查时间，防止无数客户端同时更新拖垮更新服务器。</p>
 
-<p>更新部分会在本地判断是否存在new_program目录，有的话就替换掉旧的程序，
-执行安装脚本做一些系统相关的配置，再启动。</p>
+<p>但是也有以下问题:</p>
 
-<p>其中为了防止旧程序开启把旧程序目录锁住，需要关闭旧程序，或者跳过这块的更新。
-启动器本身也要能够被自动更新掉，逻辑上面需要照顾到这个问题。
-启动器对应的一些参数，比如更新服务器地址，更新目录，最好做成配置文件，方便修改。</p>
+<ul>
+<li>速度最高30, 不够快.</li>
+<li>续航不行, 没法出城.</li>
+<li>轮子小通过性不好.</li>
+<li>没有左右转向灯, 速度表等实用安全配置.</li>
+</ul>
+
+
+<p>解决办法有两个: 短途还是小电驴, 出城就靠汽车+折叠自行车. 或者买一个摩托车.</p>
+
+<p>我考虑摩托车的方案. 摩托车使用上面相对电动车来说会更复杂一些, 毕竟是机械机构. 但是动力, 续航, 安全都比电动车好太多.</p>
+
+<p>摩托车和汽车类似, 质量好的一般是合资日企, 比如本田. 所以我尽量还是在合资品牌里面选, 少折腾.</p>
+
+<p>摩托车的样式主要有跨骑,弯梁和踏板. 区别在<a href="https://www.zhihu.com/question/52607019/answer/131316979">这里</a>,
+主要就是跨骑速度快续航高, 但是低速不好开, 运不了货. 踏板相对容易坏, 轮子小通过性差, 弯梁不容易坏.</p>
+
+<p>所以首先我看弯梁. 但是看了本田, 雅马哈, 铃木, 他们的弯梁车都挺丑的, 去店里面看实物也很丑, 实在下不去手.
+看了一圈, 国内的摩托车丑的居多, 类似小电驴, 也没有什么美观的型号.
+稍微好看一些的只有跨骑了. 但是各大跨骑车都挺大的, 也不方便运货, 生活上不是很方便, 并且我也不需要开太快的车.</p>
+
+<p><img src="https://pic4.zhimg.com/v2-b022285c1e5561444c5ec37404726feb_b.jpg" alt="image" /></p>
+
+<p>后面发现还有小的跨骑车, 比如<a href="http://ptmx5.pixnet.net/blog/post/189348267-%E9%87%8D%E8%BB%8A%E6%97%A5%E8%AA%8C28%EF%BC%9A%E8%BF%B7%E4%BA%BA%E5%B0%8F%E5%8F%AF%E6%84%9B-honda-msx125%E5%85%A5%E6%89%8B%E5%88%86%E4%BA%AB">本田 MSX125</a>,
+国内很多仿制的, 但是我还是信不过质量.</p>
+
+<p>还有踏板, 本田的<a href="http://post.smzdm.com/p/335810/">自由Today</a>挺不错的, 但是我不太想要踏板车了, 和电驴区别不大.</p>
+
+<p><img src="http://am.zdmimg.com/201508/31/55e3afb6301f1.jpg_e600.jpg" alt="image" /></p>
+
+<p>选来选去, 最后发现还是现在的摩卡适合我的需求, 摩托车还是算了.</p>
 </div>
 
 
@@ -160,7 +178,7 @@
   
 
 
-<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
+<time datetime="2017-04-16T19:26:06+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2017</time>
       
 
 
@@ -168,7 +186,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/auto-update/" data-via="" data-counturl="http://halida.github.com/blog/auto-update/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/motobike/" data-via="" data-counturl="http://halida.github.com/blog/motobike/" >Tweet</a>
   
   
   
@@ -177,10 +195,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/xiang-qing/" title="Previous Post: 关于相亲活动">&laquo; 关于相亲活动</a>
+        <a class="basic-alignment left" href="/blog/new-bag/" title="Previous Post: 如何挑选背包">&laquo; 如何挑选背包</a>
       
-      
-        <a class="basic-alignment right" href="/blog/occult/" title="Next Post: 神秘学">神秘学 &raquo;</a>
       
     </p>
   </footer>
@@ -276,8 +292,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/auto-update/';
-        var disqus_url = 'http://halida.github.com/blog/auto-update/';
+        var disqus_identifier = 'http://halida.github.com/blog/motobike/';
+        var disqus_url = 'http://halida.github.com/blog/motobike/';
         var disqus_script = 'embed.js';
       
     (function () {
