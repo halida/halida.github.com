@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2017-04-15T20:44:07+08:00</updated>
+  <updated>2017-04-16T18:55:32+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何挑选背包]]></title>
+    <link href="http://halida.github.com/blog/new-bag/"/>
+    <updated>2017-04-16T18:21:19+08:00</updated>
+    <id>http://halida.github.com/blog/new-bag</id>
+    <content type="html"><![CDATA[<p>以前买的一个米黄色电脑背包已经用了很久, 一直被老婆吐槽太丑,
+于是花了一些时间研究了一下买什么背包比较好.</p>
+
+<p>首先看我的实际需求. 我现在在家工作, 虽然不需要通勤, 但是还是会会骑小电驴出门透气换地方工作,
+偶尔出去短途旅行一下. 所以一个可以装电脑, 一周内换洗衣物的背包还是需要的.
+老婆发过来的一些潮牌包包看起来不错, 但是一个耐用好用低调的包更适合我的想法.</p>
+
+<p>首先看看市场上有什么可以选择的. 我去看<a href="http://search.smzdm.com/?c=post&amp;s=%E8%83%8C%E5%8C%85">什么值得买的原创评测</a>,
+Google搜索backpack, 了解到了一些知名的背包品牌:
+一部分是主流户外运动用品品牌, 一部分是数码背包品牌.
+好的背包价格也不便宜.</p>
+
+<p>为了能够更了解产品, 我在Youtube上面搜索大家经常提到的背包型号, 看看评测,
+慢慢对于自己理想中的背包有了概念了.</p>
+
+<p>首先细化我的需求:
+可以带15寸笔记本, 方便长时间背着, 可以携带短途旅行的东西, 耐用, 美观, 可以背在前面防小偷.</p>
+
+<p>研究出来的方案:
+中等体积大小(22L-30L), 简易背负(无背负不舒服, 复杂背负太大太重), 独立电脑仓位(保护更有力),
+足够体积的主仓位(放衣物以及以后运输的杂物), 带有侧袋可以放水杯.
+颜色我更偏好黑色, 看起来更&#8221;商务&#8221;一些, 不浮夸.</p>
+
+<p>考虑了这些品牌: Osprey, Incase, Gregory, Arcteryx, Colehaan, Wenger,
+根据我的需求, 筛选了这些型号:</p>
+
+<p><a href="https://www.ospreypacks.com/kr/en/product/pixel-PIXEL.html">Osprey pixel</a>, <a href="http://post.smzdm.com/p/311426/">Incase EO Travel</a>, <a href="http://post.smzdm.com/p/532225/">Gregory SKETCH 22L</a>.</p>
+
+<p>然后就等合适的打折出来, 就可以买了.</p>
+
+<p>不过我新买的笔记本到货, 急用包, 同时也看到亚马逊上面有7折优惠, 上去搜索了一下,
+本来可以考虑<a href="https://www.amazon.cn/%E8%BF%90%E5%8A%A8-%E6%88%B7%E5%A4%96-%E4%BC%91%E9%97%B2/dp/B015SBJU4W/ref=sr_1_1?ie=UTF8&amp;qid=1492339703&amp;sr=8-1&amp;keywords=Gregory%2BSKETCH%2B22&amp;th=1">Gregory SKETCH 22</a>,
+但是剩下的几个颜色不好看.
+偶然翻到之前看到过的<a href="http://post.smzdm.com/p/498384/">Osprey Momentum 26L</a>, 感觉还可以, 就下单买了, 总价524还算可以吧.</p>
+
+<p>两天就到货了, 兴奋地研究了各种配置, 包的做工比我旧包好多了, 感觉很硬实.</p>
+
+<p><img src="http://i.imgur.com/lrutv4N.jpg" alt="image" /></p>
+
+<p>这是上身效果.</p>
+
+<p><img src="http://i.imgur.com/ueom1Ka.jpg" alt="image" /></p>
+
+<p><img src="http://i.imgur.com/1B5r6ZG.jpg" alt="image" /></p>
+
+<p>背上去舒适度算一般, 天热背还是会闷, 还算满足需求吧.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[GNS3介绍,安装和使用]]></title>
@@ -1401,42 +1455,6 @@ dell的模式是下单后生产，等了一个多星期才到货。</p>
 <li>资深媒体：对于即时性比较强的信息比如新闻，资深媒体可能会有一些好文章出来，但是可遇不可求，在此之前我倾向于不被一些“浅分析”占据我的头脑，保持对结论的开放态度。</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[家装设计策略]]></title>
-    <link href="http://halida.github.com/blog/design-home/"/>
-    <updated>2015-11-15T14:26:58+08:00</updated>
-    <id>http://halida.github.com/blog/design-home</id>
-    <content type="html"><![CDATA[<p>这里整理一些家装的要点：</p>
-
-<p><strong>实用第一</strong>：
-家是自己用来住的，住不舒服每天都会难受，样式差了看久了也习惯了。</p>
-
-<p><strong>设计先行</strong>：
-先期设计一定要充分，工程中出现问题不能敷衍一定要搞好。
-开工之后设计问题都需要钱来弥补，所以不要急着开工。
-工程中出现问题都是可以改的，不要省钱放过，后期想改就难了。</p>
-
-<p><strong>轻硬装重软装</strong>：
-硬装的部分，除非水电等固定都要用的项目，造型因为大家的喜好不同，是不会一致的。
-所以房子卖出去的时候，造型往往会重新做。这就造成了这部分的投入是损失。
-所以除非自己非常喜欢，不要在硬装造型上面花费钱。
-当厌倦旧样式的时候，软装可以调整，硬装就难了。
-家具，软装的东西可以搬迁，所以可以投入钱。并且好的家具对室内品质提升很大。</p>
-
-<p><strong>少做吊顶</strong>：中国房子层高有限，顶太矮了会比较压抑。
-用射灯需要吊顶，可以考虑明射灯，或者后期加上台灯，
-其实住家开射灯的情况比较少，电费也多。</p>
-
-<p><strong>大量收纳</strong>：能够做收纳的地方做收纳，最好能够有储藏室，衣帽间。
-储藏房间里面可以不做柜门（成本比较高），往往比起明柜的成本要低。
-收纳区域：入户收纳（鞋，衣物和杂物），衣物收纳，杂物收纳，
-厨房收纳，卫生收纳（扫把吸尘器，洗衣，淋浴用品，卫生用品）。</p>
-
-<p><strong>推迟付款</strong>：购买项目能够延后的延后，晚付款的晚付款。
-分期付款，家装周期3个月，三个月的工资就能够补上好多了，装修过程就不会那么紧张。</p>
 ]]></content>
   </entry>
   
