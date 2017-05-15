@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="coffeescript是一门编译到javascript的子语言，
-它采用了类似ruby/python的语法，增加了类支持，以及规避了javascript语言里面一堆的设计缺陷。
-本文主要分析一下coffeescript是如何实现类机制的。 示例代码 &hellip;">
+  <meta name="description" content="什么是coffeescript? 我们知道javascript是一门有历史的语言， 在被创造出来的时候， 它只是浏览器的一个附属物， 没有预期能够那么流行，
+拥有一些的设计缺陷， 缺少很多现代语言必须的特性。 为了弥补这些的缺陷， 我们有jQuery， 各种js的库， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,138 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/coffeescript/">Coffeescript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-24T11:01:00+08:00" pubdate data-updated="true">Sep 24<span>th</span>, 2012</time>
+        
+         | <a href="/blog/coffeescript/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://coffeescript.org/documentation/images/logo.png" alt="image" /></p>
+
+<h2>什么是coffeescript?</h2>
+
+<p>我们知道javascript是一门有历史的语言， 在被创造出来的时候， 它只是浏览器的一个附属物， 没有预期能够那么流行，
+拥有一些的设计缺陷， 缺少很多现代语言必须的特性。 为了弥补这些的缺陷， 我们有jQuery， 各种js的库，
+javascript语言本身也非常灵活， 开发者可以做很多扩展。</p>
+
+<p>但是库的方式并不能解决所有的问题， 我们还需要更重的解决方案。
+coffeescript是能够编译成javascript的一门小的语言， 它的目的是为了能够让大家以更好的方式来写javascript。</p>
+
+<p>简单的说， 就是你采用coffeescript的写法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Assignment:</span>
+</span><span class='line'><span class="n">number</span>   <span class="o">=</span> <span class="mi">42</span>
+</span><span class='line'><span class="n">opposite</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Conditions:</span>
+</span><span class='line'><span class="n">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span> <span class="k">if</span> <span class="n">opposite</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Functions:</span>
+</span><span class='line'><span class="n">square</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>coffeescript的工具帮助把上面的代码编译成js：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">opposite</span><span class="p">,</span> <span class="nx">square</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">number</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">opposite</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">opposite</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>具体的语法还是去看<a href="http://coffeescript.org/">官方网站</a>， 这里我就不多说了。</p>
+
+<h2>优点和缺点</h2>
+
+<p>它解决的问题主要是：
+&ndash; javascript语言本身是模仿java的语法， 带有很多冗余， coffeescript借鉴了其他一些现代语言的语法， 让代码变得更简洁清晰。
+&ndash; javascript本身有设计缺陷， 比如全局变量的问题， coffeescript自动把变量变成局部， 减少开发错误。
+&ndash; javascript本身缺少一些重要的特性， 比如类机制， cofeescript提供这样的机制。</p>
+
+<p>写完coffeescript， 可以通过它提供的一个工具， 转换成javascript， 而转换出来的javascript和coffeescript基本上是一一对应的，
+语法也很简单， 会javascript的人看懂不难。</p>
+
+<p>总体上面来说， 使用coffeescript带来的好处是： 增加生产力， 减少代码缺陷， 增加代码的可读性，
+付出的代价是需要建立一整套的编译机制， 以及开发者需要熟悉coffeescript这门语言， 以及项目必须依赖coffeescript。</p>
+
+<h2>结论</h2>
+
+<p>针对coffeescript的使用， 赞同和反对者都有， 具体的意见：</p>
+
+<p>赞同者的意见比较好理解。 因为coffeescript带来的好处很多（上面列出来的）， 付出的代价也没有多少。
+甚至哪天你不想用了， 也可以直接把它丢掉， 编译出来的javascript也是可以继续维护的。</p>
+
+<p>反对者的意见基本上是从项目的角度来考虑，
+一个是写javascript不只是程序员， 可能是设计师， 需要让所有人都学会coffeescript， 而这个是有成本的。
+还有就是项目代码一致性， 原先javascript的项目， 如果加上了coffeescript的代码， 就会比较混乱。
+以及有人并不喜欢coffeescript里面的一些实现， 比如类机制。</p>
+
+<p>我个人倾向使用cofeescript， 现在我基本不直接写javascript了。
+反对的意见我觉得对于普通的开发者来说不重要，
+而它的优点是如此地显著， 以至于我会推荐所有的javascript开发者去使用它。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1318,346 +1449,6 @@ nginx负责端口映射， 从80端口映射到本地unix socket,
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pjax/">Pjax是什么以及为什么推荐大家用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-19T16:21:04+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
-        
-         | <a href="/blog/pjax/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://webification.com/wp-content/uploads/2011/03/pjaxascii.png" alt="image" /></p>
-
-<h2>什么是pjax?</h2>
-
-<p>现在很多网站(<a href="https://twitter.com/">facebook</a>,
-<a href="https://twitter.com/">twitter</a>)都支持这样的一种浏览方式，
-当你点击一个站内的链接的时候， 不是做页面跳转， 而是只是站内页面刷新。
-这样的用户体验， 比起整个页面都闪一下来说， 好很多。</p>
-
-<p>其中有一个很重要的组成部分， 这些网站的ajax刷新是支持浏览器历史的，
-刷新页面的同时， 浏览器地址栏位上面的地址也是会更改，
-用浏览器的回退功能也能够回退到上一个页面。</p>
-
-<p>那么如果我们想要实现这样的功能， 我们如何做呢？</p>
-
-<p>我发现pjax提供了一个脚本支持这样的功能。</p>
-
-<p>pjax项目地址在
-<a href="https://github.com/defunkt/jquery-pjax">https://github.com/defunkt/jquery-pjax</a>
-。 实际的效果见： <a href="http://pjax.heroku.com">http://pjax.heroku.com</a>/
-没有勾选pjax的时候， 点击链接是跳转的。 勾选了之后，
-链接都是变成了ajax刷新。</p>
-
-<h2>为什么要用pjax?</h2>
-
-<p>pjax有好几个好处：</p>
-
-<ul>
-<li><p>用户体验提升。</p>
-
-<p>页面跳转的时候人眼需要对整个页面作重新识别， 刷新部分页面的时候，
-只需要重新识别其中一块区域。自从我在自己的网站
-<a href="http://gurudigger.com/">GuruDigger</a> 上面采用了pjax技术后，
-不由觉得访问其他只有页面跳转的网站难受了许多。 同时，
-由于刷新部分页面的时候提供了一个loading的提示，
-以及在刷新的时候旧页面还是显示在浏览器中，
-用户能够容忍更长的页面加载时间。</p></li>
-<li><p>极大地减少带宽消耗和服务器消耗。</p>
-
-<p>由于只是刷新部分页面， 大部分的请求（css/js）都不会重新获取，
-网站带有用户登录信息的外框部分都不需要重新生成了。
-虽然我没有具体统计这部分的消耗， 我估计至少有40%以上的请求，
-30%以上的服务器消耗被节省了。</p></li>
-</ul>
-
-
-<p>坏处我觉得也有：</p>
-
-<ul>
-<li><p>IE6等历史浏览器的支持</p>
-
-<p>虽然我没有实际测试， 但是由于pjax利用到了新的标准，
-旧的浏览器兼容会有问题。 不过pjax本身支持fallback，
-当发现浏览器不支持该功能的时候， 会回到原始的页面跳转上面去。</p></li>
-<li><p>复杂的服务器端支持</p>
-
-<p>服务器端需要根据过来的请求， 判断是作全页面渲染还是部分页面渲染，
-相对来说系统复杂度增大了。 不过对于设计良好的服务器代码，
-支持这样的功能不会有太大的问题。</p></li>
-</ul>
-
-
-<p>综合起来， 由于用户体验和资源利用率的提升， 坏处是可以完全得到弥补的。
-<strong>我强烈推荐大家使用。</strong></p>
-
-<h2>如何使用pjax?</h2>
-
-<p>直接看 <a href="https://github.com/defunkt/jquery-pjax">官方文档</a> 就可以了。</p>
-
-<p>我觉得做技术的人要养成看一手的技术资料的习惯。</p>
-
-<p>有一个rails针对pjax的 <a href="https://github.com/rails/pjax_rails">gem插件</a>
-可以直接使用。 也有
-<a href="https://github.com/jacobian/django-pjax">django的支持</a> 。</p>
-
-<h2>pjax的原理</h2>
-
-<p>为了能够处理问题， 我们需要能够理解pjax的运作方式。
-pjax的代码只有一个文件：
-<a href="https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js">https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js</a></p>
-
-<p>如果有能力， 可以自己去看一遍。 我这里解释一下原理。</p>
-
-<p>首先， 我们在html里面指定， 需要做pjax的链接内容是哪些，
-以及点击之后需要更新的部分（放在data-pjax属性里面）:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a[data-pjax]&#39;</span><span class="p">).</span><span class="nx">pjax</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当加载了pjax脚本之后， 它会拦截这些链接的事件， 然后包装成一个ajax请求，
-发送给服务器。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click.pjax&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
-</span><span class='line'>    <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">})</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">...</span>
-</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">pjax</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">...</span>
-</span><span class='line'>  <span class="nx">pjax</span><span class="p">.</span><span class="nx">xhr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这个请求带有X-PJAX的HEADER标识， 服务器在收到这样的请求的时候，
-就知道只需要渲染部分页面返回就可以了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX-Container&#39;</span><span class="p">,</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>pjax接受到返回的请求之后， 更新data-pjax指定的区域，
-同时也会更新浏览器的地址。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">extractContainer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">...</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span>
-</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">contents</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>为了能够支持浏览器的后退， 利用到了history的api， 记录下来对应的信息，</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">id</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="nx">uniqueId</span><span class="p">(),</span>
-</span><span class='line'>  <span class="nx">url</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">container</span><span class="o">:</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">fragment</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">timeout</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">timeout</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">push</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span><span class="p">(</span><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当浏览器后退的时候， 拦截事件， 根据记录的历史信息， 产生一个新的ajax请求。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;popstate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">state</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">state</span> <span class="o">&amp;&amp;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="p">...</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">container</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">push</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">fragment</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">timeout</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">timeout</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">scrollTo</span><span class="o">:</span> <span class="kc">false</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">contents</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// pjax event is deprecated</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
-</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
-</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
-</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;start.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
-</span><span class='line'>        <span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">state</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:end&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
-</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
-</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;end.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
-</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="p">...</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>为了支持fallback， 一个是在加载的时候判断浏览器是否支持history push state
-API：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Is pjax supported by this browser?</span>
-</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">support</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span>
-</span><span class='line'>  <span class="c1">// pushState isn&#39;t reliable on iOS until 5.</span>
-</span><span class='line'>  <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>另一个是当发现请求一段时间没有回复的时候（可以设置参数timeout），
-直接做页面跳转。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">options</span><span class="p">.</span><span class="nx">beforeSend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">timeoutTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;pjax:timeout&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">]))</span>
-</span><span class='line'>        <span class="nx">xhr</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">},</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// Clear timeout setting so jquerys internal timeout isn&#39;t invoked</span>
-</span><span class='line'>    <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">0</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>结论</h2>
-
-<p>既然都看到这里了， 你为什么不去实际使用一下pjax呢？ 有那么多好处，
-我觉得几乎所有网站都应该采用pjax。 赶紧用起来吧！</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1675,6 +1466,10 @@ API：</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/password-authentication-is-bad/">比密码登录更好的权限验证方式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/motobike/">考虑摩托车</a>
       </li>
     
@@ -1688,10 +1483,6 @@ API：</p>
     
       <li class="post">
         <a href="/blog/install-kdeneon/">在新笔记本上安装Kdeneon</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/link-domain-name-to-local-pc/">研究如何给本地机器绑定域名</a>
       </li>
     
   </ul>
