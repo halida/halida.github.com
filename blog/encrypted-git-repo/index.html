@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>utf8介绍 - 网络寻租</title>
+  <title>加密git远端版本库 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下: 什么是UCS? 我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set, 它是关于所有字符编码的标准. 简单地说, &hellip;">
+  <meta name="description" content="我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。 那么解决办法就是： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/utf8/">
+  <link rel="canonical" href="http://halida.github.com/blog/encrypted-git-repo/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Utf8介绍</h1>
+      <h1 class="entry-title">加密git远端版本库</h1>
     
     
       <p class="meta">
@@ -98,7 +99,7 @@
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2017-06-08T10:39:36+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2017</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,52 +108,24 @@
   </header>
 
 
-<div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
+<div class="entry-content"><p>我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。</p>
 
-<h2>什么是UCS?</h2>
+<p>那么解决办法就是：本地git版本库是解密的，在上传过程中内容全部加密，密钥保存在本地，同时密钥可以分享给其他开发者。</p>
 
-<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set,</p>
+<p>考虑了几个解决方案：</p>
 
-<p>它是关于所有字符编码的标准. 简单地说,
-为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
-每个字符都指代单独的一个数字做标识.</p>
+<p><a href="https://github.com/AGWA/git-crypt">git-crypt</a>：可以加密部分文件，原理是加上了加密的fiter和diff，
+但是官方说只适合加密部分文件，而不适合全版本库加密。部分文件加密很容易造成信息泄漏，一定要全版本库加密才适合。</p>
 
-<h2>什么是UTF-8?</h2>
+<p>串联sshfs和远程服务器加密文件系统encfs：首先用sshfs加载远端文件系统，然后用encfs创建加密文件系统。
+我估计无法解决多人同时push情况下的竞争条件，并且encfs有安全漏洞，使用上push/pull之前需要加载两层文件系统，不是很方便。</p>
 
-<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
-所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
-方便解析和除错做了优化. 具体表示方式如下:</p>
+<p><a href="https://github.com/spwhitton/git-remote-gcrypt">git-remote-gcrypt</a>用gpg进行远端加密。
+比较符合我预期的模式，但是用gpg不是特别方便协作。但是别的方法走不通，只有这个方法可用。</p>
 
-<ul>
-<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
-<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
-第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
-<li>以此类推&hellip;</li>
-</ul>
-
-
-<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
-
-<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
-U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
-U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
-U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-</code></pre>
-
-<p>同时, 长的表示方式不能涵盖短的表示方式,
-所以下面的范围是错误的(可以快速排除错误):</p>
-
-<pre><code>1100000x (10xxxxxx)
-11100000 100xxxxx (10xxxxxx)
-11110000 1000xxxx (10xxxxxx 10xxxxxx)
-11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
-11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
-</code></pre>
-
-<p>我们来看具体的例子(python代码):</p>
+<h2>使用方法</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -175,37 +148,63 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
-</span><span class='line'><span class="err">©</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 安装git-remote-gcrypt和gnupg</span>
+</span><span class='line'>sudo apt-get install git-remote-gcrypt gnupg
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
+</span><span class='line'><span class="c"># 创建一个gpg的key，需要设置用户名，邮箱，描述等，不要设置过期时间</span>
+</span><span class='line'>gpg --gen-key
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
+</span><span class='line'><span class="c"># 记录一下生成的key的ID，比如2048R/A0F0B575里面的A0F0B575，2048代表加密轮数，越多越不容易破解</span>
+</span><span class='line'>gpg --list-keys
 </span><span class='line'>
-</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
-</span><span class='line'><span class="err">≠</span>
+</span><span class='line'><span class="c"># 生成一个测试版本库</span>
+</span><span class='line'>mkdir test1 <span class="o">&amp;&amp;</span> <span class="nb">cd </span>test1
+</span><span class='line'>git init .
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;test&quot;</span> &gt; a.txt
+</span><span class='line'>git add . <span class="o">&amp;&amp;</span> git ci -m <span class="s2">&quot;update&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
-</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
-</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
+</span><span class='line'><span class="c"># 在你的github上面创建一个project，比如：https://github.com/halida/ttt</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 配置远端加密版本库</span>
+</span><span class='line'>git remote add cryptremote gcrypt::git@github.com:halida/ttt.git
+</span><span class='line'><span class="c"># 最好指定用哪个key加密，这样可以共享这个key给其他人用</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span><span class='line'><span class="c"># push到远端</span>
+</span><span class='line'>git push cryptremote master
+</span><span class='line'><span class="c"># 访问远端版本库，看看文件内容，和commit里面的信息，是不是都是加密的？</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>结论</h2>
+<p>如何分享给其他人</p>
 
-<p>现在还没有什么心得, 总之, 了解了上面的概念,
-才能处理好平时遇到的字符编码问题.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 导出key</span>
+</span><span class='line'>gpg --export-secret-key -a <span class="s2">&quot;share@share.com&quot;</span> &gt; secretkey.asc
+</span><span class='line'><span class="c"># 把secretkey.asc分享给其他人，拷贝的时候记得先压缩加密一下再发送，更安全</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 别人电脑里面导入</span>
+</span><span class='line'>gpg --import secretkey.asc
+</span><span class='line'><span class="c"># 下载代码</span>
+</span><span class='line'>git clone gcrypt::git@github.com:halida/ttt.git test2
+</span><span class='line'><span class="c"># 也要指定一下用什么key加密</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>参考资料: &ndash;
-<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
+
+<p>用这种方法，可以用git管理一些私密又需要协作的信息（比如服务器配置），
+也可以把github当作私密的版本控制系统来用（commit的消息还是明文的）。</p>
 </div>
 
 
@@ -228,7 +227,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
   
 
 
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
+<time datetime="2017-06-08T10:39:36+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2017</time>
       
 
 
@@ -236,7 +235,7 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/utf8/" data-via="" data-counturl="http://halida.github.com/blog/utf8/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/encrypted-git-repo/" data-via="" data-counturl="http://halida.github.com/blog/encrypted-git-repo/" >Tweet</a>
   
   
   
@@ -245,10 +244,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/how-to-learn-python/" title="Previous Post: 如何学习python">&laquo; 如何学习python</a>
+        <a class="basic-alignment left" href="/blog/password-authentication-is-bad/" title="Previous Post: 比密码登录更好的权限验证方式">&laquo; 比密码登录更好的权限验证方式</a>
       
-      
-        <a class="basic-alignment right" href="/blog/gmail-cannot-use/" title="Next Post: gmail不能用了">gmail不能用了 &raquo;</a>
       
     </p>
   </footer>
@@ -344,8 +341,8 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/utf8/';
-        var disqus_url = 'http://halida.github.com/blog/utf8/';
+        var disqus_identifier = 'http://halida.github.com/blog/encrypted-git-repo/';
+        var disqus_url = 'http://halida.github.com/blog/encrypted-git-repo/';
         var disqus_script = 'embed.js';
       
     (function () {
