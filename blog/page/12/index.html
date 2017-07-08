@@ -9,8 +9,12 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天我试着安装了一下gitlab，它是一个开源的类似github的系统，
-利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。 安装过程 按照文档进行，我中间走了一些弯路： 安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby， &hellip;">
+  <meta name="description" content="squeel是Rails下面一个处理复杂sql查询的框架，
+具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。 为什么要用它？ 平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如： 1
+2
+3
+4
+Person.where( &#39;(name LIKE &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +83,117 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/squeel/">Squeel介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-02T11:44:00+08:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2013</time>
+        
+         | <a href="/blog/squeel/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/yxqRwG5.jpg"></p>
+
+<p><a href="https://github.com/ernie/squeel">squeel</a>是Rails下面一个处理复杂sql查询的框架，
+具体用法可以点击前面的链接查看，这里整理一下我对这个东西的评估。</p>
+
+<h2>为什么要用它？</h2>
+
+<p>平时我们在rails里面，需要写复杂查询的时候，一般都是直接写sql，比如：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;(name LIKE ? AND salary &lt; ?) OR (name LIKE ? AND salary &gt; ?)&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;Ernie%&#39;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">,</span> <span class="mi">100000</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样的写法不是很好，因为：</p>
+
+<ul>
+<li>里面的sql是只针对一个数据库的，不能做到数据库的切换。</li>
+<li>里面的sql在ruby里面是字符串，一个是可读性差，一个是不能进行语法上面的检查，只能通过单元测试来保证。</li>
+<li>写这样语句的时候，需要切换成sql的思路，写完之后再切换回来。</li>
+<li>遇到复杂sql的时候，不容易拆分问题，只能通过大段长度的sql来处理。</li>
+</ul>
+
+
+<p>采用squeel，就可以变成这些的写法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Person</span><span class="o">.</span><span class="n">where</span><span class="p">{(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Ernie%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="mi">50000</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nb">name</span> <span class="o">=~</span> <span class="s1">&#39;Joe%&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">salary</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">)}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>原理</h2>
+
+<p>squeel使用的方法是传一个block给where，然后这个block会被修改作用域，在这个作用域里面，
+各种操作符和变量都会被转义，变成Node对象，然后形成一个抽象语法树，最后通过底层的<a href="https://github.com/rails/arel">arel</a>变成真正执行的sql。</p>
+
+<p>具体代码比较重要的是<code>dsl.rb</code>里面的<code>eval</code>，<code>method_missing</code>，<code>stub.rb</code>，<code>visitor.rb</code>。</p>
+
+<p>我思考了一下，这种方法应该是最简洁和干净的，语法是采用ruby的方式，魔法的部分都被包裹在block里面，和现有的功能无缝衔接。</p>
+
+<h2>使用心得</h2>
+
+<p>如果明白原理，使用它没有什么太多的问题，需要注意的是，
+一定要看一遍log里面生成的sql，确认是自己期望的结构。</p>
+
+<p>还有就是，squeel和原有系统切割得比较好，只有一点需要注意：
+针对<code>User.where(name: :aaa)</code>里面把symbol当做value的状况，squeel会转变成：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">users</span> <span class="k">where</span> <span class="n">users</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">users</span><span class="p">.</span><span class="n">aaa</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一个特性，如果你不期望这样的话，需要改成<code>where(name: :aaa.to_s)</code>。也可以关闭，具体看squeel的文档。</p>
+
+<p>在我用的过程中，遇到几个问题：</p>
+
+<ul>
+<li>我直接用<code>or</code>和<code>and</code>，结果发现按照文档应该是用<code>|</code>和<code>&amp;</code>，使用任何东西之前还是需要认真看一遍文档。</li>
+<li>复杂查询条件下面，如果用到了<code>|</code>和<code>&amp;</code>，为了保证是按照自己期望的优先级分割，需要用括号来明确界定，比如<code>where{(name == 'aaa' | name == 'bbb') &amp; (level == 1)}</code></li>
+<li>上面提到的symbol当做value的bug。</li>
+<li>因为使用了作用域切换，对象属性等就不能访问了，比如<code>where{name == @user.name}</code>，需要改成<code>where{name == my{@user.name}}</code></li>
+</ul>
+
+
+<h2>结论</h2>
+
+<p>考虑一下是否需要采用squeel：它的学习成本应该只需要一个小时，性能问题可以通过cache来解决，可以无缝衔接，收益是更清晰，更一致，更好用的代码。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1217,324 +1332,6 @@ cp wp-config-sample.php wp-config.php
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/god-as-service/">God as Service</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true"></time>
-        
-         | <a href="/blog/god-as-service/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>&ndash;<em>&ndash; coding: utf-8 &ndash;</em>&ndash;</h1>
-
-<hr />
-
-<p>layout: post
-title: &ldquo;进程监控遇到的麻烦事&rdquo;
-date: 2013-01-30 12:58
-comments: true</p>
-
-<h2>categories:</h2>
-
-<p>此为技术死磕贴，非技术人士请跳过。</p>
-
-<p>明天回家，为了能够让我在家里面连到公司的网络，以及让公司留下来的人能够使用到翻墙服务，我需要把几个脚本监控起来。
-这样不管这些脚本跑挂了，还是机器重启了，还是网络断掉又重新连起来了，这些进程都能够在状况恢复的时候立刻起来。</p>
-
-<p>需要跑的脚本其实很简单，ssh翻墙，以及ssh链接到服务器上面一个端口用作外网访问内网。都用一行脚本搞定：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>autossh -M 2121 -D 10.78.78.105:7070 linjunhalida.com -N -p 2201  -zZ OOO
-</span><span class='line'>autossh -M 2132 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>为了能够让ssh自动重连，我采用了<a href="http://www.harding.motd.ca/autossh/">autossh</a>。
-因为我的ssh是<a href="http://blog.linjunhalida.com/blog/obfuscated-openssh/">打过混淆包头补丁</a>的，
-加了一个参数(-zZ)，autossh我也修改了一下源码支持这个参数。</p>
-
-<p>我的服务器是ubuntu，我还需要用一个工具来监控autossh，需要能够机器启动的时候执行它，以及它挂掉的时候自动起来。</p>
-
-<p>然后请教了各个网站的友邻，这里列一下大家给出来的办法：</p>
-
-<ul>
-<li>/etc/rc.local</li>
-<li>monit</li>
-<li>crontab</li>
-<li>supervisor</li>
-<li>/etc/init.d</li>
-<li>anacron</li>
-</ul>
-
-
-<p>最后我考量到学习成本，还是采用了<a href="http://godrb.com/">god</a>加/etc/init.d启动脚本的解决方案。</p>
-
-<p>god脚本：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">god_path</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">God</span><span class="o">.</span><span class="n">watch</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;gfw&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="s1">&#39;halida&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s2">&quot;/home/halida/workspace/sources/autossh&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;AUTOSSH_PATH&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;/home/halida/Dropbox/sync/bin/ssh&quot;</span><span class="p">}</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;./autossh -M 2121 -D 10.78.78.105:7070 linjunhalida.com -N -p 2201  -zZ OOO&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span> <span class="n">god_path</span><span class="p">,</span> <span class="s2">&quot;log/gfw.log&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">keepalive</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">God</span><span class="o">.</span><span class="n">watch</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bypass&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="s1">&#39;halida&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s2">&quot;/home/halida/workspace/sources/autossh&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;AUTOSSH_PATH&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;/home/halida/Dropbox/sync/bin/ssh&quot;</span><span class="p">}</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;./autossh -M 2132 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span> <span class="n">god_path</span><span class="p">,</span> <span class="s2">&quot;log/bypass.log&quot;</span>
-</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">keepalive</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当前用户跑起来没有问题，但是god本身是需要设置成service跑起来的。
-还好我找到了别人分享的把god当做service的办法，
-丢到/etc/init.d里面的脚本如下(拷贝自<a href="https://gist.github.com/1640121">这里</a>)：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">### BEGIN INIT INFO</span>
-</span><span class='line'><span class="c"># Provides:             god</span>
-</span><span class='line'><span class="c"># Required-Start:       $all</span>
-</span><span class='line'><span class="c"># Required-Stop:        $all</span>
-</span><span class='line'><span class="c"># Default-Start:        2 3 4 5</span>
-</span><span class='line'><span class="c"># Default-Stop:         0 1 6</span>
-</span><span class='line'><span class="c"># Short-Description:    God</span>
-</span><span class='line'><span class="c">### END INIT INFO</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">NAME</span><span class="o">=</span>god
-</span><span class='line'><span class="nv">DESC</span><span class="o">=</span>god
-</span><span class='line'><span class="nv">GOD_BIN</span><span class="o">=</span>/usr/local/bin/god
-</span><span class='line'><span class="nv">UHOME</span><span class="o">=</span>/home/halida
-</span><span class='line'><span class="nv">GOD_CONFIG</span><span class="o">=</span><span class="nv">$UHOME</span>/workspace/god/god.rb
-</span><span class='line'><span class="nv">GOD_LOG</span><span class="o">=</span><span class="nv">$UHOME</span>/workspace/god/log/god.log
-</span><span class='line'><span class="nv">GOD_PID</span><span class="o">=</span>/var/run/god.pid
-</span><span class='line'>
-</span><span class='line'><span class="nb">set</span> -e
-</span><span class='line'>
-</span><span class='line'><span class="c"># Make sure the binary and the config file are present before proceeding</span>
-</span><span class='line'><span class="k">if</span> ! <span class="nb">test</span> -x <span class="nv">$GOD_BIN</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">  </span><span class="nb">echo</span> <span class="s2">&quot;Config file not found at ${GOD_BIN}&quot;</span>
-</span><span class='line'>  <span class="nb">exit </span>0
-</span><span class='line'><span class="k">fi</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Create this file and put in a variable called GOD_CONFIG, pointing to</span>
-</span><span class='line'><span class="c"># your God configuration file</span>
-</span><span class='line'><span class="k">if</span> ! <span class="nb">test</span> -f <span class="nv">$GOD_CONFIG</span>; <span class="k">then</span>
-</span><span class='line'><span class="k">  </span><span class="nb">echo</span> <span class="s2">&quot;Config file not found at ${GOD_CONFIG}&quot;</span>
-</span><span class='line'>  <span class="nb">exit </span>0
-</span><span class='line'><span class="k">fi</span>
-</span><span class='line'><span class="k"> </span>
-</span><span class='line'><span class="nv">RETVAL</span><span class="o">=</span>0
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">case</span> <span class="s2">&quot;$1&quot;</span> in
-</span><span class='line'>  start<span class="o">)</span>
-</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Starting $DESC: &quot;</span>
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> -c <span class="nv">$GOD_CONFIG</span> -l <span class="nv">$GOD_LOG</span> -P <span class="nv">$GOD_PID</span>
-</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
-</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;$NAME.&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>  stop<span class="o">)</span>
-</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Stopping $DESC: &quot;</span>
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> quit
-</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
-</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;$NAME.&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>  terminate<span class="o">)</span>
-</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Stopping $DESC and all tasks: &quot;</span>
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> terminate
-</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
-</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;$NAME.&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>  restart<span class="o">)</span>
-</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Restarting $DESC: &quot;</span>
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> quit
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> -c <span class="nv">$GOD_CONFIG</span> -l <span class="nv">$GOD_LOG</span> -P <span class="nv">$GOD_PID</span>
-</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
-</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;$NAME.&quot;</span>
-</span><span class='line'>    ;;
-</span><span class='line'>  status<span class="o">)</span>
-</span><span class='line'>    <span class="nv">$GOD_BIN</span> status
-</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
-</span><span class='line'>    ;;
-</span><span class='line'>  *<span class="o">)</span>
-</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;Usage: god {start|stop|terminate|restart|status}&quot;</span>
-</span><span class='line'>    <span class="nb">exit </span>1
-</span><span class='line'>    ;;
-</span><span class='line'><span class="k">esac</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">exit</span> <span class="nv">$RETVAL</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后设置启动执行这个服务：</p>
-
-<pre><code>sudo update-rc.d god default
-</code></pre>
-
-<p>跑god的时候遇到了问题，这个时候我浪费了非常多的时间。问题在于我的god是采用rvm以及非root用户安装的。环境不对。各种报错。</p>
-
-<p>然后我各种尝试，还打算丢掉god，采用其他的方式来跑脚本，但是都可耻地失败了。</p>
-
-<p>最后第二天我想到了办法，系统安装god：</p>
-
-<pre><code>sudo gem install god
-</code></pre>
-
-<p>重启之后验证成功。</p>
-
-<h2>结论</h2>
-
-<p>最后我的解决方案就是：god as a service，监控autossh。log都丢掉god目录下面。</p>
-
-<p>总结一下经验：</p>
-
-<ul>
-<li>请教友邻可以获得很多的帮助，前提是问题描述清楚。</li>
-<li>遇到难题不要死磕，休息一下，睡一觉或者放一段时间，就会有结果。</li>
-<li>死磕了之后要总结，下次就能少死磕一点。</li>
-</ul>
-
-
-<p>以上。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/13/">&larr; Older</a>
@@ -1552,6 +1349,10 @@ comments: true</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/server-architecture-configuration-management/">服务器架构配置文件化</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/retire-some-programming-languages/">我们需要淘汰一些编程语言</a>
       </li>
     
@@ -1565,10 +1366,6 @@ comments: true</p>
     
       <li class="post">
         <a href="/blog/motobike/">考虑摩托车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/new-bag/">如何挑选背包</a>
       </li>
     
   </ul>
