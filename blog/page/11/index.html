@@ -9,9 +9,12 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我最近在调整我们网站GuruDigger的类似文章推荐功能。
-原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
-我需要采用更好的方式来处理这个问题。 整体思路 推荐文章可以用协同过滤（Collaborative Filtering）， &hellip;">
+  <meta name="description" content="问题 我们很多时候，需要在传统的关系型数据库中间实现树状结构，
+比如说部门层级图，树状留言图等。 一般来说，针对树状结构的操作有： 访问一个节点
+增加一个节点
+删除一个节点及其子项
+移动节点
+遍历一个节点及其子项 我们可以常用简单的数据结构实现，记录一个项目的父节点就可以了，比如： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +83,329 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/nested-set-model/">Nested Set Model介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T16:15:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/nested-set-model/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_07_27_tree.jpg"></p>
+
+<h2>问题</h2>
+
+<p>我们很多时候，需要在传统的关系型数据库中间实现树状结构，
+比如说部门层级图，树状留言图等。</p>
+
+<p>一般来说，针对树状结构的操作有：</p>
+
+<ul>
+<li>访问一个节点</li>
+<li>增加一个节点</li>
+<li>删除一个节点及其子项</li>
+<li>移动节点</li>
+<li>遍历一个节点及其子项</li>
+</ul>
+
+
+<p>我们可以常用简单的数据结构实现，记录一个项目的父节点就可以了，比如：</p>
+
+<pre><code>Category: id integer, parent_id: integer, content: string
+</code></pre>
+
+<p>数据就是这样：</p>
+
+<pre><code>ID  |  PARENT_ID | content
+ 0  |    null    |   ...  
+ 1  |      0     |   ...  
+ 2  |      1     |   ...  
+ 3  |    null    |   ...  
+ 4  |      2     |   ...  
+ 5  |      4     |   ...  
+</code></pre>
+
+<p>这样的数据结构下面，遍历节点及其子项的操作需要用到迭代，
+在关系型数据库中，基本上有多少层的子项，就要多少SQL查询，
+为了保证一致性，需要用存储过程来实现这样的遍历，
+一个是麻烦另外一个是也会有性能问题。
+那么有什么好的解决方案呢？</p>
+
+<h2>Nested Set Model</h2>
+
+<p>我们可以换另外一种抽象方式来表示数据，
+假设我们把树状图中的每个节点当做一个集合，父节点集合包含了所有的子节点集合，
+那么我们可以把树转换成一个集合图：</p>
+
+<p><img src="/images/posts/2013_07_27_set.jpg"></p>
+
+<p>然后，我们把所有的集合都当做一个数值的范围，父节点集合范围包含了所有子节点集合的范围，
+那么集合图就会变成这样：</p>
+
+<p><img src="/images/posts/2013_07_27_set_number.jpg"></p>
+
+<p>这样一个节点可以用范围的两个数值来表示，比如：</p>
+
+<pre><code>ID  |  PARENT_ID |  lft  |  rgt  |  content
+ 0  |    null    |   1   |  10   |  ...  
+ 1  |      0     |   2   |   9   |  ...  
+ 2  |      1     |   3   |   8   |  ...  
+ 3  |    null    |  11   |  12   |  ...  
+ 4  |      2     |   4   |   7   |  ...  
+ 5  |      4     |   5   |   6   |  ...  
+</code></pre>
+
+<p>其中，lft和rgt分别代表范围的左边距和右边距。</p>
+
+<p>这样，我们可以通过这样的SQL来查询一个项目的所有子项：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">child</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span>
+</span><span class='line'>    <span class="n">categories</span> <span class="k">as</span> <span class="n">child</span><span class="p">,</span> <span class="n">categories</span> <span class="k">as</span> <span class="n">parent</span>
+</span><span class='line'><span class="k">where</span>
+</span><span class='line'>    <span class="n">child</span><span class="p">.</span><span class="n">lft</span> <span class="k">between</span> <span class="n">parent</span><span class="p">.</span><span class="n">lft</span> <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">rft</span>
+</span><span class='line'>    <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一行SQL就可以解决问题，非常方便。不过带来的代价是添加和移动上面的复杂度。</p>
+
+<h2>具体实现</h2>
+
+<p>首先是如何初始化一棵树。做法很简单，
+深度优先遍历这棵树，然后按顺序赋值，维护一个当前最大顺序即可。
+ruby代码实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">init_tree</span> <span class="n">root_nodes</span>
+</span><span class='line'>  <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">set_value</span> <span class="n">node</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">lft</span> <span class="o">=</span> <span class="n">count</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">child</span> <span class="k">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span>
+</span><span class='line'>      <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">set_value</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">rgt</span> <span class="o">=</span> <span class="n">count</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="n">root_node</span> <span class="k">in</span> <span class="n">root_nodes</span>
+</span><span class='line'>    <span class="n">set_value</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>添加一个节点，把父节点尾部rgt，以及之后的所有位置统统移后2位即可，
+用一行SQL就可以实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">update</span> <span class="n">categories</span> <span class="k">set</span>
+</span><span class='line'>    <span class="n">rgt</span> <span class="o">=</span> <span class="n">rgt</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">lft</span> <span class="o">=</span> <span class="n">lft</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">where</span>
+</span><span class='line'>    <span class="n">lft</span> <span class="o">&gt;</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>移动一个节点比较复杂，因为要把范围内的子项也一起移动走。
+操作基本上就是把节点范围内的所有项目（包括自己）移动到目标位置，
+然后把目标位置和当前位置之间的所有项目也更新到应该对应的位置上面。
+具体实现比较复杂，你可以去看<a href="https://github.com/collectiveidea/awesome_nested_set/blob/master/lib/awesome_nested_set/move.rb">awesome_nested_set的具体实现</a>。</p>
+
+<p>其他的操作非常简单就不给出示例了。</p>
+
+<h2>结论</h2>
+
+<p>采用nested set model可以很方便地实现树状结构，
+具有很好的查询效率。不过在添加项目和移动项目上面有比较大的代价。
+如果项目非常多，操作可能就不是很经济了。
+我在想，应该有好的算法能够让每次更新的项目变得最少，
+不知道大家是否知道有这样的算法？</p>
+
+<h2>使用到的工具和库</h2>
+
+<p>Rails下面有一个Gem叫<a href="https://github.com/collectiveidea/awesome_nested_set">awesome_nested_set</a>来实现这种结构，
+利用它来实现的一个树状评论Gem
+<a href="https://github.com/elight/acts_as_commentable_with_threading">acts_as_commentable_with_threading</a>
+。如果你有兴趣，可以去看看具体的源码。</p>
+
+<h2>引用材料</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Nested_set_model">wikipedia</a></li>
+<li><a href="http://threebit.net/tutorials/nestedset/tutorial1.html">tutorial</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/website-support-retina-device/">如何支持视网膜屏幕</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T15:42:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+        
+         | <a href="/blog/website-support-retina-device/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近网站版本更新，过程中发现有需要针对视网膜屏幕做优化，
+不然普通的图片在rmbp或者new iPad上面看起来一片模糊，体验很不好。
+调研了一下，发现有无数种方法，这里整理一下，欢迎大家拍砖。</p>
+
+<h2>css background解法</h2>
+
+<p>根据<a href="http://cocoathings.blogspot.com/2013/02/safari-and-retina-images.html">这里的方法</a>，在CSS里面写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.aClass</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">background</span><span class="o">:</span> <span class="sx">url(image.png)</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">background</span><span class="o">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">set</span><span class="p">(</span><span class="sx">url(image.png)</span> <span class="m">1</span><span class="n">x</span><span class="o">,</span> <span class="sx">url(image_2x.png)</span> <span class="m">2</span><span class="n">x</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样需要把所有图片都放到css里面，比较复杂，需要设计一个预编译流程。</p>
+
+<h2>gem js解法</h2>
+
+<p>如果你用rails，这里有一个针对的gem可以用：<a href="https://github.com/jhnvz/retina_rails">retina_rails</a>。</p>
+
+<p>它的方法是跑一个<a href="https://github.com/imulus/retinajs">js脚本</a>，检查是否是retina设备，
+如果是的话，搜索所有页面上的img，然后替换成2倍分辨率的图片文件（在原先图片文件名后面加上@2x，当然也有办法自己设置）。</p>
+
+<p>它首先需要页面加载好低分辨率的图片，然后计算大小并且限定，然后替换成高分辨率的图片。
+页面的图片会首先模糊，然后变成清晰的，并且它依赖到了js，在js加载之后才会工作，不能直接展示好一个完美的页面。</p>
+
+<h1>rewrite解法</h1>
+
+<p>在<a href="http://stackoverflow.com/a/16848459/73048">stackoverflow上面</a>看到的一个有趣的解法，
+用js判断是否是retina设备，然后在cookie里面加上是否是retina的标示，服务器端发现如果有这个参数的话，返回对应大小的图片。</p>
+
+<p>这种解法很巧妙，不过需要服务器端支持，并且文件规则要统一，对于rails这种文件名带有tag的部署方式就不太好支持。</p>
+
+<h2>svg图片解法</h2>
+
+<p>图片全部都用svg，然后就没有模糊的问题了。不过有些浏览器不支持svg，以及不是所有图片都可以做成svg的。</p>
+
+<h2>缩小大图片解法</h2>
+
+<p>直接用一个2倍长宽的大图片，然后设置好大小成小尺寸。实现起来最简单，
+但是问题是比较消耗带宽，以及大图片缩小的方式是浏览器的缩放算法，并不是点阵完美的。</p>
+
+<h2>其他网站用到的方法</h2>
+
+<p>上面是我看到的一些解决方法，然后我也去看了一下一些著名网站是如何解决这个问题的：</p>
+
+<ul>
+<li><a href="http://apple.com/">apple</a> 图片地址用js获得然后显示，然后一部分图片没有针对retina优化。</li>
+<li><a href="http://v2ex.com/">v2ex</a> 直接用2倍图片。</li>
+<li><a href="http://ruby-china.org/">ruby-china</a> 也直接用2倍图片。</li>
+<li><a href="https://github.com/">github</a> 图片全部放在css里面，好狠！</li>
+<li><a href="http://twitter.com/">twitter</a> 没有针对retina优化，图片是模糊的。</li>
+<li><a href="http://dribbble.com/">dribbble</a> 也是用大图。</li>
+<li><a href="http://google.com/">google</a> 也是放在css里面。</li>
+</ul>
+
+
+<h2>我的解决方案</h2>
+
+<p>考虑到实现方式，带宽消耗等问题，我首先采用gem的方法，同时做出来了一些简单的修改。
+img加上data-at2x，里面放置了retina图片的地址，然后js只针对所有设置这个属性的图片进行修改。</p>
+
+<p>针对会造成图片模糊然后变清晰的状况，我考虑直接返回image是retina的版本。
+第一次可以用这个js插件，然后设置cookie，然后服务器返回retina图片的版本。</p>
+
+<p>考虑了上面这个复杂的解决方案，我还是放弃了，还是直接用2x图片吧，最简单。其实图片也不会大多少，
+因为大多数图片还是区块比较多的，压缩算法已经很好地处理了这种状况了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1039,148 +1365,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/indie-games/">关于独立游戏</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-08T08:54:00+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2013</time>
-        
-         | <a href="/blog/indie-games/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/etBZ9lM.jpg"></p>
-
-<p>我是一个游戏爱好者。从初中起我就在玩电脑游戏，一直持续到现在。初中到大学阶段我一直是以PC游戏为主，最近几年我渐渐转移到了独立游戏上面。</p>
-
-<h2>为什么我喜欢独立游戏</h2>
-
-<ul>
-<li>我喜欢去接触各种新的领域，厌烦没有新意的东西。在独立游戏领域，会有更多人尝试新的游戏性，设计性的东西出来。</li>
-<li>独立游戏一般不会是大制作，游戏占用的硬盘空间不会很大，容易下载容易保存。</li>
-<li>独立游戏价格一般不会很高，我能够承受得起，并且能够购买相当数量的游戏。</li>
-</ul>
-
-
-<h2>我玩的一些独立游戏</h2>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Roguelike">roguelike</a> 其实是一类游戏，我玩过很久的有：<a href="http://www.adom.de">ADOM</a>，<a href="http://www.nethack.org/">nethack</a>，<a href="http://crawl.develz.org/wordpress/">stonesoup</a></li>
-<li><a href="http://blog.linjunhalida.com/blog/cortex-command/">Cortex Command</a></li>
-<li><a href="http://blog.linjunhalida.com/blog/minecraft/">minecraft</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/mosh/">Mosh介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-05T15:06:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time>
-        
-         | <a href="/blog/mosh/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://mosh.mit.edu/mosh.png" alt="image" /></p>
-
-<p>这年头做技术没有人不用ssh的吧，然后ssh使用起来还是很不爽的，
-远程服务器慢的时候反应慢，ssh有的时候断掉要重新连。。。</p>
-
-<p><a href="http://mosh.mit.edu/">mosh</a>是ssh的替代方案，用来解决慢速网络和移动网络的问题，具体上来说：</p>
-
-<ul>
-<li>连上一台服务器后，不管你切换什么网络，或者网络断掉，或者机器休眠又醒过来，连接都能够一直保持。</li>
-<li>缓存输入输出，当连接慢的时候，屏幕上面显示的响应还是很快。</li>
-</ul>
-
-
-<p>我<strong>强烈</strong>建议大家都去用它。</p>
-
-<h2>原理</h2>
-
-<p>mosh它实现了一套自有的状态同步协议SSP：</p>
-
-<ul>
-<li>底层采用UDP，client和网络解耦合，</li>
-<li>内部client和server都维护到屏幕和输入的状态，根据状态发送diff/patch。</li>
-<li>再在上层加上一个预测模块，根据用户输入先在本地显示预期的输出结果，收到远程服务器返回的屏幕数据，再更新。</li>
-</ul>
-
-
-<p>作者同时也提出，现在的应用往往没有针对移动作优化，如果一个用户切换了网络（比如正在移动中），
-那么tcp连接断掉会出现各种问题，在这种场景下，SSP这种解决方案会很有用处。</p>
-
-<p>建议大家可以看看mosh首页的视频，作者介绍得很充分。</p>
-
-<h2>使用</h2>
-
-<p>大家去看<a href="http://mosh.mit.edu/">首页的介绍</a>就好。这里整理一些我觉得需要提到的：</p>
-
-<p>mosh首先通过ssh连进去，然后开启一个mosh server，端口随机在60000:61000，如果你开了防火墙需要允许这个范围。</p>
-
-<p>指定ssh参数，比如你的ssh端口不是22：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mosh <span class="nv">$server</span> --ssh<span class="o">=</span><span class="s1">&#39;ssh -p 2222&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当你在网络断开的时候，关掉了mosh的进程，远程服务器上面对应的server进程会一直存在，
-这个时候重新连上去的时候，就会提示你。这个时候你需要手动kill掉这个进程，
-具体见<a href="https://github.com/keithw/mosh/issues/403">issue报告</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -1198,7 +1382,15 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/server-architecture-configuration-management/">服务器架构配置文件化</a>
+        <a href="/blog/understand-computer-science-in-one-day-fundamental/">一天弄懂计算机科学之体篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/understand-computer-science-in-one-day/">一天弄懂计算机科学</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/server-architecture-configuration-management/">如何一个人管理一堆服务器</a>
       </li>
     
       <li class="post">
@@ -1207,14 +1399,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
     
       <li class="post">
         <a href="/blog/encrypted-git-repo/">加密git远端版本库</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/password-authentication-is-bad/">比密码登录更好的权限验证方式</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/motobike/">考虑摩托车</a>
       </li>
     
   </ul>

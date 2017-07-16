@@ -9,10 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="&ndash;&ndash; coding: utf-8 &ndash;&ndash; layout: post
-title: &ldquo;进程监控遇到的麻烦事&rdquo;
-date: 2013-01-30 12:58
-comments: true categories: 此为技术死磕贴， &hellip;">
+  <meta name="description" content="很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。 假设： A主机（$A_IP）：我们内网需要被访问的主机。
+B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +79,188 @@ comments: true categories: 此为技术死磕贴， &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/reverse-ssh/">如何从外网访问内网主机</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T11:11:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+        
+         | <a href="/blog/reverse-ssh/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/Ay4f5YX.jpg"></p>
+
+<p>很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。</p>
+
+<p>假设：</p>
+
+<ul>
+<li>A主机（$A_IP）：我们内网需要被访问的主机。</li>
+<li>B主机（$B_IP）：有一个公网IP的主机，可以是购买的VPS。</li>
+<li>C主机（$C_IP）：需要访问A主机的电脑，比如我们随身的笔记本或者手机。</li>
+</ul>
+
+
+<p>首先我们需要把A主机的ssh链接到B主机上面：</p>
+
+<pre><code>autossh -M 2132 $B_IP -N -R 6333:localhost:22
+</code></pre>
+
+<p>我们用autossh来保证A主机的ssh一直保持连接。这个命令把A主机的ssh端口绑定到B主机的6333端口上面。</p>
+
+<p>然后我们需要把B主机的6333端口暴露到公网，工具采用的是万能的端口接口工具socat：</p>
+
+<pre><code>socat TCP-LISTEN:6335,fork TCP:localhost:6333
+</code></pre>
+
+<p>这样在公网的C主机就可以通过B主机的6335端口访问到A主机了：</p>
+
+<pre><code>ssh $B_IP -p 6335
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/i-am-a-atheist/">关于宗教信仰</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-27T11:37:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/i-am-a-atheist/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/ArJcjAP.png"></p>
+
+<p>每个有基本好奇心的人，都会在人生的某个时候，考虑人生观世界观这种问题，
+这个时候，他会去思考，去探索世界上其他人的解决方案，这个时候，他会正视宗教，
+正视信仰，正视神是否存在。</p>
+
+<p>每个人可能有不同的思考方式，有不同的探索过程，乃至不同的结论。
+结论本身可能不是那么重要，探索过程，乃至个人对这些问题的明确，
+有可能是最重要的。</p>
+
+<h2>我与宗教信仰</h2>
+
+<p>最早望向宗教信仰，在我记忆中，可能需要回溯到初中高中，那个时候的晚上，
+我在写家庭作业的同时，未免无聊，我会开启收音机，收听不知道是来自哪个角落的频道。
+有的时候，我会收到一个宗教频道，在每天晚上，有时会放一些宗教的歌曲，
+有时会朗读一本<a href="http://zh.wikipedia.org/wiki/%E5%A4%A9%E8%B7%AF%E6%AD%B7%E7%A8%8B">天路历程</a>的书。
+那个时候，我感受到宗教对心灵的抚慰，我也有尝试“和神沟通”，但是一直以来，
+并没有什么超自然的造物来回应我。</p>
+
+<p>经过了大学阶段，工作阶段，我逐渐接触了世界上面其它的宗教，佛教，伊斯兰教，
+知道了新耶稣的教派竟然有如此之多，也感受了不少的教堂活动。
+一直以来，我对于他们的理解都是感受层面的，模模糊糊始终没有彻底明白它们做的是什么，
+神是否存在？是否人有灵？是否有死后的世界？我不确定有，但是也没有确定没有。</p>
+
+<p>直到最近，我跟踪方舟子的文章之后，发现他早期写了大量批判宗教的文章，
+阅读了<a href="http://www.xys.org/fang/religion.html">这些文章</a>，
+我才脱离了这层层的迷雾，从更高层的地方看到了全貌。
+原先我以为，含有某种我不了解的神秘事务的宗教，包括基督教，包括伊斯兰教，甚至包括佛教，
+背后的神秘其实不存在。圣经中我无法理解从而感到玄秘的内容，来源于迷信，谬误，宣传目的的修改，
+并没有更高层次的含义；佛教中深不可测的智慧，很多也只是故弄玄虚。</p>
+
+<p>有的时候，从一个方向上面了解事物，你看到的是混沌复杂，搞不清状况；
+但是换了一个角度，换了一个方向，你会发现事情一下就明朗起来，复杂的东西变得简单，
+无法理解的东西变得可以理解，玄妙的东西看起来其实就那么回事。</p>
+
+<h2>为什么我不相信神？</h2>
+
+<p>是否有神这个问题，如果我们纯粹以哲学思考的角度来看，可能没有什么结论。
+但是如果我们把它当做一个科学问题来思考，我们可以很容易地得到结论：神并不存在。</p>
+
+<p>从近代开始，当人们认识到理性，不再预设神存在，而是认真地去寻找神存在的证据。
+但是直到现在，我们还是没有办法找到任何证据，能够支持一个拥有无上威能的智慧的存在。
+有人会说神不在干预人世，但是根据奥卡姆剃刀，这些的神存在与否都没有意义。</p>
+
+<p>人是不容易接受现实的，但是当正视了现实的时候，人才能获得成长。
+当正视神不存在这个现实了之后，我们可以发现，我们能够开始理解宗教了。</p>
+
+<h2>宗教的意义</h2>
+
+<p>明确了神不存在，那么我们可以把宗教当做是人的造物来理解。
+宗教故事并不代表更高存在给人类的授意，而是迷信，神话，小说的混合，
+宗教组织存在必然满足经济政治规律，宗教活动满足人们的一些社会精神文化需要。</p>
+
+<p>神不存在，宗教是人的造物，这样是解释宗教的最好的理论了。</p>
+
+<h2>结论</h2>
+
+<p>经过了这些学习和思考，我可以说我是一个理性无神论者了。
+我可以和信仰宗教的人交流，知道他或者她是什么类型的信仰者，
+我可以和任何人来进行宗教的讨论，并且提出我的观点和针对这些观点的推理，
+最重要的是，我对自己和这个世界的理解更为深入了。</p>
+
+<h2>FAQ</h2>
+
+<p>还有一些我觉得值得提一下的东西，整理成FAQ。</p>
+
+<p>不信神是一个结论，重要的是理性和批判性思考，如果这个世界真有神的话，
+思考的结论就是信神的存在。但是遵不遵从这个神的道，又是另外一回事了。</p>
+
+<p>不信神和宗教不影响欣赏宗教造物，圣诞节我会去教堂，以及有兴趣的时候也会参与礼拜活动。</p>
+
+<p>不信神并不代表没有信仰，每个人心目中都有一个“天堂”的定义和一个“地狱”的定义。
+远离地狱，走向天堂是信仰的主要组成部分。</p>
+
+<p>万物有灵其实也是错的。椅子并不会有情绪。当然你可以定义一个情绪的概念出来。</p>
+
+<p>为了融入社区而接受宗教信仰这个事情比较恶心。</p>
+
+<p>佛教其实也没有那么玄乎，不要把它想得太复杂。人总是需要有一个地方拜一拜。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1173,196 +1353,6 @@ comments: true</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/postfix/">Postfix架构初探</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-27T23:57:00+08:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
-        
-         | <a href="/blog/postfix/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
-
-<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
-我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
-在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
-根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
-
-<h2>什么是postfix</h2>
-
-<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
-postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
-
-<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
-
-<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
-
-<ul>
-<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
-<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
-</ul>
-
-
-<h2>如何配置</h2>
-
-<p>我发现<a href="https://library.linode.com/email/postfix/postfix2.9.6-dovecot2.0.19-mysql">linode的ubuntu的配置文档</a>
-很不错，采用mysql作为数据库，存储域名，邮件用户，邮件用户别名信息，然后用dovecot来作为用户和外界通讯的服务器，
-按照这个配置，可以搭建好一个可用的邮件系统。</p>
-
-<h2>邮件流程</h2>
-
-<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
-
-<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
-
-<p>外面的服务器会通过smtp发送邮件到postfix，postfix服务器会接收邮件，经过一系列的处理过程，最后保存到本地的邮件目录存放地里面。
-按照上面的设置，会保存在<code>/var/mail/%domain/%username</code>目录中。</p>
-
-<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
-
-<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
-
-<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
-
-<p><strong>如何验证用户</strong></p>
-
-<p>dovecot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
-
-<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
-
-<ul>
-<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
-<li>postfix配置目录在<code>/etc/postfix</code></li>
-<li>dovecot配置目录<code>/etc/dovecot</code></li>
-<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
-<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
-<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
-</ul>
-
-
-<h2>更进一步的需求</h2>
-
-<p>前面做的事情只是比较基本的部分，如果要成为一个可靠的生产环境，还是需要一些其他的事情：</p>
-
-<ul>
-<li>用户管理系统</li>
-<li>spam过滤</li>
-<li><a href="http://blog.linjunhalida.com/blog/reliable-email-delivery/">保证电子邮件的送达率</a></li>
-</ul>
-
-
-<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
-
-<h2>2012-10-26问题整理</h2>
-
-<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
-花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
-
-<ul>
-<li>不是很懂postfix， 看文档</li>
-<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
-<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
-<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
-</ul>
-
-
-<h2>2013-12-08问题整理</h2>
-
-<p>因为服务器更换，需要重新装一遍邮件系统，前一次安装的日志没有留下来，
-于是我采用<a href="https://help.ubuntu.com/community/Postfix">ubuntu</a>的教程，结果耗费了一个星期都没有安装成功，几乎要崩溃了。
-后来找到现在用的安装教程，也是一路磕磕碰碰遇到很多问题。总结一下经验：</p>
-
-<ul>
-<li>一定一定要跟着教程走，不要自己想当然随便改，不然死都不知道怎么死的。</li>
-<li>走长路，每一步都要验证这一步走得正确。</li>
-<li>出现问题看log，好的日志会引导你走向正确的方向。</li>
-</ul>
-
-
-<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/standing-at-work/">尝试站着工作</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-21T11:57:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
-        
-         | <a href="/blog/standing-at-work/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/CSNCr.jpg"></p>
-
-<p>大多数人每天上班的时候， 基本都是坐在座位上面， 面对电脑工作。 久坐， 往往会带来一些腰部和颈部的疾病，
-我在最近的几个月里面， 尝试了站立工作。 上面就是我的工作台设置。 就是把一个高度合适的座位放到台面上来而已。
-我能够找到刚好配起来的家具， 如果你找不到的话， 可以看<a href="http://www.douban.com/note/226194410/">这个解决方案</a>。</p>
-
-<p>尝试下来发现一些东西:</p>
-
-<ul>
-<li>站立工作会更消耗精力一些， 很多时候不太容易集中精神。 毕竟站立不能像坐着的时候那样放松。</li>
-<li>颈部和腰部完全没有不适的感觉。 但是可能是我键盘高度位置有问题， 手腕部位还是会有疼痛。</li>
-<li>站立给膝盖造成了很大的压力， 有不适。 以及长期站立容易造成小腿静脉曲张， 我现在是隔段时间坐下抬高小腿休息一会。</li>
-</ul>
-
-
-<p>现在我还是在用台式机， 如果我买了笔记本的话， 我可以很方便地在站立和坐着两种工作方式之间切换。
-个人建议大家可以尝试一段时间站立工作， 对工作环境进行调节是提升工作舒适度以及工作效率的好办法。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1380,7 +1370,15 @@ postfix控制了无数小的模块， 而自己可以说是一个路由器的角
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/server-architecture-configuration-management/">服务器架构配置文件化</a>
+        <a href="/blog/understand-computer-science-in-one-day-fundamental/">一天弄懂计算机科学之体篇</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/understand-computer-science-in-one-day/">一天弄懂计算机科学</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/server-architecture-configuration-management/">如何一个人管理一堆服务器</a>
       </li>
     
       <li class="post">
@@ -1389,14 +1387,6 @@ postfix控制了无数小的模块， 而自己可以说是一个路由器的角
     
       <li class="post">
         <a href="/blog/encrypted-git-repo/">加密git远端版本库</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/password-authentication-is-bad/">比密码登录更好的权限验证方式</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/motobike/">考虑摩托车</a>
       </li>
     
   </ul>
