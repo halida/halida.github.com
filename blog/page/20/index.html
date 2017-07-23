@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近有项目要用到ruby on rails, 于是下载了书, 看了一段时间. 具体学习方法 根据专家意见, 直接看ruby on rails guide. 学习时间, 连同ruby, 在一周时间. 根据我个人的体会, 也差不多.
-(前提是web程序员) 个人感觉 ror哲学是convention &hellip;">
+  <meta name="description" content="很遗憾, 我起了一个很读者的标题. 我们索取过多, 我们祈望过多. 我们希望有车有房, 我们希望傲世他人,
+我们希望获得更多的享受, 但是我们因此付出代价, 更多的支出需要更高工资的工作,
+更高工资的工作让人疲于奔命, 结果人们却说这是现代节奏. 对吗? 如果你认为你的祈望值得你的付出, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/let-it-go/">放下的智慧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-10T09:43:37+08:00" pubdate data-updated="true">May 10<span>th</span>, 2011</time>
+        
+         | <a href="/blog/let-it-go/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://1.bp.blogspot.com/-Fakrm4TFRPo/TalbKUi_KkI/AAAAAAAAAUo/SC4xs-jZVn8/s1600/2603521293_d22b3e8460.jpg" alt="image" /></p>
+
+<p>很遗憾, 我起了一个很读者的标题.</p>
+
+<p>我们索取过多, 我们祈望过多. 我们希望有车有房, 我们希望傲世他人,
+我们希望获得更多的享受,</p>
+
+<p>但是我们因此付出代价, 更多的支出需要更高工资的工作,
+更高工资的工作让人疲于奔命, 结果人们却说这是现代节奏.</p>
+
+<p>对吗? 如果你认为你的祈望值得你的付出, 那么很好, 继续下去.</p>
+
+<p>但是你的祈望是否真实? 你真的需要有车有房? 还是只是社会观念让你这样做?
+你真的 <strong>需要</strong> 这些吗?</p>
+
+<p>我现在过着租房的生活, 我买不起房, 也不认为房值得买.</p>
+
+<p>现在我住在一个小书房里面, 木地板三面都有窗户, 有柜子收纳杂物,
+有躺椅可以坐着看书, 买了植物和空气清新剂, 感觉很安逸.</p>
+
+<p>有时候, 我甚至觉得房产证是一种束缚&mdash;&mdash;又不能带来收入,
+还需要日常的照料(房子越大工作量越多), 又干扰我做决定, 要它做什么呢?</p>
+
+<p>人生苦短, 资源有限, 我们是否可以考虑平衡下, 投入资源到其他的方面?</p>
+
+<p>如果我们有钱买房, 为什么不用这笔钱去世界旅游?
+为什么不去开始做自己真正想做的事情, 比如开一间小书店?
+比如去做一些自己认为真正有价值的事情?</p>
+
+<p>房子如是, 甚至工作也如是. 现在做的活是否喜欢? 更重要的, 是否有价值?</p>
+
+<p>一句话: 自己的目标, 现在的生活轨迹, 有没有考虑 <strong>放下</strong>?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1125,142 +1195,6 @@ zeromq还可以实现许许多多更为复杂的模式,
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/utf8/">Utf8介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-02T20:11:07+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2011</time>
-        
-         | <a href="/blog/utf8/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天学习了一下utf8的相关概念, 发现自己的理解还是不很透彻, 这里整理一下:</p>
-
-<h2>什么是UCS?</h2>
-
-<p>我们首先需要知道如何标识一个具体的字符, 国际上对于字符标识有一个东西,
-叫UCS, 全称: Universal Character Set,</p>
-
-<p>它是关于所有字符编码的标准. 简单地说,
-为了能够规范我们所有字符的表示形式, 把所有字符都映射成一张表,
-每个字符都指代单独的一个数字做标识.</p>
-
-<h2>什么是UTF-8?</h2>
-
-<p>上面的UCS只是表示字符的标识, 并没有说明具体的表示方式是什么.
-所以就有了UTF-8, 用来把UCS转换成计算机能够处理的字符串. 它为了节省空间,
-方便解析和除错做了优化. 具体表示方式如下:</p>
-
-<ul>
-<li>小于u80的字符, 直接打印为一个字符, 这个是为了和ASCII标准兼容.</li>
-<li>大于等于u80小于u800的字符, 分割成2个字符, 第一个字符开始为110,
-第二个字符开始为10, 拆分的方法是先填满后面的字符(等会看后面的例子).</li>
-<li>以此类推&hellip;</li>
-</ul>
-
-
-<p>说的不是太清楚, 这里有一个UCS映射到UTF-8的表, 一看就明白了:</p>
-
-<pre><code>U-00000000 – U-0000007F:    0xxxxxxx
-U-00000080 – U-000007FF:    110xxxxx 10xxxxxx
-U-00000800 – U-0000FFFF:    1110xxxx 10xxxxxx 10xxxxxx
-U-00010000 – U-001FFFFF:    11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-00200000 – U-03FFFFFF:    111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-</code></pre>
-
-<p>同时, 长的表示方式不能涵盖短的表示方式,
-所以下面的范围是错误的(可以快速排除错误):</p>
-
-<pre><code>1100000x (10xxxxxx)
-11100000 100xxxxx (10xxxxxx)
-11110000 1000xxxx (10xxxxxx 10xxxxxx)
-11111000 10000xxx (10xxxxxx 10xxxxxx 10xxxxxx)
-11111100 100000xx (10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx)
-</code></pre>
-
-<p>我们来看具体的例子(python代码):</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 比如©这个符号, UCS的标识为: \u00a9:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span>
-</span><span class='line'><span class="err">©</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们把a9转换成真正的表示方式:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&quot;</span><span class="se">\u00A9</span><span class="s">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们也可以把真正的表示方式转换成标准里面的标识.</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;</span><span class="se">\xc2\xa9</span><span class="s">&#39;</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">u&#39;</span><span class="se">\xa9</span><span class="s">&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 我们来看一个分割的例子:</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span>
-</span><span class='line'><span class="err">≠</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 转换成utf8就被拆散了:</span>
-</span><span class='line'><span class="c"># u+2260 = 0010 0010 0110 0000</span>
-</span><span class='line'><span class="c"># 11100010 10001001 10100000 = 0xE2 0x89 0xA0</span>
-</span><span class='line'><span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;</span><span class="se">\u2260</span><span class="s">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="s">&#39;</span><span class="se">\xe2\x89\xa0</span><span class="s">&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>结论</h2>
-
-<p>现在还没有什么心得, 总之, 了解了上面的概念,
-才能处理好平时遇到的字符编码问题.</p>
-
-<p>参考资料: &ndash;
-<a href="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/\~mgk25/unicode.html</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/21/">&larr; Older</a>
@@ -1278,6 +1212,10 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/modern-pitfalls/">现代社会防骗指南</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/understand-computer-science-in-one-day-fundamental/">一天弄懂计算机科学之体篇</a>
       </li>
     
@@ -1291,10 +1229,6 @@ U-04000000 – U-7FFFFFFF:    1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxx
     
       <li class="post">
         <a href="/blog/retire-some-programming-languages/">我们需要淘汰一些编程语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/encrypted-git-repo/">加密git远端版本库</a>
       </li>
     
   </ul>

@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="需求 作为设备开发者, 一般需要让设备与上位机PC通讯,
-我们往往考虑采用以下几种接口: rs232, USB, ethernet. 现在在PC机上已经很难见到rs232的接口, 而ethernet也需要做特殊的配置,
-USB大多成为我们的首选. 对于数据偏少的应用, &hellip;">
+  <meta name="description" content="方法 上次讲了如何使用预编译头来加速编译,现在给出一个Qt程序实际的例子,来演示
+预编译头的好处. 我们采用qmake来编译Qt程序,qmake本身支持预编译头,
+文档在这:http://doc.trolltech.com/3.3/qmake-manual-7.html 使用方法很简单, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,87 @@ USB大多成为我们的首选. 对于数据偏少的应用, &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/qt-compile-speed-up/">Qt编译加速以及使用预编译头</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+        
+         | <a href="/blog/qt-compile-speed-up/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>方法</h2>
+
+<p>上次讲了如何使用预编译头来加速编译,现在给出一个Qt程序实际的例子,来演示
+预编译头的好处.</p>
+
+<p>我们采用qmake来编译Qt程序,qmake本身支持预编译头,
+文档在这:<a href="http://doc.trolltech.com/3.3/qmake-manual-7.html">http://doc.trolltech.com/3.3/qmake-manual-7.html</a></p>
+
+<p>使用方法很简单,在pro文件里面加上这几行即可:</p>
+
+<pre><code>PRECOMPILED_HEADER = lib.hpp #头文件名
+CONFIG += precompile_header #设置使用预编译头功能
+</code></pre>
+
+<h2>示例</h2>
+
+<p>以下是我测试项目的例子. 文件目录:</p>
+
+<pre><code>halida@halida-desktop:~/temp/build-qt$ ls
+build-qt.pro   lib.hpp    main.cpp   shower.cpp    shower.hpp
+</code></pre>
+
+<p>没有使用预编译头时消耗的时间:</p>
+
+<pre><code>halida@halida-desktop:~/temp/build-qt$ touch *.cpp
+halida@halida-desktop:~/temp/build-qt$ time make&gt;&gt;/dev/null
+real    0m7.292s
+user    0m4.696s
+sys     0m2.340s
+</code></pre>
+
+<p>使用预编译头后消耗的时间:</p>
+
+<pre><code>halida@halida-desktop:~/temp/build-qt$ touch *.cpp
+halida@halida-desktop:~/temp/build-qt$ time make&gt;&gt;/dev/null
+real    0m2.416s
+user    0m1.324s
+sys     0m1.004s
+</code></pre>
+
+<p>很明显,提升了相当多的速度.</p>
+
+<p>例子可以在这里下载:
+<a href="http://linjunhalida.72pines.com/files/2010/09/build-qt.zip">http://linjunhalida.72pines.com/files/2010/09/build-qt.zip</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -735,46 +816,6 @@ p3 := p3 - p2 | p3 + p2 | p2
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/burst-in-your-life/">生活需要时不时的burst一下</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-06-02T22:08:26+08:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2009</time>
-        
-         | <a href="/blog/burst-in-your-life/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>很多游戏里面，都有这样的一种设置：当某个随时间积累的值到达一定程度的时候，就可以使用一次很强大的攻击技能。格斗游戏里面叫怒气，设计游戏里面是能量槽。游戏里面的角色，平时攻击可能不怎么样，可是一到这样的时候，攻击力瞬间提高，往往是达到清场或者是致命一击的效果。</p>
-
-<p>其实，游戏里面的很多东西都是来源于生活。我们每个人在平常的生活里面，是否有积累这样的能量，时不时地爆发一下呢？</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/27/">&larr; Older</a>
@@ -792,6 +833,10 @@ p3 := p3 - p2 | p3 + p2 | p2
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/modern-pitfalls/">现代社会防骗指南</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/understand-computer-science-in-one-day-fundamental/">一天弄懂计算机科学之体篇</a>
       </li>
     
@@ -805,10 +850,6 @@ p3 := p3 - p2 | p3 + p2 | p2
     
       <li class="post">
         <a href="/blog/retire-some-programming-languages/">我们需要淘汰一些编程语言</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/encrypted-git-repo/">加密git远端版本库</a>
       </li>
     
   </ul>
