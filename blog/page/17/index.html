@@ -9,9 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近和 steven yang
-讨论到关于成人教育的问题. 他说他有做过一个演讲, 关于人们从学校毕业以后,
-学习新的东西变得很困难. 这里是他的演讲资料. 我这里整理一下我的阅读笔记: 其中提到了三点, 关于成人教育的困难之处: 首先是观念. 当我们在某些领域掌握了一定程度的技能之后, &hellip;">
+  <meta name="description" content="这里整理一下rails deploy的几种方法. Passenger 首先是最简单的采用 Phusion
+Passenger,
+现在大家都用nginx了吧, 那么下面主要还是看
+passenger和nginx的配置. 首先安装passenger: 1
+gem install passenger &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +82,129 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rails-deploy-by-passenger/">Rails_deploy方法之采用passenger</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-21T09:32:08+08:00" pubdate data-updated="true">Dec 21<span>st</span>, 2011</time>
+        
+         | <a href="/blog/rails-deploy-by-passenger/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这里整理一下rails deploy的几种方法.</p>
+
+<h2>Passenger</h2>
+
+<p>首先是最简单的采用 <a href="http://www.modrails.com/documentation.html">Phusion
+Passenger</a>,
+现在大家都用nginx了吧, 那么下面主要还是看
+<a href="http://www.modrails.com/documentation/Users%20guide%20Nginx.html">passenger和nginx的配置</a>.</p>
+
+<p>首先安装passenger:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>gem install passenger
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后安装nginx插件， 需要系统权限， 所以采用rvmsudo:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rvmsudo passenger-install-nginx-module
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后设置nginx: (sudo vi /opt/nginx/conf/nginx.conf)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>http <span class="o">{</span>
+</span><span class='line'>    passenger_root /somewhere/passenger-x.x.x;
+</span><span class='line'>    passenger_ruby /usr/bin/ruby;
+</span><span class='line'>    passenger_max_pool_size 10;
+</span><span class='line'>
+</span><span class='line'>    gzip on;
+</span><span class='line'>
+</span><span class='line'>    server <span class="o">{</span>
+</span><span class='line'>        server_name www.foo.com;
+</span><span class='line'>        listen 80;
+</span><span class='line'>        root /webapps/foo/public;
+</span><span class='line'>        passenger_enabled on;
+</span><span class='line'>        passenger_use_global_queue on;
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改完设置之后重新启动nginx:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo /opt/nginx/sbin/nginx -s reload
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启服务的话只要:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>touch /webapps/mycook/tmp/restart.txt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>基本上这样就可以了. passenger工作的方式还是基于多进程, 它会根据一套算法,
+来计算开启多少个线程, 以及如何生成进程, 来响应用户请求.</p>
+
+<p>最好要看一下 passenger_spawn_method 和 Spawning methods explained
+的部分, 了解一下工作原理. Analysis and system
+maintenance这部分也最好看看.</p>
+
+<p>不过听说passenger只是给初学者用的, 大家会用其他的可配置的工具. 比如
+<a href="http://unicorn.bogomips.org/">unicorn</a> 等等.</p>
+
+<p>这里再补充一下unicorn的使用方法, 基本上gem install unicorn,
+然后执行unicorn_rails -p 8080就可以了.
+在nginx上面设置一下端口转发80到8080就能用了. 这里有一个 <a href="http://unicorn.bogomips.org/examples/nginx.conf">unicorn
+nginx的示例</a> 可以抄.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -875,84 +1000,6 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/trainning-series1-how-to-start/">训练专题1_如何开始训练</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-04T21:58:59+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2011</time>
-        
-         | <a href="/blog/trainning-series1-how-to-start/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://www.soso5u.com/uploads/allimg/110628/20592551S-1.jpg" alt="image" /></p>
-
-<p>上次我们讨论了
-<a href="http://blog.linjunhalida.com/blog/how-to-change-yourself/">如何改变一个人</a>,
-主要靠训练和洗脑. 那么从现在开始, 我整理一些训练的技术.
-假设我们决定好了通过训练改变自己, 比如, 我们希望养成天天锻炼的习惯.
-那么我们如何开始, 以及如何保证训练能够进行下去呢?</p>
-
-<p>原先我们说过, 建立习惯需要考虑的3个方面: 前提, 过程, 结果. 我们分析一下:</p>
-
-<h2>前提</h2>
-
-<p>我们已经知道锻炼的必要性了, 并且愿意投入. 如果意愿不是特别强烈,
-那么需要上网去搜索关于锻炼的文章, 把自己洗脑.
-这方面我觉得大多数人能做到,
-因为大家已经养成了上网看文章的习惯(不然怎么看到这里的).</p>
-
-<h2>过程</h2>
-
-<p>锻炼困难, 多是因为在过程上面得到了反向刺激: 我们记住了锻炼的痛苦,
-下次开始之前, 痛苦出来干扰我们的决定. 在过程上面, 我们注意到,
-锻炼强度本身不是特别重要, 而强度是带来痛苦的主要方式.
-因此我们可以减少强度. 开始阶段过高强度的锻炼是大家放弃锻炼的主要原因.</p>
-
-<p>在过程上面还有一个问题: 锻炼过于无聊(针对跑步的部分),
-那么我们可以通过各种方式来提升锻炼的正反馈程度:
-比如专门留自己喜欢的音乐在锻炼的时候听;
-找妹子多的运动场所比如一些健身中心, 而不是中老年人常出没的公园;
-边放电影边锻炼(一定要在锻炼结束的时候关闭, 不然正反馈会养成失败).</p>
-
-<h2>结果</h2>
-
-<p>锻炼结束后, 需要加上奖励, 以让整个过程得到巩固,
-锻炼本身带来的精力提升可以是一部分,
-在网络上发送&#8221;我今天锻炼了&#8221;让大家来鼓励自己也是一个方法(真的会有人过来鼓励一下吗?),
-还可以计算自己的经验值模拟升级等等..</p>
-
-<h2>结论</h2>
-
-<p>如果能够实施上面的几个方面, 开始锻炼不成问题, 但是需要坚持下去的话,
-这些还不够, 我们需要能够应对变化. 关于应对变化的部分, 我们下次再讨论.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -970,6 +1017,10 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/remote-windows-server-commandline/">windows服务器远程跑命令行代码</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/make-more-money/">赚钱就是正义</a>
       </li>
     
@@ -983,10 +1034,6 @@ round-robin存放到本地即可(简单的根据星期几来保存).</p>
     
       <li class="post">
         <a href="/blog/modern-pitfalls/">现代社会防骗指南</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/understand-computer-science-in-one-day-fundamental/">一天弄懂计算机科学之体篇</a>
       </li>
     
   </ul>

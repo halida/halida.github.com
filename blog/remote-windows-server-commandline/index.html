@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>研究如何给本地机器绑定域名 - 网络寻租</title>
+  <title>windows服务器远程跑命令行代码 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我家里有一些机器，这些机器上跑了一堆虚拟机，虚拟机都直接桥接网卡，
-这样每台机器都可以暴露出来给局域网访问。为了访问方便，
-每个机器最好用名称访问，而不是用IP地址。
-例如：两个虚拟机IP: 192.168.1.11，192.168.1.12，我希望可以用vps-sql，vps-dev的方式访问 &hellip;">
+  <meta name="description" content="windows服务器的管理都是通过远程桌面来登录，但是我们程序员不喜欢用GUI操作，
+更喜欢执行脚本命令，因为这样更容易自动化。
+这里整理一下如何用命令行登录到windows服务器上面执行任务。 windows有一个win-rm服务，类似于ssh，可以让远程连进去执行命令。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/link-domain-name-to-local-pc/">
+  <link rel="canonical" href="http://halida.github.com/blog/remote-windows-server-commandline/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -84,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">研究如何给本地机器绑定域名</h1>
+      <h1 class="entry-title">Windows服务器远程跑命令行代码</h1>
     
     
       <p class="meta">
@@ -100,7 +99,7 @@
   
 
 
-<time datetime="2017-04-03T18:40:11+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2017</time>
+<time datetime="2017-12-05T22:26:28+08:00" pubdate data-updated="true">Dec 5<span>th</span>, 2017</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -109,39 +108,24 @@
   </header>
 
 
-<div class="entry-content"><p>我家里有一些机器，这些机器上跑了一堆虚拟机，虚拟机都直接桥接网卡，
-这样每台机器都可以暴露出来给局域网访问。为了访问方便，
-每个机器最好用名称访问，而不是用IP地址。
-例如：两个虚拟机IP: 192.168.1.11，192.168.1.12，我希望可以用vps-sql，vps-dev的方式访问。</p>
+<div class="entry-content"><p>windows服务器的管理都是通过远程桌面来登录，但是我们程序员不喜欢用GUI操作，
+更喜欢执行脚本命令，因为这样更容易自动化。
+这里整理一下如何用命令行登录到windows服务器上面执行任务。</p>
 
-<p>首先设置路由器的DHCP服务器，把这些机器的IP地址固定，
-然后直接改自己电脑的/etc/hosts：</p>
+<p>windows有一个win-rm服务，类似于ssh，可以让远程连进去执行命令。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>192.168.1.11 vps-sql
-</span><span class='line'>192.168.1.12 vps-dev</span></code></pre></td></tr></table></div></figure>
+<p>在服务器上面用管理员的powershell跑：<code>Enable-PSRemoting</code>
+就可以了，默认使用http 5985端口。记得设置服务器或者云的安全设置把对应端口开启。
+如果要开放给外网，要用https，<a href="http://www.pstips.net/configure-winrm-under-https-transport.html">这里是</a>配置方法。</p>
 
+<p>如果没有把服务器加到域里面，就必须用https，如果加到了域里面，登录只要用服务器的账户就可以了。
+如果在同一个域的其他服务器里面，甚至不需要输入密码。</p>
 
-<p>但是所有需要这个列表的机器都要改一遍，有什么更好的办法呢？</p>
+<p>使用方法：<code>Enter-PSSession -ComputerName COMPUTER-NAME -Port 5985</code></p>
 
-<p>我的路由器是RouteOS，可以修改默认推送的DNS设置，以及增加DNS cache。
-加了DNS cache之后，就可以直接访问了。</p>
+<p>我们可以用ruby代码来执行命令，可以用Gem <a href="https://github.com/WinRb/WinRM">winfm</a>。</p>
 
-<p>但是又有一个问题：我的工作用机器需要翻墙，翻墙了之后，就会用翻墙服务器的DNS，本地的DNS就取不到了。
-万幸的是可以手动修改DNS采用本地的，不过用了本地的DNS，会被国内的GFW投毒，
-获取一些国外网站域名信息的时候，DNS数据包会被劫持掉，
-那么只有在本地搭建一个加密通讯的的DNS服务器。
-话说回来为什么这么重要的基础服务居然还是明文的数据包传输？</p>
-
-<p>我看了一下有<a href="https://dnscrypt.org/">dnscrypt</a>，在本地的一台机器A上面装好，
-把路由器的DNS设置为这个机器A就好了。
-不过这样的解决方案不是很稳定，如果本地机器A挂掉，那么局域网就没有DNS服务，大家都不能上网了。</p>
-
-<p>那么还有一个办法：就是注册一个短域名，把这些机器都绑定成子域名。
-虽然这样会把本地网络的信息暴露给了全世界，但是想了一下也没有什么风险。</p>
-
-<p>找了半天，买了一个便宜的llj.clicks域名，配置起来，总算完美地解决了这个问题。</p>
+<p>更多资料<a href="http://www.pstips.net/remote-manage-vm-hosted-on-windows-azure.html">见这里</a>。</p>
 </div>
 
 
@@ -164,7 +148,7 @@
   
 
 
-<time datetime="2017-04-03T18:40:11+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2017</time>
+<time datetime="2017-12-05T22:26:28+08:00" pubdate data-updated="true">Dec 5<span>th</span>, 2017</time>
       
 
 
@@ -172,7 +156,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/link-domain-name-to-local-pc/" data-via="" data-counturl="http://halida.github.com/blog/link-domain-name-to-local-pc/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/remote-windows-server-commandline/" data-via="" data-counturl="http://halida.github.com/blog/remote-windows-server-commandline/" >Tweet</a>
   
   
   
@@ -181,10 +165,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/long-request-api-design/" title="Previous Post: 长时API调用设计方案">&laquo; 长时API调用设计方案</a>
+        <a class="basic-alignment left" href="/blog/make-more-money/" title="Previous Post: 赚钱就是正义">&laquo; 赚钱就是正义</a>
       
-      
-        <a class="basic-alignment right" href="/blog/install-kdeneon/" title="Next Post: 在新笔记本上安装Kdeneon">在新笔记本上安装Kdeneon &raquo;</a>
       
     </p>
   </footer>
@@ -280,8 +262,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/link-domain-name-to-local-pc/';
-        var disqus_url = 'http://halida.github.com/blog/link-domain-name-to-local-pc/';
+        var disqus_identifier = 'http://halida.github.com/blog/remote-windows-server-commandline/';
+        var disqus_url = 'http://halida.github.com/blog/remote-windows-server-commandline/';
         var disqus_script = 'embed.js';
       
     (function () {
