@@ -15,3 +15,6 @@ preview:
 	$(rake) preview
 commit:
 	git add .;git ci -am "update"
+
+install:
+	sudo apt install libyajl-dev
