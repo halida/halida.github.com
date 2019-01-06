@@ -9,10 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是ipython python里面的一个杀手级应用就是它的解释器,
-我们可以利用这个解释器来完成一些日常的工作, 比如计算器, 字符串处理,
-其他计算显示什么的. 但是python本身自带的解释器功能不够强大, 所以有了
-ipython 这个大杀器. &hellip;">
+  <meta name="description" content="每个emacs使用者的配置都是不一样的, 都会根据自己的习惯和喜好来调整.
+这里我整理一些对emacs用户调整有帮助的内容, 以及我自己觉得不错的配置. emacs配置如何管理? 配置多了, 放在.emacs里面不是一回事, 我的解法是,
+.emacs导入真正放配置的目录, 然后require: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +80,210 @@ ipython 这个大杀器. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/my-emacs-config/">我的emacs配置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-04T20:48:50+08:00" pubdate data-updated="true">Dec 4<span>th</span>, 2010</time>
+        
+         | <a href="/blog/my-emacs-config/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>每个emacs使用者的配置都是不一样的, 都会根据自己的习惯和喜好来调整.
+这里我整理一些对emacs用户调整有帮助的内容, 以及我自己觉得不错的配置.</p>
+
+<h2>emacs配置如何管理?</h2>
+
+<p>配置多了, 放在.emacs里面不是一回事, 我的解法是,
+.emacs导入真正放配置的目录, 然后require:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(add-to-list 'load-path (expand-file-name "~/Dropbox/sync/emacs/srcs"))
+</span><span class='line'>(load "main")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>main.el是配置的汇总, 配置按照模块和功能分割成不同的文件:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(provide 'main)
+</span><span class='line'>
+</span><span class='line'>;; requires
+</span><span class='line'>(require 'mylib)
+</span><span class='line'>(require 'template)
+</span><span class='line'>(require 'mypython)
+</span><span class='line'>(require 'mydired)
+</span><span class='line'>(require 'myc)
+</span><span class='line'>(require 'mykeymap)
+</span><span class='line'>(require 'mygtd)
+</span><span class='line'>(require 'top-mode)
+</span><span class='line'>(require 'tabbar)
+</span><span class='line'>(require 'fullscreen)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>dropbox是我同步emacs配置的工具, 你也可以用其他网盘工具.</p>
+
+<h2>如何绑定自己的键位?</h2>
+
+<p>每个emacs用户都会自己设定键位, 不会傻傻地M-x然后输入字符. 我个人的经验,
+绑定键位的指导思想是: 对于显示buffer, 切换buffer之类使用非常频繁的功能,
+找一些方便的直接键位来绑定, 比如:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key [C-tab] 'other-window)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于一些其他不是那么频繁, 但是经常要使用的功能,
+都可以绑定到间接键位上面. 我发现C-;没有使用, 按起来还很方便,
+然后把所有自己定义的功能都加到上面去了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key (kbd "C-; 1") 'gtd)
+</span><span class='line'>(global-set-key (kbd "C-; 2") 'note)
+</span><span class='line'>(global-set-key (kbd "C-; 3") 'scratch)
+</span><span class='line'>(global-set-key (kbd "C-; 4") 'py-shell)
+</span><span class='line'>(global-set-key (kbd "C-; 5") 'woman)
+</span><span class='line'>(global-set-key (kbd "C-; 7") 'twit-follow-recent-tweets)
+</span><span class='line'>(global-set-key (kbd "C-; C-7") 'twit-post)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于针对某些mode的键位绑定, 只需要改变那个mode的键位就可以了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(define-key dired-mode-map (kbd "b") 'dired-up-directory)</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>一定要设置的功能</h2>
+
+<p>有些功能是如此的强大, 以至于缺少了他们emacs就不完整了..</p>
+
+<ul>
+<li><p><a href="http://www.emacswiki.org/emacs/InteractivelyDoThings">ido</a>,
+如果你发现开启文件和切换buffer输入有点累的话, 用ido来节省输入.</p></li>
+<li><p><a href="http://www.emacswiki.org/emacs/AutoComplete">auto-complete</a>
+自动补全. 这里面的补全方案默认是取当前buffer的词语的,
+对于我写python代码来说足够用了.
+至于c/c++/java..等我写的时候再配置吧.</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(require 'auto-complete)
+</span><span class='line'>(global-auto-complete-mode t)
+</span><span class='line'>;; 匹配项目不用动手腕啦
+</span><span class='line'>(define-key ac-complete-mode-map "\C-n" 'ac-next)
+</span><span class='line'>(define-key ac-complete-mode-map "\C-p" 'ac-previous)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>漂亮的配色. color-theme有一堆配色可以选的.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(require 'color-theme)
+</span><span class='line'>(color-theme-arjen)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还有一些零散的配置, 都放在
+<a href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/main.el">main.el</a>
+里面.</p>
+
+<ul>
+<li><p>template 模板系统. 写东西怎么不能用模板呢.
+一遍遍地输入同样的东西多烦. 我用的是
+<a href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/template.el">template.el</a>,
+不过感觉用的不是很熟, 还要改改.</p></li>
+<li><p><a href="http://orgmode.org/">org-mode</a>. 用来写notes/todo/gtd的. 看看吧,
+功能强大.</p></li>
+</ul>
+
+
+<h2>其他有价值的东西</h2>
+
+<ul>
+<li>shell-command功能. 可以在buffer当前目录执行命令. 如果不想它卡死的话,
+可以在命令后面加&amp;(linux).</li>
+<li><a href="http://www.lysator.liu.se/~tab/artist/">artist-mode</a>,
+可以在emacs里面画图.
+<a href="http://www.cinsk.org/emacs/emacs-artist.html">artist-mode视频介绍</a></li>
+<li>半透明. linux下面要开启特效才能半透明.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(set-frame-parameter (selected-frame) 'alpha '(80 50))
+</span><span class='line'>(add-to-list 'default-frame-alist '(alpha 80 50))</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://www.emacswiki.org/emacs/FullScreen">全屏</a>,
+不全屏怎么对得起emacs呢?</li>
+</ul>
+
+
+<h2>资源</h2>
+
+<p>emacs自带的info文档已经很多了, 不过有一些其他地方的资源不错, 值得提一下:</p>
+
+<ul>
+<li><a href="http://www.emacswiki.org/">emacs wiki</a>,
+我想emacs用户都应该知道这里吧.</li>
+<li><a href="http://bitbucket.org/linjunhalida/emacs">我的配置</a>, 好吧, 分享下.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1546,119 +1749,6 @@ lrelease-qt4 plabel_zh_CN.ts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/reStructuredText-intro/">reStructuredText介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-10T15:39:39+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
-        
-         | <a href="/blog/reStructuredText-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>什么是reStructuredText?</h2>
-
-<p>一种写文档的方式. 简称:
-<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></p>
-
-<ul>
-<li>简单, 现场学,现场会</li>
-<li>易读</li>
-<li>方便生成html/pdf等其他格式</li>
-</ul>
-
-
-<h2>怎么玩?</h2>
-
-<p>不多说, 直接用: <a href="http://goo.gl/1jNF4">http://goo.gl/1jNF4</a></p>
-
-<h2>语法</h2>
-
-<p>There should be one&mdash; and preferably only one &mdash;obvious way to do it.</p>
-
-<p>google: rest</p>
-
-<p><a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">http://docutils.sourceforge.net/docs/user/rst/quickstart.html</a>
-<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></p>
-
-<h2>如何生成其他格式</h2>
-
-<p>需要安装docutils</p>
-
-<ul>
-<li><p>html: 有个东西叫rst2html:</p>
-
-<pre><code>rst2html xxx.rst xxx.html
-</code></pre></li>
-<li><p>pdf: 有个东西叫rst2pdf:</p>
-
-<pre><code>rst2pdf xxx.rst
-</code></pre></li>
-<li><p>latex: 有个东西叫rst2latex:</p>
-
-<pre><code>rst2latex --input-encoding=utf-8 --output-encoding=utf-8 xxx.rst &gt;&gt; s.tex
-</code></pre></li>
-</ul>
-
-
-<h2>python code</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
-</span><span class='line'><span class="n">content</span> <span class="o">=</span> <span class="n">publish_string</span><span class="p">(</span>
-</span><span class='line'>    <span class="n">source</span><span class="o">=</span><span class="s">&quot;doc here&quot;</span>
-</span><span class='line'>    <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;html&#39;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>我用它来干什么?</h2>
-
-<ul>
-<li>写博客</li>
-<li>写文档</li>
-<li>问题: 好像没有支持ReST的网站..</li>
-</ul>
-
-
-<h2>连接</h2>
-
-<ul>
-<li>官方网站:
-<a href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1676,6 +1766,10 @@ lrelease-qt4 plabel_zh_CN.ts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2018-summary/">2018年度总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017-summary/">2017年度总结</a>
       </li>
     
@@ -1689,10 +1783,6 @@ lrelease-qt4 plabel_zh_CN.ts
     
       <li class="post">
         <a href="/blog/make-more-money/">赚钱就是正义</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ordinary-is-week/">论普通人的弱</a>
       </li>
     
   </ul>
@@ -1737,7 +1827,7 @@ lrelease-qt4 plabel_zh_CN.ts
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - 机械唯物主义 -
+  Copyright &copy; 2019 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

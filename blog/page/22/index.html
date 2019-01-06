@@ -9,11 +9,18 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="不知道大家是否都写过html或者xml, 里面尖括号真是既然写又难看,
-这里推荐给大家一个非常好用的工具:
-shpaml. shpaml 是借鉴
-haml (就是上面那个图片啦) 的一个工具,
-可以极大地简化html/xml的编写工作. 并且不像haml那么重量级. &hellip;">
+  <meta name="description" content="在上次已经
+介绍过shpaml,
+它的代码总共只有365行, 既然这么一点代码, 没有理由不分析分析它的具体实现. 首先, 代码可以在这里看到:
+http://shpaml.webfactional.com/source_code 首先是入口出的代码: 1
+2
+3
+4
+5
+6
+7
+8
+if &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +89,260 @@ haml (就是上面那个图片啦) 的一个工具,
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/shpaml-source-code/">Shpaml源码分析</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-20T21:43:59+08:00" pubdate data-updated="true">Feb 20<span>th</span>, 2011</time>
+        
+         | <a href="/blog/shpaml-source-code/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在上次已经
+<a href="http://server.linjunhalida.com/blog/article/shpaml%E4%BB%8B%E7%BB%8D/">介绍过shpaml</a>,
+它的代码总共只有365行, 既然这么一点代码, 没有理由不分析分析它的具体实现.</p>
+
+<p>首先, 代码可以在这里看到:
+<a href="http://shpaml.webfactional.com/source_code">http://shpaml.webfactional.com/source_code</a></p>
+
+<p>首先是入口出的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="c"># if file name is given convert file, else convert stdin</span>
+</span><span class='line'>    <span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">shpaml_text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">shpaml_text</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">convert_text</span><span class="p">(</span><span class="n">shpaml_text</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里面是实现以下3种语法的功能, 太简单就不说了:</p>
+
+<blockquote><p>python -c &ldquo;import shpaml; shpaml.convert_text()&rdquo; echo &lsquo;b | foo&rsquo; |
+python shpaml.py touch test.shpaml; python shpaml.py test.shpaml</p></blockquote>
+
+<p>然后, 从convert_text函数,
+一直深入调用到了indent_lines函数(外面的几层都是包装), 这个才是重心.</p>
+
+<p>我们知道, html是树状的, 输入的shpaml格式的文档本质上也是树状的.
+我们需要把shpaml按照树状的方式解析出来,
+同时对分析出来的数据做处理(加&lt;>以及结尾加&lt;/tag>).</p>
+
+<p>简单地介绍下代码里面的处理方式. 程序内嵌一个recurse函数,
+这个函数的输入是字符串列表(就是需要转换的文本啦),
+处理文本的时候如果发现有新的子树, 就会嵌套调用recurse,
+用函数调用栈的方式来遍历tag树. 每次处理文本,
+都会把生成的文本放到output这个字符串列表里面去. 下面是具体的代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">indent_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">output</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">branch_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">leaf_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">pass_syntax</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">flush_left_syntax</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">flush_left_empty_line</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">indentation_method</span><span class="p">,</span>
+</span><span class='line'>            <span class="n">get_block</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;Returns None.</span>
+</span><span class='line'><span class="sd">    一堆注释不管它</span>
+</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="n">append</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">append</span>
+</span><span class='line'>    <span class="c"># 递归调用函数</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 循环解析传进来的字符串列表</span>
+</span><span class='line'>        <span class="k">while</span> <span class="n">prefix_lines</span><span class="p">:</span>
+</span><span class='line'>            <span class="c"># 列表已经处理过了, 分割成空格的前缀和后面的字符</span>
+</span><span class='line'>            <span class="n">prefix</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+</span><span class='line'>                <span class="n">prefix_lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">continue</span>
+</span><span class='line'>            <span class="c"># 我们看看这一行是否有缩进</span>
+</span><span class='line'>            <span class="n">block_size</span> <span class="o">=</span> <span class="n">get_block</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">block_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span class='line'>                <span class="c"># 如果没有缩进, 就根据状况来处理</span>
+</span><span class='line'>                <span class="n">prefix_lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="n">pass_syntax</span><span class="p">:</span>
+</span><span class='line'>                    <span class="k">pass</span>
+</span><span class='line'>                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">flush_left_syntax</span><span class="p">):</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">flush_left_syntax</span><span class="p">):])</span>
+</span><span class='line'>                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">flush_left_empty_line</span><span class="p">):</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>                    <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">leaf_method</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+</span><span class='line'>            <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>                <span class="c"># 如果是一个新的缩进, 我们需要找到缩进的结尾, 然后把这一块数据取出来, </span>
+</span><span class='line'>                <span class="c"># 让branch_method处理下来</span>
+</span><span class='line'>                <span class="n">block</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[:</span><span class="n">block_size</span><span class="p">]</span>
+</span><span class='line'>                <span class="n">prefix_lines</span> <span class="o">=</span> <span class="n">prefix_lines</span><span class="p">[</span><span class="n">block_size</span><span class="p">:]</span>
+</span><span class='line'>                <span class="n">branch_method</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">recurse</span><span class="p">)</span>
+</span><span class='line'>            <span class="c"># 循环消耗prefix_lines, 直到消耗完毕, 任务就完成了.</span>
+</span><span class='line'>        <span class="k">return</span>
+</span><span class='line'>    <span class="n">prefix_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">indentation_method</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+</span><span class='line'>    <span class="n">recurse</span><span class="p">(</span><span class="n">prefix_lines</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>recurse 最后会进入到2个函数里面去, 一个是leaft_method,
+它处理单行的一些语法, 比如: tag > tag2 > tag3 | text,
+也是采用上面那种循环消耗字符串的方法. 这里略过不表.</p>
+
+<p>另一个就是branch_method, 这里面的值是函数html_block_tag.
+它里面是处理缩进后的一些语法. 处理完头部之后,
+会把缩进里面的内容传给recurse函数, 就这样一步步解析玩子树.
+里面的append函数就把解析玩的内容传给output, 最后打印成html代码.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">html_block_tag</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">recurse</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">append</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">append</span>
+</span><span class='line'>    <span class="n">prefix</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">RAW_HTML</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 如果是html代码(&lt;开头)就不解析头部</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 解析子树</span>
+</span><span class='line'>        <span class="n">recurse</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="n">COMMENT_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 注释..</span>
+</span><span class='line'>        <span class="k">pass</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="n">VERBATIM_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+</span><span class='line'>        <span class="c"># 子树不解析, 直接打印出来</span>
+</span><span class='line'>        <span class="n">m</span> <span class="o">=</span> <span class="n">VERBATIM_SYNTAX</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tag</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">start_tag</span><span class="p">,</span> <span class="n">end_tag</span> <span class="o">=</span> <span class="n">apply_jquery_sugar</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">start_tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">stream</span><span class="p">(</span><span class="n">append</span><span class="p">,</span> <span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">end_tag</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="c"># 普通的状况, 解析出tag</span>
+</span><span class='line'>        <span class="n">start_tag</span><span class="p">,</span> <span class="n">end_tag</span> <span class="o">=</span> <span class="n">apply_jquery_sugar</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 输出tag头</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">start_tag</span><span class="p">)</span>
+</span><span class='line'>        <span class="c"># 解析子树</span>
+</span><span class='line'>        <span class="n">recurse</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span class='line'>        <span class="c"># 输出tag尾</span>
+</span><span class='line'>        <span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">end_tag</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>shpaml采用函数嵌套调用的方法来解析和处理树状结构,
+这个也是通常用的解析树状结构的方法(如果树状结构嵌套不多的话),
+对于编程语法的解析, 也可以采用类似这样的方式,
+对于每一个语法规则都有一个函数, 然后嵌套调用解析, 直到解析完毕.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1244,61 +1505,6 @@ shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pysideqwt-open-source/">Pysideqwt开源经验</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-01-06T12:40:35+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2011</time>
-        
-         | <a href="/blog/pysideqwt-open-source/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我现在的项目采用pyqt开发, 利用到了pyqwt, 但是pyqt闭源的话是要授权费用的.
-nokia他们因此弄出了lgpl的pyside. 我现在一直在跟进.
-不过缺少qwt对pyside的绑定, 我的项目跑不起来.</p>
-
-<p>与其等待有人来做这件事, 不如我自己弄吧. 于是我自己就建了一个:
-<a href="http://gitorious.org/pysideqwt#more">http://gitorious.org/pysideqwt#more</a>
-本来预期很难的, 不过实际做起来还是比较顺利的, 现在还在开发中. 期间,
-遇到了不少问题, 也得到了pyside开发小组的帮助.
-甚至还提交了我一生中第一个patch.</p>
-
-<p>项目本身不说明什么, 我只想说一下这个过程是怎么思考的,
-感觉这个才是开源的本质:</p>
-
-<p>我们在项目开发中, 往往会发现某些问题非常通用,
-值得很多企业外部的人一起来解决,
-或者自己的解决方案可以被很多外部人士用到. 这样的话, 选择开源,
-对自己的商业模式没有影响, 反而可以造福他人, 也可以给自己带来无形的收益.
-我想, 这才是开源生存的重要支柱.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/23/">&larr; Older</a>
@@ -1316,6 +1522,10 @@ nokia他们因此弄出了lgpl的pyside. 我现在一直在跟进.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2018-summary/">2018年度总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017-summary/">2017年度总结</a>
       </li>
     
@@ -1329,10 +1539,6 @@ nokia他们因此弄出了lgpl的pyside. 我现在一直在跟进.
     
       <li class="post">
         <a href="/blog/make-more-money/">赚钱就是正义</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ordinary-is-week/">论普通人的弱</a>
       </li>
     
   </ul>
@@ -1377,7 +1583,7 @@ nokia他们因此弄出了lgpl的pyside. 我现在一直在跟进.
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - 机械唯物主义 -
+  Copyright &copy; 2019 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

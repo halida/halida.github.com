@@ -9,8 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="There are some dangerous zones there, waiting for a careless programmer to fall,
-I list some of them, see what you get. First one: spend too much &hellip;">
+  <meta name="description" content="前段时间看到有一个游戏，玩家必须保持自己在监控设备的视线范围内。
+画面上面展示的效果是高亮出监视器的视线范围。如图： 我思考了一下如何做到这点。首先定义问题：
+给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
+（可以用一系列的三角形表示）。 求视线范围的三角形列表， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +81,69 @@ I list some of them, see what you get. First one: spend too much &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/view-point/">求视线范围的算法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-29T10:55:02+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
+        
+         | <a href="/blog/view-point/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前段时间看到<a href="https://back.nothingtohide.cc/">有一个游戏</a>，玩家必须保持自己在监控设备的视线范围内。
+画面上面展示的效果是高亮出监视器的视线范围。如图：</p>
+
+<p><img src="/images/posts/2014_03_30_view.png"></p>
+
+<p>我思考了一下如何做到这点。首先定义问题：
+给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
+（可以用一系列的三角形表示）。</p>
+
+<p>求视线范围的三角形列表，可以从房间所有墙壁的顶点往监控点做视线线段，
+找视线线段和墙壁边的连接中距离监控点最近的点，
+然后可视范围就是这些点和监控点组成的三角形了。</p>
+
+<p>填充三角形，可以用扫描线算法。把三角形根据水平线拆分成2个，
+然后从顶点往下做扫描线，求扫描线和两条边的交点，然后填充里面的区域。
+如下图所示：</p>
+
+<p><img src="/images/posts/2014_03_30_scan.png"></p>
+
+<p>求线段相交点的算法网上搜索一下就可以得到。</p>
+
+<p>估计一下算法复杂度，墙壁边是m(4&lt;m&lt;240)，求交点是m*m，应该是上界。
+常数应该比较大，包括求交点，找出距离监控点最近的点。
+可以优化一下参数，比如变形求交点算法（做垂线），快速找到距离监控点最近的点。</p>
+
+<p>大家想想看有什么更好的解法？</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -898,77 +963,6 @@ Send("author: halida")
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/mobile-html/">针对手机端写网页的方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-12T18:33:37+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2014</time>
-        
-         | <a href="/blog/mobile-html/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在趋势是移动互联网，这方面的需求比较多，如何写一个适应手机的html页面？</p>
-
-<p>首先要能够根据浏览器端的user-agent来判断设备是否是手机，有一个Gem <a href="https://github.com/brendanlim/mobile-fu">mobile-fu</a>来做这个事情。</p>
-
-<p>然后是写对应的页面模板，要让页面的宽度适应屏幕。在<code>header</code>里面加上设置：</p>
-
-<pre><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1"&gt;
-</code></pre>
-
-<p>就是让页面宽度适应屏幕，同时锁定客户端不让屏幕缩放。</p>
-
-<p>html里面的元素设置<code>width: 100%</code>，让它们自动撑大到整个屏幕范围。
-同时最好设置一个<code>max-width</code>，这样万一电脑访问到这个页面，不至于显得太丑。</p>
-
-<p>如果有一个标题图片，需要这样设置，保证根据屏幕大小自动等比例缩放：</p>
-
-<pre><code>img
-  width: 100%
-  height: auto
-</code></pre>
-
-<p>如果你觉得不要放得太大，可以加上一个<code>max-width</code>。</p>
-
-<p>chrome最新版本支持<a href="https://developers.google.com/chrome-developer-tools/docs/mobile-emulation">手机模拟</a>，出来的结果就是这个样子：</p>
-
-<p><img src="/images/posts/2014_01_12_demo.jpg"></p>
-
-<p>参考文档：</p>
-
-<ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">viewport</a></li>
-<li><a href="http://stackoverflow.com/questions/12991351/css-force-image-resize-and-keep-aspect-ratio">图片保持比例缩放</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/10/">&larr; Older</a>
@@ -986,6 +980,10 @@ Send("author: halida")
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2018-summary/">2018年度总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017-summary/">2017年度总结</a>
       </li>
     
@@ -999,10 +997,6 @@ Send("author: halida")
     
       <li class="post">
         <a href="/blog/make-more-money/">赚钱就是正义</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/ordinary-is-week/">论普通人的弱</a>
       </li>
     
   </ul>
@@ -1047,7 +1041,7 @@ Send("author: halida")
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - 机械唯物主义 -
+  Copyright &copy; 2019 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

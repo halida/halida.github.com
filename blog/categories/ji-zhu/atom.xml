@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 技术 | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ji-zhu/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2018-01-07T15:45:50+08:00</updated>
+  <updated>2019-01-06T10:49:07-06:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[postfix架构初探]]></title>
     <link href="http://halida.github.com/blog/postfix/"/>
-    <updated>2012-10-27T23:57:00+08:00</updated>
+    <updated>2012-10-27T23:57:00-05:00</updated>
     <id>http://halida.github.com/blog/postfix</id>
     <content type="html"><![CDATA[<p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
 
@@ -123,7 +123,7 @@ postfix控制了无数小的模块， 而自己可以说是一个路由器的角
   <entry>
     <title type="html"><![CDATA[oauth个人总结]]></title>
     <link href="http://halida.github.com/blog/oauth/"/>
-    <updated>2012-09-12T19:29:00+08:00</updated>
+    <updated>2012-09-12T19:29:00-05:00</updated>
     <id>http://halida.github.com/blog/oauth</id>
     <content type="html"><![CDATA[<p><img src="http://hueniverse.com/wp-content/uploads/2007/12/My-Endpoints-300x267.png" alt="image" /></p>
 
