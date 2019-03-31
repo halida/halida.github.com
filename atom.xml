@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2019-01-06T10:49:07-06:00</updated>
+  <updated>2019-03-31T11:12:39+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[论996]]></title>
+    <link href="http://halida.github.com/blog/996/"/>
+    <updated>2019-03-31T10:44:10+08:00</updated>
+    <id>http://halida.github.com/blog/996</id>
+    <content type="html"><![CDATA[<p>最近996的事情网上讨论很多，这里我也凑热闹提供我个人的一些观点和思考。</p>
+
+<p>首先以程序员的工作效率角度来考虑。
+程序员的工作内容是写代码，是普通脑力下的减熵工作，也就是脑力劳动中的中等体力劳动。
+这种劳动性质消耗的是脑力和时间，每天全力工作的时间其实是不长的，能够6个小时就很不错了。
+中间的低效率磨损时间也算进去，996算是一般辛苦的程度。
+从效率上面讲，可以保持1-2个月的高产出，长期这样做有损劳动者健康，效率也会下降。
+如果是普通竞争节奏的公司，长期965，短期996是合适的。
+如果是高竞争节奏的公司比如创业公司，产能是短板，长期996我觉得也是可以接受的。实际上很可能还会是9127。</p>
+
+<p>从公司管理角度考虑，
+公司产出是以团队为单位，团队需要考虑协作，以及任务分配，
+因为团队协作有瓶颈，瓶颈处需要增加产能，非瓶颈处不需要。
+程序员的工作是减熵，增加熵是相当容易的，所以程序员往往是瓶颈所在。
+编程工作需要加载相关的信息到脑袋中，切换是耗费时间的，
+程序员节点提升产能只能靠冗余和增加程序员工作时间。
+冗余会消耗更多的人力和管理成本，所以一般选择让程序员加班。</p>
+
+<p>从当前的IT市场角度考虑，
+大多数的程序员工作是实现业务逻辑，极少部分是高科技高技术的部分，坑很少。
+现在国家经济前几年处于去杠杆阶段，IT市场饱和，而能够实现业务逻辑的初级程序员每年都有很大的供应，
+毕竟学会写程序并不是很难的事情，高中生半年就可以了。
+这种情况下供需失衡，公司拥有更多的议价空间。根据前面的讨论，让程序员加班是符合公司利益的，
+那么公司就可以调整程序员的工作内容，增加更多的加班时间。
+反之，在程序员稀缺的市场，公司缺少议价空间，就只能通过加薪，减少加班时间，提供其他服务等方法来吸引程序员。</p>
+
+<p>考察反对996的程序员群体，
+从阶级角度，算是中产阶级（收入高一些的无产阶级），
+这个阶级的特点是依附于资产阶级，并不了解真实世界的运作模式，
+在利益受损的时候，看不清问题的本质，而是单纯地反对现象。
+那么搞出来反对996的万民书，也是可以理解的了。
+公司要求996是因为市场供需力量出现了变化。
+程序员反对996，就算成功，公司取消了996，
+降低了效率，程序员反而更难找到工作或者收入更低。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2018年度总结]]></title>
@@ -1151,154 +1193,6 @@ grub里面Linux那一行尾部加上 <code>nomodeset</code>,之后就可以进�
 虽然这样会把本地网络的信息暴露给了全世界，但是想了一下也没有什么风险。</p>
 
 <p>找了半天，买了一个便宜的llj.clicks域名，配置起来，总算完美地解决了这个问题。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[长时API调用设计方案]]></title>
-    <link href="http://halida.github.com/blog/long-request-api-design/"/>
-    <updated>2017-03-28T20:59:03+08:00</updated>
-    <id>http://halida.github.com/blog/long-request-api-design</id>
-    <content type="html"><![CDATA[<p>App B提供一个计算服务，App A需要访问这个服务。可以有两种模式：Pull和Push，各有优缺点。</p>
-
-<p>App A请求App B之后，B返回Job ID，
-Pull模式下，A定时获取一下Job执行状况，当Job完成之后，A获得结果。
-Push模式下，B完成请求之后调用A的Callback，发送结果给A。</p>
-
-<p>Pull模式下网络通讯消耗更多资源，并且不能第一时间返回结果。Push模式需要AB端都提供接口，复杂度更高，并且callback有可能丢失请求。</p>
-
-<p>伪代码如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Pull模式</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># App A</span>
-</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/works&quot;</span><span class="p">,</span> <span class="p">{</span><span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;square&#39;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">}</span>
-</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="n">job_id</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-</span><span class='line'><span class="nb">sleep</span> <span class="mi">3</span>
-</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/jobs/12&quot;</span>
-</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
-</span><span class='line'><span class="nb">sleep</span> <span class="mi">3</span>
-</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/jobs/12&quot;</span>
-</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="ss">result</span><span class="p">:</span> <span class="mi">144</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Push模式</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># App A</span>
-</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/works&quot;</span><span class="p">,</span> <span class="p">{</span><span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;square&#39;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span> <span class="ss">callback</span><span class="p">:</span> <span class="s1">&#39;A/api/check_job/:job_id&#39;</span><span class="p">}</span>
-</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="n">job_id</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/check_job&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">handle_result</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># App B</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/works&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">Worker</span><span class="o">.</span><span class="n">perform_async</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/jobs&#39;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="no">Job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:job_id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">Job</span><span class="o">.</span><span class="n">as_json</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Job</span> <span class="o">&lt;</span> <span class="no">Model</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span>
-</span><span class='line'>    <span class="k">case</span> <span class="nb">self</span><span class="o">.</span><span class="n">type</span>
-</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;square&#39;</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="mi">10</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="ss">:running</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">3</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="mi">30</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">save</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">3</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">value</span> <span class="o">**</span> <span class="mi">2</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="ss">:done</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">callback</span>
-</span><span class='line'>      <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="nb">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">as_json</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Worker</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">job</span><span class="o">.</span><span class="n">perform</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

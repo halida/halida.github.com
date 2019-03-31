@@ -9,10 +9,14 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="考虑可以同时用来应对程序和人都需要阅读状况的通用数据格式，
-几个层面： 首先是数据格式，需要能够支持：string, bool, number, time。
-它们都应该是标准化了的。考虑不增加symbol，因为和string有概念上面的重复，
-使用上会产生困扰。 然后是数据的组织方式。 &hellip;">
+  <meta name="description" content="最近房子装修，我花费了大量的时间研究装修需要注意的方方面面，
+下面分享一些自己的心得，希望对大家有用。(不定期更新中) 家装设计策略
+是否要用装修公司
+装修如何选择窗户
+是否要用中央空调
+乐从选购家具经验
+杭州宜家购物心得
+更好的住宅行业 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +85,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/zhuangxiu/">装修</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-06T15:49:17+08:00" pubdate data-updated="true">Sep 6<span>th</span>, 2015</time>
+        
+         | <a href="/blog/zhuangxiu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近房子装修，我花费了大量的时间研究装修需要注意的方方面面，
+下面分享一些自己的心得，希望对大家有用。(不定期更新中)</p>
+
+<ul>
+<li><a href="http://blog.linjunhalida.com/blog/design-home/">家装设计策略</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/zhuangxiugongshi/">是否要用装修公司</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/window/">装修如何选择窗户</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/vrv/">是否要用中央空调</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/choose-furniture/">乐从选购家具经验</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/ikea/">杭州宜家购物心得</a></li>
+<li><a href="http://blog.linjunhalida.com/blog/better-house-market">更好的住宅行业</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1052,86 +1106,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-deployment/">Rails项目的发布</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-28T10:34:22+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2015</time>
-        
-         | <a href="/blog/rails-deployment/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://capistranorb.com/">capistrano</a>/<a href="https://github.com/mina-deploy/mina">mina</a>可以用来发布rails项目，它们是应用发布的最佳实践。</p>
-
-<p>关于应用发布，需要满足以下要求：</p>
-
-<ul>
-<li>发布的版本确保可以运行之后，才替代现有版本。</li>
-<li>留存有旧的版本，必要的时候可以恢复。</li>
-<li>发布版本不应该带有版本管控信息，防止不必要的信息泄漏。</li>
-<li>配置文件，数据文件和代码分离：另外存放，不和发布的代码混在一起。</li>
-</ul>
-
-
-<p>capistrano/mina的解决方案：</p>
-
-<ul>
-<li>发布的各个项目版本放在releases目录下面，各个版本的目录名称按照1，2，3的顺序递增。</li>
-<li>current是真正跑的版本，是指向release的软链接，当新项目发布成功的时候，再修改软链接。</li>
-<li>scm目录存放带有项目管控的代码。</li>
-<li>shared目录存放配置文件，数据文件，按照需要软链接到各个发布版本里面去。</li>
-</ul>
-
-
-<p>配置：</p>
-
-<p>capistrano（以下简称cap）写一个<code>config/deploy.rb</code>，里面定义了一系列的rake任务，以及一系列的role（角色，比如数据库，应用服务器，网站服务器），
-rake任务定义了在什么role上面执行什么命令。各种配置环境写在config/deploy/文件夹里面，命名<code>producton</code>, <code>staging</code>等，
-当需要发布项目的时候，执行<code>cap production deploy</code>，就根据配置环境和deploy脚本执行操作。</p>
-
-<p>执行任务过程如下：</p>
-
-<ul>
-<li>创建目标环境releases/n</li>
-<li>scm获取最新的项目，然后根据配置中指定的版本号，拷贝代码到releases/n</li>
-<li>初始化releases/n</li>
-<li>把app/release/23链接到app/current，然后重启服务</li>
-<li>清理releases/目录，只保留最新的几个版本</li>
-</ul>
-
-
-<p>cap在服务器上面执行代码的方式，是通过维护一个ssh连接实现的，每次执行任务都要上传命令，返回结果，如果ssh连接比较慢的话，整体消耗时间就很长。
-mina它的原理是生成一个bash脚本，上传到服务器上面执行，这样执行效率比cap高太多，大家可以考虑作为替代使用。</p>
-
-<p>这种方式是传统的编译发布，另外有直接发布环境的方法，比如用docker。不过这种发布方式我没有研究清楚，等研究过之后再比较吧。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1149,6 +1123,10 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/996/">论996</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2018-summary/">2018年度总结</a>
       </li>
     
@@ -1162,10 +1140,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
     
       <li class="post">
         <a href="/blog/remote-windows-server-commandline/">windows服务器远程跑命令行代码</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/make-more-money/">赚钱就是正义</a>
       </li>
     
   </ul>

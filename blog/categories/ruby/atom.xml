@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2019-01-06T10:49:07-06:00</updated>
+  <updated>2019-03-31T11:12:39+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -146,7 +146,7 @@ or you can debug it yourself by add log to the gem source code.</p>
   <entry>
     <title type="html"><![CDATA[librr介绍]]></title>
     <link href="http://halida.github.com/blog/librr/"/>
-    <updated>2013-12-11T19:15:00-06:00</updated>
+    <updated>2013-12-11T19:15:00+08:00</updated>
     <id>http://halida.github.com/blog/librr</id>
     <content type="html"><![CDATA[<p><img src="/images/posts/2013_12_11_module.jpeg"></p>
 
@@ -237,7 +237,7 @@ or you can debug it yourself by add log to the gem source code.</p>
   <entry>
     <title type="html"><![CDATA[ruby内存泄漏调试方法]]></title>
     <link href="http://halida.github.com/blog/ruby-memory-leak-debug/"/>
-    <updated>2013-11-27T20:44:00-06:00</updated>
+    <updated>2013-11-27T20:44:00+08:00</updated>
     <id>http://halida.github.com/blog/ruby-memory-leak-debug</id>
     <content type="html"><![CDATA[<p><img src="/images/posts/2013_11_27_leak.jpg"></p>
 
