@@ -9,10 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="什么是scons? scons不是上面的小甜饼, 而是一个基于python的自动化构建工具.
-和make一个性质. 不过, 更高级一些. 为什么要用它呢? 高阶的make工具 make是不错, 但是太过简单了, 很多东西都要重复写, 很多事情都做不了..
-我们需要一个更高级的工具.
-python &hellip;">
+  <meta name="description" content="什么是宣告式编程? 我们编程的时候, 往往是实现某个领域的业务逻辑, 而这些业务逻辑,
+往往可以用定义的方式来表述. 程序员需要做的工作是,
+如何把把这些业务逻辑的表述(信息), 用写程序的方式又好又快地实现出来.
+如果你是一个资深程序员, 你会发现, 自己会从: 根据需求, 命令式地写代码, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,274 @@ python &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/python-declarative-programming/">简单python_宣告式编程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-07T22:39:31+08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2010</time>
+        
+         | <a href="/blog/python-declarative-programming/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是宣告式编程?</h2>
+
+<p><img src="http://i.ehow.com/images/a06/gg/32/declarative-statement_-800X800.jpg" alt="image" /></p>
+
+<p>我们编程的时候, 往往是实现某个领域的业务逻辑, 而这些业务逻辑,
+往往可以用定义的方式来表述. 程序员需要做的工作是,
+如何把把这些业务逻辑的表述(信息), 用写程序的方式又好又快地实现出来.
+如果你是一个资深程序员, 你会发现, 自己会从: 根据需求, 命令式地写代码,
+控制机器一个动作又一个动作; 慢慢转移到: 用合适的文本描述需求,
+然后想办法写个简单的解释器, 把这个文本转换为可执行的程序.
+这种开发程序的方式, 我们叫它
+<a href="http://zh.wikipedia.org/zh/%E5%AE%A3%E5%91%8A%E5%BC%8F%E7%B7%A8%E7%A8%8B">宣告式編程</a>.</p>
+
+<p>大多数情况下, 我们会受到工具的限制, 不能很自然地完成这样的一个转换工作,
+如果你有遇到这样的问题, 我建议你, 使用python作为编程语言.</p>
+
+<h2>为什么用python?</h2>
+
+<p>为了能够很好地支持宣告式編程, 我们需要满足几点:</p>
+
+<ul>
+<li><p>编程语言能够方便地完成数据结构的定义, 并能嵌入在代码当中.</p>
+
+<p>python内嵌有list, dict, set等数据结构, 并且能够把它们组合起来,
+搭建更复杂的结构. 而它们的定义, 是非常简单和清晰的:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+</span><span class='line'>    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;me&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">address</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;shanghai&#39;</span><span class="p">,</span> <span class="s">&#39;chengdu&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>也能够很方便地访问和修改这些数据结构.</p>
+
+<p>python是动态语言, 不需要用户去具体处理资源分配的问题,
+python会帮助处理这些琐碎的事情.</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;halida&#39;</span>
+</span><span class='line'><span class="n">data</span><span class="p">[</span><span class="s">&#39;address&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;kunshang&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>并且能够根据这些数据结构动态地完成一些具体的操作.</p>
+
+<p>python具有很高的动态特性, 能够在运行时动态生成, 修改对象的特性:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">P</span><span class="p">():</span> <span class="k">pass</span>
+</span><span class='line'><span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">()</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">v</span> <span class="c"># 错误! p没有v</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 我们给它设置一个:</span>
+</span><span class='line'><span class="n">P</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="mi">12</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">v</span> <span class="c"># --&gt; 12</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们具体去看一个示例吧.</p>
+
+<h2>示例: 配置界面</h2>
+
+<p>我们需要写一个简单的配置用户界面, 用户可以设置一些配置功能.
+我们一开始的考虑是, 完全手写, 或者采用WYSIWYG工具,
+拖拖拉拉把界面整理出来, 然后再写一个set/get的方法. 比方说, 这样写代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">ConfigDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">leName</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+</span><span class='line'>         <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">setUi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">leName</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+</span><span class='line'>         <span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+</span><span class='line'>         <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">getUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>         <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>         <span class="n">data</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leName</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+</span><span class='line'>         <span class="n">data</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sbValue</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+</span><span class='line'>         <span class="o">...</span>
+</span><span class='line'>         <span class="k">return</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是如果需求变动了怎么办? 如果配置需要添加, 修改?
+那么我们就再去修改程序或者代码. 问题是, 程序写了有一段时间了,
+变得陌生起来, 除非通读一遍, 不然很容易修改错. 并且代码有点散乱,
+就像上面的代码, 在setUi里面写了逻辑, 如果在getUi里面忘记写了就麻烦了.</p>
+
+<p>pythonic的一个原则: Simple is better than complex.
+上面写代码的方式不能反映问题的本质, 我们需求的本质信息,
+是我们需要配置什么内容, 以及这些内容应该用什么方式表现出来.
+在上面的例子里面, 就是name和value. 我们用python数据结构的方式,
+重新整理一遍需要配置的内容:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">CONFIG</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">unicode</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样是不是很清晰?</p>
+
+<p>我们还要定义类型对应的控件, 以及具体处理数据的方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">TYPES</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+</span><span class='line'>    <span class="nb">unicode</span><span class="p">:</span> <span class="p">(</span><span class="n">QLineEdit</span><span class="p">,</span> <span class="s">&#39;setText&#39;</span><span class="p">,</span> <span class="s">&#39;text&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nb">int</span><span class="p">:</span> <span class="p">(</span><span class="n">QSpinBox</span><span class="p">,</span> <span class="s">&#39;setValue&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>现在我们需要把这样的配置转换为具体的界面, 下面就是具体转换的代码,
+用命令式就很直截了当了:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">class</span> <span class="nc">ConfigDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="k">for</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="p">:</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TYPES</span><span class="p">[</span><span class="nb">type</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nb">type</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">setUi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">w</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><span class='line'>            <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">types</span><span class="p">[</span><span class="nb">type</span><span class="p">][</span><span class="mi">1</span><span class="p">])(</span><span class="n">value</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">getUi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+</span><span class='line'>            <span class="n">w</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>            <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">types</span><span class="p">[</span><span class="nb">type</span><span class="p">][</span><span class="mi">2</span><span class="p">])()</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">data</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>要注意到, 我们能够这样&#8217;宣告式&#8217;地写设置内容, 有几个前提:</p>
+
+<ul>
+<li><p>设置部分的信息是属于变动的信息</p>
+
+<p>我们实现一个宣告式的平台付出的代价能够被需求变动挽回的时间损失所弥补.
+如果设置永远都不需要去改, 我们就没有必要这样设计了.
+在上面的例子对应的真实需求里面, 开始的时候也是用最上面的方法来完成.
+然后发生了需求变更, 再改成了后面宣告的方式.
+这里也反映了python的一个优点: 代码足够少, 足够清晰,
+能够非常方便和快速地重构掉.</p></li>
+<li><p>基础是不变的</p>
+
+<p>在上面的例子里面, 我们默认了一些前提:
+这个设置见面是在一个QDialog里面, 如果要求配置是分类,
+分多个QDialog怎么办? 这里我们需要进行一下预估,
+什么信息是&#8217;泰山&#8217;一样永久不变, 什么信息是&#8217;羽毛&#8217;一样飘忽不定&hellip;
+这个需要程序员对业务足够熟悉.</p></li>
+</ul>
+
+
+<h2>结论</h2>
+
+<p>当我们需要实现一个功能的时候, 首先去探索, 这个功能的本质信息是那些?
+这样的信息中, 那些是固定的? 哪些是变动的? 然后我们根据信息的本质属性,
+选择对应的处理方式. 如果信息是经常变动的,
+而它们变动的范围也是可以包括在一个问题域里面, 我们可以用宣告式编程,
+来把他们描述出来. 不过, 如果这个问题域足够大, 足够精深,
+我们恐怕要考虑专门做一门语言来包容它们了.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1803,146 +2071,6 @@ lrelease-qt4 plabel_zh_CN.ts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/minecraft/">Minecraft介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-11-12T10:34:10+08:00" pubdate data-updated="true">Nov 12<span>th</span>, 2010</time>
-        
-         | <a href="/blog/minecraft/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>什么是minecraft?</h2>
-
-<p>随机生成的世界, 完全自由建设, 合成系统, 晚上的怪物, 铁路</p>
-
-<p>下雪了</p>
-
-<p><img src="http://minecraftgallery.com/wp-content/uploads/2010/10/inceptionSnowFort-610x260.jpg" alt="image" /></p>
-
-<p>未来世界</p>
-
-<p><img src="http://minecraftgallery.com/wp-content/uploads/2010/10/FuturisticCityBiome-610x260.png" alt="image" /></p>
-
-<p>6英里</p>
-
-<p><embed src="http://player.youku.com/player.php/sid/XMjE0NzIzNTEy/v.swf" quality="high" width="480" height="400" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed></p>
-
-<p>视频</p>
-
-<ul>
-<li><a href="http://www.google.com/search?q=minecraft+site:youtube.com">youtube视频</a></li>
-<li><a href="http://www.google.com/search?q=minecraft+site:youku.com">优酷视频</a></li>
-</ul>
-
-
-<p>图片</p>
-
-<ul>
-<li><a href="http://minecraftgallery.com/">专门的图片站</a></li>
-<li><a href="http://www.minecraftforum.net/viewtopic.php?f=1012&amp;t=22626">多人模式图片</a></li>
-<li><a href="http://www.minecraftforum.net/viewtopic.php?f=35&amp;t=26376">很多用户在发自己造的房子</a></li>
-</ul>
-
-
-<h2>多说无益, 直接点开来玩吧</h2>
-
-<ul>
-<li><a href="http://minecraft.net/play.jsp">单人自由模式</a> 可以随意建造, 资源无限</li>
-<li><a href="http://minecraft.net/servers.jsp">多人自由模式</a> 直接去到别人做的世界玩玩</li>
-<li><a href="http://minecraft.net/game/">生存模式</a> 有血条, 生命值, 物品栏, 怪物, 合成系统, 主要的乐趣在这个模式下.</li>
-</ul>
-
-
-<p>97块人民币, 在线帐号, 至少3个月不腻, 值了!</p>
-
-<h2>爽点在哪里?</h2>
-
-<ul>
-<li>一个随机生成的世界</li>
-<li>你可以很简单地建造</li>
-<li>资源需要自己去开采, 为了宝石, 需要挖到地底</li>
-<li>合成建造一些奇奇怪怪的东西, 比如铁路, 玻璃, 逻辑电路, 过山车就不算什么了, 有人做了CPU出来..</li>
-<li>多人模式, 可以合作建造, 可以玩RPG, 可以战争..</li>
-<li>可以在浏览器内打开(java写的)</li>
-</ul>
-
-
-<h2>如何开始?</h2>
-
-<p>可以看 <a href="http://minecraftwiki.net/">wiki</a> , 里面有详细的帮助.</p>
-
-<h2>minecraft定制</h2>
-
-<p>官方论坛有<a href="http://www.minecraftforum.net/viewforum.php?f=25">专门的区域</a>讨论这个.</p>
-
-<p><a href="http://www.minecraftwiki.net/wiki/Tutorials/Saved_Data_Dropbox_Guide_Saves_Only">同步minecraft文件</a></p>
-
-<p>为了好看, 我加了几个显示模组:</p>
-
-<ul>
-<li><a href="http://www.minecraftforum.net/viewtopic.php?f=25&amp;t=65936">AaGeOn&rsquo;s BumpMaft HD texture Pack</a></li>
-<li><a href="http://www.minecraftforum.net/viewtopic.php?f=25&amp;t=64678">Aza&rsquo;s Arid texture pack</a></li>
-<li>小地图 <a href="http://www.minecraftforum.net/viewtopic.php?f=25&amp;t=64678">mrmmods</a></li>
-</ul>
-
-
-<h2>minecraft修改</h2>
-
-<p><a href="http://www.minecraftwiki.net/wiki/Programs_and_Editors">修改器目录</a></p>
-
-<p>但我在ubuntu下面, 只有MCPlayerEdit最好用, 因为是python的.</p>
-
-<h2>搭建minecraft服务器</h2>
-
-<p><a href="http://www.minecraftwiki.net/wiki/Server">如何搭建官方服务器</a></p>
-
-<p>第三方工具 <a href="http://minecraftwiki.net/wiki/McMyAdmin">McMyAdmin</a></p>
-
-<h2>ubuntu下面注意!</h2>
-
-<p>因为minecraft是用java写的, 会和ibus输入法冲突(找了半天才知道),
-造成无法输入键盘命令, 玩之前需要:</p>
-
-<pre><code>pkill ibus
-</code></pre>
-
-<h2>资源</h2>
-
-<ul>
-<li><a href="http://minecraft.net">官方网站</a></li>
-<li><a href="http://www.minecraftforum.net/index.php">官方论坛</a></li>
-<li><a href="http://minecraftwiki.net/">wiki</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/25/">&larr; Older</a>
@@ -1960,6 +2088,10 @@ lrelease-qt4 plabel_zh_CN.ts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/programmer-class/">程序员为什么是低级兵种</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/996/">论996</a>
       </li>
     
@@ -1973,10 +2105,6 @@ lrelease-qt4 plabel_zh_CN.ts
     
       <li class="post">
         <a href="/blog/midlife-crisis/">论中年危机以及应对策略</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/remote-windows-server-commandline/">windows服务器远程跑命令行代码</a>
       </li>
     
   </ul>
