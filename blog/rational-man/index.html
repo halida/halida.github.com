@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>如何使用预编译头以及预编译头的原理 - 网络寻租</title>
+  <title>正确理解经济学的理性人假设 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="问题 在c/c++里面,如果一个xxx.c要暴露出接口给其他文件的话,一般是提供一个xxx.h的文件作为接口,然后其他文件会把xxx.h文件包含进自己里面去,这样就可以知道xxx.c提供了什么. 但是会出现这样的问题,如果一个xxx.h文件被包含了N次,那么项目在编译的时候, &hellip;">
+  <meta name="description" content="理性人假设只是一个预设的公理，用来推理出来各种经济学定理。
+并不代表市场上面所有人都是理性人，而是只有理性人才能够更好地生存下来。 举例：假设有100只猴子，每只猴子都随机在一个地方开加油站。
+随着时间过去，只有在交通要道开加油站的猴子，最后才可以赚钱生存下来，其他猴子都饿死了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/how-to-use-pre-compiled-header/">
+  <link rel="canonical" href="http://halida.github.com/blog/rational-man/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">如何使用预编译头以及预编译头的原理</h1>
+      <h1 class="entry-title">正确理解经济学的理性人假设</h1>
     
     
       <p class="meta">
@@ -97,7 +99,7 @@
   
 
 
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+<time datetime="2019-04-08T21:02:05+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2019</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,74 +108,16 @@
   </header>
 
 
-<div class="entry-content"><h2>问题</h2>
+<div class="entry-content"><p>理性人假设只是一个预设的公理，用来推理出来各种经济学定理。
+并不代表市场上面所有人都是理性人，而是只有理性人才能够更好地生存下来。</p>
 
-<p>在c/c++里面,如果一个xxx.c要暴露出接口给其他文件的话,一般是提供一个xxx.h的文件作为接口,然后其他文件会把xxx.h文件包含进自己里面去,这样就可以知道xxx.c提供了什么.</p>
+<p>举例：假设有100只猴子，每只猴子都随机在一个地方开加油站。
+随着时间过去，只有在交通要道开加油站的猴子，最后才可以赚钱生存下来，其他猴子都饿死了。
+那么看起来市场上面只有“理性”的猴子。</p>
 
-<p>但是会出现这样的问题,如果一个xxx.h文件被包含了N次,那么项目在编译的时候,会把这部分的代码重复编译N次,当这个xxx.h文件非常大的时候,编译速度就很慢了.比如xxx.h代表了一个库.(Qt,
-windows等)</p>
+<p>为了简化以上的推理过程，我们就给出理性人假设：市场上都是理性人，理性人会选择交通要道上面开加油站，所以加油站都在交通要道上面。</p>
 
-<h2>解法</h2>
-
-<p>为了解决这个问题,我们可以先把头文件编译好,然后再包含到其他文件里面去.这样,每个引用了该头文件的源文件就不需要再次编译这部分了.</p>
-
-<h2>示例</h2>
-
-<p>来自:
-<a href="http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc">http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc</a></p>
-
-<p>建立以下文件:</p>
-
-<p>stdafx.h:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;string&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>a.cpp:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &quot;stdafx.h&quot;</span>
-</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Hi&quot;</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>编译和执行命令:</p>
-
-<pre><code>g++ -c stdafx.h -o stdafx.h.gch
-g++ a.cpp
-./a.out
-</code></pre>
-
-<p>删除了stdafx.h文件之后,执行g++ a.cpp照样编译成功.</p>
-
-<p>实现的原理很简单:</p>
-
-<ul>
-<li>首先把一个stdafx.h头文件,编译成stdafx.h.gch.</li>
-<li>当执行<code>g++ a.cpp</code>的时候,g++编译器会先去找stdafx.h.gch， 把它包含进来.这样就节省了编译时间.</li>
-</ul>
-
-
-<p>如果stdafx.h被很多源文件引用,节省的编译时间是很可观的.</p>
-
-<h2>结论</h2>
-
-<p>利用预编译头文件,可以很明显地感觉到编译速度的提升.建议大家尝试一下.</p>
-
-<p>还有一个有点相关的问题,如果修改了一个用到很多的头文件,就需要把所有用到这个头文件的源文件编译一遍,基本上等于重新编译了.所以,尽量少修改这种头文件.</p>
+<p>理性人其实也可以看作是一个进化论的推论。</p>
 </div>
 
 
@@ -196,7 +140,7 @@ g++ a.cpp
   
 
 
-<time datetime="2010-10-26T14:53:37+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2010</time>
+<time datetime="2019-04-08T21:02:05+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2019</time>
       
 
 
@@ -204,7 +148,7 @@ g++ a.cpp
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/how-to-use-pre-compiled-header/" data-via="" data-counturl="http://halida.github.com/blog/how-to-use-pre-compiled-header/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/rational-man/" data-via="" data-counturl="http://halida.github.com/blog/rational-man/" >Tweet</a>
   
   
   
@@ -213,10 +157,8 @@ g++ a.cpp
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/docstring/" title="Previous Post: docstring">&laquo; docstring</a>
+        <a class="basic-alignment left" href="/blog/programmer-class/" title="Previous Post: 程序员为什么是低级兵种">&laquo; 程序员为什么是低级兵种</a>
       
-      
-        <a class="basic-alignment right" href="/blog/learn-sqlalchemy/" title="Next Post: sqlalchemy学习">sqlalchemy学习 &raquo;</a>
       
     </p>
   </footer>
@@ -312,8 +254,8 @@ g++ a.cpp
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/how-to-use-pre-compiled-header/';
-        var disqus_url = 'http://halida.github.com/blog/how-to-use-pre-compiled-header/';
+        var disqus_identifier = 'http://halida.github.com/blog/rational-man/';
+        var disqus_url = 'http://halida.github.com/blog/rational-man/';
         var disqus_script = 'embed.js';
       
     (function () {

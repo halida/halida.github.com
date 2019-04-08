@@ -9,9 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我们年轻的时候，可能是发自内心的写作冲动，亦或是老师的布置，或长或短，都写过一段时间的日记。
-那个时候的日记，更像是心情日记，想到什么就写到什么，记录下青春期那复杂混乱又绚丽的内心世界。 很少有人能够把这个习惯保留到现在。坚持了一段时间，但翻动日记的频率，随着热情渐渐消退了。
-不过， &hellip;">
+  <meta name="description" content="只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。 基本思路是这样： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,195 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ruby-memory-leak-debug/">Ruby内存泄漏调试方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-27T20:44:00+08:00" pubdate data-updated="true">Nov 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/ruby-memory-leak-debug/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_11_27_leak.jpg"></p>
+
+<p>只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。</p>
+
+<p>基本思路是这样：等待内存泄露到一定程度，进程的内存里面会大量充斥着没有被释放的对象，
+随机获取内存中的数据，就可以知道是什么对象泄露了，从而定位问题。</p>
+
+<p>我们先开始一个实验。创建文件leak.rb：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="mi">1000000</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;hello&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">while</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个文件生成了太多没有释放的字符串，并且一直处于循环等待状态。</p>
+
+<p>实际的应用程序代码比较多，不是那么明显就能发现内存泄露的代码，需要通过调试寻找线索。</p>
+
+<p>首先我们要编译一个带有debug信息的ruby版本。参数加上<code>-O0 -g</code>，<code>O0</code>是为了防止优化掉一些调试的符号表信息。
+如果你用的是rvm，可以采用下面的脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 清空rvm编译环境参数</span>
+</span><span class='line'><span class="nb">unset </span>rvm_configure_env
+</span><span class='line'>
+</span><span class='line'><span class="c"># 编译一个单独的ruby版本，需要花费一定时间</span>
+</span><span class='line'>rvm install 2.0.0-debug --debug -j 3 -- --enable-shared <span class="nv">optflags</span><span class="o">=</span><span class="s2">&quot;-O0 -ggdb&quot;</span> <span class="nv">debugflags</span><span class="o">=</span><span class="s2">&quot;-ggdb3&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 采用并且检查设置</span>
+</span><span class='line'>rvm use 2.0.0-debug
+</span><span class='line'>ruby -rrbconfig -e <span class="s1">&#39;puts RbConfig::CONFIG[&quot;optflags&quot;]&#39;</span>
+</span><span class='line'><span class="c"># 结果应该带有：-O0 -ggdb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后我们在这个环境中执行程序，实际程序不要忘记安装支持的gem：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ruby leak.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之后，我们需要调试这个程序。如果你在linux下面，请使用<code>gdb</code>，
+如果在OSX下面，请使用编译ruby工具链中的debug工具，
+在我的机器OSX上面是用clang来编译的，所以我采用的是<code>lldb</code>，
+下面的例子以我的机器为准，gdb的命令其实也是一样的。</p>
+
+<p>另外开一个终端，启动<code>lldb</code>，然后连接上跑起来的进程：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">(</span>lldb<span class="o">)</span> attach 77226
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面改成你用<code>ps aux|grep ruby</code>找到的进程号。</p>
+
+<p>attach做的事情就是在你调试进程里面开一个线程，这样就能够获得所有的内存信息，
+同时也不影响程序正常运行（只要你保证线程安全）。</p>
+
+<p>然后我们要知道进程内存消耗状况。在调试环境里面，我们可以执行C语言的函数，
+其中<code>rb_eval_string</code>可以用来直接执行ruby代码。
+我们首先需要做的是用<code>ObjectSpace</code>来遍历和列出所有ruby对象：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;GC.start&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_objs = Hash.new 0&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object {|o| $db_objs[o.class] += 1}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_objs.to_s&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
+回到执行<code>ruby leak.rb</code>的终端，可以看到打印出来的结果。
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;File.write(&#39;sys.log&#39;, $db_objs.to_s)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">=&gt;</span><span class="mi">1005019</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">RubyVM</span><span class="o">::</span><span class="no">InstructionSequence</span><span class="o">=&gt;</span><span class="mi">577</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Hash</span><span class="o">=&gt;</span><span class="mi">28</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>发现String对象出奇地多，应该是内存泄露的主要组成部分。我们采样一下数据，看看是什么样的字符串：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_strs = []&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object.each_with_index {|o, i| $db_strs &lt;&lt; o if o.class == String and i%1000==0}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_strs.sample(10).to_s&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>根据这个信息，我们回到源代码里面，找到对应的部分，思考为什么没有释放这个字符串，从而解决内存泄露的问题。</p>
+
+<p>我们甚至可以利用<code>rb_eval_string</code>来动态修改代码和解决bug，不过在这个例子里面没有办法删除掉造成内存泄露的<code>s</code>对象。如果你发现有方法，还请告诉我。</p>
+
+<p>但是如果内存泄露发生在C语言部分，应该如何发现？这个留到下次再介绍。
+还有就是如何调试生产环境的进程，这个也请等我研究清楚之后再分享给大家。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/">http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/</a></li>
+<li><a href="http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/">http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1050,138 +1240,6 @@ View就是html的页面，Controller就是针对事件做出的反应。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/website-cache/">网站cache机制</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-11T19:45:00+08:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
-        
-         | <a href="/blog/website-cache/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/cache.jpeg"></p>
-
-<p>在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
-我在这里整理一下自己在网站开发中使用cache的思路。</p>
-
-<p>首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
-中间经过了很多的层级，按照用户端到服务器端的距离，可以分为：</p>
-
-<ul>
-<li>用户端：用户在浏览器上面进行一个操作。</li>
-<li>http通讯：浏览器根据用户操作，发起一个http请求并收到来自服务器的回复。</li>
-<li>页面渲染：网站服务器根据请求渲染页面返回用户。</li>
-<li>数据model：根据请求生成的对象模型和业务模型。</li>
-<li>数据库查询：服务器上面缓存的数据，提供数据持久化和访问服务。</li>
-</ul>
-
-
-<p><img src="/images/posts/website_model.png"></p>
-
-<p>同时，我们可以发现一些特性和规律：</p>
-
-<ul>
-<li>用户的访问符合2/8原理，大部分的访问集中在局部的功能和页面上面。</li>
-<li>上层访问下层资源的频率，也大致符合2/8原理。</li>
-<li>用户的响应时间取决于一次请求的深度。</li>
-</ul>
-
-
-<p>我们可以根据这些特性，利用cache机制来优化整体访问延迟时间，以及优化服务器性能。</p>
-
-<h2>方法和注意点</h2>
-
-<h3>短接</h3>
-
-<p>针对每个请求，越在上层返回，请求处理消耗的时间越少。所以如果要尽量提升性能，就要尽量短接请求。
-我们可以用cache，预测结果，拆分请求的方式来减少反应时间。</p>
-
-<ul>
-<li>cache：如果下面层级的数据没有更新，可以缓存这部分的数据，下次请求进来的时候返回，消除下层操作的时间成本和性能消耗。</li>
-<li>预测结果：针对结果确定的请求，可以先返回结果，后进行操作。
-比如浏览器端用户点击关注按钮，可以先更新页面，然后ajax发起请求；服务器端直接返回成功的结果，后台异步再进行处理。</li>
-<li>拆分请求：如果一个请求有多步操作，那么可以先返回快的操作，然后再返回慢的操作。
-比如先返回外框页面，通过ajax获得内部耗时区块信息；或者服务端多线程渲染不同的区块，最后合并返回给用户。</li>
-</ul>
-
-
-<p>针对不同层级的cache短接方法：</p>
-
-<ul>
-<li>用户端：用js缓存数据，用户点击的时候，渲染对应的区块。</li>
-<li>http：如果用户已经请求过这个页面，而这个页面也没有更改过，可以利用<a href="http://www.mobify.com/blog/beginners-guide-to-http-cache-headers/">http的cache机制</a>只返回http头，基本不消耗服务器资源以及砍掉服务器准备数据和渲染时间。</li>
-<li>页面渲染：如果页面其中一个区块的数据没有变更，直接返回上次渲染的页面。</li>
-<li>数据model和数据库查询：同上，数据没有变更，就可以返回上次生成的对象。</li>
-</ul>
-
-
-<h3>平衡</h3>
-
-<p>在进行cache设计的时候，我们需要平衡好开发成本，系统复杂度，性能，以及资源消耗，
-要对做的事情，带来什么样的后果和收益心中有数，针对不同的策略进行权衡。</p>
-
-<ul>
-<li><p>页面渲染：如果一个页面包含有静态的部分和动态的部分，可以把他们拆分开来，缓存静态的部分，节省这部分的渲染时间。
-但是如果这两块页面混杂起来，需要花费一些心思，比如用js来动态合并。由此给前端带来一定的复杂度。这部分的复杂度会带来更多的bug，更高的测试成本，以及未来改动更加困难。</p></li>
-<li><p>caceh机制需要考虑过期的方式。如何应对嵌套cache？如果cache内部是根据多个对象渲染的，
-是基于推还是基于拉的方式让cache过期？rails在这方面有<a href="https://github.com/rails/cache_digests">比较成熟的解决方案</a>。</p></li>
-</ul>
-
-
-<h3>降维</h3>
-
-<p>如果cache的数据维度过多，会造成cache爆炸。比如说页面需要根据语言，用户，国家等来生成，各维护一个版本的cache的话就有点多了，需要想办法降低维度：</p>
-
-<ul>
-<li>合并重复的数据，比如合并一些重复的国家和语言。</li>
-<li>拆分静态和动态的数据，比如前端js动态更新页面来做多国语言和跟用户有关的内容。不过也需要权衡由此带来的复杂度。</li>
-</ul>
-
-
-<p>同时也要考虑这些手段带来的复杂度是否能够把控。</p>
-
-<h3>热点优化</h3>
-
-<p>2/8原理：在消耗资源多的地方使力。比如在网站首页，列表的前几页等经常访问到的页面花大功夫，
-而不要太花时间去优化很少被访问到的地方。</p>
-
-<h3>ORM cache</h3>
-
-<p>csdn robbin<a href="http://robbinfan.com/blog/38/orm-cache-sumup">针对ORM cache优化</a>非常有心得，可以学习一下。</p>
-
-<h3>cache服务器</h3>
-
-<p>cache的实现方式，可以用文件，内存，或者单独的cache服务器。
-如果服务端采用多个进程来服务，最好采用一个cache服务器，
-这样不会出现每个进程各自维护一份同样内容cache的状况。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -1199,6 +1257,10 @@ View就是html的页面，Controller就是针对事件做出的反应。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/rational-man/">正确理解经济学的理性人假设</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/programmer-class/">程序员为什么是低级兵种</a>
       </li>
     
@@ -1212,10 +1274,6 @@ View就是html的页面，Controller就是针对事件做出的反应。</p>
     
       <li class="post">
         <a href="/blog/2017-summary/">2017年度总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/midlife-crisis/">论中年危机以及应对策略</a>
       </li>
     
   </ul>
