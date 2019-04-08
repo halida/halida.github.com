@@ -45,7 +45,7 @@ module NewBlog
 
     # and open webpage
     sleep 1
-    open_url 'http://blog.dev/blog/archives/'
+    open_url 'http://blog.test/blog/archives/'
 
     # after finish editing
     while prompt("finished?").strip != 'y'; end
