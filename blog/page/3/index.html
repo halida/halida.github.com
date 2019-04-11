@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近我2012年底买的rmbp电脑越来越不给力,于是打算换一台新的笔记本,操作系统选回Linux.
-为什么要用Linux而不继续买苹果呢,因为看新的苹果笔记本没有什么大的改进,还有我慢慢不喜欢苹果的软件锁死策略了,
-Linux可选性更高也更适合开发工作. 新的笔记本我选择Precision &hellip;">
+  <meta name="description" content="GNS3是一个虚拟网络的工具,用它可以学习如何配置局域网,以及在实际进行物理配置之前测试是否工作正常. 我为什么要研究这个工具呢? 因为现在我的家用网络有一些需求需要进行复杂的路由配置, 实际配置出现问题很浪费时间,
+不如用一个虚拟工具来测试研究. 如果你对如何搭建局域网或者有类似建网需求, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,189 @@ Linux可选性更高也更适合开发工作. 新的笔记本我选择Precision 
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/gns3/">GNS3介绍,安装和使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-15T20:01:27+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2017</time>
+        
+         | <a href="/blog/gns3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://www.gns3.com/">GNS3</a>是一个虚拟网络的工具,用它可以学习如何配置局域网,以及在实际进行物理配置之前测试是否工作正常.</p>
+
+<p>我为什么要研究这个工具呢? 因为现在我的家用网络有一些需求需要进行复杂的路由配置, 实际配置出现问题很浪费时间,
+不如用一个虚拟工具来测试研究. 如果你对如何搭建局域网或者有类似建网需求, 可以考虑用这个工具.</p>
+
+<p>文档<a href="https://docs.gns3.com/">在这里</a>, 我就不重复写怎么安装了.
+在安装之前, 我先讲一下原理, 知道了原理, 后面过程会顺利很多.</p>
+
+<h1>原理</h1>
+
+<p>GNS3的底层是<a href="https://en.wikipedia.org/wiki/Dynamips">Dynamips</a>, 一个虚拟Cisco路由器的模拟器.
+GNS3同时它也支持其他的虚拟系统, 比如Vmware, Qemu, Virtualbox, docker等, 用这些虚拟化工具来模拟路由和主机.</p>
+
+<p>Dynamips是基于Linux的, 所以在Windows和MacOS下面,
+为了能够正常使用, 需要安装一个GNS的虚拟机(里面安装的是Ubuntu),
+因为它里面需要跑虚拟化(虚拟路由设备或者主机), 所以会出现嵌套虚拟,
+推荐使用Vmware来安装, 用VirtualBox性能会比较差.
+如果你是Linux系统, 建议直接用GNS Server.</p>
+
+<p>GNS Server是GNS的后端, 一个python写的管理系统, 它会根据前端的配置, 创建对应的虚拟化系统,
+比如你创建了2个主机(VPCS), 一个路由(比如用Qemu虚拟的RouteOS),
+它会创建两个VPCS进程, 用Dynamips虚拟化一个路由, 把他们连接起来.</p>
+
+<p>实际执行的命令如下:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># qemu RouteOS
+</span><span class='line'>/usr/bin/qemu-system-x86_64 -name RouteOS-1 -m 128M -smp cpus=1 -enable-kvm -machine smm=off -boot order=c \
+</span><span class='line'>  -drive file=/home/halida/GNS3/projects/routeos_simple/project-files/qemu/f280f531-91cd-4290-a61b-98d3299a2bb7/hda_disk.qcow2,if=ide,index=0,media=disk \
+</span><span class='line'>  -serial telnet:127.0.0.1:5000,server,nowait \
+</span><span class='line'>  -monitor tcp:127.0.0.1:54263,server,nowait \
+</span><span class='line'>  -net none -device e1000,mac=00:8f:b6:2b:b7:00,netdev=gns3-0 \
+</span><span class='line'>  -netdev socket,id=gns3-0,udp=127.0.0.1:10002,localaddr=127.0.0.1:10001 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:01,netdev=gns3-1 \
+</span><span class='line'>  -netdev socket,id=gns3-1,udp=127.0.0.1:10003,localaddr=127.0.0.1:10000 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:02 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:03 \
+</span><span class='line'>  -nographic
+</span><span class='line'>
+</span><span class='line'># vpc
+</span><span class='line'>/usr/bin/vpcs -p 5001 -m 0 -i 1 -F -R -s 10002 -c 10001 -t 127.0.0.1 startup.vpc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>参数里面会做几件事情: 创建虚拟的网口, 绑定在本地机器的特定端口上面, 然后各个进程会通过这些端口来进行通讯.
+同时也会把管理端口用telnet暴露出来, 方便前端用Console命令连上去配置.</p>
+
+<h2>安装过程</h2>
+
+<p>因为GNS的工具链主要在Linux, 我倾向于用Linux来装这样的测试环境. 所以里面推荐的GNS VM我就没有去装了.</p>
+
+<p>安装完毕之后, GNS是不自带路由器的镜像的, 它提供一些简单的虚拟设备,
+比如VPCS, 它其实就是一个单独的进程, 模拟一个主机设备, 带有设置IP, Ping等简易网络工具.
+你需要自己导入路由的设备.</p>
+
+<p>如果你是要模拟Cisco的设备, 可以在<a href="http://protechgurus.com/download-gns3-ios-images/">这里下载</a>,
+我是用来测试RouteOS的环境的, 直接在<a href="https://mikrotik.com/download">官方网站</a>下载ISO镜像, 本地用Qemu安装.</p>
+
+<p>选择虚拟系统: 如果是Cisco的路由器, 没得说, 只能用Dynamips, Dynamips一定要设置Idle-PC, 减少CPU性能消耗.
+如果是其他基于Linux的路由系统, 在Linux下面, 我觉得Qemu比VirtualBox和VMWare都好用, 它性能更好一些.
+当然用Docker这种内核共用虚拟性能会更好, 不过我没有尝试.</p>
+
+<p>GNS下安装RouteOS, 首先要去官方下载ISO镜像文件, 然后执行命令行:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 创建镜像文件
+</span><span class='line'>/usr/local/bin/qemu-img create -f qcow2 routeros-6.15.img 200M
+</span><span class='line'># 跑虚拟机, 安装系统
+</span><span class='line'>/usr/local/bin/qemu-system-i386 -m 512 -enable-kvm -boot d -cdrom mikrotik-6.15.iso routeros-6.15.img</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装好之后, 就可以用GNS导入这个镜像, 进行使用了. 官方下载的ISO, 可以免费使用一天, 用来测试问题不大.</p>
+
+<h2>模拟实验</h2>
+
+<p>我做了两个模拟实验, 用来学习GNS的使用.</p>
+
+<p>第一个是简单的RouteOS连接两个主机, DHCP分配IP地址.</p>
+
+<p><img src="http://i.imgur.com/bmtDUDc.png" alt="image" /></p>
+
+<p>用Console连上RouteOS-1, 进行这样的配置:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 创建一个bridge, 把端口都连接起来
+</span><span class='line'>/interface bridge add
+</span><span class='line'>/interface bridge port add interface=ether1 bridge=bridge1
+</span><span class='line'>/interface bridge port add interface=ether2 bridge=bridge1
+</span><span class='line'># 创建 dhcp, 给大家分配IP地址
+</span><span class='line'>/ip address add address=192.168.10.1/24 network=192.168.10.0 interface=bridge1
+</span><span class='line'>/ip pool add name=dhcp-pool ranges=192.168.10.10-192.168.10.254
+</span><span class='line'>/ip dhcp add name=dhcp-main interface=bridge1 address-pool=dhcp-pool
+</span><span class='line'>/ip dhcp network add address=192.168.10.0/24 gateway=192.168.10.1 netmask=24
+</span><span class='line'>/ip dhcp enable 0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后就可以进到两台机器的Console里面, 执行<code>ip dhcp</code>自动获取IP地址, 用<code>ping</code>去看是否可以连接到另外一台机器.</p>
+
+<p>第二个是简单的多路由通讯方案:</p>
+
+<p><img src="http://i.imgur.com/GEDQVOf.png" alt="image" /></p>
+
+<p>三个路由分别管理一个网段, 然后每个网段都可以通过路由的设置, 联系到其他网段里面的机器.</p>
+
+<p>这里只列出来RouteOS-1的配置, DHCP部分和上面重复, 就不写了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 设置连接到其他路由器端口的IP
+</span><span class='line'>/ip address add address=172.16.10.1/30 network=172.16.10.0 interface=ether1
+</span><span class='line'>/ip address add address=172.16.12.1/30 network=172.16.12.0 interface=ether2
+</span><span class='line'># 增加路由, 对方网段从哪里走
+</span><span class='line'>/ip route add dst-address=192.168.20.0/24 gateway=172.16.10.2
+</span><span class='line'>/ip route add dst-address=192.168.30.0/24 gateway=172.16.12.2</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -946,84 +1128,6 @@ dell的模式是下单后生产，等了一个多星期才到货。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/better-house-market/">更好的住宅行业</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-10-08T10:47:33+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2016</time>
-        
-         | <a href="/blog/better-house-market/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我们国内现在的房子开发流程是这样：政府出让土地，开发商找银行贷款，缴纳大量的土地出让金，然后开发房子，
-卖出裸房，回收投资，赚钱。消费者购买高价的裸房，找装修公司装修。
-但是其他国家的模式一般是这样（在美国）：</p>
-
-<ul>
-<li>房地产商购买土地，造房子，然后直接卖装修好的房子。</li>
-<li>房地产商购买土地，造楼房，出租或者出售公寓房。</li>
-<li>个人购买土地，找房屋承建商，设计和建设房子（设计可以是专门的设计公司）</li>
-</ul>
-
-
-<p>模式不同在于，我们购买的是裸房，只是一个框架，之后才找装修公司装修，类似零售。
-他们的模式在于要么提供统一的标准化住房，要么根据用户需求定制造房并装修。</p>
-
-<p>我觉得他们的模式更合理。因为标准化造房可以利用批量化优势，降低材料采购成本，能够工业化生产提升质量和减少建设成本。
-比较一下：</p>
-
-<ul>
-<li>我们需要自己去采购施工材料，他们统一采购成本节省很多。</li>
-<li>我们施工的工人基本都是散工良莠不齐，他们施工可以长期雇佣施工队提高施工水平，积累施工技术规范和经验。</li>
-<li>我们基本都是现场施工，他们可以做到工厂预制件现场安装。</li>
-<li>住宅设计我们也就是制图员画画图，他们有积累（大量历史资料）和标准。</li>
-<li>我们很多住宅只能保证装起来，不能保证一些性能：比如空气流通率，住宅节能，火灾防护，他们可以达到这些要求。</li>
-</ul>
-
-
-<p>简单地说，我们现在是手工作坊阶段，他们是后工业化精益生产阶段。
-造成的结果是现在我们到处都是房子，但是缺省心省钱住起来舒服的好房子。
-大家买房装修过程基本上是劳民伤财，首先要变成一个装修专家，然后被装修公司和各大建材公司黑一遍，
-然后自己做监工累一遍，完工之后还得等一遍，最后因为设计只是根据自己需要以及自己耗费大量心血有感情了，卖房也不好卖。</p>
-
-<p>那么为什么我们国家的开发商大多不卖精装修的房子呢？
-我觉得：
-一个是消费者需求差异很大，家庭结构，经济水平，社会阶层，品味等，造成房子很难标准化。
-另外一个是因为房子有金融属性，裸房更好交易和保值。</p>
-
-<p>现在国内也有精装修的房子，一般分为两种：酒店式公寓，大城市新开发楼盘豪宅。
-它们的需求会明确一些，所以可以采用同样的设计，施工方批量施工节省成本提升利润。
-但是开发商利益和购房者利益不一致，以及信息不对称，这些精装修的房子往往质量堪忧。</p>
-
-<p>希望我们国家的住宅行业能够早日进步，端正目标造好房子（个人估计难）。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1041,6 +1145,10 @@ dell的模式是下单后生产，等了一个多星期才到货。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/migrate-to-us/">不建议移民欧美</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/rational-man/">正确理解经济学的理性人假设</a>
       </li>
     
@@ -1054,10 +1162,6 @@ dell的模式是下单后生产，等了一个多星期才到货。</p>
     
       <li class="post">
         <a href="/blog/2018-summary/">2018年度总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017-summary/">2017年度总结</a>
       </li>
     
   </ul>

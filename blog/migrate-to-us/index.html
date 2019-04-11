@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ansible介绍和服务器管理思考 - 网络寻租</title>
+  <title>不建议移民欧美 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
-这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。 我觉得好的服务器管理方式应该是这样的： 能够定义服务器的功能， &hellip;">
+  <meta name="description" content="世界观是需要随着时代变化而更新的。很多观念都会随着时代变化而过时。比如移民欧美。 为什么以前出国好？
+欧美社会发达，同样劳动赚钱享受得多。中国外贸导向汇率压制，外币在国内消费能力更强。 现在情况已经变化了。
+国内外发展差距越来越小，去国外工作生活享受提升不大，甚至生活更差。
+中国通货膨胀， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/ansible/">
+  <link rel="canonical" href="http://halida.github.com/blog/migrate-to-us/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Ansible介绍和服务器管理思考</h1>
+      <h1 class="entry-title">不建议移民欧美</h1>
     
     
       <p class="meta">
@@ -98,7 +100,7 @@
   
 
 
-<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-04-11T09:37:59+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2019</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,41 +109,61 @@
   </header>
 
 
-<div class="entry-content"><p>旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
-这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。</p>
+<div class="entry-content"><p>世界观是需要随着时代变化而更新的。很多观念都会随着时代变化而过时。比如移民欧美。</p>
 
-<p>我觉得好的服务器管理方式应该是这样的：</p>
+<p>为什么以前出国好？
+欧美社会发达，同样劳动赚钱享受得多。中国外贸导向汇率压制，外币在国内消费能力更强。</p>
+
+<p>现在情况已经变化了。
+国内外发展差距越来越小，去国外工作生活享受提升不大，甚至生活更差。
+中国通货膨胀，国外赚钱国内花也不够用了。</p>
+
+<p>从未来发展考虑：</p>
 
 <ul>
-<li>能够定义服务器的功能，通过写程序或者配置的方式说明服务器到底是怎么样的</li>
-<li>通过这个定义，自动化地配置服务器</li>
-<li>可以手动或者自动修改定义，更新整体的架构</li>
-<li>整个过程不要引入太多的复杂度，更好地反映服务器管理的本质</li>
+<li>国内社会发展更快，欧美垂垂老矣。</li>
+<li>国内阶层流通更开放，对于普通人机会更多，上升空间更大。</li>
+<li>欧美原先享受中国发展带来的红利，随着中西方技术代差越来越小，欧美人的日子会越来越难过。</li>
 </ul>
 
 
-<p>以前我学习了一段时间的chef，整体架构偏复杂了。因为是server/agent架构，服务器上面要跑一个chef的监控程序，
-这样对于大规模的服务器来说是性能更好，但是对于大多数小公司来说，没有agent的模式就足够用了。执行速度上也偏慢。</p>
-
-<p>现在重新学习了解了ansible，觉得在复杂度和易用性上面平衡得很好。主要有几点：</p>
+<p>优缺点比较：
+国内缺点看得清楚，国外优点看得清楚，但是大家不容易看到国内优点和国外缺点。</p>
 
 <ul>
-<li>和host服务器的通讯采用ssh的方式，host不需要安装额外的软件，除了python-simplejson</li>
-<li>module插件是传输一个python文件到host执行，参数命令行传入，简洁快速</li>
-<li>整体架构上面尽量减少了复杂度，概念上只有playbook &ndash; role &ndash; module，我觉得足够满足抽象了</li>
+<li>国内缺点：政治，自然环境，教育医疗等的发展程度。这些都会随着发展而得到改善。</li>
+<li>国外优点：社会发展程度，自然环境，收入相对高。会随着白左和中国红利减少而每况愈下。</li>
+<li>国内优点：同族群交流生活的方便程度，人力成本低，东西性价比高。</li>
+<li>国外缺点：生活开销大，人力成本高，不容易低消费，机会少，外国人社交圈。</li>
 </ul>
 
 
-<p>用ansible这种服务器配置管理工具，我可以做到以下事情：</p>
+<p>这里列一下大家不太清楚的国外缺点（以美国为例）：</p>
 
 <ul>
-<li>设置翻墙/下载服务器，需要的时候可以快速创建</li>
-<li>定义公司的服务器架构，进行归一化配置，自动更新</li>
-<li>遇到性能瓶颈或者需要更新服务器的时候，快速创建应用服务器</li>
+<li>开销比国内高很多。住房教育医疗三座大山，收入月光。</li>
+<li>房子买起来比国内便宜，但是房产税物业费各种维护费用是一大笔钱，同比地段位置，还是比国内贵。</li>
+<li>公办教育一塌糊涂，好的私立教育很贵，普通人读不起，阶层固化。</li>
+<li>医疗费用非常高，性价比比国内差很多。</li>
+<li>劳动力成本高，什么事情都只能自己做，请不起人。</li>
+<li>社会制度完善，创业有很高的门槛，国内可以创业的人，来美国只能做寓公。</li>
+<li>美国绿卡和公民全球征税，每年要自己申报。政府剥削中产和有钱人太严重。</li>
 </ul>
 
 
-<p>以后小规模的服务器管理，就变得很简单了。</p>
+<p>现在一线城市人群已经意识到出国移民已经不是好的选择。
+但是大多数二三线人群还没有意识到，甚至还有出国移民的惯性。</p>
+
+<p>我的综合判断：</p>
+
+<ul>
+<li>体力劳动者去美国，劳动收益更高。</li>
+<li>有钱人去美国直接花钱享受提前几十年发展下的好的服务，但是资产要留在国内，也不要移民和绿卡让美国剥削。</li>
+<li>其它情况不要移民，国内更好。</li>
+</ul>
+
+
+<p>如果觉得中国大城市太辛苦，可以去二线城市，或者大城市周边的卫星小城市。</p>
 </div>
 
 
@@ -164,7 +186,7 @@
   
 
 
-<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-04-11T09:37:59+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2019</time>
       
 
 
@@ -172,7 +194,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/ansible/" data-via="" data-counturl="http://halida.github.com/blog/ansible/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/migrate-to-us/" data-via="" data-counturl="http://halida.github.com/blog/migrate-to-us/" >Tweet</a>
   
   
   
@@ -181,10 +203,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016-summary/" title="Previous Post: 2016年度总结">&laquo; 2016年度总结</a>
+        <a class="basic-alignment left" href="/blog/rational-man/" title="Previous Post: 正确理解经济学的理性人假设">&laquo; 正确理解经济学的理性人假设</a>
       
-      
-        <a class="basic-alignment right" href="/blog/ruby-need-static-type-checking-system/" title="Next Post: ruby需要一个静态类型验证系统">ruby需要一个静态类型验证系统 &raquo;</a>
       
     </p>
   </footer>
@@ -280,8 +300,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/ansible/';
-        var disqus_url = 'http://halida.github.com/blog/ansible/';
+        var disqus_identifier = 'http://halida.github.com/blog/migrate-to-us/';
+        var disqus_url = 'http://halida.github.com/blog/migrate-to-us/';
         var disqus_script = 'embed.js';
       
     (function () {
