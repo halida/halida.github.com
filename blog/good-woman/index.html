@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ruby没有做到编程语言应该有的优化 - 网络寻租</title>
+  <title>重男轻女是对的 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="Ruby语言很慢。是的，这是一个设计缺陷。 我们知道Ruby语言的执行方式是，首先编译成虚拟机字节码，然后丢给Ruby虚拟机执行。
-其它类似这样做的语言也很多，比如C#，java，python，但是为什么Ruby比他们慢很多？ 首先，我们看合理的这种编译到字节码的语言应该如何优化。比如java。 &hellip;">
+  <meta name="description" content="整篇文章政治不正确，请谨慎阅读。 在婚姻市场上面，大多数普通城市女是很差的。 首先婚姻的目的是组建家庭，生育养育下一代。很多人都没有认清这点。 现在的小姑娘，因为减肥和办公室工作身体素质不行，被消费主义带动得买买买，
+独生子女娇生惯养不吃苦耐劳，也不听话，被女权主义洗脑想要离开家庭去拼职场， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/ruby-have-no-program-optimize/">
+  <link rel="canonical" href="http://halida.github.com/blog/good-woman/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">Ruby没有做到编程语言应该有的优化</h1>
+      <h1 class="entry-title">重男轻女是对的</h1>
     
     
       <p class="meta">
@@ -98,7 +98,7 @@
   
 
 
-<time datetime="2017-02-05T11:06:03+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-04-27T13:34:31+08:00" pubdate data-updated="true">Apr 27<span>th</span>, 2019</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,26 +107,47 @@
   </header>
 
 
-<div class="entry-content"><p>Ruby语言很慢。是的，这是一个设计缺陷。</p>
+<div class="entry-content"><p>整篇文章政治不正确，请谨慎阅读。</p>
 
-<p>我们知道Ruby语言的执行方式是，首先编译成虚拟机字节码，然后丢给Ruby虚拟机执行。
-其它类似这样做的语言也很多，比如C#，java，python，但是为什么Ruby比他们慢很多？</p>
+<p>在婚姻市场上面，大多数普通城市女是很差的。</p>
 
-<p>首先，我们看合理的这种编译到字节码的语言应该如何优化。比如java。
-首先是语法解析(parse)，把文本转换成抽象语法树(AST)，然后经过编译和适当的优化，变成字节码。
-然后丢给语言虚拟机，用JIT机制转换成机器代码。</p>
+<p>首先婚姻的目的是组建家庭，生育养育下一代。很多人都没有认清这点。</p>
 
-<p>这样一套做下来，代码最后会变成机器语言的代码，执行速度从理论上，比传统的编译到机器代码的语言更优（因为机器代码是动态生成的，可以根据运行状况改动）。</p>
+<p>现在的小姑娘，因为减肥和办公室工作身体素质不行，被消费主义带动得买买买，
+独生子女娇生惯养不吃苦耐劳，也不听话，被女权主义洗脑想要离开家庭去拼职场，
+从组建家庭养育下一代的角度上面，都是不及格的。</p>
 
-<p>但是Ruby语言很多都没有做到。JIT这么难就不说了，语言的编译和优化，因为动态类型，很多优化也没有办法完成。最基本的AST缓存或者字节码缓存（python语言有做），
-Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了吧。</p>
+<p>普通女性年轻的时候玩得开心，或者拼职场，工资收入又高不到哪里去，
+一不小心就错过生育周期，错过结婚年龄找不到对象，
+上了年纪一塌糊涂，过一代就被淘汰掉了。</p>
 
-<p>同样的，内存上面的优化，Ruby也很难进行。这个算是所有动态语言的缺点。
-静态语言的对象基本只要带属性，动态语言的对象还要带上方法表，函数和方法调用也要存名字，而不是直接引用地址，没有简单的办法优化。</p>
+<p>为什么这样说？我们看聪明的男人会选择怎么样的女性？</p>
 
-<p>虽然现在机器的性能很高，应用的瓶颈也往往不在CPU端和内存端，但是慢就是慢，本来应该有办法做好的地方做差了。</p>
+<ul>
+<li>年轻：生育能力强</li>
+<li>漂亮：基因好</li>
+<li>贤惠：照顾家庭</li>
+<li>善良：会为了家庭奉献</li>
+<li>情绪稳定：给家庭成员提供情绪价值</li>
+</ul>
 
-<p>怎么弥补？首先要语言本身可以定义类型。但是这样Ruby就不是Ruby了。</p>
+
+<p>这样的女性非常有利于组建家庭和养育下一代。比较起来，大多数普通城市女，都是不及格的。</p>
+
+<p>那么正确的操作是怎么样子的？
+教育女儿的时候培养顾家贤惠商量情绪稳定，20岁到23岁年轻漂亮的时候尽快嫁掉。
+找一个30多岁的，看得出来前途如何的男性，因为家庭基础好，又会宠年轻女孩子。
+就算婚姻有问题，30岁之前离婚再找也还有机会。</p>
+
+<p>女性在婚姻市场上靠年轻漂亮善良贤惠，都不需要投入大量资源。</p>
+
+<p>至于男性，需要在社会上面打拼，需要投入大量资源培养。如果男性本身素质不行，不如长辈多准备点资产，比如房子继承。
+对于我们这一辈打拼出来的人，（比如各个程序员），论智力水平，下一代均值回归，大概率不如自己，投入资源培养下一代也要慎重，
+不如自己好好发展，利用时间的复利，然后让下一代继承，或者把发展赚取的资源多生几个小孩。</p>
+
+<p>所以重男轻女是正确的操作。</p>
+
+<p>当然，如果你的价值观是为了个人享受，而不是发展，那么就是另外的操作了。</p>
 </div>
 
 
@@ -149,21 +170,15 @@ Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了
   
 
 
-<time datetime="2017-02-05T11:06:03+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-04-27T13:34:31+08:00" pubdate data-updated="true">Apr 27<span>th</span>, 2019</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ruby-sucks/'>ruby-sucks</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/ruby-have-no-program-optimize/" data-via="" data-counturl="http://halida.github.com/blog/ruby-have-no-program-optimize/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/good-woman/" data-via="" data-counturl="http://halida.github.com/blog/good-woman/" >Tweet</a>
   
   
   
@@ -172,10 +187,8 @@ Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/ruby-need-static-type-checking-system/" title="Previous Post: ruby需要一个静态类型验证系统">&laquo; ruby需要一个静态类型验证系统</a>
+        <a class="basic-alignment left" href="/blog/career-build/" title="Previous Post: 职业发展的框架">&laquo; 职业发展的框架</a>
       
-      
-        <a class="basic-alignment right" href="/blog/long-request-api-design/" title="Next Post: 长时API调用设计方案">长时API调用设计方案 &raquo;</a>
       
     </p>
   </footer>
@@ -271,8 +284,8 @@ Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/ruby-have-no-program-optimize/';
-        var disqus_url = 'http://halida.github.com/blog/ruby-have-no-program-optimize/';
+        var disqus_identifier = 'http://halida.github.com/blog/good-woman/';
+        var disqus_url = 'http://halida.github.com/blog/good-woman/';
         var disqus_script = 'embed.js';
       
     (function () {
