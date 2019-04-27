@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近ubuntu准备迁移到systemd，基本上linux上面init纷争大局已定，systemd赢得了主要的市场。
-以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
-对于系统管理员们来说，systemd成为必须学习的一个模块。 那么什么是systemd？ &hellip;">
+  <meta name="description" content="我们知道虚拟化的层次有：CPU指令集级别虚拟化，操作系统级别虚拟化，
+还有一种进程级别虚拟化（container），底层都采用linux内核，在内核之上的CPU资源，内存，文件系统，设备，都用虚拟化技术隔离出来。
+docker就是这样的一个工具。 docker用linux内核的资源控制功能（LXC &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/docker-introduction/">Docker介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-12T12:55:36+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
+        
+         | <a href="/blog/docker-introduction/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们知道虚拟化的层次有：CPU指令集级别虚拟化，操作系统级别虚拟化，
+还有一种进程级别虚拟化（container），底层都采用linux内核，在内核之上的CPU资源，内存，文件系统，设备，都用虚拟化技术隔离出来。
+<a href="https://www.docker.com/">docker</a>就是这样的一个工具。</p>
+
+<p>docker用linux内核的资源控制功能（<a href="http://en.wikipedia.org/wiki/LXC">LXC</a>）来隔离和控制资源，用<a href="http://en.wikipedia.org/wiki/aufs">AUFS</a>来管理虚拟的文件系统，用docker可以提供一个轻量级的虚拟机，它的特性有：</p>
+
+<ul>
+<li>快速启动，一个进程起来可能只需要几秒钟。</li>
+<li>轻量级文件系统虚拟化，带有版本控制的文件系统，改动只保存变更，存储占用非常小。</li>
+<li>进程间隔离，保证进程之间不会互相干扰。</li>
+</ul>
+
+
+<p>用docker可以把应用集装箱化，快速搭建，移动，复制，分发。对于应用开发，它可以让开发和发布环境归一起来，
+开发阶段测试完毕之后可以直接装箱进入发布流程。</p>
+
+<p>同时docker<a href="http://teahour.fm/2015/02/13/docker-introduction.html">也有一些不适合的场景</a>，比如有状态应用（存储），资源占用比较大，或者高性能网络应用，虚拟化会带来性能损耗。</p>
+
+<p>docker以及container思想对于现在系统架构的冲击比较大，现在有一个<a href="https://coreos.com">CoreOS</a>发行版，所有发布的应用都存放在container里面执行。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -904,52 +960,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/linux-disk-format/">Linux分区策略</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-12-16T17:21:51+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
-        
-         | <a href="/blog/linux-disk-format/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
-
-<p>最近我购买了<a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">一台NAS</a>用作家庭服务器，需要考虑如何设置磁盘，如何分区和安排加载linux目录，这里整理一下思路。</p>
-
-<p>我有SSD和HDD（就是我们平常的硬盘），SSD读写更快，但是有写入寿命，以及平均价格更贵。SSD挂载在<code>/</code>，这样操作系统跑起来更快。<code>/home</code>，<code>/var</code>这种经常写操作的目录，就挂载在HDD上面。<code>/tmp</code>这种临时目录，可以用内存文件系统<code>tmpfs</code>。</p>
-
-<p>SSD的分区用<code>ext4</code>就好，不过需要<a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">设置一些参数用来减少写入</a>。HDD的分区根据状况，如果是普通操作，<code>ext4</code>就可以了，如果用来分享文件和媒体，可以用<a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a>，压缩存储，更高的IO性能。</p>
-
-<p>如果用硬盘架设NAS，最简单的方法是RAID0，多磁盘同时读写增加性能。如果有重要数据，用RAID1，2个磁盘镜像备份。RAID1镜像有点浪费空间，可以用软件RAID5增加使用效率，如果你对RAID不熟悉，这里有一个<a href="http://www.acnc.com/raid">形象的演示</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -967,6 +977,10 @@ machine learning, statistics, UI design, etc&hellip;</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/spend-money-on-child/">请控制在小孩教育上面的花费</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/good-woman/">重男轻女是对的</a>
       </li>
     
@@ -980,10 +994,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
     
       <li class="post">
         <a href="/blog/rational-man/">正确理解经济学的理性人假设</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programmer-class/">程序员为什么是低级兵种</a>
       </li>
     
   </ul>

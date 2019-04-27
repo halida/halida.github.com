@@ -9,9 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近做了一些rails数据导出的工作，就是把一些特定的ActiveRecord数据挖出来，保存到表格里面。
-需要注意几件事：执行速度，内存消耗，以及调试速度。 执行速度 导数据的程序基本上就是一个循环体，外部获取数据集，内部把一条数据转换成表格。
-在内部，往往需要通过一条记录作为主体， &hellip;">
+  <meta name="description" content="命令行大家应该都熟悉了，但是命令行其实是很烂的，
+输入和输出都采用字符串的方式，而不是一个规整的数据结构。
+这样的后果是，每个程序都需要自己解析输入，以及提供一个特殊结构的输出，
+很容易出现解析上面的问题。 从本质上面说，命令行就是一个函数执行的接口，终端就是一个状态机，
+每一个命令就是一个函数。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +82,115 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fuck-commandline/">更好的命令行</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-23T08:56:28+08:00" pubdate data-updated="true">May 23<span>rd</span>, 2015</time>
+        
+         | <a href="/blog/fuck-commandline/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>命令行大家应该都熟悉了，但是命令行其实是很烂的，
+输入和输出都采用字符串的方式，而不是一个规整的数据结构。
+这样的后果是，每个程序都需要自己解析输入，以及提供一个特殊结构的输出，
+很容易出现解析上面的问题。</p>
+
+<p>从本质上面说，命令行就是一个函数执行的接口，终端就是一个状态机，
+每一个命令就是一个函数。那么为什么不像通用的编程语言的函数一样来定义？</p>
+
+<p>比如这样来写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># 普通操作</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">date</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Sat May 23 09:18:38 CST 2015&quot;</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">rm</span><span class="p">(</span><span class="s1">&#39;/fdas/fdas/fda&#39;</span><span class="p">,</span> <span class="ss">directory</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出结构化</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="p">{</span><span class="ss">mode</span><span class="p">:</span> <span class="s1">&#39;drwxr-xr-x&#39;</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">group</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span><span class="p">(</span><span class="ss">columns</span><span class="p">:</span> <span class="o">[</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:size</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 管道</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">history</span> <span class="o">&gt;&gt;</span> <span class="nb">select</span><span class="p">{</span><span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="n">row</span><span class="o">[</span><span class="ss">:cmd</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/mina/</span> <span class="p">}</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="ss">cmd</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mina init&#39;</span><span class="p">},</span> <span class="n">run_at</span><span class="p">:</span> <span class="s1">&#39;2014-02-01 10:00:21&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span> <span class="o">&gt;&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Gemfile.lock&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 很多命令应该用面向对象的方式来执行，更容易理解</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span> <span class="o">=</span> <span class="n">git</span><span class="o">-</span><span class="n">get</span><span class="o">-</span><span class="n">commit</span><span class="p">(</span><span class="s1">&#39;master&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span><span class="mi">3</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">committer</span>
+</span><span class='line'><span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;James&#39;</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s1">&#39;james@gmail.com&#39;</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出日志就算是以文字的方式体现，也最好结构化起来，方便解析</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="s2">&quot;Process file (filename) finished, spend time (spendtime)&quot;</span><span class="p">,</span> <span class="ss">filename</span><span class="p">:</span> <span class="s2">&quot;xxx.mov&quot;</span><span class="p">,</span> <span class="ss">spendtime</span><span class="p">:</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">spendtime</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上搜索了一下，看起来没有什么好的解决方案，有时间我可以开发一个看看。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -986,62 +1097,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/docker-introduction/">Docker介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-12T12:55:36+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
-        
-         | <a href="/blog/docker-introduction/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我们知道虚拟化的层次有：CPU指令集级别虚拟化，操作系统级别虚拟化，
-还有一种进程级别虚拟化（container），底层都采用linux内核，在内核之上的CPU资源，内存，文件系统，设备，都用虚拟化技术隔离出来。
-<a href="https://www.docker.com/">docker</a>就是这样的一个工具。</p>
-
-<p>docker用linux内核的资源控制功能（<a href="http://en.wikipedia.org/wiki/LXC">LXC</a>）来隔离和控制资源，用<a href="http://en.wikipedia.org/wiki/aufs">AUFS</a>来管理虚拟的文件系统，用docker可以提供一个轻量级的虚拟机，它的特性有：</p>
-
-<ul>
-<li>快速启动，一个进程起来可能只需要几秒钟。</li>
-<li>轻量级文件系统虚拟化，带有版本控制的文件系统，改动只保存变更，存储占用非常小。</li>
-<li>进程间隔离，保证进程之间不会互相干扰。</li>
-</ul>
-
-
-<p>用docker可以把应用集装箱化，快速搭建，移动，复制，分发。对于应用开发，它可以让开发和发布环境归一起来，
-开发阶段测试完毕之后可以直接装箱进入发布流程。</p>
-
-<p>同时docker<a href="http://teahour.fm/2015/02/13/docker-introduction.html">也有一些不适合的场景</a>，比如有状态应用（存储），资源占用比较大，或者高性能网络应用，虚拟化会带来性能损耗。</p>
-
-<p>docker以及container思想对于现在系统架构的冲击比较大，现在有一个<a href="https://coreos.com">CoreOS</a>发行版，所有发布的应用都存放在container里面执行。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -1059,6 +1114,10 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/spend-money-on-child/">请控制在小孩教育上面的花费</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/good-woman/">重男轻女是对的</a>
       </li>
     
@@ -1072,10 +1131,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
     
       <li class="post">
         <a href="/blog/rational-man/">正确理解经济学的理性人假设</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/programmer-class/">程序员为什么是低级兵种</a>
       </li>
     
   </ul>
