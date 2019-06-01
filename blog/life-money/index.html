@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ruby需要一个静态类型验证系统 - 网络寻租</title>
+  <title>普通中国人一辈子需要赚多少钱 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。 Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
-但是实际上，这是一个缺陷。为什么呢？ 程序在执行的过程中， &hellip;">
+  <meta name="description" content="我们计算一下一个普通中国人一辈子需要的开销。看看一辈子赚多少钱是够用的，这样可以预先做好财务安排。 我们先不考虑通货膨胀。也只考虑普通二线城市下基础的开销，这样把问题简化，计算一个基线。 对于每个月的固定开销，我们通过理财收益率5%折算成需要多少钱，实际上这些钱要想办法投资出去， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/ruby-need-static-type-checking-system/">
+  <link rel="canonical" href="http://halida.github.com/blog/life-money/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Ruby需要一个静态类型验证系统</h1>
+      <h1 class="entry-title">普通中国人一辈子需要赚多少钱</h1>
     
     
       <p class="meta">
@@ -98,7 +97,7 @@
   
 
 
-<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-06-01T12:38:37+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2019</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,36 +106,54 @@
   </header>
 
 
-<div class="entry-content"><p>越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。</p>
+<div class="entry-content"><p>我们计算一下一个普通中国人一辈子需要的开销。看看一辈子赚多少钱是够用的，这样可以预先做好财务安排。</p>
 
-<p>Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
-但是实际上，这是一个缺陷。为什么呢？</p>
+<p>我们先不考虑通货膨胀。也只考虑普通二线城市下基础的开销，这样把问题简化，计算一个基线。</p>
 
-<p>程序在执行的过程中，如果不知道一个变量的类型，只能动态去判断变量是什么，动态地查找处理变量的函数，
-比如一个方法调用：<code>a.run(b)</code>，就要去查找a的run方法，然后传入b参数。
-这样造成每次函数调用，都会进行一次判断和查找，极大地降低程序执行速度。</p>
+<p>对于每个月的固定开销，我们通过理财收益率5%折算成需要多少钱，实际上这些钱要想办法投资出去，或者拿到收入当月开销掉，就按照5%粗略地估计一下好了。</p>
 
-<p>另外一个问题就是，当传入的参数不正确(比如a没有run方法，或者run只接受一个参数)，只有程序实际执行的时候，才会知道这点。
-一方面要在函数和方法调用的时候来判断（更慢了），另外一方面本来能够静态识别出来的错误，留到了运行时。</p>
+<p>首先是父母。</p>
 
-<p>更可怕的是，当传入的参数类型错误的时候，不能立刻就知道，而是要等到很久之后才会被发现，
-这个时候你根本不知道这个参数是什么时候传进来的，Debug变得非常困难！
-其它语言定义了类型，在编译的时候就可以发现这样的错误，但是动态类型语言，比如Ruby/Python就没有办法。</p>
+<ul>
+<li>父母医疗备用钱：几次生病毛估估一起花70万</li>
+<li>父母住宿：老家小城市小房子100万</li>
+<li>父母养老吃用：每个月吃用3千，一年3.6，算理财收益年化5%，要72万</li>
+</ul>
 
-<p>在实际进行Ruby编程的时候，我深刻地体会到了这几点。
-尤其是项目变得很大的时候，执行速度不说，出现问题找Bug变得很困难，
-程序可靠性没有办法通过编译阶段发现，而是只能留到执行时（testcase），
-并且执行时也做不到其它静态语言级别的函数参数类型验证。</p>
 
-<p>而在其它现代语言里面，类型定义不再向以前一样手动配置那么痛苦了。
-比如在C#里面，我们可以定义函数参数的类型，以及所有变量的类型，也可以不定义（dynamic），做到和Ruby一样的效果。
-但是还有更好的语法(var)，程序语言自动给你做好类型定义，不用自己手写了，方便很多。</p>
+<p>一起：70*2+100+72 = 312万，双方父母就是624万。
+如果双方父母条件好，可以节省费用，不过也考虑老了接父母来大城市，房子费用要更高，我们就取312万好了。</p>
 
-<p>综上所述，静态类型验证系统是现代程序语言必备的一个功能，Ruby不应该缺少这样的功能。
-Matz本人也说，下一阶段会进行这种系统的设计。
-不过我觉得这么大的改动，只有在程序语言开始设计的时候才能做出，Ruby现在已经进入成熟阶段，再改就很难了。</p>
+<p>然后是自己夫妻。</p>
 
-<p>如果不是Rails，我可能会考虑其它语言，但是谁让web开发框架里面，Rails生态圈最好最成熟呢。</p>
+<ul>
+<li>医疗备用钱：70万x2</li>
+<li>住宿根据城市级别，算2万一平100平200万好了，要给小孩预留地方住不能太小。</li>
+<li>吃用：每个月夫妻一起算6千，包括吃穿用度买手机下馆子，已经很省了，算理财5%年化，要144万。</li>
+</ul>
+
+
+<p>一起：70*2+200+144 = 484万。</p>
+
+<p>然后是小孩。毛估16年每年5万开销，80万一个，生2个保持每一代人口平衡。当然2个人还是少了，我们就先按照大家惯常的方案。</p>
+
+<p>那么一起：312 + 484 + 160 = 956万。
+也就是需要赚近1千万。</p>
+
+<p>如果考虑到老死房子消费掉不给小孩，就是656万，不过一般要留点给小孩，老了也要有住处，那么还是要计算起来。</p>
+
+<p>如果加上通货膨胀，这些钱不能留现金，一定要投资到房产之类的地方去，加上房贷勉强算保值吧。</p>
+
+<p>如果我们考虑提前退休，就要提前赚到这些钱，同时保持高效率的投资（很难，现阶段还是要靠买房+房贷），
+同时保持基础的生活消费水平，不能进行奢侈性开销。</p>
+
+<p>一辈子工作折算25年（30年减去年轻和年老的低收入阶段），平均每年家庭要赚38万才可以做到安稳。
+这是普通二线城市生活水平的状况，如果一线或者准一线，要再往上调整，大概60万吧。</p>
+
+<p>在这个收入的前提下，可以计算富余，根据时机进行奢侈性的开销，比如出国旅游，买点轻奢什么的。
+如果达不到这个收入，就只能努力赚钱，减少开销，不然后续钱就不够用了。</p>
+
+<p>那么最后的结论就是：看你们买买买花花花，以后钱不够用了别哭。</p>
 </div>
 
 
@@ -159,21 +176,15 @@ Matz本人也说，下一阶段会进行这种系统的设计。
   
 
 
-<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+<time datetime="2019-06-01T12:38:37+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2019</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ruby-sucks/'>ruby-sucks</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/ruby-need-static-type-checking-system/" data-via="" data-counturl="http://halida.github.com/blog/ruby-need-static-type-checking-system/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/life-money/" data-via="" data-counturl="http://halida.github.com/blog/life-money/" >Tweet</a>
   
   
   
@@ -182,10 +193,8 @@ Matz本人也说，下一阶段会进行这种系统的设计。
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/ansible/" title="Previous Post: ansible介绍和服务器管理思考">&laquo; ansible介绍和服务器管理思考</a>
+        <a class="basic-alignment left" href="/blog/spend-money-on-child/" title="Previous Post: 请控制在小孩教育上面的花费">&laquo; 请控制在小孩教育上面的花费</a>
       
-      
-        <a class="basic-alignment right" href="/blog/ruby-have-no-program-optimize/" title="Next Post: ruby没有做到编程语言应该有的优化">ruby没有做到编程语言应该有的优化 &raquo;</a>
       
     </p>
   </footer>
@@ -281,8 +290,8 @@ Matz本人也说，下一阶段会进行这种系统的设计。
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/ruby-need-static-type-checking-system/';
-        var disqus_url = 'http://halida.github.com/blog/ruby-need-static-type-checking-system/';
+        var disqus_identifier = 'http://halida.github.com/blog/life-money/';
+        var disqus_url = 'http://halida.github.com/blog/life-money/';
         var disqus_script = 'embed.js';
       
     (function () {

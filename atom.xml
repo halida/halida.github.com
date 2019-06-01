@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2019-04-27T14:56:54+08:00</updated>
+  <updated>2019-06-01T13:11:14+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[普通中国人一辈子需要赚多少钱]]></title>
+    <link href="http://halida.github.com/blog/life-money/"/>
+    <updated>2019-06-01T12:38:37+08:00</updated>
+    <id>http://halida.github.com/blog/life-money</id>
+    <content type="html"><![CDATA[<p>我们计算一下一个普通中国人一辈子需要的开销。看看一辈子赚多少钱是够用的，这样可以预先做好财务安排。</p>
+
+<p>我们先不考虑通货膨胀。也只考虑普通二线城市下基础的开销，这样把问题简化，计算一个基线。</p>
+
+<p>对于每个月的固定开销，我们通过理财收益率5%折算成需要多少钱，实际上这些钱要想办法投资出去，或者拿到收入当月开销掉，就按照5%粗略地估计一下好了。</p>
+
+<p>首先是父母。</p>
+
+<ul>
+<li>父母医疗备用钱：几次生病毛估估一起花70万</li>
+<li>父母住宿：老家小城市小房子100万</li>
+<li>父母养老吃用：每个月吃用3千，一年3.6，算理财收益年化5%，要72万</li>
+</ul>
+
+
+<p>一起：70*2+100+72 = 312万，双方父母就是624万。
+如果双方父母条件好，可以节省费用，不过也考虑老了接父母来大城市，房子费用要更高，我们就取312万好了。</p>
+
+<p>然后是自己夫妻。</p>
+
+<ul>
+<li>医疗备用钱：70万x2</li>
+<li>住宿根据城市级别，算2万一平100平200万好了，要给小孩预留地方住不能太小。</li>
+<li>吃用：每个月夫妻一起算6千，包括吃穿用度买手机下馆子，已经很省了，算理财5%年化，要144万。</li>
+</ul>
+
+
+<p>一起：70*2+200+144 = 484万。</p>
+
+<p>然后是小孩。毛估16年每年5万开销，80万一个，生2个保持每一代人口平衡。当然2个人还是少了，我们就先按照大家惯常的方案。</p>
+
+<p>那么一起：312 + 484 + 160 = 956万。
+也就是需要赚近1千万。</p>
+
+<p>如果考虑到老死房子消费掉不给小孩，就是656万，不过一般要留点给小孩，老了也要有住处，那么还是要计算起来。</p>
+
+<p>如果加上通货膨胀，这些钱不能留现金，一定要投资到房产之类的地方去，加上房贷勉强算保值吧。</p>
+
+<p>如果我们考虑提前退休，就要提前赚到这些钱，同时保持高效率的投资（很难，现阶段还是要靠买房+房贷），
+同时保持基础的生活消费水平，不能进行奢侈性开销。</p>
+
+<p>一辈子工作折算25年（30年减去年轻和年老的低收入阶段），平均每年家庭要赚38万才可以做到安稳。
+这是普通二线城市生活水平的状况，如果一线或者准一线，要再往上调整，大概60万吧。</p>
+
+<p>在这个收入的前提下，可以计算富余，根据时机进行奢侈性的开销，比如出国旅游，买点轻奢什么的。
+如果达不到这个收入，就只能努力赚钱，减少开销，不然后续钱就不够用了。</p>
+
+<p>那么最后的结论就是：看你们买买买花花花，以后钱不够用了别哭。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[请控制在小孩教育上面的花费]]></title>
@@ -888,111 +944,6 @@ RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-25
 脚本语言和Linux下系统语言我还没有找到好的选择。我现在用Ruby但是Ruby也有很多问题，不值得长期使用。
 Linux下系统语言可能有Rust，D，我不确定是否足够好，但是可以尝试。
 Javascript可以用高层语言替代比如TypeScript，Webassembly推广之后会有很多好语言可以使用。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[加密git远端版本库]]></title>
-    <link href="http://halida.github.com/blog/encrypted-git-repo/"/>
-    <updated>2017-06-08T10:39:36+08:00</updated>
-    <id>http://halida.github.com/blog/encrypted-git-repo</id>
-    <content type="html"><![CDATA[<p>我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
-但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
-这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。</p>
-
-<p>那么解决办法就是：本地git版本库是解密的，在上传过程中内容全部加密，密钥保存在本地，同时密钥可以分享给其他开发者。</p>
-
-<p>考虑了几个解决方案：</p>
-
-<p><a href="https://github.com/AGWA/git-crypt">git-crypt</a>：可以加密部分文件，原理是加上了加密的fiter和diff，
-但是官方说只适合加密部分文件，而不适合全版本库加密。部分文件加密很容易造成信息泄漏，一定要全版本库加密才适合。</p>
-
-<p>串联sshfs和远程服务器加密文件系统encfs：首先用sshfs加载远端文件系统，然后用encfs创建加密文件系统。
-我估计无法解决多人同时push情况下的竞争条件，并且encfs有安全漏洞，使用上push/pull之前需要加载两层文件系统，不是很方便。</p>
-
-<p><a href="https://github.com/spwhitton/git-remote-gcrypt">git-remote-gcrypt</a>用gpg进行远端加密。
-比较符合我预期的模式，但是用gpg不是特别方便协作。但是别的方法走不通，只有这个方法可用。</p>
-
-<h2>使用方法</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 安装git-remote-gcrypt和gnupg</span>
-</span><span class='line'>sudo apt-get install git-remote-gcrypt gnupg
-</span><span class='line'>
-</span><span class='line'><span class="c"># 创建一个gpg的key，需要设置用户名，邮箱，描述等，不要设置过期时间</span>
-</span><span class='line'>gpg --gen-key
-</span><span class='line'>
-</span><span class='line'><span class="c"># 记录一下生成的key的ID，比如2048R/A0F0B575里面的A0F0B575，2048代表加密轮数，越多越不容易破解</span>
-</span><span class='line'>gpg --list-keys
-</span><span class='line'>
-</span><span class='line'><span class="c"># 生成一个测试版本库</span>
-</span><span class='line'>mkdir test1 <span class="o">&amp;&amp;</span> <span class="nb">cd </span>test1
-</span><span class='line'>git init .
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;test&quot;</span> &gt; a.txt
-</span><span class='line'>git add . <span class="o">&amp;&amp;</span> git ci -m <span class="s2">&quot;update&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 在你的github上面创建一个project，比如：https://github.com/halida/ttt</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 配置远端加密版本库</span>
-</span><span class='line'>git remote add cryptremote gcrypt::git@github.com:halida/ttt.git
-</span><span class='line'><span class="c"># 最好指定用哪个key加密，这样可以共享这个key给其他人用</span>
-</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
-</span><span class='line'><span class="c"># push到远端</span>
-</span><span class='line'>git push cryptremote master
-</span><span class='line'><span class="c"># 访问远端版本库，看看文件内容，和commit里面的信息，是不是都是加密的？</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如何分享给其他人</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 导出key</span>
-</span><span class='line'>gpg --export-secret-key -a <span class="s2">&quot;share@share.com&quot;</span> &gt; secretkey.asc
-</span><span class='line'><span class="c"># 把secretkey.asc分享给其他人，拷贝的时候记得先压缩加密一下再发送，更安全</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># 别人电脑里面导入</span>
-</span><span class='line'>gpg --import secretkey.asc
-</span><span class='line'><span class="c"># 下载代码</span>
-</span><span class='line'>git clone gcrypt::git@github.com:halida/ttt.git test2
-</span><span class='line'><span class="c"># 也要指定一下用什么key加密</span>
-</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>用这种方法，可以用git管理一些私密又需要协作的信息（比如服务器配置），
-也可以把github当作私密的版本控制系统来用（commit的消息还是明文的）。</p>
 ]]></content>
   </entry>
   
