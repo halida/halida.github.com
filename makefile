@@ -1,5 +1,6 @@
 rake=bundle exec rake
 
+# http://localhost:4000/
 watch:
 	$(rake) watch
 publish:
