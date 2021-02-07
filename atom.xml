@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2021-02-07T10:05:27+08:00</updated>
+  <updated>2021-02-07T11:20:37+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,108 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[家用服务器整体策略思考]]></title>
+    <link href="http://halida.github.com/blog/home-server/"/>
+    <updated>2021-02-07T10:07:30+08:00</updated>
+    <id>http://halida.github.com/blog/home-server</id>
+    <content type="html"><![CDATA[<p>很多重要资料因为性能，经济程度，私密性的原因，不适合存在云端网盘，因此需要做一个家庭内部的存储解决方案，同时也有很多应用需要本地跑，我整理了一下各种情况下的解决方案。</p>
+
+<p>首先是需求类型：</p>
+
+<ul>
+<li>存储看剧</li>
+<li>视频下载</li>
+<li>存储和访问家庭照片和视频</li>
+<li>科学上网</li>
+<li>外面连回家里</li>
+<li>全屋无线网络</li>
+<li>视频监控</li>
+<li>智能家居</li>
+<li>跑各种网络，应用实验，虚拟机</li>
+</ul>
+
+
+<p>为了满足这些需求，需要选择对应的设备。</p>
+
+<h2>路由</h2>
+
+<p>首先是路由类需求。因为网络需要很稳定，设备应该根据稳定需求分割开。
+一般来说是这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>主路由 - 光猫 - 外网出口
+</span><span class='line'>主路由 - 无线核心路由ac/ap
+</span><span class='line'>主路由 - 旁路软路由
+</span><span class='line'>主路由 - 高速路由 - 电脑，服务器
+</span><span class='line'>主路由 - 监控路由 - 监控主机，摄像头</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>主路由负责汇总所有网络，需要保证稳定性，其它工作交给其他设备。拨号上网也可以主路由来做。</li>
+<li>无线系统另外设计，汇总到主路由。</li>
+<li>科学上网方案很复杂，最好一个单独的设备来做，可以用软路由，也可以家庭服务器的虚拟机。</li>
+<li>大多数应用并不需要很高的速度，1G就差不多了，只有少部分可能需要10G/2.5G，比如视频或者数据编辑拷贝。可以另外用一个高速路由+SFP光纤的解决方案。</li>
+<li>监控系统独立性比较高，可以另外设置一个监控路由，连上所有的摄像头。</li>
+<li>如果连接网口过多，主路由也可以拆分成多层层级。</li>
+<li>部分子系统，比如监控，访客无线网络，保证安全性和性能，可以划分LAN来进行分割。</li>
+</ul>
+
+
+<h2>存储和运算</h2>
+
+<p>然后是存储和运算系统。我觉得需求可以划分到以下几类：</p>
+
+<p><strong>低功耗服务器</strong>：性能要求不高，但是需要24小时跑，比如一些定时触发的任务，本地的一些小服务，音乐系统什么的。可以选择树莓派或者最新制程的笔记本。</p>
+
+<p>机器的功耗往往是根据制程来，CPU的TDP只是用来算最高功率的。所以对功耗有要求的机器要选择最新制程的。
+树莓派功耗低一些，但是性能差很多，体积上是优势。如果是一些小应用，笔记本太大了。</p>
+
+<p><strong>高性能服务器</strong>：跑虚拟机，运算，解码什么的。可以需要的时候开机，平时关掉。直接主流CPU就可以了，不需要去考虑买二手服务器，服务器优化的方向是保证性能的同时长时间运行的稳定性，和家用的需求(长时间低功耗，或者短时间高功耗)是不一样的。</p>
+
+<p><strong>nas存储</strong>：存储大量的数据。因为对稳定性要求很高，最好单独做一台设备出来。</p>
+
+<p>存储对应的运算，比如电影解码服务系统emby，虚拟机，可以放到另外的机器里面，因为nas和运算或者解码对机器的要求是不一样的。网络带宽也足够支持存储和运算分离。</p>
+
+<p><strong>游戏主机</strong>：玩游戏。游戏需要针对性优化硬件，显卡专门针对游戏，功耗也高，我建议单独做一台机器。</p>
+
+<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派(pikvm)[<a href="https://github.com/pikvm/pikvm">https://github.com/pikvm/pikvm</a>]来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
+
+<p>机器按照待机功耗分类（包含了整流的全系统功耗）：</p>
+
+<ul>
+<li>嵌入式 0.1w</li>
+<li>树莓派 2w</li>
+<li>低功耗CPU：J5005, J1800 6w</li>
+<li>最新制程CPU笔记本：10w</li>
+<li>最新制程CPU台式机：35w</li>
+</ul>
+
+
+<h2>应用</h2>
+
+<p>硬件选择好了之后，就是需要跑的各种应用了，我现在的解决方案：</p>
+
+<ul>
+<li>远程连进家里：wireguard和ssh，外网路由器端口转发，ddns获得dns地址</li>
+<li>NAS存储：truenas，优点是性能好，系统稳定，缺点是基于freebsd，不能跑虚拟机，只能另外用机器了。设置好samba文件共享，存储方案用raid0镜像存储，比较安全。另外需要找台旧机器也装truenas进行zfs镜像备份，放在别的地方，定时开机。</li>
+<li>低功耗服务器和高性能服务器：根据应用需要看看用proxmox虚拟机或者docker。</li>
+<li>视频系统：jellyfin，emby要钱还是用免费的jellyfin，我用的不多付费不是很划算。</li>
+<li>本地音乐：airsonic</li>
+<li>家庭照片和视频：photoprism</li>
+<li>下载：qbittorrent，百度云</li>
+<li><a href="http://blog.linjunhalida.com/blog/low-network-cross-gfw/">科学上网</a></li>
+</ul>
+
+
+<p>家庭服务器的架构搭好了之后，使用上没啥特别的感觉，就是想要做什么的时候就可以用对应的系统，不需要很操心。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[膝上键盘鼠标方案]]></title>
@@ -1012,42 +1114,6 @@ RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-25
 
 <p>以上内容就是信息科学的部分，我们知道信息的本质是什么，以及信息本身是以什么方式存在，然后是如何处理信息，
 之后我们可以利用这些原理，创造出来计算机，以及配套的支持环境，来实现所有的信息存储，操作和处理。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[一天弄懂计算机科学]]></title>
-    <link href="http://halida.github.com/blog/understand-computer-science-in-one-day/"/>
-    <updated>2017-07-16T13:13:04+08:00</updated>
-    <id>http://halida.github.com/blog/understand-computer-science-in-one-day</id>
-    <content type="html"><![CDATA[<p>2016年底我去成都参加同学聚会，在火车上和一个大学生吹牛，说只要一天就可以教会他所有计算机科学&mdash;&mdash;的基础。
-整理了一下，发现其实真的可以一天教会脉络，剩下的就是细化细节了。</p>
-
-<p>我会用几篇文章来讲一下。我保证讲的一定是本质的东西。</p>
-
-<p>所有计算机科学的领域，可以按照体，术，用三类来划分。</p>
-
-<ul>
-<li><a href="http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental">体</a>：包括如何理解信息，如何记录信息，以及最重要的：如何处理信息，都包含在信息科学里面。</li>
-<li>术：包括如何利用信息科学的知识来创造一个可以处理信息的机器。
-
-<ul>
-<li>如何设计机器（计算机体系架构）</li>
-<li>如何把程序语言转换成机器语言（计算机语言原理）</li>
-<li>如何把机器管理起来（操作系统）</li>
-</ul>
-</li>
-<li>用：
-
-<ul>
-<li>如何让机器跑得更快（算法）</li>
-<li>如何存储和交换数据（数据库系统）</li>
-<li>信息如何通讯（通讯协议，互联网）</li>
-<li>还有其他细分的领域</li>
-</ul>
-</li>
-</ul>
-
 ]]></content>
   </entry>
   
