@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2021-02-07T11:20:37+08:00</updated>
+  <updated>2021-02-07T11:23:01+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -82,7 +82,7 @@
 
 <p><strong>游戏主机</strong>：玩游戏。游戏需要针对性优化硬件，显卡专门针对游戏，功耗也高，我建议单独做一台机器。</p>
 
-<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派(pikvm)[<a href="https://github.com/pikvm/pikvm">https://github.com/pikvm/pikvm</a>]来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
+<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派<a href="https://github.com/pikvm/pikvm">pikvm</a>来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
 
 <p>机器按照待机功耗分类（包含了整流的全系统功耗）：</p>
 
