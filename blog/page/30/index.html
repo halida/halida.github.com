@@ -9,7 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="所谓新年辞旧岁,对于我们这些混迹&#8221;江湖&#8221;的IT人来说,也是清理遗留问题,许下些些不切实际远景和目标的时候. 回顾往年,没有怎么注意,时间就悄悄流走了.依旧在原先的小位置上,和小人物们窝在一起.做着一些鸡毛蒜皮的小事. 作为新世纪的知识分子,至少是自以为是的知识分子, &hellip;">
+  <meta name="description" content="钢铁是怎样练成的里面写到: 人最宝贵的东西是生命，生命属于我们只有一次。 实际上: 人拥有的只有生命.以及生命的表现形式:时间.
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +79,48 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/life/">生命</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-01T22:08:26+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2009</time>
+        
+         | <a href="/blog/life/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>钢铁是怎样练成的里面写到: 人最宝贵的东西是生命，生命属于我们只有一次。</p>
+
+<p>实际上:</p>
+
+<p>人拥有的只有生命.以及生命的表现形式:时间.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -544,92 +587,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/how-to-publish-program-on-windows/">如何在windows下面发布程序</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-02-15T21:32:54+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2008</time>
-        
-         | <a href="/blog/how-to-publish-program-on-windows/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>程序写好了，如何给其他人使用呢？</p>
-
-<p>如果是在linux下面，直接把源程序打包一下，然后写一个readme.txt，里面写上编译需要的模块，以及安装的方法就好了，会用linux的人一定会安装的。</p>
-
-<p>不过在windows下面，就没有那么简单了。还是需要做出一个安装程序来的。</p>
-
-<p>我看过了一些专门做安装程序的软件，太专业了，没有必要把简单的小程序发布搞复杂。我用的方法是，做一个自解压程序。</p>
-
-<p>自解压程序可以使用winrar，里面支持这样的功能，做起来也很简单。但是好像winrar是商业版的程序，还是不用它算了。</p>
-
-<p>我用的程序是7-zip，一个专门用来压缩与解压的程序。</p>
-
-<p>制作自解压程序的方法是:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>7z a -sfx7z.sfx 自解压程序名 需要压缩的文件
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>7-zip还可以用来把一堆文件制作成一个单独的exe文件，方法是用7-zip的制作安装包的功能，选定一个解压后自动运行的程序：</p>
-
-<p>先把文件压缩起来。</p>
-
-<p>再运行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>copy /b 7zS.sfx  config.txt  用7-zip压缩后的文件名 可执行文件名
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>7zS.sfx可以从 <a href="http://prdownloads.sourceforge.net/sevenzip/">7-zip的下载地址</a>
-里面的extra包（比如7z457_extra.7z）里面得到，这是一个7-zip用来做安装程序的模块，
-上面语句的原理是直接把config.txt
-和压缩文件附到这个7zS.sfx后面，就成为一个exe文件了。</p>
-
-<p>config.txt是设置文件，我是这样写的:</p>
-
-<pre><code>;!@Install@!UTF-8!
-Title="rest"
-RunProgram="\dist\rest.exe"
-;!@InstallEnd@!
-</code></pre>
-
-<p>runprogram是解压缩后执行的文件。</p>
-
-<p>这样就生成了一个可执行文件。运行后，经过一个解压的过程后（文件解压在某个不为人知的地方），就自动运行压缩包里面的文件了。运行完毕后会自动删除解压的临时文件。</p>
-
-<p>具体的设置，查看7-zip文档的-sfx部分。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/31/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -642,6 +602,10 @@ RunProgram="\dist\rest.exe"
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/laptop-input/">膝上键盘鼠标方案</a>
+      </li>
     
       <li class="post">
         <a href="/blog/camper-trailer/">如何选购房车</a>
@@ -657,10 +621,6 @@ RunProgram="\dist\rest.exe"
     
       <li class="post">
         <a href="/blog/good-woman/">重男轻女是对的</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/career-build/">职业发展的框架</a>
       </li>
     
   </ul>
@@ -705,7 +665,7 @@ RunProgram="\dist\rest.exe"
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2020 - 机械唯物主义 -
+  Copyright &copy; 2021 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
