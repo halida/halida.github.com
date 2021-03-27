@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "small it arch"
+title: "小型IT系统如何架构"
 date: 2021-03-27 12:56:05 +0800
 comments: true
 categories: 
