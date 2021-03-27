@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2021-03-27T12:57:40+08:00</updated>
+  <updated>2021-03-27T13:34:49+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -14,7 +14,101 @@
 
   
   <entry>
-    <title type="html"><![CDATA[small it arch]]></title>
+    <title type="html"><![CDATA[更合理的文件备份方法]]></title>
+    <link href="http://halida.github.com/blog/borgbackup/"/>
+    <updated>2021-03-27T13:30:20+08:00</updated>
+    <id>http://halida.github.com/blog/borgbackup</id>
+    <content type="html"><![CDATA[<p>重要资料需要通过备份保证不丢失，这里整理一下我研究的备份策略。</p>
+
+<p>首先资料应该远程备份，不能和当前的存储介质在一个区域，不然出事了就一起完蛋了。</p>
+
+<p>资料备份应该自动和定期，手动太繁琐，很容易坚持不下去。不定期备份起不到备份的效果。</p>
+
+<p>资料应该可以增量备份，不然空间占用太多。</p>
+
+<p>增量备份需要和备份比较计算，所以远端机器必须参与计算。
+现在大家常用的工具是rsync，但是并不能很好地做到增量计算。</p>
+
+<p>我推荐用<a href="https://borgbackup.readthedocs.io/">borgbackup</a>，
+服务器安装borgbackup之后，并不需要跑服务，执行备份的时候，会通过ssh执行服务器端的可执行文件来跑服务器的工作，架构比较简单。
+其它还有一些工具都比较重量级需要跑服务，就不推荐了。</p>
+
+<p>安装：<code>sudo apt install borgbackup</code></p>
+
+<p>本地机器可以通过命令行工具查看备份，比较备份结果，把某个历史镜像加载到本地，具体可以看<a href="https://borgbackup.readthedocs.io/en/stable/quickstart.html">教程</a>，
+或者快速例子：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>mkdir -p ~/data/workspace/borg
+</span><span class='line'><span class="nb">cd</span> ~/data/workspace/borg
+</span><span class='line'>
+</span><span class='line'>borg init -e none backup
+</span><span class='line'>borg create backup::1 data
+</span><span class='line'>borg create backup::2 data
+</span><span class='line'>borg list backup
+</span><span class='line'><span class="c1"># 1                                    Wed, 2020-10-28 13:55:56 [xxx]</span>
+</span><span class='line'><span class="c1"># 2                                    Wed, 2020-10-28 13:56:13 [xxx]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 换名称</span>
+</span><span class='line'>borg create backup::<span class="sb">`</span>date +%FT%T<span class="sb">`</span> data
+</span><span class='line'>
+</span><span class='line'><span class="c1"># list files</span>
+</span><span class='line'>borg list backup::2
+</span><span class='line'><span class="c1"># recover</span>
+</span><span class='line'>borg extract backup::1
+</span><span class='line'>borg extract backup::1 data/a.txt
+</span><span class='line'>
+</span><span class='line'>borg delete backup::1
+</span><span class='line'>
+</span><span class='line'>borg diff backup::1 <span class="m">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 加载备份到本地，可以拷贝需要恢复的文件出来</span>
+</span><span class='line'>borg mount
+</span><span class='line'>borg umount
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果需要定期备份到远端，
+本地机器加上一个cronjob定期跑备份即可：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>crontab -e
+</span><span class='line'><span class="m">1</span> <span class="m">14</span> * * * ~/scripts/backup_laptop.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>脚本内容在<a href="https://gist.github.com/halida/e2de6c3704c7febf139d5ff39d1756fb">这里</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[小型IT系统如何架构]]></title>
     <link href="http://halida.github.com/blog/small-it-arch/"/>
     <updated>2021-03-27T12:56:05+08:00</updated>
     <id>http://halida.github.com/blog/small-it-arch</id>
@@ -1002,54 +1096,6 @@
 <p>现代社会生产力发展，不会饿死人。进化论不再淘汰弱者。所以普通人都可以生活得很好，甚至有演化优势。
 但是对于个人来说，还是要追求卓越，因为从时间效用，享受，发展都更优，比如精英一个月就可以赚普通人一年的收入。
 所以追求卓越是值得的。如何追求卓越又是另外一个话题了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[论社会制度]]></title>
-    <link href="http://halida.github.com/blog/about-social-system/"/>
-    <updated>2017-07-30T17:44:57+08:00</updated>
-    <id>http://halida.github.com/blog/about-social-system</id>
-    <content type="html"><![CDATA[<p>我们知道马克思错了很多，但是马克思理论中关于生产力和生产关系的思辩很有意义：
-生产力发展水平决定了社会的高度，而生产关系，也就是社会制度，需要适应生产力。</p>
-
-<p>首先具有高级生产力的文明，对低级生产力的文明几乎是压倒性的优势：热兵器战胜冷兵器，核武器国家完胜常规武器国家。
-文明组织起高级生产力，需要新的生产关系来适应，不然只能倒退回旧的生产力水平。
-在不同级别的生产力下，不同的社会制度相互竞争，随着时间，最后更优秀的制度得到了广泛应用。</p>
-
-<p>举例：</p>
-
-<ul>
-<li>生产力级别是草原畜牧，社会制度是游牧部落</li>
-<li>生产力级别是农耕：村落聚集，中央集权(大块平整土地)或者封建(分割土地)</li>
-<li>生产力级别是工业煤铁综合体：大型公司，国家主义</li>
-<li>生产力级别是互联网：跨国公司，全球化</li>
-</ul>
-
-
-<p>每次生产力变更，都会产生大量的实践探索，什么社会制度是有效的，
-这个时候往往会有百家争鸣，大量的社会变革和实践产生。
-经历了这一切之后，积累了经验，学界大致知道什么有效什么没有效，制度创新趋于稳固。</p>
-
-<p>对于现在社会的水平，以及成功的国家，我们可以发现一些共同的特质：
-自由市场，保障个人私有权，法治社会下人人平等和自由。
-这是因为现代社会生产力的发展，绝大部分依赖于商业交换，以及满足个人意志下创新和创造。
-这种状况还会持续很长的一段时间。</p>
-
-<p>但是生产力会继续发展，或者情况发生变化，现有的制度不再能够很好应对了。这个时候新一轮的探索和实践会产生。
-比如：</p>
-
-<ul>
-<li>人人都具有无法控制的超能力或者科技能力：为了控制文明不自我毁灭，会采用各种控制机制，比如<a href="https://movie.douban.com/subject/10527275/">来自新世界</a></li>
-<li>研发出只有少数人就可以控制的极端武力：国家分化出贵族阶层，不再人人平等</li>
-<li>武力可以通过血祭获得：奴隶社会，大量眷养人类，大规模血祭</li>
-<li>人类可以低成本复制：集权扩张主义国家</li>
-<li>AI成熟：人类灭亡，几大核心智能，少数高级智能，以及大量的可抛弃式普通智能</li>
-</ul>
-
-
-<p>综上所述，我们需要根据生产力状况来考虑适合的社会制度，而不能反过来，把社会制度作为源点，
-法治，自由，平等，市场经济并不是绝对的。必要的情况下，应该做出适当的改变。</p>
 ]]></content>
   </entry>
   
