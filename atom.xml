@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2021-02-14T23:03:31+08:00</updated>
+  <updated>2021-03-27T12:57:40+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[small it arch]]></title>
+    <link href="http://halida.github.com/blog/small-it-arch/"/>
+    <updated>2021-03-27T12:56:05+08:00</updated>
+    <id>http://halida.github.com/blog/small-it-arch</id>
+    <content type="html"><![CDATA[<p>整理一下如何管理好一个小型的IT系统架构。</p>
+
+<p>除了大公司，大多数的小公司都不太会有高性能的需求，瓶颈主要在于管理复杂度，
+这里整理一下我的解决方案。</p>
+
+<p>首先所有服务都上云，基础的模块是VPS，没有必要自己拥有机器，同时云服务并不通用。</p>
+
+<p>VPS本身是可丢弃的，存储采用云存储架构。这样保证可用性，架构上也保持简单。</p>
+
+<p>服务器采用ansible构建，构建脚本用git管理，这样就有一个全系统架构的索引和记录，
+配置文件另外用加密git来保存。</p>
+
+<p>可以用docker跑一些app，这样方便在各个vps之间转移，如果不需要可伸缩，不需要k8s这种重量级的方案，
+手动准备docker-compose文件就好。</p>
+
+<p>所有持久化用云存储：云数据库，key value文件数据库，采用AWS或者另外构建云存储架构。</p>
+
+<p>VPS本身出现问题，可以快速用ansible重建。</p>
+
+<p>云存储可以单独思考如何做备份，以及灾难演练，包括服务挂掉，数据丢失和损坏。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何解决人口老龄化问题]]></title>
@@ -1022,54 +1050,6 @@
 
 <p>综上所述，我们需要根据生产力状况来考虑适合的社会制度，而不能反过来，把社会制度作为源点，
 法治，自由，平等，市场经济并不是绝对的。必要的情况下，应该做出适当的改变。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[现代社会防骗指南]]></title>
-    <link href="http://halida.github.com/blog/modern-pitfalls/"/>
-    <updated>2017-07-23T13:11:45+08:00</updated>
-    <id>http://halida.github.com/blog/modern-pitfalls</id>
-    <content type="html"><![CDATA[<p>现代社会陷阱很多，一不小心就中招，很多陷阱你可能自己还没有意识到。</p>
-
-<p>重点：你希望得到的，你相信的一切，都会有东西来骗你。</p>
-
-<p>低级的是骗术：</p>
-
-<ul>
-<li>希望得到教育，就会有垃圾学校，很贵很不值得的培训</li>
-<li>希望得到健康，就会有养生课程，保健品，中医</li>
-<li>希望得到财富，就会有传销，庞氏骗局，各类诈骗</li>
-</ul>
-
-
-<p>中级的是做局：</p>
-
-<ul>
-<li>化妆品：营造你可以变美的幻觉</li>
-<li>钻石：针对爱情的吹捧</li>
-<li>健身房：和你对赌你能够坚持下来</li>
-<li>房地产：售楼部热闹的气氛让你失去判断力</li>
-</ul>
-
-
-<p>高级的是毒教育：</p>
-
-<ul>
-<li>公务员稳定：爸妈经验过时，以及希望你不要给他们添麻烦</li>
-<li>民族主义，国家主义，大政府：政府从小进行的洗脑</li>
-</ul>
-
-
-<p>我们有什么办法来防止自己掉坑？几个办法：</p>
-
-<ul>
-<li>多看：收集事实。事实是检验理论的唯一标准。如果你发现结果不尽如人意，那么一定是哪里有问题。</li>
-<li>多想：思考事物本质。</li>
-<li>多听：以别人的角度来防止自己思维进入盲区</li>
-<li>及时反应过来止损：没有绝对的方法防止自己掉坑的办法，但是一般都会形势明朗，之后赶紧跳出来，沉没成本不是成本。</li>
-</ul>
-
 ]]></content>
   </entry>
   

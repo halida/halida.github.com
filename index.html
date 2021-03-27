@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="中国现在的生育率越来越低了，随着新生人口的减少，中国慢慢变得老龄化，后续问题很严重。 为什么现代人不生小孩 主要是生小孩能够获得的收益太少，投入又太多。 以前农业社会，普通人获得生产力不需要经过长期的学习。
-娃能够吃饱，活下来几岁的时候就可以帮做家务，十几岁就可以投入农业劳作。
-同时农村丛林社会， &hellip;">
+  <meta name="description" content="整理一下如何管理好一个小型的IT系统架构。 除了大公司，大多数的小公司都不太会有高性能的需求，瓶颈主要在于管理复杂度，
+这里整理一下我的解决方案。 首先所有服务都上云，基础的模块是VPS，没有必要自己拥有机器，同时云服务并不通用。 VPS本身是可丢弃的，存储采用云存储架构。这样保证可用性， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,63 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/small-it-arch/">Small It Arch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-03-27T12:56:05+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2021</time>
+        
+         | <a href="/blog/small-it-arch/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>整理一下如何管理好一个小型的IT系统架构。</p>
+
+<p>除了大公司，大多数的小公司都不太会有高性能的需求，瓶颈主要在于管理复杂度，
+这里整理一下我的解决方案。</p>
+
+<p>首先所有服务都上云，基础的模块是VPS，没有必要自己拥有机器，同时云服务并不通用。</p>
+
+<p>VPS本身是可丢弃的，存储采用云存储架构。这样保证可用性，架构上也保持简单。</p>
+
+<p>服务器采用ansible构建，构建脚本用git管理，这样就有一个全系统架构的索引和记录，
+配置文件另外用加密git来保存。</p>
+
+<p>可以用docker跑一些app，这样方便在各个vps之间转移，如果不需要可伸缩，不需要k8s这种重量级的方案，
+手动准备docker-compose文件就好。</p>
+
+<p>所有持久化用云存储：云数据库，key value文件数据库，采用AWS或者另外构建云存储架构。</p>
+
+<p>VPS本身出现问题，可以快速用ansible重建。</p>
+
+<p>云存储可以单独思考如何做备份，以及灾难演练，包括服务挂掉，数据丢失和损坏。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -993,53 +1049,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rational-man/">正确理解经济学的理性人假设</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2019-04-08T21:02:05+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2019</time>
-        
-         | <a href="/blog/rational-man/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>理性人假设只是一个预设的公理，用来推理出来各种经济学定理。
-并不代表市场上面所有人都是理性人，而是只有理性人才能够更好地生存下来。</p>
-
-<p>举例：假设有100只猴子，每只猴子都随机在一个地方开加油站。
-随着时间过去，只有在交通要道开加油站的猴子，最后才可以赚钱生存下来，其他猴子都饿死了。
-那么看起来市场上面只有“理性”的猴子。</p>
-
-<p>为了简化以上的推理过程，我们就给出理性人假设：市场上都是理性人，理性人会选择交通要道上面开加油站，所以加油站都在交通要道上面。</p>
-
-<p>理性人其实也可以看作是一个进化论的推论。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1055,6 +1064,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/small-it-arch/">small it arch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/population-problem/">如何解决人口老龄化问题</a>
       </li>
     
@@ -1068,10 +1081,6 @@
     
       <li class="post">
         <a href="/blog/camper-trailer/">如何选购房车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/life-money/">普通中国人一辈子需要赚多少钱</a>
       </li>
     
   </ul>

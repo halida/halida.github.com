@@ -9,10 +9,11 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这些年参加过不少的相亲活动，这里整理一下我对这些活动的认识。 需求 相亲，目的就是在一定的时间范围内搞定终身大事。
-虽然说不同人有不同的标准，一般还是会列一些项目，用来做快速选人。
-包括以下方面： 人：年龄，第一感觉，性格，风格
-背景：地域，什么工作，收入，父母状况，家境 依据各人的状况， &hellip;">
+  <meta name="description" content="对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。 回到正题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +82,71 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/auto-update/">自动更新程序功能思考</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/auto-update/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。</p>
+
+<p>回到正题。这里整理一下windows下面写一个可以自己自动更新的程序需要的考虑。</p>
+
+<p>首先，windows下面程序不能自动更新自己，程序开启的时候会锁住程序的可执行文件。
+因此，需要先做一个启动器，通过启动器来负责调用程序和更新程序的事情。
+同时这个启动器必须足够快足够小。我选择的是autoit，
+如果有更多开发资源，最好还是用C++写一个windows原生程序。</p>
+
+<p>启动器的逻辑是这样，分成检查更新和更新部分。
+用户开启程序，实际是调用启动器的更新部分后再启动程序。
+程序本身运行的时候，再定时监控是否有更新，实际调用启动器的检查更新部分，
+这样关于更新的逻辑都丢给启动器，模块化好一些。</p>
+
+<p>检查更新的逻辑比较简单，会去访问更新服务器上面一个版本文件，
+和本地程序的版本做比较，如果本地更旧，就下载程序到一个new_program目录下面。
+定时检查更新的时候需要随机化检查时间，防止无数客户端同时更新拖垮更新服务器。</p>
+
+<p>更新部分会在本地判断是否存在new_program目录，有的话就替换掉旧的程序，
+执行安装脚本做一些系统相关的配置，再启动。</p>
+
+<p>其中为了防止旧程序开启把旧程序目录锁住，需要关闭旧程序，或者跳过这块的更新。
+启动器本身也要能够被自动更新掉，逻辑上面需要照顾到这个问题。
+启动器对应的一些参数，比如更新服务器地址，更新目录，最好做成配置文件，方便修改。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -940,63 +1006,6 @@ Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.o
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/the-meaning-of-life/">The Meaning of Life</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-28T08:15:48+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
-        
-         | <a href="/blog/the-meaning-of-life/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2014_01_28_life.jpeg"></p>
-
-<p>At some point in the life, we may ask ourselves: <strong>What&rsquo;s the meaning of life?</strong>
-We seek answers from others, from social groups or religion groups, from books written by philosophers.</p>
-
-<p>In the ancient times, philosophers ask bigger question: <strong>What is the meaning of humanity?</strong>
-Someone turns to the obvious answer: <strong>there must be the god, and god creates human for good.</strong>
-The question turns into: <strong>what god wants?</strong> Argument of it was through the history, and bring conflict and war.</p>
-
-<p>Someone asks another question: <strong>If there is god, where is the god?</strong>
-They start to seek the proof, develop system of critical thinking, then the light of rationality shining, expulse the shadow of mysticism.
-And we got science, and we can identify facts, and we found the big discovery of evolution, with the proof of it.
-It turns out either there is no god, or the god is not concern about us,
-human is a kind of random generated chemical compound which can reproduce itself,
-specialized in alter environment with the help of a highly developed organ called brain random generated thousands of thousands years ago.</p>
-
-<p>The big answer of human meanin is unveiled now, If human as a group has no meaning, what about each individual?
-Maybe no default meaning, we still can <strong>seek it ourselves</strong>. Without meaning, life is no more than an ordinary animal.
-With meaning, life of roaming turns into life of journey with porpose, great things can be done, ordinary can be extraordinary,
-and life can be meanful.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/11/">&larr; Older</a>
@@ -1014,6 +1023,10 @@ and life can be meanful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/small-it-arch/">small it arch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/population-problem/">如何解决人口老龄化问题</a>
       </li>
     
@@ -1027,10 +1040,6 @@ and life can be meanful.</p>
     
       <li class="post">
         <a href="/blog/camper-trailer/">如何选购房车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/life-money/">普通中国人一辈子需要赚多少钱</a>
       </li>
     
   </ul>

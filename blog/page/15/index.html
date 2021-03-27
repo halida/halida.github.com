@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="很多时候，我们需要在外面访问公司，或者家里面的电脑，但是我们一般情况下这些电脑没有办法直接暴露到外部网络中，那么我们应该怎么做呢？我们需要一个外面的VPS，或者另外一台暴露到公网的主机作为跳板。 假设： A主机（$A_IP）：我们内网需要被访问的主机。
-B主机（$B_IP）：有一个公网IP的主机 &hellip;">
+  <meta name="description" content="虽然ubuntu里面已经有了wordpress的安装包，不过它好像是和apache整合起来的，
+我的ubuntu服务器上面主要跑的是nginx，这里整理一下安装的步骤吧。 架构 比较简单，nginx接收到访问wordpress的请求，交给php-cgi进程渲染结果，然后返回。
+跑的进程有： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,304 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ubuntu-wordpress/">Ubuntu搭建wordpress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T11:27:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+        
+         | <a href="/blog/ubuntu-wordpress/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>虽然ubuntu里面已经有了wordpress的安装包，不过它好像是和apache整合起来的，
+我的ubuntu服务器上面主要跑的是nginx，这里整理一下安装的步骤吧。</p>
+
+<h2>架构</h2>
+
+<p>比较简单，nginx接收到访问wordpress的请求，交给php-cgi进程渲染结果，然后返回。
+跑的进程有：nginx, php-cgi, mysql。</p>
+
+<h2>安装软件</h2>
+
+<p>首先是安装必须的软件：</p>
+
+<pre><code>sudo aptitude install nginx mysql-server mysql-client unzip php5-cgi php5-mysql
+</code></pre>
+
+<p>安装的时候会提示你输入一下mysql的root密码。</p>
+
+<h2>设置mysql</h2>
+
+<p>mysql默认不是utf8的，我们需要修改一下：</p>
+
+<pre><code>sudo vi /etc/mysql/my.cnf
+</code></pre>
+
+<p>加上：</p>
+
+<pre><code>[mysql]
+default-character-set=utf8
+[client]
+default-character-set=utf8
+[mysqld]
+character-set-server=utf8
+</code></pre>
+
+<p>然后重启mysql：</p>
+
+<pre><code>sudo service mysql restart
+</code></pre>
+
+<p>给wordpress准备一个数据库：</p>
+
+<pre><code>mysql -u root -p
+</code></pre>
+
+<p>进入命令行后, 我们需要：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 创建一个数据库</span>
+</span><span class='line'>create database wordpress;
+</span><span class='line'><span class="c"># 建立对应的mysql的用户</span>
+</span><span class='line'>create user wordpress identified by <span class="s1">&#39;密码&#39;</span>;
+</span><span class='line'><span class="c"># 设置权限</span>
+</span><span class='line'>grant all privileges on wordpress.* to wordpress;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>准备php进程</h2>
+
+<p>我们单独跑一个php-cgi服务：</p>
+
+<pre><code>sudo vi /etc/init.d/php-fastcgi
+</code></pre>
+
+<p>内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">BIND</span><span class="o">=</span>127.0.0.1:9000
+</span><span class='line'><span class="nv">USER</span><span class="o">=</span>www-data
+</span><span class='line'><span class="nv">PHP_FCGI_CHILDREN</span><span class="o">=</span>15
+</span><span class='line'><span class="nv">PHP_FCGI_MAX_REQUESTS</span><span class="o">=</span>1000
+</span><span class='line'>
+</span><span class='line'><span class="nv">PHP_CGI</span><span class="o">=</span>/usr/bin/php-cgi
+</span><span class='line'><span class="nv">PHP_CGI_NAME</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$PHP_CGI</span><span class="sb">`</span>
+</span><span class='line'><span class="nv">PHP_CGI_ARGS</span><span class="o">=</span><span class="s2">&quot;- USER=$USER PATH=/usr/bin PHP_FCGI_CHILDREN=$PHP_FCGI_CHILDREN PHP_FCGI_MAX_REQUESTS=$PHP_FCGI_MAX_REQUESTS $PHP_CGI -b $BIND&quot;</span>
+</span><span class='line'><span class="nv">RETVAL</span><span class="o">=</span>0
+</span><span class='line'>
+</span><span class='line'>start<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nb">echo</span> -n <span class="s2">&quot;Starting PHP FastCGI: &quot;</span>
+</span><span class='line'>      start-stop-daemon --quiet --start --background --chuid <span class="s2">&quot;$USER&quot;</span> --exec /usr/bin/env -- <span class="nv">$PHP_CGI_ARGS</span>
+</span><span class='line'>      <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;$PHP_CGI_NAME.&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>stop<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nb">echo</span> -n <span class="s2">&quot;Stopping PHP FastCGI: &quot;</span>
+</span><span class='line'>      killall -q -w -u <span class="nv">$USER</span> <span class="nv">$PHP_CGI</span>
+</span><span class='line'>      <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;$PHP_CGI_NAME.&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="s2">&quot;$1&quot;</span> in
+</span><span class='line'>    start<span class="o">)</span>
+</span><span class='line'>      start
+</span><span class='line'>  ;;
+</span><span class='line'>    stop<span class="o">)</span>
+</span><span class='line'>      stop
+</span><span class='line'>  ;;
+</span><span class='line'>    restart<span class="o">)</span>
+</span><span class='line'>      stop
+</span><span class='line'>      start
+</span><span class='line'>  ;;
+</span><span class='line'>    *<span class="o">)</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;Usage: php-fastcgi {start|stop|restart}&quot;</span>
+</span><span class='line'>      <span class="nb">exit </span>1
+</span><span class='line'>  ;;
+</span><span class='line'><span class="k">esac</span>
+</span><span class='line'><span class="nb">exit</span> <span class="nv">$RETVAL</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>把这个服务跑起来：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo chmod u+x /etc/init.d/php-fastcgi
+</span><span class='line'>sudo update-rc.d php-fastcgi defaults
+</span><span class='line'>sudo service php-fastcgi start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>设置nginx</h2>
+
+<p>我们增加一个nginx配置文件：</p>
+
+<pre><code>sudo vi /etc/nginx/sites-available/your-domain.com
+</code></pre>
+
+<p>内容（需要修改对应的参数）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>server<span class="o">{</span>
+</span><span class='line'>        listen 80;
+</span><span class='line'>        server_name your-domain.com;
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>          root /home/halida/wordpress;
+</span><span class='line'>          index index.php index.html index.htm;
+</span><span class='line'>
+</span><span class='line'>          <span class="c"># this serves static files that exist without running other rewrite tests</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span>-f <span class="nv">$request_filename</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              expires 30d;
+</span><span class='line'>              <span class="nb">break</span>;
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="c"># this sends all non-existing file or directory requests to index.php</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span>!-e <span class="nv">$request_filename</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              rewrite ^<span class="o">(</span>.+<span class="o">)</span><span class="nv">$ </span>/index.php?q<span class="o">=</span><span class="nv">$1</span> last;
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        location ~ <span class="se">\.</span>php<span class="nv">$ </span><span class="o">{</span>
+</span><span class='line'>            root /home/halida/wordpress;
+</span><span class='line'>
+</span><span class='line'>            fastcgi_pass    127.0.0.1:9000;
+</span><span class='line'>            fastcgi_index   index.php;
+</span><span class='line'>            fastcgi_param   SCRIPT_FILENAME /home/halida/wordpress<span class="nv">$fastcgi_script_name</span>;
+</span><span class='line'>            include         fastcgi_params;
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>设置使用这个配置文件：</p>
+
+<pre><code>sudo ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled
+</code></pre>
+
+<h2>设置wordpress</h2>
+
+<p>我们直接从官方网站上面下载wordpress：</p>
+
+<pre><code>wget http://wordpress.org/latest.zip
+unzip latest.zip
+cp wp-config-sample.php wp-config.php
+</code></pre>
+
+<p>修改wp-config.php，填写上我们前面设置的mysql数据库信息。</p>
+
+<p>wordpress就这样安装好了。然后访问你的域名位置，就可以使用了。</p>
+
+<p>引用材料：</p>
+
+<ul>
+<li><a href="http://tomasz.sterna.tv/2009/04/php-fastcgi-with-nginx-on-ubuntu/">ubuntu下面nginx安装wordpress</a></li>
+<li><a href="http://codex.wordpress.org/Installing_WordPress#Famous_5-Minute_Install">wordpress安装教程</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1257,91 +1556,6 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/new-mac-book-pro/">买了新的笔记本</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-11-16T08:39:00+08:00" pubdate data-updated="true">Nov 16<span>th</span>, 2012</time>
-        
-         | <a href="/blog/new-mac-book-pro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/d9K68.jpg"></p>
-
-<p>我计划购买笔记本电脑已经有很长一段时间了。最近终于赶着苹果最近的发布会，入手了新出来的<a href="http://www.okhqb.com/detail/1000323769.html">rmbp MD212</a>，花费了我一万多一点。买来后花费了一段时间的安装和掌握，感觉还是非常顺手的。</p>
-
-<h2>我为什么要买笔记本电脑</h2>
-
-<p>我现在已经有了一台比较强力的开发用PC，系统装的是ubuntu，但是我还是要购买一台比较好的笔记本，主要原因是我有移动办公的需求。</p>
-
-<p>首先，我需要能够<strong>自由切换站立工作和坐着工作</strong>，这是为了我健康的考虑。台式机调整起来很繁琐，笔记本只需要两个高度不同的台面。</p>
-
-<p><strong>Coding Everywhere</strong>是我一直想做的事情，比如在躺椅上面coding，比如在咖啡馆，图书馆等参合coding，换一个环境能够带来更多的灵感和乐趣。</p>
-
-<p>我还是会有一些<strong>必须进行的移动办公需求</strong>，比如我要参加<a href="http://www.primesplus.com/2012/09/16/hobby-project-day-%E2%80%93-09-2012/">hobby project day</a>，hackthon之类的活动等等。</p>
-
-<h2>考虑的几个要点</h2>
-
-<p>既然我有实际的需求，那么选择什么类型的笔记本，基本上可以根据这些需求来确定一下。</p>
-
-<p>笔记本必须要能够提供<strong>舒适的开发体验</strong>。我现在有的一个华硕的eeePC小本实在不堪使用。</p>
-
-<p>笔记本要<strong>足够轻便</strong>，这样我才能很方便地拿着到处走。</p>
-
-<p>笔记本要<strong>大小适宜</strong>，太小了不方便coding，太大了又太重。</p>
-
-<p>考虑到现在苹果产品因为量产足够，性价比已经非常高了，以及我是个开发者，需要体验苹果的优秀设计，还有就是苹果在笔记本领域的口碑，我<strong>选择苹果笔记本</strong>。</p>
-
-<h2>选择rmbp MD212的理由</h2>
-
-<p><img src="/images/posts/54kP2.jpg"></p>
-
-<p>既然确定了要点，那么下面就是具体选型的问题了。</p>
-
-<p>考虑到<strong>retina屏幕是下一个阶段发展方向</strong>，以及retina屏幕技术已经足够成熟，我还是尽量选择这样的屏幕。考虑到价格因素，我从最便宜的MD212开始看起。</p>
-
-<p><strong>i5已经能够满足开发需求</strong>，现在CPU频率基本到一个极限了，在这方面的改进程度不大，我还是选择比较通用的CPU型号。
-对于我来说，<strong>13寸显示访问还是够的</strong>，尤其是retina屏幕，细节都看得很清楚。
-虽然SSD 128G有点少，但是根据以往的经验，128G对于我来说，勉强还能够用。
-至于内存8G，对于普通的开发加上一台虚拟机来说完全够用了。</p>
-
-<h2>为什么这个时间点</h2>
-
-<p>型号选定了，然后是具体出手的时间。根据我的观察，苹果的产品价格在新的发布会之后一段时间内，还是很稳定的。MD212又刚刚出来，我觉得现在是入手的好时机。</p>
-
-<h2>后记</h2>
-
-<p>经过这几天的实际使用，感觉上手飞快，没有什么需要适应的地方，整体上很舒服。OSX操作系统是基于BSD的，从linux切换过来基本只需要熟悉目录结构。安装开发环境消耗了不少时间，主要是homebrew，rails，emacs，最好都整好了。然后就是感觉台式机买的有点亏，完全可以直接入mbp，但是时间点的话不对，也没有办法。</p>
-
-<p>rmbp MC212报价在我购买了之后<a href="http://www.appletuan.com/t/2553">又跌了200元</a>，算是小亏，这个时间点其实很难把握，既然买了东西，沉没成本不是成本，以后就不要关注这个价格了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/16/">&larr; Older</a>
@@ -1359,6 +1573,10 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/small-it-arch/">small it arch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/population-problem/">如何解决人口老龄化问题</a>
       </li>
     
@@ -1372,10 +1590,6 @@ B主机（$B_IP）：有一个公网IP的主机 &hellip;">
     
       <li class="post">
         <a href="/blog/camper-trailer/">如何选购房车</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/life-money/">普通中国人一辈子需要赚多少钱</a>
       </li>
     
   </ul>
