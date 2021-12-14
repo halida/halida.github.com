@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2021-03-27T13:34:49+08:00</updated>
+  <updated>2021-12-14T15:31:39+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何做到不带包随时远程工作]]></title>
+    <link href="http://halida.github.com/blog/outside-coding/"/>
+    <updated>2021-12-14T15:12:44+08:00</updated>
+    <id>http://halida.github.com/blog/outside-coding</id>
+    <content type="html"><![CDATA[<h2>需求</h2>
+
+<p>外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。</p>
+
+<p>首先外出的时候如果带了包，就可以装轻薄笔记本，
+但是带包加上带笔记本比较麻烦，有没有随身的解决方案？</p>
+
+<h2>实现方法</h2>
+
+<p>首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
+开发主力机平时放在家里，随身的设备远程连进来。</p>
+
+<p>方法：找电信运营商要到外部IP，路由器端口转发到本地电脑ssh端口。
+ssh协议是安全的，不用担心暴露出去。</p>
+
+<p>本地电脑开放ssh协议，通过密钥登录，开发环境用 tmux + emacs，可以在终端里面进行开发工作。</p>
+
+<p>外出设备是难点，显示和输入必须随身。</p>
+
+<p>输入设备：</p>
+
+<ul>
+<li>emacs快捷键是组合键，必须用键盘，不能通过触摸屏解决，同时键盘操作效率才过的去。</li>
+<li>随身蓝牙键盘的体积必须能够放到口袋里，不方便带就不愿带了。</li>
+<li>键盘的键位必须是标准的，非标键位使用太难受。</li>
+<li>综上所述，考察了现在能够买到的价格适中的产品，选用BOW的<a href="https://item.jd.com/100001317158.html">HB188s</a>。</li>
+</ul>
+
+
+<p>显示设备：</p>
+
+<ul>
+<li>不考虑笔记本电脑和平板，不能放进口袋的设备都不方便，不考虑。</li>
+<li>所以只能是手机，屏幕尽量大。</li>
+<li>考虑折叠屏手机：现在设备还是太贵，不考虑。</li>
+</ul>
+
+
+<p>手机软件用termius，免费版本就可以用需要的功能了，可以保持ssh连接，
+同时带有端口转发功能，可以把开发机上的web app转发到手机里面，用浏览器看效果。</p>
+
+<h2>效果</h2>
+
+<p><img src="https://i.imgur.com/MPvP8uG.jpg" alt="开发状态" /></p>
+
+<p>以后出门只需要多带这个折叠键盘在口袋里，就可以保证随时随地进行开发工作了。适用场景：</p>
+
+<ul>
+<li>ssh连服务器开发</li>
+<li>emacs访问本地的个人笔记</li>
+<li>emacs开发各种程序</li>
+</ul>
+
+
+<p>遗留问题：</p>
+
+<ul>
+<li>屏幕还是小了一些，需要换大屏幕手机。</li>
+<li>termius + tmux + emacs下中文输入法很不方便，显示错位。</li>
+<li>必须要有台面，不能坐下就可以做事。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[更合理的文件备份方法]]></title>
@@ -1071,31 +1141,6 @@
 <p>综上所述，我们可以从理论上证明，和实际事实上发现，只要赚钱，就是是带来价值的，赚钱越多带来的价值越大。
 因此，我们可以说，赚钱不只是一个私利的事情，从公义上说，也是光荣，正义的，值得推崇的。
 如果你想要给社会带来更大价值，就要去往赚钱多的方向走，市场会告诉你什么最稀缺，社会最需要的是什么。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[论普通人的弱]]></title>
-    <link href="http://halida.github.com/blog/ordinary-is-week/"/>
-    <updated>2017-11-12T11:40:40+08:00</updated>
-    <id>http://halida.github.com/blog/ordinary-is-week</id>
-    <content type="html"><![CDATA[<p>普通人其实是非常非常弱的，一个人只要发现这点，针对性地稍微努力一下，很容易可以从普通人中脱颖而出。</p>
-
-<p>举例如下：</p>
-
-<ul>
-<li><strong>自制力差</strong>。比如只要坚持三个月运动，身材就会发生明显改变。但是普通人就是坚持不下来。</li>
-<li><strong>努力程度太低</strong>。IT公司996（朝9晚9加星期六）就算是高强度工作了？离全周无休，每天睡4小时差远了。更别说办公室工作毫无压力。</li>
-<li><strong>目标太低</strong>。考试及格就好？优等生的要求是上97。月薪2万？别人的要求是月薪20万。</li>
-<li><strong>欲望太弱</strong>。告诉你明年深圳大概率会涨30%，90%以上的人会无动于衷，99%的人最后还是没有买成。</li>
-<li><strong>放弃思考</strong>。看到一篇诉诸感觉的文章（比如幼儿园虐童）就是愤怒，然后没有思考直接攻击其中的一个主体，而没有去好好思考思考这是怎么回事。</li>
-<li><strong>脑子弱</strong>。双十一计算优惠都算不清楚。</li>
-</ul>
-
-
-<p>现代社会生产力发展，不会饿死人。进化论不再淘汰弱者。所以普通人都可以生活得很好，甚至有演化优势。
-但是对于个人来说，还是要追求卓越，因为从时间效用，享受，发展都更优，比如精英一个月就可以赚普通人一年的收入。
-所以追求卓越是值得的。如何追求卓越又是另外一个话题了。</p>
 ]]></content>
   </entry>
   

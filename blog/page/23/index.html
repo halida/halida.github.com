@@ -9,10 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="这几天开始, gmail能够登录进去, 但是刷新的时候会停止掉, 但是翻墙之后,
-完全正常. 那么到底发生了什么事情应该很明显了. 我这几天想到一个idea, 人们针对自己喜欢和厌恶的事情捐款,
-如果喜欢一个人或者事物, 就给他捐款, 如果讨厌一个人或者事物,
-就给能够除掉他们的对象捐款. &hellip;">
+  <meta name="description" content="什么是zeromq? 最近断断续续知道了有message queue这种东西,
+可以很好地作为不同程序间的粘合剂. 补上了我工具链上面缺失的一环.
+在考虑了几个mq的工具之后, 我决定学习 zeromq .
+为什么选它呢, 因为它的API和它的网站一样简洁优美, 暗合禅道. zeromq的基础 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,206 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/zeromq/">Zeromq介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-15T20:01:50+08:00" pubdate data-updated="true">Mar 15<span>th</span>, 2011</time>
+        
+         | <a href="/blog/zeromq/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://github.com/imatix/zguide/raw/master/images/fig14.png" alt="image" /></p>
+
+<h2>什么是zeromq?</h2>
+
+<p>最近断断续续知道了有message queue这种东西,
+可以很好地作为不同程序间的粘合剂. 补上了我工具链上面缺失的一环.
+在考虑了几个mq的工具之后, 我决定学习 <a href="http://www.zeromq.org/">zeromq</a> .
+为什么选它呢, 因为它的API和它的网站一样简洁优美, 暗合禅道.</p>
+
+<h2>zeromq的基础</h2>
+
+<p>zeromq采用api形式来实现队列功能, 它的核心就是: socket.</p>
+
+<p>这个socket和tcp/ip的socket在概念上有点类似, 只不过,
+它的socket不需要给出具体通讯的实现以及其他的一些特性,
+我们可以把它理解为更高级的socket. socket处理消息是按照份数来进行的,
+每次发送一份或者多份消息. 并且, 这个socket不一定是基于网络的,
+它可以设置为其他形式的东西, 比如ipc, 进程内部通讯,
+通讯方式和代码是解耦合的.</p>
+
+<p>这样的话, 程序员只需要关心数据流的流动方式,
+以及对应的网络拓扑应该如何搭建. 我们还是来看看具体的代码吧.</p>
+
+<h2>一个简单的例子</h2>
+
+<p>如果我们要实现下面这个简单的通讯方式:</p>
+
+<p>client发出&#8217;hello&#8217;请求, server回应&#8217;world&#8217;.</p>
+
+<p><img src="http://github.com/imatix/zguide/raw/master/images/fig1.png" alt="image" />
+只需要写这样的代码:</p>
+
+<p>server.py:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># 导入zmq</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">zmq</span><span class="o">,</span> <span class="nn">time</span>
+</span><span class='line'><span class="c"># 初始化上下文</span>
+</span><span class='line'><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+</span><span class='line'><span class="c"># 生成一个新的服务socket</span>
+</span><span class='line'><span class="n">socket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REP</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 绑定在一个地址上面</span>
+</span><span class='line'><span class="n">socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s">&quot;tcp://*:5555&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+</span><span class='line'>    <span class="c"># 等待客户端发起请求</span>
+</span><span class='line'>    <span class="n">message</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+</span><span class='line'>    <span class="c"># 做一些&#39;具体的&#39;工作</span>
+</span><span class='line'>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="c"># 返回结果</span>
+</span><span class='line'>    <span class="n">socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;World&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>client.py:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">zmq</span>
+</span><span class='line'><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 生成一个请求socket    </span>
+</span><span class='line'><span class="n">socket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
+</span><span class='line'><span class="c"># 连接上服务器</span>
+</span><span class='line'><span class="n">socket</span><span class="o">.</span><span class="n">connect</span> <span class="p">(</span><span class="s">&quot;tcp://localhost:5555&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">request</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+</span><span class='line'>    <span class="c"># 发出请求</span>
+</span><span class='line'>    <span class="n">socket</span><span class="o">.</span><span class="n">send</span> <span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c"># 得到回应</span>
+</span><span class='line'>    <span class="k">print</span> <span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>分别在2个终端里面执行上面的代码, 你会发现自己实现了一个非常简单的服务器,
+而上面的代码正好是他们应该执行的逻辑, 没有任何底层的肮脏处理代码!</p>
+
+<p>神奇的地方:</p>
+
+<ul>
+<li>你可以开启任意多个client, 服务器都可以响应得过来.</li>
+<li>你不需要处理通讯异常的问题, zeromq都帮你实现好了.</li>
+<li>client和server他们启动的顺序是不互相依赖的, 谁都可以先启动.</li>
+<li>不需要其他程序执行, 消息机制是在程序执行的时候,
+zeromq自动开线程处理的.</li>
+</ul>
+
+
+<p>zeromq是搭建复杂拓扑的基石. 除了上面那个简单的同步回应请求模式以外,
+zeromq还可以实现许许多多更为复杂的模式,
+这些是依靠它基础的几类socket完成的:</p>
+
+<ul>
+<li>REQ 请求socket</li>
+<li>REP 回应socket. 上面利用这2类来实现了一个简单的服务器.</li>
+<li>PUB 发布socket. 该socket可以发布消息, 但是不关心订阅者是否收到消息.</li>
+<li>SUB 订阅socket. 它可以连上PUB, 获取PUB随机发送的消息.</li>
+<li>PUSH 只送出消息.</li>
+<li>PULL 只收取消息.</li>
+<li>PAIR 一对一的管道.</li>
+<li>XREQ 异步请求.</li>
+<li>XREP 异步回应.</li>
+</ul>
+
+
+<p>利用上面的几类基础socket, 可以实现以下的复杂拓扑: 2个云计算集群,
+能够根据负载互相转移任务.</p>
+
+<p><img src="http://github.com/imatix/zguide/raw/master/images/fig52.png" alt="image" />
+具体的实现方法这里就不多说了, 你可以看
+<a href="http://zguide.zeromq.org/page:all">zeromq教程</a>, 里面解释得非常详细.</p>
+
+<h2>安装方法</h2>
+
+<p>因为ubuntu源里面的zeromq好像不是最新的, 我是直接上:
+<a href="http://www.zeromq.org/intro:get-the-software">http://www.zeromq.org/intro:get-the-software</a>
+上面下载2.0.10版本的(python绑定最高是2.1.1, 但是没有下载,
+于是我选择这个版本).</p>
+
+<p>然后就是解压编译安装. 需要g++以及uuid-dev. 安装完毕后,
+需要手动做一下链接库的链接, 不然无法用pyzmq:</p>
+
+<pre><code>ln -s /usr/local/lib/libzmq.so.0 /usr/lib/libzmq.so.0 
+</code></pre>
+
+<p>然后安装pyzmq</p>
+
+<pre><code>sudo easy_install pyzmq==2.0.10
+</code></pre>
+
+<p>然后就可以执行上面的python代码了.</p>
+
+<h2>结论</h2>
+
+<p>zeromq的抽象方式非常优美, 在此层面上, 我们可以专注处理数据流的问题,
+而不需要考虑下面的杂活. 我早就希望能够有这样的工具存在了, 现在得偿所愿,
+可以构建一些很有意思的系统了.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1420,180 +1620,6 @@ rails</a>.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/http-intro/">Http_介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-02-09T10:46:21+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2011</time>
-        
-         | <a href="/blog/http-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://perl.apache.org/docs/2.0/user/handlers/http_cycle.gif" alt="image" /></p>
-
-<p>HTTP是什么就不说了, 大家都知道.
-这篇文章对HTTP实现方式的相关内容做一个整理, 满足大家的窥私欲望.</p>
-
-<h2>用户如何利用HTTP</h2>
-
-<p>先不管HTTP下面是如何实现的, 我们看看上层: 对于用户而言,
-HTTP的使用很简单: 打开一个浏览器, 输入网址, 比如:
-<a href="http://www.example.com">http://www.example.com</a>, 然后按回车,
-浏览器就打开了一个界面. 整体工作逻辑就是</p>
-
-<pre><code>发出网址(URL) --&gt; 服务器传回网站内容 --&gt; 浏览器显示界面
-</code></pre>
-
-<p>我们理清接口(不用去管浏览器渲染的部分):</p>
-
-<p>输入
-  ~ 用户给本地的一个程序URL信息</p>
-
-<p>输出
-  ~ 服务器返回状态, 以及HTML内容</p>
-
-<h2>HTTP通讯过程</h2>
-
-<p>HTTP是如何实现上面的目标的呢? HTTP直接利用TCP连接, 并且通讯模式很简单,
-客户端发出一个请求, 服务器给出一个响应. 并且这个通讯过程是纯文本的.</p>
-
-<p>我们看一个实际的例子, 通过telnet来直接看看HTTP是如何通讯的:</p>
-
-<p>首先连接目标服务器, 80端口是HTTP协议的默认端口.</p>
-
-<pre><code>halida@halida-desktop:~$ telnet tonycode.com 80
-Trying 67.205.49.228...
-Connected to tonycode.com.
-Escape character is '^]'.
-</code></pre>
-
-<p>telnet连接上之后, 我们发出请求.</p>
-
-<pre><code>GET / HTTP/1.1
-Host: tonycode.com
-</code></pre>
-
-<p>&ldquo;GET&#8221;是HTTP请求的方法, &rdquo;/&ldquo;是获取资源的目录,
-&#8220;HTTP/1.1&#8221;标示采用的是什么HTTP协议版本. &#8220;Host&#8221;行代表的是HTTP header,
-请求附带的一些其他信息. cookie, 页面缓存等. 具体可见: `HTTP headers`</p>
-
-<p>最后输入2行回车, 表示请求内容发送完毕.</p>
-
-<p>下面是接收到的内容</p>
-
-<pre><code>HTTP/1.1 200 OK
-</code></pre>
-
-<p>200是状态码, 表示&hellip;就是上面的OK, 请求处理完成.</p>
-
-<pre><code>Date: Wed, 09 Feb 2011 01:06:45 GMT
-Server: Apache
-Last-Modified: Wed, 21 Apr 2010 15:49:54 GMT
-ETag: "71de2eb-bce-484c1252b6c80"
-Accept-Ranges: bytes
-Content-Length: 3022
-Vary: Accept-Encoding
-Content-Type: text/html
-</code></pre>
-
-<p>然后就是返回的一串 `HTTP header`, 里面含有返回内容的信息等.</p>
-
-<p>最后是正文了, 就是我们喜闻乐见的HTML文档了(太长就不显示出来了)</p>
-
-<pre><code>&lt;!DOCTYPE html&gt; ...
-</code></pre>
-
-<p>整体过程就是那么简单. 更多的细节在 `HTTP` wiki文档.</p>
-
-<h2>状态码</h2>
-
-<p>不是每次请求都是200 OK的, 这里面列出一些常见的状态码:</p>
-
-<p>200 OK
-  ~ 没什么好说的.</p>
-
-<p>400 Bad Request
-  ~ 请求有问题.</p>
-
-<p>404 Not Found
-  ~ 最常见的错误, 无法在服务器上找到对应的资源.</p>
-
-<p>403 Forbidden
-  ~ 服务器禁止访问此资源.</p>
-
-<p>其他的见: <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">status code
-wiki页面</a></p>
-
-<h2>连接状态</h2>
-
-<p>HTTP/0.9, HTTP/1.0都是请求/响应后立刻断开,
-HTTP/1.1里面可以同一个TCP连接使用多次,
-以减小多次重复连接带来的资源消耗和延迟.</p>
-
-<h2>cookies</h2>
-
-<p>HTTP协议本身是无状态的, 一个请求一个响应, 就是那么简单.
-但是很多时候我们需要记录状态, 比如用户登录等功能. 一般比较常用的是采用
-<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> 的方式实现.</p>
-
-<p>简单点说, 当客户端发出一个请求后, 服务器返回的HTTP header里面会带有一个</p>
-
-<pre><code>Set-Cookie: name=value; name2=value2
-</code></pre>
-
-<p>的段, 然后客户端会把这个字符段缓存下来, 下次请求的时候,
-就会在自己的header里面带上</p>
-
-<pre><code>Cookie: name=value; name2=value2
-</code></pre>
-
-<p>就是这么简单. 其他一些技术细节, 比如cookie的作用时间和范围, 见
-<a href="http://en.wikipedia.org/wiki/HTTP_cookie">cookie</a> wiki介绍.</p>
-
-<h2>HTTPS</h2>
-
-<p>HTTP本身是明文的, 非常不安全. 为了解决这方面的问题, 就有了HTTPS.</p>
-
-<p>简单地说, HTTPS和HTTP的区别在于, 不是使用TCP作为连接方式,
-而是采用SSL的方式来做连接, 上层应用层是没有多少变化的,
-传输的时候数据做了加密, 以及连接到服务器的时候,
-会有一套验证机制保证服务器是真正的服务器.</p>
-
-<p>具体还是见 `HTTPS` 的wiki界面.</p>
-
-<h2>结论</h2>
-
-<p>HTTP协议很简单优雅, 或许是这样的简单优雅才承载起来一个庞大的web世界.
-对它的掌握是web程序员必备的基础,
-之后才能更好地理解在此之上的很多精妙应用.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/24/">&larr; Older</a>
@@ -1611,6 +1637,10 @@ HTTP/1.1里面可以同一个TCP连接使用多次,
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/outside-coding/">如何做到不带包随时远程工作</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/borgbackup/">更合理的文件备份方法</a>
       </li>
     
@@ -1624,10 +1654,6 @@ HTTP/1.1里面可以同一个TCP连接使用多次,
     
       <li class="post">
         <a href="/blog/home-server/">家用服务器整体策略思考</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/laptop-input/">膝上键盘鼠标方案</a>
       </li>
     
   </ul>

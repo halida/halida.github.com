@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>兔子流 - 网络寻租</title>
+  <title>如何做到不带包随时远程工作 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="hello everyone, today I will introduce you an new kind of science
-fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabbit like& &hellip;">
+  <meta name="description" content="需求 外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。 首先外出的时候如果带了包，就可以装轻薄笔记本，
+但是带包加上带笔记本比较麻烦，有没有随身的解决方案？ 实现方法 首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
+开发主力机平时放在家里， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@ fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabb
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/rabbit-fiction/">
+  <link rel="canonical" href="http://halida.github.com/blog/outside-coding/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +83,7 @@ fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabb
   
   <header>
     
-      <h1 class="entry-title">兔子流</h1>
+      <h1 class="entry-title">如何做到不带包随时远程工作</h1>
     
     
       <p class="meta">
@@ -98,7 +99,7 @@ fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabb
   
 
 
-<time datetime="2011-07-13T08:59:57+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
+<time datetime="2021-12-14T15:12:44+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2021</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,62 +108,68 @@ fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabb
   </header>
 
 
-<div class="entry-content"><p><img src="http://z.about.com/w/experts/Rabbits-703/2008/12/Weepy-Eyes.jpg" alt="image" /></p>
+<div class="entry-content"><h2>需求</h2>
 
-<p>hello everyone, today I will introduce you an new kind of science
-fiction, we call it &ldquo;兔子流&rdquo; in Chinese, translate as &ldquo;rabbit like&rdquo;.</p>
+<p>外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。</p>
 
-<h2>what is &ldquo;兔子流&rdquo;?</h2>
+<p>首先外出的时候如果带了包，就可以装轻薄笔记本，
+但是带包加上带笔记本比较麻烦，有没有随身的解决方案？</p>
 
-<p>In the ancient old days, a writer, name as &ldquo;小学生&rdquo;, translate as
-&ldquo;schoolchildren&rdquo;, he write a fiction, name as &ldquo;兔子尾巴&rdquo;, and with this
-characteristic:</p>
+<h2>实现方法</h2>
+
+<p>首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
+开发主力机平时放在家里，随身的设备远程连进来。</p>
+
+<p>方法：找电信运营商要到外部IP，路由器端口转发到本地电脑ssh端口。
+ssh协议是安全的，不用担心暴露出去。</p>
+
+<p>本地电脑开放ssh协议，通过密钥登录，开发环境用 tmux + emacs，可以在终端里面进行开发工作。</p>
+
+<p>外出设备是难点，显示和输入必须随身。</p>
+
+<p>输入设备：</p>
 
 <ul>
-<li>main character(young adult male) have super power.</li>
-<li>have no sense of moral.</li>
-<li>enjoy play around the world.</li>
+<li>emacs快捷键是组合键，必须用键盘，不能通过触摸屏解决，同时键盘操作效率才过的去。</li>
+<li>随身蓝牙键盘的体积必须能够放到口袋里，不方便带就不愿带了。</li>
+<li>键盘的键位必须是标准的，非标键位使用太难受。</li>
+<li>综上所述，考察了现在能够买到的价格适中的产品，选用BOW的<a href="https://item.jd.com/100001317158.html">HB188s</a>。</li>
 </ul>
 
 
-<h2>what is the detail?</h2>
-
-<p>for AD&amp;D fans, it is a book about a chaos evil character, how he do the
-dirty things. here are some example:</p>
+<p>显示设备：</p>
 
 <ul>
-<li>he kills people for fun.</li>
-<li>he has one or severial girls as toy.</li>
-<li>enjoy the life of doing whatever he wants, if he like something,
-just take it.</li>
-<li>have sick sense of humor and &ldquo;moral&rdquo;, he thinks he is doing
-something good which actually really bad, such as kill raped girl
-only because he think the girl will have a bad life in the future.</li>
-<li>he make social experiment. for maintaining good traffic condition,
-he make laws that driver can hit anything on the road&hellip; even the
-kid.</li>
-<li>no friend, no family, no strong feeling except fearing of death.</li>
+<li>不考虑笔记本电脑和平板，不能放进口袋的设备都不方便，不考虑。</li>
+<li>所以只能是手机，屏幕尽量大。</li>
+<li>考虑折叠屏手机：现在设备还是太贵，不考虑。</li>
 </ul>
 
 
-<h2>examples</h2>
+<p>手机软件用termius，免费版本就可以用需要的功能了，可以保持ssh连接，
+同时带有端口转发功能，可以把开发机上的web app转发到手机里面，用浏览器看效果。</p>
 
-<p>here are some fiction belows to &ldquo;兔子流&rdquo;, and you can google them,
-because it is so evil that no static links I can provide:</p>
+<h2>效果</h2>
+
+<p><img src="https://i.imgur.com/MPvP8uG.jpg" alt="开发状态" /></p>
+
+<p>以后出门只需要多带这个折叠键盘在口袋里，就可以保证随时随地进行开发工作了。适用场景：</p>
 
 <ul>
-<li>兔子尾巴</li>
-<li>人民公敌</li>
-<li>我无恶不作</li>
-<li>兔子流屠龙纪要</li>
+<li>ssh连服务器开发</li>
+<li>emacs访问本地的个人笔记</li>
+<li>emacs开发各种程序</li>
 </ul>
 
 
-<h2>conclusion</h2>
+<p>遗留问题：</p>
 
-<p>&ldquo;兔子流&rdquo; is one of the extrime fiction types I enjoy very much, easy to
-read, and have more fun. currently no new fiction is out, I hope in the
-future there can be more.</p>
+<ul>
+<li>屏幕还是小了一些，需要换大屏幕手机。</li>
+<li>termius + tmux + emacs下中文输入法很不方便，显示错位。</li>
+<li>必须要有台面，不能坐下就可以做事。</li>
+</ul>
+
 </div>
 
 
@@ -185,7 +192,7 @@ future there can be more.</p>
   
 
 
-<time datetime="2011-07-13T08:59:57+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
+<time datetime="2021-12-14T15:12:44+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2021</time>
       
 
 
@@ -193,7 +200,7 @@ future there can be more.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/rabbit-fiction/" data-via="" data-counturl="http://halida.github.com/blog/rabbit-fiction/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/outside-coding/" data-via="" data-counturl="http://halida.github.com/blog/outside-coding/" >Tweet</a>
   
   
   
@@ -202,10 +209,8 @@ future there can be more.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/be-a-better-man/" title="Previous Post: be_a_better_man">&laquo; be_a_better_man</a>
+        <a class="basic-alignment left" href="/blog/borgbackup/" title="Previous Post: 更合理的文件备份方法">&laquo; 更合理的文件备份方法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/shanzai-is-good/" title="Next Post: 爱抄才会赢">爱抄才会赢 &raquo;</a>
       
     </p>
   </footer>
@@ -301,8 +306,8 @@ future there can be more.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/rabbit-fiction/';
-        var disqus_url = 'http://halida.github.com/blog/rabbit-fiction/';
+        var disqus_identifier = 'http://halida.github.com/blog/outside-coding/';
+        var disqus_url = 'http://halida.github.com/blog/outside-coding/';
         var disqus_script = 'embed.js';
       
     (function () {
