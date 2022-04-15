@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "关于"
+title: "About"
 date: 2011-11-09 19:02:11 +0800
 comments: true
 sharing: true
@@ -8,6 +8,28 @@ footer: true
 ---
 
 {% img /images/posts/Q4sKXg3.jpg %}
+
+About me
+========
+
+Full Stack Software Developer having experience of building Web and server applications with Rails / Nodejs / React / Ansible / Docker and other tools and frameworks.
+
+I can help you:
+
+- Build enterprise website application from scratch, and maintain it.
+- Server management and application health monitor.
+- Application infrastructure design.
+
+Contact
+========
+
+- Blog [blog.linjunhalida.com](http://blog.linjunhalida.com)
+- Email linjunhalida@gmail.com
+- [http://www.douban.com/people/1266965](http://www.douban.com/people/1266965)/
+- twitter [@linjunhalida](http://twitter.com/linjunhalida)
+
+关于
+========
 
 我是一个程序员, 我希望能够持续提升自己的技能和智慧，
 能够以我的方式改变这个世界。
@@ -32,10 +54,3 @@ footer: true
 - ruby-china: [linjunhalida](http://ruby-china.org/linjunhalida)
 - maillist: [python-cn](https://groups.google.com/forum/?fromgroups#!forum/python-cn), [shlug](https://groups.google.com/forum/?fromgroups#!forum/shlug)
 
-联系方式
-========
-
-- 博客 [blog.linjunhalida.com](http://blog.linjunhalida.com)
-- 邮箱 linjunhalida at gmail dot com
-- 豆瓣 [http://www.douban.com/people/1266965](http://www.douban.com/people/1266965)/
-- 推特 [@linjunhalida](http://twitter.com/linjunhalida)
