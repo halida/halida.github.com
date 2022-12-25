@@ -14,7 +14,7 @@ module NewBlog
   end
 
   def open_url(url)
-    run "o '#{url}'"
+    run "xdg-open '#{url}'"
   end
 
   def log(text)
@@ -30,6 +30,7 @@ module NewBlog
 
     # create file
     result = run "bundle exec rake 'new_post[#{title}]'"
+    # log "result: #{result}"
     filename = result.match(/: (.*)/)[1]
 
     # isolate
