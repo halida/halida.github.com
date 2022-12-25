@@ -1227,8 +1227,12 @@
         <lastmod>2021-12-14T15:30:34+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/smarthome/</loc>
+        <lastmod>2022-12-25T11:45:31+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2021-12-14T15:30:34+08:00</lastmod>
+        <lastmod>2022-12-25T11:45:31+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/about/</loc>
@@ -1236,6 +1240,6 @@
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2021-12-14T15:30:34+08:00</lastmod>
+        <lastmod>2022-12-25T11:45:31+08:00</lastmod>
     </url>
 </urlset>

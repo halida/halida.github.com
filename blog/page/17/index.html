@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="第二天 第二天的演讲： James Halliday， 87年的， browserling 的作者，
-讲了一下是怎么用node来搭建browserling的架构的。 browserling提供了很多不同浏览器版本的虚拟机， 用来给网站设计者， 查看不同浏览版本下面的网站显示效果。 &hellip;">
+  <meta name="description" content="coffeescript是一门编译到javascript的子语言，
+它采用了类似ruby/python的语法，增加了类支持，以及规避了javascript语言里面一堆的设计缺陷。
+本文主要分析一下coffeescript是如何实现类机制的。 示例代码 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,369 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/coffeescript-class/">Coffeescript的类机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-18T09:40:00+08:00" pubdate data-updated="true">Sep 18<span>th</span>, 2012</time>
+        
+         | <a href="/blog/coffeescript-class/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://coffeescript.org/">coffeescript</a>是一门编译到javascript的子语言，
+它采用了类似ruby/python的语法，增加了类支持，以及规避了javascript语言里面一堆的设计缺陷。
+本文主要分析一下coffeescript是如何实现类机制的。</p>
+
+<h2>示例代码</h2>
+
+<p>首先我们给出一个coffeescript的示例代码，我们会分析这部分代码的编译结果，弄懂它是如何实现类的功能的。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">People</span>
+</span><span class='line'>    <span class="n">constructor</span><span class="p">:</span> <span class="p">(</span><span class="vi">@name</span><span class="p">)</span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="n">hello</span><span class="p">:</span> <span class="o">-&gt;</span> <span class="s2">&quot;hello, I&#39;m </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Programmer</span> <span class="n">extends</span> <span class="no">People</span>
+</span><span class='line'>    <span class="n">constructor</span><span class="p">:</span> <span class="o">-&gt;</span> <span class="k">super</span>
+</span><span class='line'>    <span class="n">hello</span><span class="p">:</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="n">result</span> <span class="o">=</span> <span class="k">super</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">p</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">Programmer</span><span class="p">(</span><span class="s1">&#39;halida&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">console</span><span class="o">.</span><span class="n">log</span> <span class="nb">p</span><span class="o">.</span><span class="n">hello</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的coffeescript代码中，People实现了hello方法，Programmer继承了People，并且重载了hello方法。</p>
+
+<p>这里是生成的全部javascript代码，我们会一部分一部分地分析它到底做了什么事情：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">People</span><span class="p">,</span> <span class="nx">Programmer</span><span class="p">,</span> <span class="nx">p</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">__hasProp</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">hasOwnProperty</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">__extends</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span> <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span> <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="p">}</span> <span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span> <span class="p">}</span> <span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span> <span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="k">return</span> <span class="nx">child</span><span class="p">;</span> <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">People</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">People</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;hello, I&#39;m &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">People</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">})();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Programmer</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">__extends</span><span class="p">(</span><span class="nx">Programmer</span><span class="p">,</span> <span class="nx">_super</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">Programmer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Programmer</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">})(</span><span class="nx">People</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Programmer</span><span class="p">(</span><span class="s1">&#39;halida&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">hello</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>类定义</h2>
+
+<p>我们首先弄清楚coffeescript的类是如何实现的。下面是Programmer的定义：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Programmer</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">_super</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">__extends</span><span class="p">(</span><span class="nx">Programmer</span><span class="p">,</span> <span class="nx">_super</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Programmer</span><span class="p">;</span>
+</span><span class='line'><span class="p">})(</span><span class="nx">People</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如上面代码所示，Programmer其实就是一个闭包函数，在闭包里面生成了一个Programmer构造函数，
+这样就可以通过<code>p = new Programmer('halida');</code>来创建一个Programmer对象。</p>
+
+<p>对于对象方法hello的创建，是在闭包里面给prototype赋值的方式来实现，
+coffeescript里面可以用<code>super</code>这个关键词来继承父类里面同样名称的方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">Programmer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">result</span> <span class="o">+=</span> <span class="s2">&quot; I like programming.&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是Programmer的构造函数，类似于ruby语言里面的initialize：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">Programmer</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Programmer.__super__</code>是父类的构造函数（后面在讲__extends会提到是如何生成它的），
+直接获取父类的构造函数constructor（这个是coffeescript缓存的， 下面会讲），
+传给它本函数的参数<code>arguments</code>，然后在<code>this</code>这个环境里面执行它。</p>
+
+<p><code>Programmer.hello</code>里面，也采用了同样的方式来继承父类的方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">result</span> <span class="o">=</span> <span class="nx">Programmer</span><span class="p">.</span><span class="nx">__super__</span><span class="p">.</span><span class="nx">hello</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>里面<code>call(this)</code>是为了把当前环境切换到当前对象中去。</p>
+
+<p>这样我们大致知道了类定义部分的代码到底发生了什么，
+不过我们还是不清楚类继承是如何实现的，
+魔法发生在<code>__extends(Programmer, _super);</code>里面。</p>
+
+<h2>类继承的实现</h2>
+
+<p>首先看一下<code>__extends</code>的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">__hasProp</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">hasOwnProperty</span><span class="p">,</span>
+</span><span class='line'><span class="nx">__extends</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span>
+</span><span class='line'>            <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="k">return</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们来实际执行<code>__extends(Programmer, _super);</code>，看看到底发生了什么，
+在这里面，_super对应的值是父类People。</p>
+
+<p>首先是第一个循环：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">parent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">__hasProp</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">key</span><span class="p">))</span>
+</span><span class='line'>        <span class="nx">child</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>__hasProp.call(parent, key)</code>是用来判断key是否是parent本身定义的属性。
+这段代码是循环<code>People</code>里面所有的属性， 如果是People本身定义的， 就赋值到child里面去，
+它的目的是继承父类的类方法和属性。 如果<code>People.CLASS_NAME = "People";</code>，
+那么结果就是<code>Programmer.CLASS_NAME = People";</code>，
+这样通过拷贝的方式，子类继承了父类的所有类方法。</p>
+
+<p>然后是难懂的部分了， 如何继承父类的对象方法呢？</p>
+
+<p>首先给child生成一个prototype对象构造函数，在里面还会缓存child的构造函数constructor，
+这样child的child就可以通过调用它来执行父类的方法（实现了上面类定义部分的调用父类对象方法）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">ctor</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">child</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最顶层的父类People里面没有定义constructor，
+是因为js里面返回函数的对象构造函数，它本身的prototype里面就有constructor，
+console里面执行：<code>People.prototype.constructor</code>，返回的是：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>简单地说，child的prototype对象的prototype就是父类的prototype，
+这样，子类对象找一个方法的时候，如果在它自己的prototype，也就是ctor里面找不到对应的方法，
+就会在ctor的prototype里面寻找这个方法，然后就可以从父类里面找到了。
+这就是为什么要用<code>new ctor()</code>来创建一个prototype对象， 这样才能形成一个prototype调用链：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span><span class='line'><span class="nx">child</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以及上面提到的， <code>__super__</code>缓存了父类的prototype。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">child</span><span class="p">.</span><span class="nx">__super__</span> <span class="o">=</span> <span class="nx">parent</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这部分概念比较难懂，你可以把上面的部分多看几遍，好好思考一下，或者继续往下看，一次实际的调用是如何做的。</p>
+
+<h2>走一遍</h2>
+
+<p>上面是对代码本身的分析，要弄懂，我们还需要模拟执行一下，理清思路。</p>
+
+<p>我们创建一个对象：<code>p = new Programmer('halida');</code></p>
+
+<p>如果需要找Programmer里面定义的方法， 我们假设是<code>coding</code>吧， 那么调用的过程是：</p>
+
+<ul>
+<li>执行<code>p.coding()</code>。</li>
+<li>在p对象里面找是否有coding。</li>
+<li>在p的prototype<code>new ctor();</code>里面找是否有coding。定义Programmer的时候，添加的方法（比如上面示例代码的hello）都是塞到它里面去的。</li>
+<li>在prototype的prototype：Programmer的prototype里面找是否有coding。</li>
+</ul>
+
+
+<p>这个是对象方法的执行，还有类方法的执行，相对比较简单。例如<code>Programmer.CLASS_NAME</code>：</p>
+
+<ul>
+<li>在对象的prototype里面寻找CLASS_NAME。</li>
+<li>在Programmer里面找是否有CLASS_NAME。</li>
+</ul>
+
+
+<p>继承父类的时候，会拷贝出所有的父类方法，在子类定义的时候，如果定义了类方法，就会覆盖掉父类的类方法。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1294,46 +1658,6 @@ API：</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-intro/">Rails介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-13T20:05:20+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2012</time>
-        
-         | <a href="/blog/rails-intro/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我现在算是一个rails程序员了， 作为一门技术的使用者，
-必要的时候要向其他人推广和介绍这门技术， 下面是我准备的slide,
-不定期更新。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/18/">&larr; Older</a>
@@ -1351,6 +1675,10 @@ API：</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/smarthome/">为什么要搞智能家居</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/outside-coding/">如何做到不带包随时远程工作</a>
       </li>
     
@@ -1364,10 +1692,6 @@ API：</p>
     
       <li class="post">
         <a href="/blog/population-problem/">如何解决人口老龄化问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/home-server/">家用服务器整体策略思考</a>
       </li>
     
   </ul>

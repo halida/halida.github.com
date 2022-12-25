@@ -9,11 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="为什么要用家用NAS 去年年底，我搭建了一台家用NAS服务器。我用它来存放视频漫画等数据资料，
-创建一些空间消耗大的虚拟机，备份笔记本电脑系统。
-有了NAS，资料可以给家里面所有设备使用（比如多台iPad，手机），
-可以跑一些消耗大量时间和空间的应用（比如虚拟机和下载），
-生活工作方便许多。 &hellip;">
+  <meta name="description" content="最近ubuntu准备迁移到systemd，基本上linux上面init纷争大局已定，systemd赢得了主要的市场。
+以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
+对于系统管理员们来说，systemd成为必须学习的一个模块。 那么什么是systemd？ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +80,77 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/into-systemd/">Systemd初探</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-12T12:03:05+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2015</time>
+        
+         | <a href="/blog/into-systemd/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Systemd_components.svg/1440px-Systemd_components.svg.png" style="width: 600px" /></p>
+
+<p>最近<a href="http://www.zdnet.com/article/after-linux-civil-war-ubuntu-to-adopt-systemd/">ubuntu准备迁移到systemd</a>，基本上linux上面init纷争大局已定，<a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a>赢得了主要的市场。
+以后各大linux的发行版都以systemd为主，各种系统进程都会用systemd启动，
+对于系统管理员们来说，systemd成为必须学习的一个模块。</p>
+
+<p>那么什么是systemd？我们知道linux系统里面启动各大进程的工作都是由<a href="http://en.wikipedia.org/wiki/Init">init</a>来完成的，
+机器启动有不同的级别（rc level），根据不同的级别设置启动进程的顺序。
+这种传统架构已经不适应现代的操作系统进程管理了，问题有：</p>
+
+<ul>
+<li>设备管理：传统架构架设设备是静态的，但是现代操作系统里面设备动态插入和拔出的状况非常常见。</li>
+<li>依赖管理：传统架构靠/etc/rc3.d/下面文件名显式制定启动顺序，无法适应复杂依赖关系。</li>
+<li>进程管理：传统架构没有进程管理，只负责启动，停止的时候也不能保证进程的子进程正常关闭，往往需要系统管理员单独配置。</li>
+</ul>
+
+
+<p>做过系统管理员的人，应该知道针对进程管理，需要写多少脚本，搭建各种各样的监控和管理系统。
+systemd是init的替代系统，有了它，可以说解决了很大一部分的问题，脚本可以丢掉一大部分了。
+systemd的解决方案：</p>
+
+<ul>
+<li>所有管理的对象都是<a href="http://www.freedesktop.org/software/systemd/man/systemd.unit.html">unit</a>，包括系统服务，文件系统，设备等</li>
+<li>做到比较好的资源依赖管理</li>
+<li>利用cgroup等工具，做到进程管理和控制</li>
+<li>内置日志系统来接收和管理各个unit的日志</li>
+</ul>
+
+
+<p>systemd做的事情很多，体积也很大，网上对此也有争议。我对于它的涉及领域没有意见，因为进程管理相关的事情是很多，彼此也有依赖。
+用了systemd，管理一个进程，只需要写好对应的一个配置文件就好了，对于系统管理员来说，事情变得更简单了，
+配置文件的格式也不是很复杂。</p>
+
+<p>现在我的主力服务器发行版是ubuntu，等ubuntu正式引入systemd之后，我会用它来进行进程管理，到时候会有更多的心得可供分享。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -881,71 +950,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/english-backup-method/">Personal Data Backup Method</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-12-13T18:35:40+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2014</time>
-        
-         | <a href="/blog/english-backup-method/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&rsquo;m thinking about how to backup personal data, we can divide them into groups which according to their importance, file size, and privacy.</p>
-
-<ul>
-<li>Important, Big size, Sensitive: Computer full disk data.</li>
-<li>Important, Small size, Sensitive: key information, like daily.</li>
-<li>Unimportant, Middle size, Sensitive: photos.</li>
-<li>Unimportant, Big size, insensitive: film, comics.</li>
-</ul>
-
-
-<p>We can use different methods to backup them, vary in price, space, security, and usability:</p>
-
-<ul>
-<li>Encrypted online backup service: high price, small space, secure, hard to use.</li>
-<li>Online backup service: fair price, small space, insecure, easy to use.</li>
-<li>NAS/Portable disk drive: low price, big space, secure, hard to use.</li>
-</ul>
-
-
-<p>So, this is the method I&rsquo;m using now:</p>
-
-<ul>
-<li>Use timemachine to backup computer into portable disk drive.</li>
-<li>Use <a href="https://lastpass.com/">lastpass</a> to keep website and server password.</li>
-<li>Use dropbox to save and sync notes, photos, and documents, I extended it to 20G.</li>
-<li>Use portable disk drive to backup film, music and comics.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/9/">&larr; Older</a>
@@ -963,6 +967,10 @@ machine learning, statistics, UI design, etc&hellip;</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/smarthome/">为什么要搞智能家居</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/outside-coding/">如何做到不带包随时远程工作</a>
       </li>
     
@@ -976,10 +984,6 @@ machine learning, statistics, UI design, etc&hellip;</p>
     
       <li class="post">
         <a href="/blog/population-problem/">如何解决人口老龄化问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/home-server/">家用服务器整体策略思考</a>
       </li>
     
   </ul>
