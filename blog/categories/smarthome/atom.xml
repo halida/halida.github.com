@@ -4,7 +4,7 @@
   <title><![CDATA[Category: smarthome | 网络寻租]]></title>
   <link href="http://halida.github.com/blog/categories/smarthome/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2022-12-25T11:45:51+08:00</updated>
+  <updated>2022-12-26T09:31:52+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[智能家居之全屋音乐方案]]></title>
+    <link href="http://halida.github.com/blog/multi-room-music/"/>
+    <updated>2022-12-26T09:28:40+08:00</updated>
+    <id>http://halida.github.com/blog/multi-room-music</id>
+    <content type="html"><![CDATA[<p>目标：每个房间都有音箱，可以通过手机以及智能中控根据需要在每个房间播放音乐。
+可以同时播放同一首，也可以不同房间播放不同的音乐。</p>
+
+<p>选择协议：airplay2，支持多个音箱同时播放，并且有时序控制保持播放进度一致。
+可以用iphone手机控制播放什么音乐，同时linux也有插件可以输出到airplay。</p>
+
+<p>选用设备：如果有钱每个房间丢一个homepod，但是价格比较贵，我的方案是用便宜的电视盒子做主机，
+操作系统armbian，按照这里的教程编译安装<a href="https://sspai.com/post/74318">Shairport Sync</a>这种开源的airplay2实现。
+设备选择M401A电视盒子或者N1，usb声卡PCM2704，音箱找一个淘宝桌面音箱就可以。</p>
+
+<p>ubuntu接入airplay方法如下，然后就可以局域网内自动发现和手动选择输出设备了。</p>
+
+<p>```sh
+sudo apt-get install paprefs pulseaudio-module-raop</p>
+
+<h1>处理pulseaudio问题</h1>
+
+<p>sudo ln -s /usr/lib/pulse-13.99.1/ /usr/lib/pulse-13.99
+```</p>
+
+<p>价格：电视盒子72，usb声卡20，音箱158，控制通断的wifi开关插座20。</p>
+
+<p>实现的场景：
+&ndash; 想要听音乐的时候，用HA开启wifi开关，手机音乐软件播放音乐，选择airplay输出的音箱。
+&ndash; 未来还可以接入Home Assistant，armbian里面跑VLC telnet，HA控制播放声音提醒。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为什么要搞智能家居]]></title>

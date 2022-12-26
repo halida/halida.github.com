@@ -1231,8 +1231,12 @@
         <lastmod>2022-12-25T11:45:31+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/multi-room-music/</loc>
+        <lastmod>2022-12-26T09:31:36+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2022-12-25T11:45:31+08:00</lastmod>
+        <lastmod>2022-12-26T09:31:36+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/about/</loc>
@@ -1240,6 +1244,6 @@
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2022-12-25T11:45:31+08:00</lastmod>
+        <lastmod>2022-12-26T09:31:36+08:00</lastmod>
     </url>
 </urlset>
