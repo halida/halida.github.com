@@ -20,7 +20,7 @@ categories: smarthome
 - 用模块控制：开关模块，LED 0-10v调光模块，调色模块。
 - 开关控制走485总线或者KNX总线，485转IP，上面还可以再用home assistant控制。
 
-[!image](https://ipcsautomation.com/wp-content/uploads/2018/06/49blog-640x300.jpg)
+![image](https://ipcsautomation.com/wp-content/uploads/2018/06/49blog-640x300.jpg)
 
 这样价格可能高一些，但是有线带来的稳定性不是无线可以比拟的。
 
