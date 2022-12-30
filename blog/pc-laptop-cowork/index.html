@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>如何做到不带包随时远程工作 - 网络寻租</title>
+  <title>笔记本结合台式机开发方案 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="需求 外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。 首先外出的时候如果带了包，就可以装轻薄笔记本，
-但是带包加上带笔记本比较麻烦，有没有随身的解决方案？ 实现方法 首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
-开发主力机平时放在家里， &hellip;">
+  <meta name="description" content="作为程序员，需要移动工作，同时开发环境也比较复杂，便携的笔记本性能不够，就算是再好的笔记本也会有功耗墙来阻止性能的发挥。 我的方案是：便携笔记本电脑结合强力台式机进行开发。方法是这样的： 编辑代码需要快速反应，所以编辑代码还是要在笔记本里面，修改自动推到台式机上。 1
+lsyncd - &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/outside-coding/">
+  <link rel="canonical" href="http://halida.github.com/blog/pc-laptop-cowork/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">如何做到不带包随时远程工作</h1>
+      <h1 class="entry-title">笔记本结合台式机开发方案</h1>
     
     
       <p class="meta">
@@ -99,7 +98,7 @@
   
 
 
-<time datetime="2021-12-14T15:12:44+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2021</time>
+<time datetime="2022-12-30T10:05:10+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2022</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,66 +107,39 @@
   </header>
 
 
-<div class="entry-content"><h2>需求</h2>
+<div class="entry-content"><p>作为程序员，需要移动工作，同时开发环境也比较复杂，便携的笔记本性能不够，就算是再好的笔记本也会有功耗墙来阻止性能的发挥。</p>
 
-<p>外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。</p>
+<p>我的方案是：便携笔记本电脑结合强力台式机进行开发。方法是这样的：</p>
 
-<p>首先外出的时候如果带了包，就可以装轻薄笔记本，
-但是带包加上带笔记本比较麻烦，有没有随身的解决方案？</p>
+<p>编辑代码需要快速反应，所以编辑代码还是要在笔记本里面，修改自动推到台式机上。</p>
 
-<h2>实现方法</h2>
-
-<p>首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
-开发主力机平时放在家里，随身的设备远程连进来。</p>
-
-<p>方法：找电信运营商要到外部IP，路由器端口转发到本地电脑ssh端口。
-ssh协议是安全的，不用担心暴露出去。</p>
-
-<p>本地电脑开放ssh协议，通过密钥登录，开发环境用 tmux + emacs，可以在终端里面进行开发工作。</p>
-
-<p>外出设备是难点，显示和输入必须随身。</p>
-
-<p>输入设备：</p>
-
-<ul>
-<li>emacs快捷键是组合键，必须用键盘，不能通过触摸屏解决，同时键盘操作效率才过的去。</li>
-<li>随身蓝牙键盘的体积必须能够放到口袋里，不方便带就不愿带了。</li>
-<li>键盘的键位必须是标准的，非标键位使用太难受。</li>
-<li>综上所述，考察了现在能够买到的价格适中的产品，选用BOW的<a href="https://item.jd.com/100001317158.html">HB188s</a>。</li>
-</ul>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>lsyncd -nodaemon -insist -delay <span class="m">0</span> -rsyncssh user/workspace/project/ pc user/workspace/project/
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>显示设备：</p>
+<p>台式机有代码和开发环境，跑代码在后台tmux里面，如果不用了就休眠 <code>sudo systemctl hibernate</code> 需要使用的时候就用wakeonlan唤醒，ssh登录上去进行操作。</p>
 
-<ul>
-<li>不考虑笔记本电脑和平板，不能放进口袋的设备都不方便，不考虑。</li>
-<li>所以只能是手机，屏幕尽量大。</li>
-<li>考虑折叠屏手机：现在设备还是太贵，不考虑。</li>
-</ul>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>wakeonlan MAC<span class="p">;</span> <span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>手机软件用termius，免费版本就可以用需要的功能了，可以保持ssh连接，
-同时带有端口转发功能，可以把开发机上的web app转发到手机里面，用浏览器看效果。</p>
+<p>笔记本转发台式机的开发环境网站端口到本地，循环监控保证断点续连。</p>
 
-<h2>效果</h2>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh -N -L localhost:3000:localhost:3000 pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><img src="https://i.imgur.com/MPvP8uG.jpg" alt="开发状态" /></p>
 
-<p>以后出门只需要多带这个折叠键盘在口袋里，就可以保证随时随地进行开发工作了。适用场景：</p>
+<p>如果是在外面，需要想办法连回家，我的实现方式是家里面有一台24小时开机的服务器，跑wireguard，路由器有外网ip和ddns，转发wireguard端口，
+这样我在外面就可以通过ddns的地址连到wireguard端口，进入家庭内网了。</p>
+
+<p>其它考虑：</p>
 
 <ul>
-<li>ssh连服务器开发</li>
-<li>emacs访问本地的个人笔记</li>
-<li>emacs开发各种程序</li>
-</ul>
-
-
-<p>遗留问题：</p>
-
-<ul>
-<li>屏幕还是小了一些，需要换大屏幕手机。</li>
-<li>termius + tmux + emacs下中文输入法很不方便，显示错位。</li>
-<li>必须要有台面，不能坐下就可以做事。</li>
+<li>跑通之后，就可以只用轻量级笔记本了，但是轻量级笔记本还是需要使用网页，看视频，开IDE，性能也不能太差。</li>
+<li>有的时候不需要使用台式机的时候会忘记休眠，可以写一个脚本断开一段时间后自动休眠。</li>
 </ul>
 
 </div>
@@ -192,7 +164,7 @@ ssh协议是安全的，不用担心暴露出去。</p>
   
 
 
-<time datetime="2021-12-14T15:12:44+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2021</time>
+<time datetime="2022-12-30T10:05:10+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2022</time>
       
 
 
@@ -200,7 +172,7 @@ ssh协议是安全的，不用担心暴露出去。</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/outside-coding/" data-via="" data-counturl="http://halida.github.com/blog/outside-coding/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/pc-laptop-cowork/" data-via="" data-counturl="http://halida.github.com/blog/pc-laptop-cowork/" >Tweet</a>
   
   
   
@@ -209,10 +181,8 @@ ssh协议是安全的，不用担心暴露出去。</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/borgbackup/" title="Previous Post: 更合理的文件备份方法">&laquo; 更合理的文件备份方法</a>
+        <a class="basic-alignment left" href="/blog/smarthome-light/" title="Previous Post: 智能家居之灯光改造方案">&laquo; 智能家居之灯光改造方案</a>
       
-      
-        <a class="basic-alignment right" href="/blog/smarthome/" title="Next Post: 为什么要搞智能家居">为什么要搞智能家居 &raquo;</a>
       
     </p>
   </footer>
@@ -308,8 +278,8 @@ ssh协议是安全的，不用担心暴露出去。</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/outside-coding/';
-        var disqus_url = 'http://halida.github.com/blog/outside-coding/';
+        var disqus_identifier = 'http://halida.github.com/blog/pc-laptop-cowork/';
+        var disqus_url = 'http://halida.github.com/blog/pc-laptop-cowork/';
         var disqus_script = 'embed.js';
       
     (function () {

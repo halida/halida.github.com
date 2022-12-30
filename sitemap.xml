@@ -1239,8 +1239,12 @@
         <lastmod>2022-12-27T09:22:01+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/pc-laptop-cowork/</loc>
+        <lastmod>2022-12-30T10:07:05+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2022-12-27T09:22:01+08:00</lastmod>
+        <lastmod>2022-12-30T10:07:05+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/about/</loc>
@@ -1248,6 +1252,6 @@
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2022-12-27T09:22:01+08:00</lastmod>
+        <lastmod>2022-12-30T10:07:05+08:00</lastmod>
     </url>
 </urlset>

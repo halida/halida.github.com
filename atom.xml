@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2022-12-27T09:22:33+08:00</updated>
+  <updated>2022-12-30T10:07:44+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[笔记本结合台式机开发方案]]></title>
+    <link href="http://halida.github.com/blog/pc-laptop-cowork/"/>
+    <updated>2022-12-30T10:05:10+08:00</updated>
+    <id>http://halida.github.com/blog/pc-laptop-cowork</id>
+    <content type="html"><![CDATA[<p>作为程序员，需要移动工作，同时开发环境也比较复杂，便携的笔记本性能不够，就算是再好的笔记本也会有功耗墙来阻止性能的发挥。</p>
+
+<p>我的方案是：便携笔记本电脑结合强力台式机进行开发。方法是这样的：</p>
+
+<p>编辑代码需要快速反应，所以编辑代码还是要在笔记本里面，修改自动推到台式机上。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>lsyncd -nodaemon -insist -delay <span class="m">0</span> -rsyncssh user/workspace/project/ pc user/workspace/project/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>台式机有代码和开发环境，跑代码在后台tmux里面，如果不用了就休眠 <code>sudo systemctl hibernate</code> 需要使用的时候就用wakeonlan唤醒，ssh登录上去进行操作。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>wakeonlan MAC<span class="p">;</span> <span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>笔记本转发台式机的开发环境网站端口到本地，循环监控保证断点续连。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh -N -L localhost:3000:localhost:3000 pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果是在外面，需要想办法连回家，我的实现方式是家里面有一台24小时开机的服务器，跑wireguard，路由器有外网ip和ddns，转发wireguard端口，
+这样我在外面就可以通过ddns的地址连到wireguard端口，进入家庭内网了。</p>
+
+<p>其它考虑：</p>
+
+<ul>
+<li>跑通之后，就可以只用轻量级笔记本了，但是轻量级笔记本还是需要使用网页，看视频，开IDE，性能也不能太差。</li>
+<li>有的时候不需要使用台式机的时候会忘记休眠，可以写一个脚本断开一段时间后自动休眠。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[智能家居之灯光改造方案]]></title>
@@ -1164,44 +1207,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 <h2>下一年</h2>
 
 <p>继续坚持房产2N，争取健康事业带娃都走上正轨。其它没有太多的期待。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[2017年度总结]]></title>
-    <link href="http://halida.github.com/blog/2017-summary/"/>
-    <updated>2018-01-07T15:34:01+08:00</updated>
-    <id>http://halida.github.com/blog/2017-summary</id>
-    <content type="html"><![CDATA[<p>回头看<a href="http://blog.linjunhalida.com/blog/2016-summary/">去年的年度计划</a>，几个都没有完成。
-但是每年的总结还是要做的，回顾过去展望未来。</p>
-
-<h2>去年</h2>
-
-<p>作为最基础的：坚持健康和学习都没有做下去，投入的时间和次数太少了。</p>
-
-<p>年初去重庆考察踏空，但是阅读水库论坛已经改变了我的工作重心。
-现阶段对于我来说，最重要的是在房产上面投资有足够的仓位。
-下半年在深圳待了很长时间，但是因为户口的原因没有办法入手。</p>
-
-<p>现在公司的组织成员上面有了一定的变动，承担了更多的一些责任，
-但是并没有更努力地适应好工作上的变化，因为我的主要精力还是放在了研究房产投资上面。</p>
-
-<p>其他事情就是小孩终于出生，成为家庭中的主要关注点，这一块我没有深入参与，只是让老婆处理，我保持关注。</p>
-
-<h2>下一年</h2>
-
-<p>从长远来说，我希望能够赚钱，给社会带来更多的价值，管理好家庭，能够坚持成长。
-短期五年计划能够做到资产稳健增值，利用自己的能力做更大的事情。
-在接下来的一年里面，希望可以做到：</p>
-
-<ul>
-<li>健康，阅读，写作，多和优秀的人来往</li>
-<li>理财：完成房产投资，以及量化交易项目投资</li>
-<li>工作：弄通公司现有的项目，改造成好用的项目</li>
-</ul>
-
-
-<p>以上。</p>
 ]]></content>
   </entry>
   

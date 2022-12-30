@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
-但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
-这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。 那么解决办法就是： &hellip;">
+  <meta name="description" content="在IT领域，因为从业者素质参差不齐的原因，很多垃圾东西在流传，其中危害最大的一类就是垃圾编程语言。
+包括但是不限于：bash，perl，javascript，php，python。 这些语言为什么烂 他们的设计者并没有受到很好的编程语言设计教育，或者没有足够的时间进行设计，
+造成的结果是， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/retire-some-programming-languages/">我们需要淘汰一些编程语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-07-03T11:24:09+08:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2017</time>
+        
+         | <a href="/blog/retire-some-programming-languages/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在IT领域，因为从业者素质参差不齐的原因，很多垃圾东西在流传，其中危害最大的一类就是垃圾编程语言。
+包括但是不限于：bash，perl，javascript，php，python。</p>
+
+<h2>这些语言为什么烂</h2>
+
+<p>他们的设计者并没有受到很好的编程语言设计教育，或者没有足够的时间进行设计，
+造成的结果是，这些编程语言的设计存在很多问题。比如语法设计有问题，在语法处理上存在设计错误，写法晦涩不容易弄懂影响阅读，
+缺少很多保证程序安全的设计，带有性能问题，语言本身缺少很多核心功能等。
+具体内容可以去看<a href="http://www.yinwang.org/">王垠的博客</a>。</p>
+
+<p>我稍微列一下烂在哪里：</p>
+
+<ul>
+<li>bash: 缺少大量的编程语言抽象特性，语法是程序员乱设计的，接口是基于字符串而不是定义明确的数据结构</li>
+<li>perl: 语法也是程序员乱设计的，难以阅读</li>
+<li>php：乱语法，现在改进了很多，但是为了兼容还是带有一堆历史问题</li>
+<li>javascript：几十天做出来的一个没有完善好的类lisp语言，早就应该被淘汰掉，因为web流行危害严重</li>
+<li>python：比上述语言好一些，但是也有一堆设计缺陷，比如用缩进替代定义明确的语法块，匿名函数实现烂等</li>
+</ul>
+
+
+<h2>烂语言的害处</h2>
+
+<p>编程语言是程序的组成部分，类似于房屋的原材料。一旦你选择了编程语言，以后再要替换只能全部重写。
+软件后续的维护和拓展都只能基于这种语言，会延续到软件的整个生命周期。
+引入了一个烂语言，他的危害会覆盖软件的整个生命周期，并且像癌症一样，随着软件的传播而蔓延，
+进而伤害其他依赖这个软件的系统，同时也给这个烂语言打了广告。</p>
+
+<h2>如何处理</h2>
+
+<p>对于旧的用了烂语言的项目，尽量以维护为主，不要增加新功能延长它们的生命周期。
+比如systemd替代了旧的init系统，就淘汰掉很多垃圾bash脚本。</p>
+
+<p>新的项目尽量不要用这些烂语言，可以寻找一些替代品。很多语言经过了良好的设计，值得推荐，比如java，csharp。
+脚本语言和Linux下系统语言我还没有找到好的选择。我现在用Ruby但是Ruby也有很多问题，不值得长期使用。
+Linux下系统语言可能有Rust，D，我不确定是否足够好，但是可以尝试。
+Javascript可以用高层语言替代比如TypeScript，Webassembly推广之后会有很多好语言可以使用。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1095,73 +1169,6 @@ Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ruby-need-static-type-checking-system/">Ruby需要一个静态类型验证系统</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
-        
-         | <a href="/blog/ruby-need-static-type-checking-system/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。</p>
-
-<p>Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
-但是实际上，这是一个缺陷。为什么呢？</p>
-
-<p>程序在执行的过程中，如果不知道一个变量的类型，只能动态去判断变量是什么，动态地查找处理变量的函数，
-比如一个方法调用：<code>a.run(b)</code>，就要去查找a的run方法，然后传入b参数。
-这样造成每次函数调用，都会进行一次判断和查找，极大地降低程序执行速度。</p>
-
-<p>另外一个问题就是，当传入的参数不正确(比如a没有run方法，或者run只接受一个参数)，只有程序实际执行的时候，才会知道这点。
-一方面要在函数和方法调用的时候来判断（更慢了），另外一方面本来能够静态识别出来的错误，留到了运行时。</p>
-
-<p>更可怕的是，当传入的参数类型错误的时候，不能立刻就知道，而是要等到很久之后才会被发现，
-这个时候你根本不知道这个参数是什么时候传进来的，Debug变得非常困难！
-其它语言定义了类型，在编译的时候就可以发现这样的错误，但是动态类型语言，比如Ruby/Python就没有办法。</p>
-
-<p>在实际进行Ruby编程的时候，我深刻地体会到了这几点。
-尤其是项目变得很大的时候，执行速度不说，出现问题找Bug变得很困难，
-程序可靠性没有办法通过编译阶段发现，而是只能留到执行时（testcase），
-并且执行时也做不到其它静态语言级别的函数参数类型验证。</p>
-
-<p>而在其它现代语言里面，类型定义不再向以前一样手动配置那么痛苦了。
-比如在C#里面，我们可以定义函数参数的类型，以及所有变量的类型，也可以不定义（dynamic），做到和Ruby一样的效果。
-但是还有更好的语法(var)，程序语言自动给你做好类型定义，不用自己手写了，方便很多。</p>
-
-<p>综上所述，静态类型验证系统是现代程序语言必备的一个功能，Ruby不应该缺少这样的功能。
-Matz本人也说，下一阶段会进行这种系统的设计。
-不过我觉得这么大的改动，只有在程序语言开始设计的时候才能做出，Ruby现在已经进入成熟阶段，再改就很难了。</p>
-
-<p>如果不是Rails，我可能会考虑其它语言，但是谁让web开发框架里面，Rails生态圈最好最成熟呢。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1179,6 +1186,10 @@ Matz本人也说，下一阶段会进行这种系统的设计。
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/pc-laptop-cowork/">笔记本结合台式机开发方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/smarthome-light/">智能家居之灯光改造方案</a>
       </li>
     
@@ -1192,10 +1203,6 @@ Matz本人也说，下一阶段会进行这种系统的设计。
     
       <li class="post">
         <a href="/blog/outside-coding/">如何做到不带包随时远程工作</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/borgbackup/">更合理的文件备份方法</a>
       </li>
     
   </ul>
