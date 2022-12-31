@@ -9,9 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="(2015-12-14更新KCPTUN方法) 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
-但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
-访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。 &hellip;">
+  <meta name="description" content="考虑可以同时用来应对程序和人都需要阅读状况的通用数据格式，
+几个层面： 首先是数据格式，需要能够支持：string, bool, number, time。
+它们都应该是标准化了的。考虑不增加symbol，因为和string有概念上面的重复，
+使用上会产生困扰。 然后是数据的组织方式。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/common-data-exchange-format/">什么通用数据交换格式更好</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-29T16:34:06+08:00" pubdate data-updated="true">Aug 29<span>th</span>, 2015</time>
+        
+         | <a href="/blog/common-data-exchange-format/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>考虑可以同时用来应对程序和人都需要阅读状况的通用数据格式，
+几个层面：</p>
+
+<p>首先是数据格式，需要能够支持：string, bool, number, time。
+它们都应该是标准化了的。考虑不增加symbol，因为和string有概念上面的重复，
+使用上会产生困扰。</p>
+
+<p>然后是数据的组织方式。因为组织本身是不可变的，用map和list能够覆盖所有类型的数据组合方式，
+并且是完备的。tuple这种冗余不需要。</p>
+
+<p>最重要的是数据的表示方式。
+人工阅读的数据应该容易阅读，所以数据要有换行和缩进，没有xml这种尾部冗余。
+数据组织之间的切割应该用分割符，而不是换行。类似yaml这种换行分割会带来更多的问题。
+数据应该同时有两种表示方式，一种文本格式，用utf8编码，方便人阅读，
+一种二进制格式，机器处理更快，两种方式能够互相转换。</p>
+
+<p>关于xml，如果说json是类型的组合，那么xml就是物件的组合，默认物件拥有属性和子项，
+所以xml我觉得是一种非通用的格式，本质模型不适合进行通用数据交换。</p>
+
+<p>根据上述考虑，我觉得合适的方案是：格式化之后(换行缩进)的json，结合bson来用。
+比如RESTful的服务，返回的json默认增加缩进，同时也提供bson格式的返回，不考虑其他格式。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1073,71 +1132,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/introduce-slack/">Slack介绍-企业级实时通讯工具</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-26T17:33:52+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2015</time>
-        
-         | <a href="/blog/introduce-slack/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近我在团队里面推广了<a href="https://slack.com/">slack</a>，它是一个文字实时通讯工具，为什么要用它呢？
-比起QQ，skype等通用实时文字通讯工具，有几个好处：</p>
-
-<ul>
-<li>文字交流内容可以在团队之间分享。</li>
-<li>交流按照channel主题分组，比如项目1，服务器管理，客服等。</li>
-<li>可以存档，以及搜索历史记录。</li>
-<li>安装了手机应用或者桌面应用了之后，可以实时收到提醒。</li>
-<li>可以和其他各种系统整合，比如redmine，gitlab，或者程序员撰写提醒插件（比如监控服务器性能，登录，应用发布，定期任务等）</li>
-<li>聊天机器人：机器人可以通过监控聊天室的内容，执行特定操作：
-
-<ul>
-<li>这样团队成员可以控制机器人做一些事情（查看系统状态，执行特定任务等），这些控制指令可以在手机上面发出。</li>
-<li>机器人监控各种提醒，执行操作。</li>
-</ul>
-</li>
-</ul>
-
-
-<p>因为这些好处，我觉得slack这种工具值得所有的技术团队使用。</p>
-
-<p>不过同时slack也有一些其他问题：</p>
-
-<ul>
-<li>聊天分组是按照channel来的，不能进一步区分，比如服务器管理下面还有系统性能，系统重启，系统登录等子分组。这样用户可以关注特定的子分组，而不会被大分组的其他内容刷屏。</li>
-<li>通讯不够实时，有的时候可能好几分钟才能响应，一些紧急时间几分钟是很长的时间了。</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/8/">&larr; Older</a>
@@ -1155,6 +1149,10 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/pc-laptop-cowork/">笔记本结合台式机开发方案</a>
       </li>
     
@@ -1168,10 +1166,6 @@ mina它的原理是生成一个bash脚本，上传到服务器上面执行，这
     
       <li class="post">
         <a href="/blog/smarthome/">为什么要搞智能家居</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/outside-coding/">如何做到不带包随时远程工作</a>
       </li>
     
   </ul>
