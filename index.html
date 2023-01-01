@@ -9,8 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在家庭网络普遍使用的是千兆，是否有必要升级呢？ 首先看需求。可能带宽不够的情况： 大文件拷贝？只是少数情况，稍微多等一下就好。
-远程游戏和高清视频？4K屏幕，60hz刷新率,需要带宽11.4Gbps，10G可能都不够，但是视频传输可以压缩，80MB/s应该够了。 然后如果需要改造升级，需要考虑 &hellip;">
+  <meta name="description" content="家里厨房和卫生间很可能不在一个地方，热水器距离卫生间过远，需要热水的时候就要等很久。
+为了能够让家里的水龙头立刻就有热水出来，需要改装。 循环水方案 热水器到所有的热水出口设置一个循环水路，里面接一个水泵，如果需要用热水，提前开启水泵，整个循环水路里面就都是热水了。 缺点是需要遥控器来控制水泵开启 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/zero-hot-water/">远端零热水方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-01-01T22:20:56+08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2023</time>
+        
+         | <a href="/blog/zero-hot-water/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>家里厨房和卫生间很可能不在一个地方，热水器距离卫生间过远，需要热水的时候就要等很久。
+为了能够让家里的水龙头立刻就有热水出来，需要改装。</p>
+
+<h2>循环水方案</h2>
+
+<p>热水器到所有的热水出口设置一个循环水路，里面接一个水泵，如果需要用热水，提前开启水泵，整个循环水路里面就都是热水了。</p>
+
+<p>缺点是需要遥控器来控制水泵开启，也要等一会儿。如果一直开启水泵，电费很贵。</p>
+
+<h2>直接放水方案</h2>
+
+<p>如果距离不远，直接开启水，等到热水即可。问题一个是浪费水，一个是需要等待。其实水很便宜，浪费一些说不定比改装便宜。</p>
+
+<h2>小厨宝方案</h2>
+
+<p>远端下面装一个小厨宝，入口对接热水器和冷水用阀门切换，大量用水接热水器，少量热水接冷水。可以达到立刻用热水的目的。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -857,137 +910,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/home-server/">家用服务器整体策略思考</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2021-02-07T10:07:30+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
-        
-         | <a href="/blog/home-server/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>很多重要资料因为性能，经济程度，私密性的原因，不适合存在云端网盘，因此需要做一个家庭内部的存储解决方案，同时也有很多应用需要本地跑，我整理了一下各种情况下的解决方案。</p>
-
-<p>首先是需求类型：</p>
-
-<ul>
-<li>存储看剧</li>
-<li>视频下载</li>
-<li>存储和访问家庭照片和视频</li>
-<li>科学上网</li>
-<li>外面连回家里</li>
-<li>全屋无线网络</li>
-<li>视频监控</li>
-<li>智能家居</li>
-<li>跑各种网络，应用实验，虚拟机</li>
-</ul>
-
-
-<p>为了满足这些需求，需要选择对应的设备。</p>
-
-<h2>路由</h2>
-
-<p>首先是路由类需求。因为网络需要很稳定，设备应该根据稳定需求分割开。
-一般来说是这样：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>主路由 - 光猫 - 外网出口
-</span><span class='line'>主路由 - 无线核心路由ac/ap
-</span><span class='line'>主路由 - 旁路软路由
-</span><span class='line'>主路由 - 高速路由 - 电脑，服务器
-</span><span class='line'>主路由 - 监控路由 - 监控主机，摄像头</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>主路由负责汇总所有网络，需要保证稳定性，其它工作交给其他设备。拨号上网也可以主路由来做。</li>
-<li>无线系统另外设计，汇总到主路由。</li>
-<li>科学上网方案很复杂，最好一个单独的设备来做，可以用软路由，也可以家庭服务器的虚拟机。</li>
-<li>大多数应用并不需要很高的速度，1G就差不多了，只有少部分可能需要10G/2.5G，比如视频或者数据编辑拷贝。可以另外用一个高速路由+SFP光纤的解决方案。</li>
-<li>监控系统独立性比较高，可以另外设置一个监控路由，连上所有的摄像头。</li>
-<li>如果连接网口过多，主路由也可以拆分成多层层级。</li>
-<li>部分子系统，比如监控，访客无线网络，保证安全性和性能，可以划分LAN来进行分割。</li>
-</ul>
-
-
-<h2>存储和运算</h2>
-
-<p>然后是存储和运算系统。我觉得需求可以划分到以下几类：</p>
-
-<p><strong>低功耗服务器</strong>：性能要求不高，但是需要24小时跑，比如一些定时触发的任务，本地的一些小服务，音乐系统什么的。可以选择树莓派或者最新制程的笔记本。</p>
-
-<p>机器的功耗往往是根据制程来，CPU的TDP只是用来算最高功率的。所以对功耗有要求的机器要选择最新制程的。
-树莓派功耗低一些，但是性能差很多，体积上是优势。如果是一些小应用，笔记本太大了。</p>
-
-<p><strong>高性能服务器</strong>：跑虚拟机，运算，解码什么的。可以需要的时候开机，平时关掉。直接主流CPU就可以了，不需要去考虑买二手服务器，服务器优化的方向是保证性能的同时长时间运行的稳定性，和家用的需求(长时间低功耗，或者短时间高功耗)是不一样的。</p>
-
-<p><strong>nas存储</strong>：存储大量的数据。因为对稳定性要求很高，最好单独做一台设备出来。</p>
-
-<p>存储对应的运算，比如电影解码服务系统emby，虚拟机，可以放到另外的机器里面，因为nas和运算或者解码对机器的要求是不一样的。网络带宽也足够支持存储和运算分离。</p>
-
-<p><strong>游戏主机</strong>：玩游戏。游戏需要针对性优化硬件，显卡专门针对游戏，功耗也高，我建议单独做一台机器。</p>
-
-<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派<a href="https://github.com/pikvm/pikvm">pikvm</a>来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
-
-<p>机器按照待机功耗分类（包含了整流的全系统功耗）：</p>
-
-<ul>
-<li>嵌入式 0.1w</li>
-<li>树莓派 2w</li>
-<li>低功耗CPU：J5005, J1800 6w</li>
-<li>最新制程CPU笔记本：10w</li>
-<li>最新制程CPU台式机：35w</li>
-</ul>
-
-
-<h2>应用</h2>
-
-<p>硬件选择好了之后，就是需要跑的各种应用了，我现在的解决方案：</p>
-
-<ul>
-<li>远程连进家里：wireguard和ssh，外网路由器端口转发，ddns获得dns地址</li>
-<li>NAS存储：truenas，优点是性能好，系统稳定，缺点是基于freebsd，不能跑虚拟机，只能另外用机器了。设置好samba文件共享，存储方案用raid0镜像存储，比较安全。另外需要找台旧机器也装truenas进行zfs镜像备份，放在别的地方，定时开机。</li>
-<li>低功耗服务器和高性能服务器：根据应用需要看看用proxmox虚拟机或者docker。</li>
-<li>视频系统：jellyfin，emby要钱还是用免费的jellyfin，我用的不多付费不是很划算。</li>
-<li>本地音乐：airsonic</li>
-<li>家庭照片和视频：photoprism</li>
-<li>下载：qbittorrent，百度云</li>
-<li><a href="http://blog.linjunhalida.com/blog/low-network-cross-gfw/">科学上网</a></li>
-</ul>
-
-
-<p>家庭服务器的架构搭好了之后，使用上没啥特别的感觉，就是想要做什么的时候就可以用对应的系统，不需要很操心。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1003,6 +925,10 @@ ssh协议是安全的，不用担心暴露出去。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/zero-hot-water/">远端零热水方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
       </li>
     
@@ -1016,10 +942,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
     
       <li class="post">
         <a href="/blog/multi-room-music/">智能家居之全屋音乐方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/smarthome/">为什么要搞智能家居</a>
       </li>
     
   </ul>
@@ -1064,7 +986,7 @@ ssh协议是安全的，不用担心暴露出去。</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2022 - 机械唯物主义 -
+  Copyright &copy; 2023 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

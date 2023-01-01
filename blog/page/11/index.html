@@ -9,10 +9,12 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="前段时间看到有一个游戏，玩家必须保持自己在监控设备的视线范围内。
-画面上面展示的效果是高亮出监视器的视线范围。如图： 我思考了一下如何做到这点。首先定义问题：
-给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
-（可以用一系列的三角形表示）。 求视线范围的三角形列表， &hellip;">
+  <meta name="description" content="最近台湾因为服贸的事情闹得比较大，一直都没有跟进这件事情。周末花时间看了一下资料。 这里整理一些资料： wiki
+懒人包
+图解服贸
+xdite的愤怒
+服贸对台湾没好处 看了半天还是没有头绪。这是我的理解： 什么是服贸？大陆和台湾签订的贸易互相开放协议
+源头：台湾政府希望借由这个协定， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +83,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fu-mao/">关于服贸协定</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T19:02:35+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/fu-mao/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_04_05_taiwan.jpg"></p>
+
+<p>最近台湾因为服贸的事情闹得比较大，一直都没有跟进这件事情。周末花时间看了一下资料。</p>
+
+<p>这里整理一些资料：</p>
+
+<ul>
+<li><a href="http://zh.wikipedia.org/zh/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E6%9C%8D%E5%8B%99%E8%B2%BF%E6%98%93%E5%8D%94%E8%AD%B0">wiki</a></li>
+<li><a href="http://billy3321.github.io/tisa2/">懒人包</a></li>
+<li><a href="http://tw.k7dg.com/%E8%BC%95%E9%AC%86%E5%9C%96%E8%A7%A3%E4%BB%80%E9%BA%BC%E6%98%AF%E6%9C%8D%E8%B2%BF%E5%95%8A/">图解服贸</a></li>
+<li><a href="http://smalltalk.xdite.net/posts/192538-taiwan-the-best-way-out-is-leverage-china">xdite的愤怒</a></li>
+<li><a href="http://chenglap-blog.logdown.com/posts/191906-how-to-face-fumao">服贸对台湾没好处</a></li>
+</ul>
+
+
+<p>看了半天还是没有头绪。这是我的理解：</p>
+
+<ul>
+<li>什么是服贸？大陆和台湾签订的贸易互相开放协议</li>
+<li>源头：台湾政府希望借由这个协定，让台湾经济有起色；大陆希望通过这个协定，满足大国策略的需要</li>
+<li>民众反对原因：</li>
+<li>不满足过程正义：全程黑盒，民众不知道状况，也没有监管。</li>
+<li>服贸协议本身会带来严重的后果：台湾本地会收到很大冲击，甚至可能让台湾香港化。</li>
+</ul>
+
+
+<p>我的看法：首先我还是不了解服贸协议本身，也不了解可能带来的后果。
+网上没有搜索到相关的资料（欢迎大家给出），所以我的看法就是：不置可否。
+请问大家是否有收集到比较好的解释性质的资料？非常感谢。</p>
+
+<p>这个过程还是知道了一些东西，比如台湾这些年发展得不好，年轻人基本台湾认同了。香港不行了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -879,90 +949,6 @@ I hope I can provide more of it, other than the sweet <em>information sugar</em>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/introduce-autoit/">Autoit介绍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-19T20:47:06+08:00" pubdate data-updated="true">Jan 19<span>th</span>, 2014</time>
-        
-         | <a href="/blog/introduce-autoit/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2014_01_19_autoit.jpg"></p>
-
-<p>最近回到老家干IT，工作中遇到很多安装无聊软件的事情，为了能够自动化操作，我去寻找了一下类似按键精灵这种自动化工具，被我发现了<a href="http://www.autoitscript.com/site/">autoit</a>这个工具兼脚本语言。</p>
-
-<p>简单介绍一下核心逻辑。比如说每次你希望每次打开记事本，都会自动输入一个抬头信息，比如”author: halida”，那么你可以写以下的autoit脚本：</p>
-
-<pre><code>Run('notepad.exe')
-WinWaitActive("无标题 - 记事本", "")
-Send("author: halida")
-</code></pre>
-
-<p>简单的三部曲。执行命令，等待特定窗口出现，发送内容给窗口。 autoit也可以直接发送内容和操作给特定的窗口中的控件。</p>
-
-<p>一些核心特性：</p>
-
-<ul>
-<li>能够把脚本解释执行，或者编译成exe。exe非常小以及无其它依赖。</li>
-<li>autoit脚本是完备的语言，控制流，函数，数据结构都有，可能不如现代动态语言那么强大，但是足够方便地编写程序了。</li>
-<li>带有丰富的API支持，随机数，进程处理，文件操作，窗口操作，网络，硬件，鼠标键盘，COM，声音，剪贴板。。应有尽有。</li>
-<li>可以用autoit来做简单和稍微有一些些复杂的GUI界面。</li>
-<li>足够大的社区支持。同时有<a href="http://www.autoitscript.com/forum/">官方社区</a>和<a href="http://www.autoitx.com/">中文社区</a>。</li>
-</ul>
-
-
-<p>那么autoit可以做哪些事情呢？我觉得可以做的事情有：</p>
-
-<ul>
-<li>自动化windows下面的操作。节省人力。</li>
-<li>编写脚本来自动化软件安装和删除，方便运维管理。</li>
-<li>编写大型软件的加载页面，提升用户体验。</li>
-<li>写简单的windows程序，和复杂的MFC说再见。</li>
-</ul>
-
-
-<p>对于我来说，可以填补windows下面自动化操作的空白，从此我在所有领域都不再担心不能自动化操作了。</p>
-
-<p>那么如何学习呢？我的建议是按照下面的顺序：</p>
-
-<ul>
-<li>过一遍<a href="http://www.autoitscript.com/autoit3/docs/">官方教程</a>，按照官方教程写点简单的用例。</li>
-<li>过一遍<a href="http://www.autoitscript.com/autoit3/docs/">官方文档</a>，对于autoit能够干什么有概念。</li>
-<li>开始编写你自己需要的简单程序，巩固上面学习到的东西。</li>
-<li>然后多翻翻社区和<a href="http://www.autoitscript.com/wiki">wiki</a>，收集一些最佳实践，成为一个靠谱的autoit开发者。</li>
-</ul>
-
-
-<p>前3步我想任何一个程序员一周内都就可以搞定，带来的收益是节省下无数枯燥的重复操作时间。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/12/">&larr; Older</a>
@@ -980,6 +966,10 @@ Send("author: halida")
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/zero-hot-water/">远端零热水方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
       </li>
     
@@ -993,10 +983,6 @@ Send("author: halida")
     
       <li class="post">
         <a href="/blog/multi-room-music/">智能家居之全屋音乐方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/smarthome/">为什么要搞智能家居</a>
       </li>
     
   </ul>
@@ -1041,7 +1027,7 @@ Send("author: halida")
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2022 - 机械唯物主义 -
+  Copyright &copy; 2023 - 机械唯物主义 -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>命令行下使用全局代理 - 网络寻租</title>
+  <title>远端零热水方案 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="最近Bitbucket的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。 询问了友邻之后，有几个工具浮出水面：tsocks以及proxychains。 调研了一下tsocks，2002年就不再更新了，osx下面编译没有成功， &hellip;">
+  <meta name="description" content="家里厨房和卫生间很可能不在一个地方，热水器距离卫生间过远，需要热水的时候就要等很久。
+为了能够让家里的水龙头立刻就有热水出来，需要改装。 循环水方案 热水器到所有的热水出口设置一个循环水路，里面接一个水泵，如果需要用热水，提前开启水泵，整个循环水路里面就都是热水了。 缺点是需要遥控器来控制水泵开启 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/commandline-proxy/">
+  <link rel="canonical" href="http://halida.github.com/blog/zero-hot-water/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">命令行下使用全局代理</h1>
+      <h1 class="entry-title">远端零热水方案</h1>
     
     
       <p class="meta">
@@ -97,7 +98,7 @@
   
 
 
-<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+<time datetime="2023-01-01T22:20:56+08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2023</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -106,25 +107,22 @@
   </header>
 
 
-<div class="entry-content"><p><img src="/images/posts/wlogo.png"></p>
+<div class="entry-content"><p>家里厨房和卫生间很可能不在一个地方，热水器距离卫生间过远，需要热水的时候就要等很久。
+为了能够让家里的水龙头立刻就有热水出来，需要改装。</p>
 
-<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
+<h2>循环水方案</h2>
 
-<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
+<p>热水器到所有的热水出口设置一个循环水路，里面接一个水泵，如果需要用热水，提前开启水泵，整个循环水路里面就都是热水了。</p>
 
-<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
+<p>缺点是需要遥控器来控制水泵开启，也要等一会儿。如果一直开启水泵，电费很贵。</p>
 
-<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
+<h2>直接放水方案</h2>
 
-<p>首先需要跑一个socks5 proxy，使用：</p>
+<p>如果距离不远，直接开启水，等到热水即可。问题一个是浪费水，一个是需要等待。其实水很便宜，浪费一些说不定比改装便宜。</p>
 
-<pre><code>$ ssh -fN -D 4321 some.example.com
-</code></pre>
+<h2>小厨宝方案</h2>
 
-<p>然后设置参数执行命令就好了：</p>
-
-<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
-</code></pre>
+<p>远端下面装一个小厨宝，入口对接热水器和冷水用阀门切换，大量用水接热水器，少量热水接冷水。可以达到立刻用热水的目的。</p>
 </div>
 
 
@@ -147,7 +145,7 @@
   
 
 
-<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+<time datetime="2023-01-01T22:20:56+08:00" pubdate data-updated="true">Jan 1<span>st</span>, 2023</time>
       
 
 
@@ -155,7 +153,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/commandline-proxy/" data-via="" data-counturl="http://halida.github.com/blog/commandline-proxy/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/zero-hot-water/" data-via="" data-counturl="http://halida.github.com/blog/zero-hot-water/" >Tweet</a>
   
   
   
@@ -164,10 +162,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/debug-rails-autolink/" title="Previous Post: 调试rails autolink">&laquo; 调试rails autolink</a>
+        <a class="basic-alignment left" href="/blog/no-need-10g/" title="Previous Post: 家庭网络没必要上万兆">&laquo; 家庭网络没必要上万兆</a>
       
-      
-        <a class="basic-alignment right" href="/blog/reliable-email-delivery/" title="Next Post: 保证电子邮件的送达率">保证电子邮件的送达率 &raquo;</a>
       
     </p>
   </footer>
@@ -263,8 +259,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/commandline-proxy/';
-        var disqus_url = 'http://halida.github.com/blog/commandline-proxy/';
+        var disqus_identifier = 'http://halida.github.com/blog/zero-hot-water/';
+        var disqus_url = 'http://halida.github.com/blog/zero-hot-water/';
         var disqus_script = 'embed.js';
       
     (function () {
