@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2023-01-01T22:23:16+08:00</updated>
+  <updated>2023-01-03T10:06:11+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[带娃户外方案]]></title>
+    <link href="http://halida.github.com/blog/kid-outside/"/>
+    <updated>2023-01-03T09:56:32+08:00</updated>
+    <id>http://halida.github.com/blog/kid-outside</id>
+    <content type="html"><![CDATA[<p>带娃户外目的：防止近视需要每天户外阳光2小时，以及运动</p>
+
+<p>南昌场地：</p>
+
+<ul>
+<li>城区和郊区有无数的公园，户外运动设施。</li>
+<li>沿河公园，城市内河沿河绿道，十几公里的路线很多。</li>
+<li>很多小区都有很好的内部户外活动区域和小孩活动设施，混进去一个个玩下来不重样。</li>
+<li>有一些收费的户外娱乐场所。</li>
+</ul>
+
+
+<p>可以进行的活动：</p>
+
+<ul>
+<li>玩场地有的项目</li>
+<li>滑板车，自行车骑行</li>
+<li>跳绳</li>
+<li>足球，篮球</li>
+<li>坐下来看看书</li>
+</ul>
+
+
+<p>下雨天：只能室内活动：</p>
+
+<ul>
+<li>每个区都有好几个大商场，可以室内活动</li>
+<li>大量的室内的儿童活动中心，收费玩一天</li>
+<li>科技馆，图书馆，博物馆</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[远端零热水方案]]></title>
@@ -1136,69 +1175,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 <p>为了简化以上的推理过程，我们就给出理性人假设：市场上都是理性人，理性人会选择交通要道上面开加油站，所以加油站都在交通要道上面。</p>
 
 <p>理性人其实也可以看作是一个进化论的推论。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[程序员为什么是低级兵种]]></title>
-    <link href="http://halida.github.com/blog/programmer-class/"/>
-    <updated>2019-04-08T20:45:49+08:00</updated>
-    <id>http://halida.github.com/blog/programmer-class</id>
-    <content type="html"><![CDATA[<p>这里分析一下程序员这种职业的一些特性。</p>
-
-<h3>生存能力</h3>
-
-<ul>
-<li>低：严重依赖于市场，市场不好就会死亡</li>
-<li>中：部分依赖于市场，市场萎缩的时候可以部分跨越市场</li>
-<li>高：不依赖于市场，无论市场行情好还是差，都可以生存</li>
-</ul>
-
-
-<p>程序员生存能力是中：可以换行业，以往的行业经验作废，但是技能留着。</p>
-
-<h3>收益</h3>
-
-<ul>
-<li>低：产出少，市场上不稀缺，弹性系数高</li>
-<li>高：产出多，市场上稀缺，弹性系数低</li>
-</ul>
-
-
-<p>程序员的产出：依赖于行业附加值，以及服务群体数量。所以不同行业，不同级别公司的程序员工资是有一定差距的。</p>
-
-<p>市场需求：所有行业都需要程序员，市场容量大，总是有需要做的事情，但是高附加值的行业是有限的。</p>
-
-<p>市场供给：大量学校都有培训程序员的专业，网络上也有大量的免费教程。</p>
-
-<p>当前程序员的收入比起其他行业从业者算是高的，随着时间过去，程序员的收入会逐渐回归均值。</p>
-
-<h3>兵种</h3>
-
-<p>划分标准：成本</p>
-
-<ul>
-<li>低级：基础人力就可以</li>
-<li>中级：需要特殊资源</li>
-<li>高级：可遇不可求</li>
-</ul>
-
-
-<p>程序员是低级兵种：只要有靠谱的培训，人人都可以学会编程，能力高低取决于悟性，经验，智商，但是没有质的区别。</p>
-
-<h3>升级潜力</h3>
-
-<ul>
-<li>低：随着经验丰富，收入提升不大，也没有进阶的方向</li>
-<li>高：随着经验丰富，收入提升很大，有多种进阶方向</li>
-</ul>
-
-
-<p>程序员：如果职位不变，经验丰富生产力会提升一部分，不过并不会出现质的变化。</p>
-
-<p>发展方向：行业业务专家方向，技术专家方向，团队领导方向。</p>
-
-<p>升级潜力算是中等吧。</p>
 ]]></content>
   </entry>
   
