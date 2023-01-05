@@ -9,9 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="作为一名程序员, 我最近开始下定决心掌握一门乐器,
-我跟风一个朋友franky开始学习钢琴. 我去附近的一个琴行报了班, 开始了练习. 现在基本能弹一些非常简单的练习曲, 比起franky能弹&lt;放牛班的春天>,
-我还差远了. 但是我已经计划好了学习钢琴的时间: 一辈子. 为什么要掌握乐器 &hellip;">
+  <meta name="description" content="什么是VPN 简单地说, VPN就是, 网络上面一台主机, 建立了一个虚拟的网络.
+然后我们的电脑登录上去, 加入到这个虚拟的网络里面来.
+然后我们就可以利用这个主机做跳板, 访问网站,
+或者同属于这个虚拟网络的电脑. 这样可以让物理上分布在不同地点的电脑, 看起来好像在一个局域网络下面. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,81 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/windows-setup-VPN/">windows下面设置VPN连接</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-15T10:24:12+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2011</time>
+        
+         | <a href="/blog/windows-setup-VPN/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://www.clickonf5.org/wp-content/uploads/2009/12/InternetAccessVPN_thumb.png" alt="image" /></p>
+
+<h2>什么是VPN</h2>
+
+<p>简单地说, VPN就是, 网络上面一台主机, 建立了一个虚拟的网络.
+然后我们的电脑登录上去, 加入到这个虚拟的网络里面来.
+然后我们就可以利用这个主机做跳板, 访问网站,
+或者同属于这个虚拟网络的电脑.</p>
+
+<p>这样可以让物理上分布在不同地点的电脑, 看起来好像在一个局域网络下面.</p>
+
+<p>一般来说, VPN用来做几件事:</p>
+
+<ul>
+<li>在外网的电脑, 访问一个局域网络, 方便在家办公.</li>
+<li>利用提供服务的主机做跳板, 访问这个主机所在位置的资源.
+就是我们说的翻墙.</li>
+</ul>
+
+
+<h2>windows下面设置方法</h2>
+
+<p>这里有一个教程:
+<a href="http://netfee.ustc.edu.cn/ylxia/help/faq/faq_howtosetupvpn_winxp.htm">http://netfee.ustc.edu.cn/ylxia/help/faq/faq_howtosetupvpn_winxp.htm</a></p>
+
+<p>我也自己整理了一下:</p>
+
+<ul>
+<li>点击控制面板->网络连接,</li>
+<li>左边建立新连接. 下一步, 连接到我的工作网络</li>
+<li>下一步, 虚拟专用网络.</li>
+<li>公司名称随便输入</li>
+<li>设置IP.</li>
+<li>点击完成.</li>
+<li>然后输入用户名和密码.</li>
+<li>然后连接就可以使用了.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2137,136 +2213,6 @@ face the problem.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/CS-roadmap/">计算机领域学习路线图</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-11T15:04:23+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2011</time>
-        
-         | <a href="/blog/CS-roadmap/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="http://ocw.mit.edu/images/logo-ocw-home_new.gif" alt="image" /></p>
-
-<h2>目标</h2>
-
-<p>帮助计算机领域的初学者, 从零开始, 一步步成为一个靠谱的计算机领域的专家.
-这里面只包含偏软件的部分.</p>
-
-<p>我们需要达成以下目标:</p>
-
-<ul>
-<li>了解计算机领域的基础知识. 对背景的了解是基础.</li>
-<li>拥有计算机科学家的思维和解决问题的能力</li>
-<li>能编程! 编程是我们解决问题的主要方式.</li>
-<li>使用开源系统, 加入到开源社区中去</li>
-</ul>
-
-
-<h2>计算机基础课程学习</h2>
-
-<p>想要学习计算机领域的基础知识, 我选择使用mit公开课里面的内容.
-下面我挑了一些必读课程:</p>
-
-<p>入门课程.</p>
-
-<ul>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00-introduction-to-computer-science-and-programming-fall-2008">6.00</a>
-入门课.</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005">6.001</a>
-老牌入门课.</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-087-practical-programming-in-c-january-iap-2010/">6.087</a>
-C语言是必须要掌握的..</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-189-a-gentle-introduction-to-programming-using-python-january-iap-2011/readings/">6.189</a>
-python也是必须要掌握的.</li>
-</ul>
-
-
-<p>基础课程.</p>
-
-<ul>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-042j-mathematics-for-computer-science-spring-2010/">6.042J</a>
-恩, 一些计算机领域必须的数学基础.</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/">6.046J</a>
-算法基础.</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-004-computation-structures-spring-2009/">6.002</a>
-计算机组成原理.</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-828-operating-system-engineering-fall-2006/">6.828</a>
-操作系统</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-035-computer-language-engineering-sma-5502-fall-2005/">6.035</a>
-编译原理.</li>
-</ul>
-
-
-<p>网络部分.</p>
-
-<ul>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-033-computer-system-engineering-spring-2009/">6.033</a>
-Computer System Engineering</li>
-<li><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-171-software-engineering-for-web-applications-fall-2003/">6.171</a>
-Software Engineering for Web Applications</li>
-</ul>
-
-
-<p>上面是必读, 当然还有其他的课程, 感兴趣可以学学, 都在:
-<a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science">http://ocw.mit.edu/courses/electrical-engineering-and-computer-science</a>/</p>
-
-<h2>可做和必做事项</h2>
-
-<p>下面我整理了一些必须做和可做的事情, 我觉得它们对于提高实力非常重要.</p>
-
-<p>开源社区</p>
-
-<ul>
-<li>安装和使用linux, 在linux上面做开发</li>
-<li>学会翻墙, 以及搭建翻墙服务器</li>
-<li>了解和熟悉开源社区的做事方式</li>
-</ul>
-
-
-<p>编程</p>
-
-<ul>
-<li>超过1万行的编程代码量</li>
-<li>完成程序: 1个网站, 1个GUI程序, 1个手机程序</li>
-<li>选作: 设计实现一个简单的CPU, 实现一门语言的编译器或解释器,
-实现一个http服务器, 搭建一个web开发框架</li>
-</ul>
-
-
-<h2>下一步?</h2>
-
-<p>经过上面课程的学习, 你基本上掌握了所有必须掌握的知识了,
-然后你可以深入去学习你更感兴趣的部分(人工智能? 算法?),
-或者直接去做你想做的程序开发吧!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/22/">&larr; Older</a>
@@ -2284,6 +2230,10 @@ Software Engineering for Web Applications</li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/computer-eco/">消费级计算机生态位</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/kid-outside/">带娃户外方案</a>
       </li>
     
@@ -2297,10 +2247,6 @@ Software Engineering for Web Applications</li>
     
       <li class="post">
         <a href="/blog/pc-laptop-cowork/">笔记本结合台式机开发方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/smarthome-light/">智能家居之灯光改造方案</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[网络寻租]]></title>
   <link href="http://halida.github.com/atom.xml" rel="self"/>
   <link href="http://halida.github.com/"/>
-  <updated>2023-01-03T10:06:11+08:00</updated>
+  <updated>2023-01-05T12:01:27+08:00</updated>
   <id>http://halida.github.com/</id>
   <author>
     <name><![CDATA[机械唯物主义]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[消费级计算机生态位]]></title>
+    <link href="http://halida.github.com/blog/computer-eco/"/>
+    <updated>2023-01-05T12:00:50+08:00</updated>
+    <id>http://halida.github.com/blog/computer-eco</id>
+    <content type="html"><![CDATA[<p>根据不同需求，适合普通家庭选购的计算机硬件类型有这些：</p>
+
+<p><strong>大系统</strong></p>
+
+<p>跑操作系统，主机体积不敏感，性能强劲。</p>
+
+<ul>
+<li>顶级性能：远算速度最快，能力最强的CPU/GPU/NPU，用来进行编译，打游戏，视频编码，跑神经网络运算等等。</li>
+<li>高性能：主流CPU/GPU，用于程序员的日常使用，打普通游戏</li>
+<li>持续运行：低待机功耗最新制程intel CPU，低功耗主板，用来跑应用服务，和存储服务。</li>
+</ul>
+
+
+<p><strong>小系统</strong></p>
+
+<p>跑操作系统，体积敏感，性能满足需要即可。</p>
+
+<ul>
+<li>运算节点：瘦客户机，满足终端需要的性能就好。用途比如小孩学习，简单信息处理等。</li>
+<li>IO控制平台：树莓派现在价格太贵，选用其它类派系统，只要有GPIO输入输出可以控制设备即可。</li>
+<li>多媒体接入：各种电视盒子，带有需要的视频音频解码功能。</li>
+<li>手机：随身电脑，性能其实已经逼近大系统了。</li>
+</ul>
+
+
+<p><strong>嵌入式系统</strong></p>
+
+<p>不跑操作系统，烧录特定的程序，带有特定的外设。</p>
+
+<ul>
+<li>8266/esp32：开放的嵌入式硬件，有arduino，esphome等平台可以用。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[带娃户外方案]]></title>
@@ -1157,24 +1198,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 
 
 <p>如果觉得中国大城市太辛苦，可以去二线城市，或者大城市周边的卫星小城市。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[正确理解经济学的理性人假设]]></title>
-    <link href="http://halida.github.com/blog/rational-man/"/>
-    <updated>2019-04-08T21:02:05+08:00</updated>
-    <id>http://halida.github.com/blog/rational-man</id>
-    <content type="html"><![CDATA[<p>理性人假设只是一个预设的公理，用来推理出来各种经济学定理。
-并不代表市场上面所有人都是理性人，而是只有理性人才能够更好地生存下来。</p>
-
-<p>举例：假设有100只猴子，每只猴子都随机在一个地方开加油站。
-随着时间过去，只有在交通要道开加油站的猴子，最后才可以赚钱生存下来，其他猴子都饿死了。
-那么看起来市场上面只有“理性”的猴子。</p>
-
-<p>为了简化以上的推理过程，我们就给出理性人假设：市场上都是理性人，理性人会选择交通要道上面开加油站，所以加油站都在交通要道上面。</p>
-
-<p>理性人其实也可以看作是一个进化论的推论。</p>
 ]]></content>
   </entry>
   
