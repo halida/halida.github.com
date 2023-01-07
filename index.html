@@ -9,9 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="根据不同需求，适合普通家庭选购的计算机硬件类型有这些： 大系统 跑操作系统，主机体积不敏感，性能强劲。 顶级性能：远算速度最快，能力最强的CPU/GPU/NPU，用来进行编译，打游戏，视频编码，跑神经网络运算等等。
-高性能：主流CPU/GPU，用于程序员的日常使用，打普通游戏
-持续运行： &hellip;">
+  <meta name="description" content="中国20年后成为发达国家毫无悬念。 发达国家本质我认为是：在平均人口下，拥有一定数量的：具有世界顶级生产力，在行业生态链中占据统治地位的企业。 中国现状： 大量次顶级生产力，一些顶级生产力，在一些行业拥有统治地位。
+统治地位行业：大市场：光伏，手机游戏，短视频，细分市场例子：电动平衡车，独轮车， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +79,84 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/china-developed/">中国必然成为发达国家</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-01-07T10:29:24+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2023</time>
+        
+         | <a href="/blog/china-developed/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>中国20年后成为发达国家毫无悬念。</p>
+
+<p>发达国家本质我认为是：在平均人口下，拥有一定数量的：具有世界顶级生产力，在行业生态链中占据统治地位的企业。</p>
+
+<p>中国现状：</p>
+
+<ul>
+<li>大量次顶级生产力，一些顶级生产力，在一些行业拥有统治地位。</li>
+<li>统治地位行业：大市场：光伏，手机游戏，短视频，细分市场例子：电动平衡车，独轮车，魔方。</li>
+<li>世界工厂，世界研发基地：全行业都有大量生产研发企业，低端市场统治地位，中端高端都在往上冲击。</li>
+</ul>
+
+
+<p>中国冲击顶级生产力的优势：</p>
+
+<ul>
+<li>成本优势和效率优势：世界工厂，全体系供应链，快速反应。</li>
+<li>市场容量，中国现在已经是世界最大市场，还会增长。</li>
+<li>研发：大量工程师，成本还算低，和顶级没有技术代差。</li>
+</ul>
+
+
+<p>这几个优势看不到世界上其它经济体能够替代的。</p>
+
+<p>未来发展过程：</p>
+
+<ul>
+<li>短期：电动和传统汽车，电子行业，IT，互联网，都会发展成世界顶级，抢占到大量生态位。</li>
+<li>长期：各种高精尖领域：比如医疗，航空。</li>
+<li>美国有规模优势，研发优势，不过产业和中国互补，有加成。</li>
+<li>中国发展会逐渐抢占其它规模小的发达经济体生态位。</li>
+</ul>
+
+
+<p>现在也有一些大问题，不过都还太不影响总体发展：</p>
+
+<ul>
+<li>体制劣势，管制伤害生产力：如果发展慢了就会出问题，顶层设计会放松。</li>
+<li>人口老龄化：80后还可以奋斗至少30年，短期不会有问题。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -757,129 +834,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/borgbackup/">更合理的文件备份方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2021-03-27T13:30:20+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2021</time>
-        
-         | <a href="/blog/borgbackup/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>重要资料需要通过备份保证不丢失，这里整理一下我研究的备份策略。</p>
-
-<p>首先资料应该远程备份，不能和当前的存储介质在一个区域，不然出事了就一起完蛋了。</p>
-
-<p>资料备份应该自动和定期，手动太繁琐，很容易坚持不下去。不定期备份起不到备份的效果。</p>
-
-<p>资料应该可以增量备份，不然空间占用太多。</p>
-
-<p>增量备份需要和备份比较计算，所以远端机器必须参与计算。
-现在大家常用的工具是rsync，但是并不能很好地做到增量计算。</p>
-
-<p>我推荐用<a href="https://borgbackup.readthedocs.io/">borgbackup</a>，
-服务器安装borgbackup之后，并不需要跑服务，执行备份的时候，会通过ssh执行服务器端的可执行文件来跑服务器的工作，架构比较简单。
-其它还有一些工具都比较重量级需要跑服务，就不推荐了。</p>
-
-<p>安装：<code>sudo apt install borgbackup</code></p>
-
-<p>本地机器可以通过命令行工具查看备份，比较备份结果，把某个历史镜像加载到本地，具体可以看<a href="https://borgbackup.readthedocs.io/en/stable/quickstart.html">教程</a>，
-或者快速例子：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>mkdir -p ~/data/workspace/borg
-</span><span class='line'><span class="nb">cd</span> ~/data/workspace/borg
-</span><span class='line'>
-</span><span class='line'>borg init -e none backup
-</span><span class='line'>borg create backup::1 data
-</span><span class='line'>borg create backup::2 data
-</span><span class='line'>borg list backup
-</span><span class='line'><span class="c1"># 1                                    Wed, 2020-10-28 13:55:56 [xxx]</span>
-</span><span class='line'><span class="c1"># 2                                    Wed, 2020-10-28 13:56:13 [xxx]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># 换名称</span>
-</span><span class='line'>borg create backup::<span class="sb">`</span>date +%FT%T<span class="sb">`</span> data
-</span><span class='line'>
-</span><span class='line'><span class="c1"># list files</span>
-</span><span class='line'>borg list backup::2
-</span><span class='line'><span class="c1"># recover</span>
-</span><span class='line'>borg extract backup::1
-</span><span class='line'>borg extract backup::1 data/a.txt
-</span><span class='line'>
-</span><span class='line'>borg delete backup::1
-</span><span class='line'>
-</span><span class='line'>borg diff backup::1 <span class="m">2</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># 加载备份到本地，可以拷贝需要恢复的文件出来</span>
-</span><span class='line'>borg mount
-</span><span class='line'>borg umount
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果需要定期备份到远端，
-本地机器加上一个cronjob定期跑备份即可：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>crontab -e
-</span><span class='line'><span class="m">1</span> <span class="m">14</span> * * * ~/scripts/backup_laptop.sh
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>脚本内容在<a href="https://gist.github.com/halida/e2de6c3704c7febf139d5ff39d1756fb">这里</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -895,6 +849,10 @@ ssh协议是安全的，不用担心暴露出去。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/china-developed/">中国必然成为发达国家</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/computer-eco/">消费级计算机生态位</a>
       </li>
     
@@ -908,10 +866,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
     
       <li class="post">
         <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/pc-laptop-cowork/">笔记本结合台式机开发方案</a>
       </li>
     
   </ul>
