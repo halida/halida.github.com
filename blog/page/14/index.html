@@ -9,9 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
-这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。 我们大多数的js操作，都是针对用户事件，做一个具体的反应，
-比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。 &hellip;">
+  <meta name="description" content="问题 我们用css做双栏的方法，一般是通过边栏float: right，
+或者position: absolute; right: 0; top: 0来实现的。 但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/css-two-column/">Css实现双栏同等高度</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-25T08:05:00+08:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
+        
+         | <a href="/blog/css-two-column/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>问题</h1>
+
+<p>我们用css做双栏的方法，一般是通过边栏<code>float: right</code>，
+或者<code>position: absolute; right: 0; top: 0</code>来实现的。</p>
+
+<p>但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色，还是用右栏的背景色就很难说了，
+因为如果用左栏颜色，右栏高度不够的时候颜色不对；用右栏颜色，左栏高度不够的时候颜色不对。</p>
+
+<p>如图所示：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1JEqmNAwmnBN4ZxW6Mw_--qMD4F5yaNoUwBDYv0C0uRQ/pub?w=600&amp;h=720"></p>
+
+<p>那么我们应该怎么解决这个问题呢？解法很巧妙，采用下面的布局：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1TfJHqsQmOBuV9rDg9eF5A2VX9yjOO8tUYBQDm0mcB_Y/pub?w=600&amp;h=720"></p>
+
+<p>继承关系：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.L1
+</span><span class='line'>  .L2
+</span><span class='line'>    .L3l
+</span><span class='line'>    .L3r
+</span><span class='line'>    .clearfix</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，L2的高度是L3l和L3r中长的那个的高度，
+L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上面，
+这样无论左右栏的高度如何变化，左右栏的颜色都是正确的。</p>
+
+<p>示例代码如下：</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1463,62 +1539,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/commandline-proxy/">命令行下使用全局代理</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-21T15:15:00+08:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
-        
-         | <a href="/blog/commandline-proxy/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/wlogo.png"></p>
-
-<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
-
-<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
-
-<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
-
-<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
-
-<p>首先需要跑一个socks5 proxy，使用：</p>
-
-<pre><code>$ ssh -fN -D 4321 some.example.com
-</code></pre>
-
-<p>然后设置参数执行命令就好了：</p>
-
-<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/15/">&larr; Older</a>
@@ -1536,6 +1556,10 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/nas-hardware/">家用nas机器设计方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/china-developed/">中国必然成为发达国家</a>
       </li>
     
@@ -1549,10 +1573,6 @@ b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
     
       <li class="post">
         <a href="/blog/zero-hot-water/">远端零热水方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
       </li>
     
   </ul>

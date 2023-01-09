@@ -9,7 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="重要资料需要通过备份保证不丢失，这里整理一下我研究的备份策略。 首先资料应该远程备份，不能和当前的存储介质在一个区域，不然出事了就一起完蛋了。 资料备份应该自动和定期，手动太繁琐，很容易坚持不下去。不定期备份起不到备份的效果。 资料应该可以增量备份，不然空间占用太多。 增量备份需要和备份比较计算， &hellip;">
+  <meta name="description" content="需求 外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。 首先外出的时候如果带了包，就可以装轻薄笔记本，
+但是带包加上带笔记本比较麻烦，有没有随身的解决方案？ 实现方法 首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
+开发主力机平时放在家里， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +80,105 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/outside-coding/">如何做到不带包随时远程工作</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-12-14T15:12:44+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2021</time>
+        
+         | <a href="/blog/outside-coding/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>需求</h2>
+
+<p>外出的时候，如果没有带笔记本，只能刷手机浪费时间，如果能够随时远程工作就好了。</p>
+
+<p>首先外出的时候如果带了包，就可以装轻薄笔记本，
+但是带包加上带笔记本比较麻烦，有没有随身的解决方案？</p>
+
+<h2>实现方法</h2>
+
+<p>首先不考虑随身设备本地开发，准备多套环境太麻烦了，并且性能不够。
+开发主力机平时放在家里，随身的设备远程连进来。</p>
+
+<p>方法：找电信运营商要到外部IP，路由器端口转发到本地电脑ssh端口。
+ssh协议是安全的，不用担心暴露出去。</p>
+
+<p>本地电脑开放ssh协议，通过密钥登录，开发环境用 tmux + emacs，可以在终端里面进行开发工作。</p>
+
+<p>外出设备是难点，显示和输入必须随身。</p>
+
+<p>输入设备：</p>
+
+<ul>
+<li>emacs快捷键是组合键，必须用键盘，不能通过触摸屏解决，同时键盘操作效率才过的去。</li>
+<li>随身蓝牙键盘的体积必须能够放到口袋里，不方便带就不愿带了。</li>
+<li>键盘的键位必须是标准的，非标键位使用太难受。</li>
+<li>综上所述，考察了现在能够买到的价格适中的产品，选用BOW的<a href="https://item.jd.com/100001317158.html">HB188s</a>。</li>
+</ul>
+
+
+<p>显示设备：</p>
+
+<ul>
+<li>不考虑笔记本电脑和平板，不能放进口袋的设备都不方便，不考虑。</li>
+<li>所以只能是手机，屏幕尽量大。</li>
+<li>考虑折叠屏手机：现在设备还是太贵，不考虑。</li>
+</ul>
+
+
+<p>手机软件用termius，免费版本就可以用需要的功能了，可以保持ssh连接，
+同时带有端口转发功能，可以把开发机上的web app转发到手机里面，用浏览器看效果。</p>
+
+<h2>效果</h2>
+
+<p><img src="https://i.imgur.com/MPvP8uG.jpg" alt="开发状态" /></p>
+
+<p>以后出门只需要多带这个折叠键盘在口袋里，就可以保证随时随地进行开发工作了。适用场景：</p>
+
+<ul>
+<li>ssh连服务器开发</li>
+<li>emacs访问本地的个人笔记</li>
+<li>emacs开发各种程序</li>
+</ul>
+
+
+<p>遗留问题：</p>
+
+<ul>
+<li>屏幕还是小了一些，需要换大屏幕手机。</li>
+<li>termius + tmux + emacs下中文输入法很不方便，显示错位。</li>
+<li>必须要有台面，不能坐下就可以做事。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1026,59 +1127,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/career-build/">职业发展的框架</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2019-04-13T13:35:38+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2019</time>
-        
-         | <a href="/blog/career-build/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>首先存在环境。环境下面会有当前的最佳生存方式，叫做生态位。
-为了占据这个生态位，需要一整套的技巧和资源。
-获得这些技巧和资源，是职业build。
-职场发展就是找到生态位，准备职业build，然后切换当前的生态位到新的生态位。这种叫做转职。</p>
-
-<p>举例：转职路线：大学生到程序员，到资深程序员，到团队领导。</p>
-
-<p>大学生到程序员：转职任务：招聘
-预备条件：高校IT科班，足够的计算机背景知识，一定的编程经验。</p>
-
-<p>程序员到资深：一定的工作经验，能够负责一整套系统，没有转职任务。
-预备条件：能够熟练掌握工作需要的技术栈，完成工作。</p>
-
-<p>资深到团队领导：
-转职任务：在一定机缘下，能够带领几名程序员完成一个软件项目。
-预备条件：项目管理能力，人员管理激励能力。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1096,6 +1144,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/nas-hardware/">家用nas机器设计方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/china-developed/">中国必然成为发达国家</a>
       </li>
     
@@ -1109,10 +1161,6 @@
     
       <li class="post">
         <a href="/blog/zero-hot-water/">远端零热水方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/no-need-10g/">家庭网络没必要上万兆</a>
       </li>
     
   </ul>
