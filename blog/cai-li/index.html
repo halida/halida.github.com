@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>如何设计 - 网络寻租</title>
+  <title>彩礼制度有用吗 - 网络寻租</title>
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="我是一个很初级的程序员，由于工作性质（企业软件一个模块的维护和开发），
-与客户（企业内部使用该系统的员工）谈需求，设计，开发，导入，维护都是我一个人完成。
-需要说的是，需求都是很简单的，做的事情也没有太多的技术含量，无非是设计一个流程。 现在我想要自己真的做一个桌面应用，问题就来了。我不会设计。 &hellip;">
+  <meta name="description" content="很多人觉得彩礼是陋习，我们从实用的角度看，当初为什么会有彩礼？ 古代社会，结婚是女性成为男方家的成员和资产，后续和女方家无关，女方对女方父母不再有赡养责任，作为女方家族是净损失，需要彩礼补偿。 现代社会，结婚是组建小家庭，女方和男方结婚，创建小家庭，小家庭和男方女方家庭还是都会有联系和义务， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://halida.github.com/blog/how-to-design/">
+  <link rel="canonical" href="http://halida.github.com/blog/cai-li/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">如何设计</h1>
+      <h1 class="entry-title">彩礼制度有用吗</h1>
     
     
       <p class="meta">
@@ -99,7 +97,7 @@
   
 
 
-<time datetime="2009-03-04T22:08:26+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2009</time>
+<time datetime="2023-01-14T10:55:49+08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2023</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,54 +106,27 @@
   </header>
 
 
-<div class="entry-content"><p>我是一个很初级的程序员，由于工作性质（企业软件一个模块的维护和开发），
-与客户（企业内部使用该系统的员工）谈需求，设计，开发，导入，维护都是我一个人完成。
-需要说的是，需求都是很简单的，做的事情也没有太多的技术含量，无非是设计一个流程。</p>
+<div class="entry-content"><p>很多人觉得彩礼是陋习，我们从实用的角度看，当初为什么会有彩礼？</p>
 
-<p>现在我想要自己真的做一个桌面应用，问题就来了。我不会设计。</p>
+<p>古代社会，结婚是女性成为男方家的成员和资产，后续和女方家无关，女方对女方父母不再有赡养责任，作为女方家族是净损失，需要彩礼补偿。</p>
 
-<p>举个实例，我想要自己做一个GTD软件自己来用，名称为simpleGTD，
-想好了流程（就是GTD的流程了），然后画了几个小图就开工了。</p>
+<p>现代社会，结婚是组建小家庭，女方和男方结婚，创建小家庭，小家庭和男方女方家庭还是都会有联系和义务，彩礼是给女方父母，原理上就不合适了。</p>
 
-<p>然后自然，开发遇到了一系列问题。</p>
+<p>彩礼现在的用处：</p>
 
-<p>先说一下我的设计吧。</p>
+<ul>
+<li>传统习俗：走个形式，并没有古代的意义，陪嫁的时候会返还。</li>
+<li>作为对男方经济实力的验资，防止被骗。</li>
+<li>对男方不满意的借口，或者男方家高攀补偿。</li>
+<li>女方家有儿子，经济实力不够，需要彩礼资金帮助儿子结婚。</li>
+</ul>
 
-<p>使用语言为python，界面使用PyQt，数据持久化采用sqlite。</p>
 
-<p>思想也很简单，脑袋里面想到的东西都是事件，需要输入到程序里面。</p>
+<p>前面几个用处也不大，都有更好的方式去处理，最后一点才是最大的原因：</p>
 
-<p>然后程序按照优先级排一个序，我自己就按照优先级来做事。</p>
+<p>彩礼现在一般在落后地区还存在，因为落后地区男性经济实力不行，难以成家，所以只能通过彩礼的方式卖女儿解决，女儿利益是受损的。</p>
 
-<p>可以把一个事件删除，计划到某个时刻（到时会自动调到最优先的程度），还有就是拆分成小事件（父子关系）.</p>
-
-<p>我开发方式就是增量式开发，就是写一点看一点，开始就遇到了问题。</p>
-
-<p>原先设计时，打算用到QTreeWidget，用来显示复杂的组织关系，结果，按照文档写了一个类，用来显示sqlite资料，</p>
-
-<p>结果怎么调试都无法正确显示。于是只好修改设计，取消显示组织关系－－－知道了开发前要验证技术风险</p>
-
-<p>然后开始写数据结构，然后就是一大堆的SQL。。。。当然，一大堆的工作，一大堆的bug，</p>
-
-<p>完工变得遥遥无期。继续修改设计，不再使用sqlite,只用python自带的那个pickle。</p>
-
-<p>之后的工作就好过了许多，不过，还是有大量的时间花在了一边运行一边debug上面。</p>
-
-<p>我虽然没有统计，但是至少知道，大量的时间浪费在了调试上面。</p>
-
-<p>最后终于完工了，结果不很满意，但是至少能用。专案放在google code上面。如下：</p>
-
-<p><a href="http://code.google.com/p/smallgtd">http://code.google.com/p/smallgtd</a>/</p>
-
-<p><img src="http://lh5.ggpht.com/_os_zrveP8Ns/SU9BeZiEWUI/AAAAAAAAC4g/AunMpJk4_FY/temp.png" alt="image" /></p>
-
-<p>无论从什么角度上看，都不能说是一个成品，更别说和商业作品相比了，文档什么的更别说。</p>
-
-<p>为什么我不完善？我不知道别人怎么样，我自己的感觉就是，程序编出来后，我再也不想看代码了，有种恶心的感觉。</p>
-
-<p>编完后，我感觉到自己疲惫了，再也不想写程序了，或者说感到自己很无力和无能，无法写出东西出来。</p>
-
-<p>我看了不少书，程序语言和电脑知识上面，感觉自己虽然不是很精通，但是至少该懂的都懂。但是在程序设计和计划管理上面，感到自己万分无力，日常工作中，就算能够应用一些技巧，但是在整体开发上面，我感觉没有办法提高。我应该怎么样才能成为一个能够设计好程序的程序员？我不知道。</p>
+<p>为了家族整体更好地延续，这样做也是对的，不过权责对等，女儿自然没有了赡养义务，儿子拿到了彩礼，也要履行延续家族的义务。</p>
 </div>
 
 
@@ -178,7 +149,7 @@
   
 
 
-<time datetime="2009-03-04T22:08:26+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2009</time>
+<time datetime="2023-01-14T10:55:49+08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2023</time>
       
 
 
@@ -186,7 +157,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/how-to-design/" data-via="" data-counturl="http://halida.github.com/blog/how-to-design/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://halida.github.com/blog/cai-li/" data-via="" data-counturl="http://halida.github.com/blog/cai-li/" >Tweet</a>
   
   
   
@@ -195,10 +166,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/sphinx/" title="Previous Post: 用sphinx写文档">&laquo; 用sphinx写文档</a>
+        <a class="basic-alignment left" href="/blog/electronic-car/" title="Previous Post: 电动车优势劣势以及选择">&laquo; 电动车优势劣势以及选择</a>
       
-      
-        <a class="basic-alignment right" href="/blog/programming-language-as-language/" title="Next Post: 程序化语言">程序化语言 &raquo;</a>
       
     </p>
   </footer>
@@ -294,8 +263,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://halida.github.com/blog/how-to-design/';
-        var disqus_url = 'http://halida.github.com/blog/how-to-design/';
+        var disqus_identifier = 'http://halida.github.com/blog/cai-li/';
+        var disqus_url = 'http://halida.github.com/blog/cai-li/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -9,11 +9,7 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在电动车已经是大趋势了，未来会占据大半家用车市场，整理一下特点。 电动车优势： 电机性能：扭矩直接拉满，以及加减速平顺
-使用成本低：充电更便宜，减少很多发动机保养，减速回收动能
-减少了发动机体积：轴距更长，空间更大
-重心更稳：电池底部，拉低拉平重心
-智能科技：并不属于电动车本质的特性，需要区分开 &hellip;">
+  <meta name="description" content="很多人觉得彩礼是陋习，我们从实用的角度看，当初为什么会有彩礼？ 古代社会，结婚是女性成为男方家的成员和资产，后续和女方家无关，女方对女方父母不再有赡养责任，作为女方家族是净损失，需要彩礼补偿。 现代社会，结婚是组建小家庭，女方和男方结婚，创建小家庭，小家庭和男方女方家庭还是都会有联系和义务， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +78,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/cai-li/">彩礼制度有用吗</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-01-14T10:55:49+08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2023</time>
+        
+         | <a href="/blog/cai-li/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很多人觉得彩礼是陋习，我们从实用的角度看，当初为什么会有彩礼？</p>
+
+<p>古代社会，结婚是女性成为男方家的成员和资产，后续和女方家无关，女方对女方父母不再有赡养责任，作为女方家族是净损失，需要彩礼补偿。</p>
+
+<p>现代社会，结婚是组建小家庭，女方和男方结婚，创建小家庭，小家庭和男方女方家庭还是都会有联系和义务，彩礼是给女方父母，原理上就不合适了。</p>
+
+<p>彩礼现在的用处：</p>
+
+<ul>
+<li>传统习俗：走个形式，并没有古代的意义，陪嫁的时候会返还。</li>
+<li>作为对男方经济实力的验资，防止被骗。</li>
+<li>对男方不满意的借口，或者男方家高攀补偿。</li>
+<li>女方家有儿子，经济实力不够，需要彩礼资金帮助儿子结婚。</li>
+</ul>
+
+
+<p>前面几个用处也不大，都有更好的方式去处理，最后一点才是最大的原因：</p>
+
+<p>彩礼现在一般在落后地区还存在，因为落后地区男性经济实力不行，难以成家，所以只能通过彩礼的方式卖女儿解决，女儿利益是受损的。</p>
+
+<p>为了家族整体更好地延续，这样做也是对的，不过权责对等，女儿自然没有了赡养义务，儿子拿到了彩礼，也要履行延续家族的义务。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -735,71 +789,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/multi-room-music/">智能家居之全屋音乐方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2022-12-26T09:28:40+08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2022</time>
-        
-         | <a href="/blog/multi-room-music/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>目标：每个房间都有音箱，可以通过手机以及智能中控根据需要在每个房间播放音乐。
-可以同时播放同一首，也可以不同房间播放不同的音乐。</p>
-
-<p>选择协议：airplay2，支持多个音箱同时播放，并且有时序控制保持播放进度一致。
-可以用iphone手机控制播放什么音乐，同时linux也有插件可以输出到airplay。</p>
-
-<p>选用设备：如果有钱每个房间丢一个homepod，但是价格比较贵，我的方案是用便宜的电视盒子做主机，
-操作系统armbian，按照这里的教程编译安装<a href="https://sspai.com/post/74318">Shairport Sync</a>这种开源的airplay2实现。
-设备选择M401A电视盒子或者N1，usb声卡PCM2704，音箱找一个淘宝桌面音箱就可以。</p>
-
-<p>ubuntu接入airplay方法如下，然后就可以局域网内自动发现和手动选择输出设备了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>sudo apt-get install paprefs pulseaudio-module-raop
-</span><span class='line'>
-</span><span class='line'><span class="c1"># 处理pulseaudio问题</span>
-</span><span class='line'>sudo ln -s /usr/lib/pulse-13.99.1/ /usr/lib/pulse-13.99
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>价格：电视盒子72，usb声卡20，音箱158，控制通断的wifi开关插座20。</p>
-
-<p>实现的场景：
-&ndash; 想要听音乐的时候，用HA开启wifi开关，手机音乐软件播放音乐，选择airplay输出的音箱。
-&ndash; 未来还可以接入Home Assistant，armbian里面跑VLC telnet，HA控制播放声音提醒。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -815,6 +804,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/cai-li/">彩礼制度有用吗</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/electronic-car/">电动车优势劣势以及选择</a>
       </li>
     
@@ -828,10 +821,6 @@
     
       <li class="post">
         <a href="/blog/computer-eco/">消费级计算机生态位</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/kid-outside/">带娃户外方案</a>
       </li>
     
   </ul>
