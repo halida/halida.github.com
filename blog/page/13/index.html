@@ -9,7 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="There is a common myth in China: After programmer turns 30, he is too old to keep programming, need change direction, to management or other domains &hellip;">
+  <meta name="description" content="最近阅读ruby源码非常顺手，这里整理一下阅读心得。 首先，为什么要阅读源码？因为几点： 用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
+最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +79,109 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/how-to-read-ruby-source-code/">如何阅读ruby源码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-03T19:55:17+08:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/how-to-read-ruby-source-code/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_01_03.jpg"></p>
+
+<p>最近阅读ruby源码非常顺手，这里整理一下阅读心得。</p>
+
+<p>首先，为什么要阅读源码？因为几点：</p>
+
+<ol>
+<li><p>用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
+最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点，不需要浪费那么多的时间。</p></li>
+<li><p>熟悉实现也是一个学习的过程。在看源码的过程中，我对于ruby的使用，如何做架构，都有了更深刻的认识。
+写代码水平靠自己磨练，同时借鉴别人的代码也必不可少。很多知识和技巧自己悟出来就慢了，看别人的东西能够学到更多。</p></li>
+</ol>
+
+
+<p>然后是重点：如何阅读。</p>
+
+<p>读懂代码之前，我们要把项目的文档看一遍，知道如何使用它。
+使用方法是项目的接口，熟悉它们，我们就把“未知”限定在项目的源代码之内，
+对于理解源码有了坚实的基础。</p>
+
+<p>之后我们要熟悉源代码的文件树结构。好的项目的文件安排是模块化的，
+一个文件就是一个系统模块，ruby项目，一般是一个文件一个类。
+这样一个复杂项目，就被切分成一小块一小块人能够理解的部分了。</p>
+
+<p>在这里要停一下，回顾前面看到的文档，列出一些核心的入口，
+然后基于这些入口，对于项目的实现提出一些猜想，
+然后从这些入口出发，寻找对应的函数，一步步顺着方法调用，看对应的代码。</p>
+
+<p>举个实际的例子。
+我看sinatra源码的时候，关注了几个入口：<code>get/post</code>方法，如何被rack调用。
+我会列出猜想：get/post代码应该是记录这些block到一个内部的数据结构中，
+在代码里面，有针对rack做一个接口，调用的时候会去解析http请求，分发到对应的block里面。</p>
+
+<p>然后我开始用<code>find</code>和<code>grep</code>寻找<code>get</code>，遇到函数调用，就用同样的方法一路看过去。
+最后发现<code>get</code>方法实际上是给类创建了一个方法：<code>#{verb} #{path}</code>，然后绑定它。
+和我想的不太一样，并不是用一个数据结构。</p>
+
+<p>然后我又去看rack调用过程，最后弄清楚了如何分发请求，如何调用请求，以及在执行中快速跳出，
+并且学到了<a href="http://ruby-china.org/topics/16349">一个小技巧</a>。</p>
+
+<p>在阅读源码的过程中，我弄清楚了：调用栈，数据结构，类架构，以及验证了阅读代码前的各种猜想，
+通过了解里面一些看不懂的部分，学到了新的知识。整个顺藤摸瓜过程是非常愉快的。</p>
+
+<p>对了，最后还有一点，记得记笔记。研究过程不记录就白研究了，下次你是绝对想不起来的。
+我会把上面跟踪函数调用栈中遇到的核心区块记录下来，整理成一个执行过程文档，
+下次需要的时候直接看这个文档就可以了。这是一个示例（当然只有我自己才看得懂啦）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>call =&gt; dup.call! 复制自己一份。。
+</span><span class='line'>call!(env) =&gt;
+</span><span class='line'>@request  = Request.new(env)
+</span><span class='line'>@response = Response.new
+</span><span class='line'>invoke { dispatch! } =&gt; route!
+</span><span class='line'>route! =&gt;
+</span><span class='line'>base.routes 遍历
+</span><span class='line'>returned_pass_block = process_route(...) 
+</span><span class='line'>process_route 里面检查pattern是否匹配，返回对应的block</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1059,137 +1163,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/rails-customize-error-page/">Rails定制报错页面</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-20T10:58:00+08:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
-        
-         | <a href="/blog/rails-customize-error-page/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img src="/images/posts/2013_10_20_404.jpg"></p>
-
-<h2>需求</h2>
-
-<p>rails的默认报错处理，是返回<code>public/400.html</code>，<code>public/500.html</code>的内容。
-我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。</p>
-
-<p>我们一般希望能够定制：500服务器错误，400地址不存在。</p>
-
-<h2>解决方案</h2>
-
-<p>在你的<code>app/controllers/application_controller.rb</code>的<code>ApplicationController</code>里面用<code>rescue_from</code>捕捉他们，并且只在生产环境这样做：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
-</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">Exception</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">render_error</span> <span class="mi">500</span><span class="p">,</span> <span class="n">exception</span>
-</span><span class='line'>      <span class="no">ExceptionNotifier</span><span class="o">::</span><span class="no">Notifier</span><span class="o">.</span><span class="n">exception_notification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
-</span><span class='line'>      <span class="kp">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">UnknownController</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="n">exception</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>500报错需要能够通知管理员，上面的<code>exception_notification</code>是我利用<a href="https://github.com/smartinez87/exception_notification">exception_notification</a>gem2.6版本中发送报错信息邮件的功能来做到这件事。</p>
-
-<p>然后加上<code>render_error</code>方法，用来渲染报错页面，你可以在这里做定制渲染：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="n">template</span><span class="p">:</span> <span class="s2">&quot;errors/error_</span><span class="si">#{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="s1">&#39;layouts/application&#39;</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
-</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">render</span> <span class="n">nothing</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>还是有一个问题，无法捕捉<code>ActionController::RoutingError</code>和<code>AbstractController::ActionNotFound</code>，需要在<code>config/route.rb</code>里面最后捕捉：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
-</span><span class='line'>  <span class="n">match</span> <span class="s1">&#39;*not_found&#39;</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="s1">&#39;errors#error_404&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>加上<code>errors_controller.rb</code>，里面：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ErrorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">error_404</span>
-</span><span class='line'>    <span class="vi">@not_found_path</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:not_found</span><span class="o">]</span>
-</span><span class='line'>    <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="kp">nil</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>资源引用：</p>
-
-<ul>
-<li><a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages">http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages</a></li>
-<li><a href="http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404">http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/14/">&larr; Older</a>
@@ -1207,6 +1180,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/price-depends-on-demand-and-supply/">价格由供需决定</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/cai-li/">彩礼制度有用吗</a>
       </li>
     
@@ -1220,10 +1197,6 @@
     
       <li class="post">
         <a href="/blog/china-developed/">中国必然成为发达国家</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/computer-eco/">消费级计算机生态位</a>
       </li>
     
   </ul>

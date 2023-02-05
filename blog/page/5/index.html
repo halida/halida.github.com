@@ -9,8 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="现在各个网站，工具都采用密码方式登录，我觉得很不方便，同时安全性也不能得到保障，
-这里我提出一种更安全更易用的权限验证方式，彻底解决这些问题。 首先我们看密码验证的缺点，从易用性和安全性来考虑。 密码的长度取决于人类记忆力。如果是随机密码，人类很难记住，最长大概8位，而现在云计算情况下， &hellip;">
+  <meta name="description" content="我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。 那么解决办法就是： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,140 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/encrypted-git-repo/">加密git远端版本库</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-06-08T10:39:36+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2017</time>
+        
+         | <a href="/blog/encrypted-git-repo/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。</p>
+
+<p>那么解决办法就是：本地git版本库是解密的，在上传过程中内容全部加密，密钥保存在本地，同时密钥可以分享给其他开发者。</p>
+
+<p>考虑了几个解决方案：</p>
+
+<p><a href="https://github.com/AGWA/git-crypt">git-crypt</a>：可以加密部分文件，原理是加上了加密的fiter和diff，
+但是官方说只适合加密部分文件，而不适合全版本库加密。部分文件加密很容易造成信息泄漏，一定要全版本库加密才适合。</p>
+
+<p>串联sshfs和远程服务器加密文件系统encfs：首先用sshfs加载远端文件系统，然后用encfs创建加密文件系统。
+我估计无法解决多人同时push情况下的竞争条件，并且encfs有安全漏洞，使用上push/pull之前需要加载两层文件系统，不是很方便。</p>
+
+<p><a href="https://github.com/spwhitton/git-remote-gcrypt">git-remote-gcrypt</a>用gpg进行远端加密。
+比较符合我预期的模式，但是用gpg不是特别方便协作。但是别的方法走不通，只有这个方法可用。</p>
+
+<h2>使用方法</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 安装git-remote-gcrypt和gnupg</span>
+</span><span class='line'>sudo apt-get install git-remote-gcrypt gnupg
+</span><span class='line'>
+</span><span class='line'><span class="c"># 创建一个gpg的key，需要设置用户名，邮箱，描述等，不要设置过期时间</span>
+</span><span class='line'>gpg --gen-key
+</span><span class='line'>
+</span><span class='line'><span class="c"># 记录一下生成的key的ID，比如2048R/A0F0B575里面的A0F0B575，2048代表加密轮数，越多越不容易破解</span>
+</span><span class='line'>gpg --list-keys
+</span><span class='line'>
+</span><span class='line'><span class="c"># 生成一个测试版本库</span>
+</span><span class='line'>mkdir test1 <span class="o">&amp;&amp;</span> <span class="nb">cd </span>test1
+</span><span class='line'>git init .
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;test&quot;</span> &gt; a.txt
+</span><span class='line'>git add . <span class="o">&amp;&amp;</span> git ci -m <span class="s2">&quot;update&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 在你的github上面创建一个project，比如：https://github.com/halida/ttt</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 配置远端加密版本库</span>
+</span><span class='line'>git remote add cryptremote gcrypt::git@github.com:halida/ttt.git
+</span><span class='line'><span class="c"># 最好指定用哪个key加密，这样可以共享这个key给其他人用</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span><span class='line'><span class="c"># push到远端</span>
+</span><span class='line'>git push cryptremote master
+</span><span class='line'><span class="c"># 访问远端版本库，看看文件内容，和commit里面的信息，是不是都是加密的？</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如何分享给其他人</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 导出key</span>
+</span><span class='line'>gpg --export-secret-key -a <span class="s2">&quot;share@share.com&quot;</span> &gt; secretkey.asc
+</span><span class='line'><span class="c"># 把secretkey.asc分享给其他人，拷贝的时候记得先压缩加密一下再发送，更安全</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 别人电脑里面导入</span>
+</span><span class='line'>gpg --import secretkey.asc
+</span><span class='line'><span class="c"># 下载代码</span>
+</span><span class='line'>git clone gcrypt::git@github.com:halida/ttt.git test2
+</span><span class='line'><span class="c"># 也要指定一下用什么key加密</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用这种方法，可以用git管理一些私密又需要协作的信息（比如服务器配置），
+也可以把github当作私密的版本控制系统来用（commit的消息还是明文的）。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1027,78 +1162,6 @@ Matz本人也说，下一阶段会进行这种系统的设计。
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/ansible/">Ansible介绍和服务器管理思考</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
-        
-         | <a href="/blog/ansible/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
-这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。</p>
-
-<p>我觉得好的服务器管理方式应该是这样的：</p>
-
-<ul>
-<li>能够定义服务器的功能，通过写程序或者配置的方式说明服务器到底是怎么样的</li>
-<li>通过这个定义，自动化地配置服务器</li>
-<li>可以手动或者自动修改定义，更新整体的架构</li>
-<li>整个过程不要引入太多的复杂度，更好地反映服务器管理的本质</li>
-</ul>
-
-
-<p>以前我学习了一段时间的chef，整体架构偏复杂了。因为是server/agent架构，服务器上面要跑一个chef的监控程序，
-这样对于大规模的服务器来说是性能更好，但是对于大多数小公司来说，没有agent的模式就足够用了。执行速度上也偏慢。</p>
-
-<p>现在重新学习了解了ansible，觉得在复杂度和易用性上面平衡得很好。主要有几点：</p>
-
-<ul>
-<li>和host服务器的通讯采用ssh的方式，host不需要安装额外的软件，除了python-simplejson</li>
-<li>module插件是传输一个python文件到host执行，参数命令行传入，简洁快速</li>
-<li>整体架构上面尽量减少了复杂度，概念上只有playbook &ndash; role &ndash; module，我觉得足够满足抽象了</li>
-</ul>
-
-
-<p>用ansible这种服务器配置管理工具，我可以做到以下事情：</p>
-
-<ul>
-<li>设置翻墙/下载服务器，需要的时候可以快速创建</li>
-<li>定义公司的服务器架构，进行归一化配置，自动更新</li>
-<li>遇到性能瓶颈或者需要更新服务器的时候，快速创建应用服务器</li>
-</ul>
-
-
-<p>以后小规模的服务器管理，就变得很简单了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1116,6 +1179,10 @@ Matz本人也说，下一阶段会进行这种系统的设计。
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/price-depends-on-demand-and-supply/">价格由供需决定</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/cai-li/">彩礼制度有用吗</a>
       </li>
     
@@ -1129,10 +1196,6 @@ Matz本人也说，下一阶段会进行这种系统的设计。
     
       <li class="post">
         <a href="/blog/china-developed/">中国必然成为发达国家</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/computer-eco/">消费级计算机生态位</a>
       </li>
     
   </ul>
