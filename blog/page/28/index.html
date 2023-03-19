@@ -9,9 +9,19 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="今天看到帖子:
-http://www.douban.com/note/97807441/
-, 带来不少争议, 一句两句说不清楚, 特此专门发文阐述. 全文转载: 今天跟某留学海外的经济学高材博士生简短对话，是从去沃尔玛买东西是不是不道德开始的（其实我也是去沃尔玛的，所以完全没有任何道德优越感 &hellip;">
+  <meta name="description" content="最强大的GUI库 &mdash; PyQt4 Authors ~ 机械唯物主义 &lt;[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\&gt; 一个简单的实例 计算器
+10分钟 代码 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +90,291 @@ http://www.douban.com/note/97807441/
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pyqt-intro/">Pyqt介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-10T08:59:03+08:00" pubdate data-updated="true">Nov 10<span>th</span>, 2010</time>
+        
+         | <a href="/blog/pyqt-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>最强大的GUI库 &mdash; PyQt4</h2>
+
+<p>Authors
+  ~ 机械唯物主义</p>
+
+<pre><code>&lt;[linjunhalida@gmai.com](mailto:linjunhalida@gmai.com)\&gt;
+</code></pre>
+
+<h2>一个简单的实例</h2>
+
+<ul>
+<li>计算器</li>
+<li>10分钟</li>
+</ul>
+
+
+<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnrsk8C64I/AAAAAAAADMc/TMTjkv1is7k/s800/caculator_ui.png" alt="image" /></p>
+
+<h2>代码</h2>
+
+<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnooDH5dtI/AAAAAAAADLo/KK7FwKekTRo/s800/caculator.JPG" alt="image" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="c">#-*- coding:utf-8 -*-</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Caculator</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">Caculator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="c">#widgets</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+</span><span class='line'>        <span class="c">#layouts</span>
+</span><span class='line'>        <span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>        <span class="c">#events</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">caculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">data</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+</span><span class='line'>        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span> <span class="k">return</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</span><span class='line'>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">result</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+</span><span class='line'>    <span class="n">Caculator</span><span class="p">()</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>类层级</h2>
+
+<pre><code>QObject
+   |----- QWidget
+             |----- QDialog
+             |----- QLineEdit
+             |----- QListWidget
+</code></pre>
+
+<h2>layout</h2>
+
+<p><img src="http://lh3.ggpht.com/_os_zrveP8Ns/TNnoon5j6aI/AAAAAAAADLw/ITJ9fVU9YtE/s800/layout.JPG" alt="image" /></p>
+
+<h2>layout</h2>
+
+<ul>
+<li><p>层级:</p>
+
+<pre><code>QDialog (QVBoxLayout)
+   |----- QLineEdit
+   |----- QListWidget
+</code></pre></li>
+<li><p>代码:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">l</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lwResult</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Signal and Slot in Qt</h2>
+
+<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoo68TzKI/AAAAAAAADL4/jPjbRhwQEI8/s800/signal_and_slot.JPG" alt="image" /></p>
+
+<h2>Qt和PyQt 事件机制区别</h2>
+
+<ul>
+<li>Qt:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="k">this</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">(</span><span class="n">leInput</span><span class="p">,</span> <span class="n">SINGAL</span><span class="p">(</span><span class="n">returnPressed</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">caculate</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>PyQt:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="bp">self</span><span class="o">.</span><span class="n">leInput</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caculate</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>一个复杂的实例: 扫雷</h2>
+
+<ul>
+<li>花费时间: 2个晚上, 基础:2.5小时, 一点点提升:1小时</li>
+<li>扫雷下载: <a href="https://bitbucket.org/linjunhalida/pyqtmine/">pyqtmine</a></li>
+</ul>
+
+
+<p><img src="http://lh6.ggpht.com/_os_zrveP8Ns/TNnoooQuryI/AAAAAAAADL0/MLwyt5qromk/s800/pyqtmine.JPG" alt="image" /></p>
+
+<h2>UI designer</h2>
+
+<p><img src="http://lh4.ggpht.com/_os_zrveP8Ns/TNnoodk5clI/AAAAAAAADLs/cbHdyQCMco8/s800/designer.JPG" alt="image" /></p>
+
+<h2>UI with Code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">form</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="n">uic</span><span class="o">.</span><span class="n">loadUiType</span><span class="p">(</span><span class="s">&quot;score.ui&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">ScoreDlg</span><span class="p">(</span><span class="n">QDialog</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="nb">super</span><span class="p">(</span><span class="n">ScoreDlg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Event</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
+</span><span class='line'>        <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">p</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mx</span><span class="o">+</span><span class="n">i</span><span class="o">*</span><span class="n">sx</span><span class="p">,</span> <span class="n">my</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">sy</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>其他强大特性</h2>
+
+<ul>
+<li>足够多和好用的控件/自定控件/整合到designer中</li>
+<li>webkit/script支持</li>
+<li>强大/方便/快速的绘图控件</li>
+<li>富文本/文本解析</li>
+<li>多国语言支持</li>
+<li>其他第三方控件支持: pyqwt</li>
+</ul>
+
+
+<h2>发布</h2>
+
+<p><a href="http://www.pyinstaller.org/">pyinstaller</a>!</p>
+
+<h2>资源</h2>
+
+<ul>
+<li><p>PyQt安装
+  ~ &ndash;   ubuntu:</p>
+
+<pre><code>        sudo apt-get install pyqt4-dev-tools
+
+-   windows可以下载一个python包:
+    [pythonxy](http://www.pythonxy.com)
+</code></pre></li>
+<li><p>学习材料
+  ~ &ndash;   <a href="http://qt.nokia.com/products/">qt</a> 以及
+        <a href="http://www.riverbankcomputing.co.uk/software/pyqt/intro">pyqt</a>
+        官方网站</p>
+
+<pre><code>-   书籍请google: pyqt book or qt book
+
+-   中文资料: [qteverywhere](http://www.qteverywhere.com/)
+</code></pre></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1570,111 +1865,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/C-RAII/">C语言如何实现RAII</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-10-29T14:25:54+08:00" pubdate data-updated="true">Oct 29<span>th</span>, 2010</time>
-        
-         | <a href="/blog/C-RAII/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>资源的获取与释放，C语言里面是要让程序员考虑的，比如</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">init</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在C++里面，有raii这样很方便的特性，当离开作用域的时候，自动释放资源，如</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">void</span> <span class="n">work</span><span class="p">(){</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">do_sth</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>我在想，如何让C支持这样的特性？于是就有了下面这个宏</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#define using(b) \</span>
-</span><span class='line'><span class="cp">for(int i=0; i&lt;2; i++){\</span>
-</span><span class='line'><span class="cp">if (i==0) \</span>
-</span><span class='line'><span class="cp">  { init(b); } \</span>
-</span><span class='line'><span class="cp">else \</span>
-</span><span class='line'><span class="cp">  { if (i==1) \</span>
-</span><span class='line'><span class="cp">    { del(b); \</span>
-</span><span class='line'><span class="cp">      break; \</span>
-</span><span class='line'><span class="cp">    }; \</span>
-</span><span class='line'><span class="cp">  }; </span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">work</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">Buffer</span> <span class="n">b</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">using</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;working..</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">};</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>edit: 被批了，C就按照C的方式干活，RAII交给C++.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/29/">&larr; Older</a>
@@ -1692,6 +1882,10 @@ lives; otherwise, the behavior is that of a queued connection.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/price-depends-on-demand-and-supply/">价格由供需决定</a>
       </li>
     
@@ -1705,10 +1899,6 @@ lives; otherwise, the behavior is that of a queued connection.</p>
     
       <li class="post">
         <a href="/blog/nas-hardware/">家用NAS机器设计方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/china-developed/">中国必然成为发达国家</a>
       </li>
     
   </ul>

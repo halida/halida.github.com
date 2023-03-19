@@ -9,7 +9,9 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="商品的价格很多时候是反直觉的，便宜或者贵，并不是主要由科技含量，成本等因素决定，而是由于供需。 需求大，供给小的商品价格高，需求小，供给大的商品价格低。 同样的一件商品，放在不同的地方，价格差异巨大。 成本卡了下限，而成本在商品的不同周期区别巨大，投入阶段成本高，过了投入阶段， &hellip;">
+  <meta name="description" content="车停在楼下，可以作为家里空间的拓展，相当于多出来一个书房。
+晚上回家之后，可以躲到车里面，和家里闹腾的小孩隔绝开来，专心工作和学习。 需要解决的问题： 私密：晚上开灯之后，车外可以清晰地看到车内人的一举一动，需要购买隐私帘隔离开来。
+电力：如果要用笔记本，需要有220v的电力， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +80,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/work-in-car/">车作为第二空间</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2023-03-19T21:58:43+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2023</time>
+        
+         | <a href="/blog/work-in-car/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>车停在楼下，可以作为家里空间的拓展，相当于多出来一个书房。
+晚上回家之后，可以躲到车里面，和家里闹腾的小孩隔绝开来，专心工作和学习。</p>
+
+<p>需要解决的问题：</p>
+
+<ul>
+<li>私密：晚上开灯之后，车外可以清晰地看到车内人的一举一动，需要购买隐私帘隔离开来。</li>
+<li>电力：如果要用笔记本，需要有220v的电力，可以购买车载12v转220v的转换器，车载12v的功率至少110w，完全够笔记本使用。</li>
+<li>灯光：用车上现有的灯会比较暗，需要另外拿一个台灯，或者简单一些的灯座挂在顶上。</li>
+<li>网络：手机流量，如果直线可看到家里，可以买一对直射无线网桥，连到家里网络。</li>
+<li>舒适：坐在副驾驶位上，可以调整到一个舒适的位置，座位放倒也可以小睡一下。</li>
+<li>小便：用喝完的矿泉水瓶子即可。</li>
+<li>静谧：隔音耳塞，车内也可以用手机连接车载carplay听音乐。</li>
+<li>透气：车窗开一个小缝即可，如果下雨，打一把或者两把伞挡住，如果有蚊虫，购买套在窗户上的防蚊帘。</li>
+<li>温度：如果天气热，电车可以开空调，油车怠速开空调又费油又不安全，就没有办法了。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -681,78 +737,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/pc-laptop-cowork/">笔记本结合台式机开发方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2022-12-30T10:05:10+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2022</time>
-        
-         | <a href="/blog/pc-laptop-cowork/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>作为程序员，需要移动工作，同时开发环境也比较复杂，便携的笔记本性能不够，就算是再好的笔记本也会有功耗墙来阻止性能的发挥。</p>
-
-<p>我的方案是：便携笔记本电脑结合强力台式机进行开发。方法是这样的：</p>
-
-<p>编辑代码需要快速反应，所以编辑代码还是要在笔记本里面，修改自动推到台式机上。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>lsyncd -nodaemon -insist -delay <span class="m">0</span> -rsyncssh user/workspace/project/ pc user/workspace/project/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>台式机有代码和开发环境，跑代码在后台tmux里面，如果不用了就休眠 <code>sudo systemctl hibernate</code> 需要使用的时候就用wakeonlan唤醒，ssh登录上去进行操作。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>wakeonlan MAC<span class="p">;</span> <span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>笔记本转发台式机的开发环境网站端口到本地，循环监控保证断点续连。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="k">while</span> <span class="o">[</span> True <span class="o">]</span> <span class="p">;</span> <span class="k">do</span> ssh -N -L localhost:3000:localhost:3000 pc <span class="p">;</span> sleep <span class="m">1</span> <span class="p">;</span> <span class="k">done</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果是在外面，需要想办法连回家，我的实现方式是家里面有一台24小时开机的服务器，跑wireguard，路由器有外网ip和ddns，转发wireguard端口，
-这样我在外面就可以通过ddns的地址连到wireguard端口，进入家庭内网了。</p>
-
-<p>其它考虑：</p>
-
-<ul>
-<li>跑通之后，就可以只用轻量级笔记本了，但是轻量级笔记本还是需要使用网页，看视频，开IDE，性能也不能太差。</li>
-<li>有的时候不需要使用台式机的时候会忘记休眠，可以写一个脚本断开一段时间后自动休眠。</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -768,6 +752,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/price-depends-on-demand-and-supply/">价格由供需决定</a>
       </li>
     
@@ -781,10 +769,6 @@
     
       <li class="post">
         <a href="/blog/nas-hardware/">家用NAS机器设计方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/china-developed/">中国必然成为发达国家</a>
       </li>
     
   </ul>

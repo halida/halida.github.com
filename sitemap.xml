@@ -1279,8 +1279,12 @@
         <lastmod>2023-02-05T10:58:09+08:00</lastmod>
     </url>
     <url>
+        <loc>http://halida.github.com/blog/work-in-car/</loc>
+        <lastmod>2023-03-19T22:00:41+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://halida.github.com/blog/archives/</loc>
-        <lastmod>2023-02-05T10:58:09+08:00</lastmod>
+        <lastmod>2023-03-19T22:00:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://halida.github.com/about/</loc>
@@ -1288,6 +1292,6 @@
     </url>
     <url>
         <loc>http://halida.github.com/</loc>
-        <lastmod>2023-02-05T10:58:09+08:00</lastmod>
+        <lastmod>2023-03-19T22:00:41+08:00</lastmod>
     </url>
 </urlset>
