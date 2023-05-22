@@ -9,9 +9,10 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="回头看去年的年度计划，几个都没有完成。
-但是每年的总结还是要做的，回顾过去展望未来。 去年 作为最基础的：坚持健康和学习都没有做下去，投入的时间和次数太少了。 年初去重庆考察踏空，但是阅读水库论坛已经改变了我的工作重心。
-现阶段对于我来说，最重要的是在房产上面投资有足够的仓位。 &hellip;">
+  <meta name="description" content="去年的年度计划 去年 工作上：公司几个人离职，接手和稳固了现有的应用和服务。
+接近年底进行新项目的开发，老板满意度还可以。
+因为精力不在工作上，公司下一阶段的主要项目没有参与。 投资：深圳一套，重庆两套，从面积上算是完成了今年的任务，但是每个项目都不是很满意，各种磕磕碰碰，
+遗留了一些问题， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +81,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2018-summary/">2018年度总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-01-06T10:41:17-06:00" pubdate data-updated="true">Jan 6<span>th</span>, 2019</time>
+        
+         | <a href="/blog/2018-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://blog.linjunhalida.com/blog/2017-summary/">去年的年度计划</a></p>
+
+<h2>去年</h2>
+
+<p>工作上：公司几个人离职，接手和稳固了现有的应用和服务。
+接近年底进行新项目的开发，老板满意度还可以。
+因为精力不在工作上，公司下一阶段的主要项目没有参与。</p>
+
+<p>投资：深圳一套，重庆两套，从面积上算是完成了今年的任务，但是每个项目都不是很满意，各种磕磕碰碰，
+遗留了一些问题，不方便后续加仓。</p>
+
+<p>因为投资房产，心态有大的波动，学习和健康都没有任何进展，带娃也半放弃状态。职业事业上也没有什么进步。
+总体来说打个及格分吧。</p>
+
+<h2>下一年</h2>
+
+<p>继续坚持房产2N，争取健康事业带娃都走上正轨。其它没有太多的期待。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -766,105 +821,6 @@ RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-25
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/server-architecture-configuration-management/">如何一个人管理一堆服务器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2017-07-08T19:45:17+08:00" pubdate data-updated="true">Jul 8<span>th</span>, 2017</time>
-        
-         | <a href="/blog/server-architecture-configuration-management/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在有一些服务器自动化配置工具，比如ansible，chef，puppet等，
-利用它们，可以实现我的一个想法：用配置文件定义服务器架构，从而实现一个人管理好一堆服务器。</p>
-
-<p>比如用ansible，我们可以用一个YAML文件申明一台服务器上面有什么：安装了什么应用，存在什么配置文件，跑了什么服务。
-然后用命令行工具，比如ansible-playbook，就可以构建出来这样的服务器。</p>
-
-<p>这样操作的优点：</p>
-
-<ul>
-<li>可视化：原先服务器手工构建，其他人，甚至构建者自己都会不清楚服务器的状况。现在有了配置文件，大家就可以知道服务器上面有什么，是如何配置的。</li>
-<li>自动化：可以一条命令构建服务器，修改配置文件之后可以批量改动影响到的服务器，增加带有同样应用的服务器也非常简单，只要拷贝配置即可。如何搭建应用的知识可以复用。</li>
-<li>版本控制架构变更：可以用git版本库管理服务器配置文件，我们可以记录每次服务器架构的变更了。</li>
-</ul>
-
-
-<p>具体操作：针对一组服务器架构，比如一个Rails应用以及附属的各个服务器，
-可以创建一个git版本库记录所有的ansible playbook，
-然后把敏感的配置文件，放到另外一个私密git版本库里面，
-<a href="http://blog.linjunhalida.com/blog/encrypted-git-repo/">加密存储</a>，保障安全性。</p>
-
-<p>我搭建了一个演示用例，包括：</p>
-
-<ul>
-<li><a href="https://github.com/halida/haterslist">一个Rails应用</a></li>
-<li><a href="https://github.com/halida/haterslist_ansible">ansible配置</a></li>
-<li><a href="https://github.com/halida/haterslist_conf">私密配置</a>（仅限于演示）</li>
-</ul>
-
-
-<p>里面包含几台服务器：</p>
-
-<ul>
-<li><a href="https://github.com/halida/haterslist_ansible/blob/master/playbooks/app.yml">app.yml</a>
-搭建Rails服务器，包括mysql数据库，nginx，systemd自动启动和监控脚本。</li>
-<li><a href="https://github.com/halida/haterslist_ansible/blob/master/playbooks/backup.yml">backup.yml</a>
-自动备份mysql数据库</li>
-<li><a href="https://github.com/halida/haterslist_ansible/blob/master/playbooks/zabbix.yml">zabbix.yml</a>
-对应的监控服务器（未完工）</li>
-</ul>
-
-
-<p>私密配置版本库里面存放了所有的配置文件，构建一些应用需要的用户名和密码，一些初始化数据等。
-在playbook里面会去读取这些配置文件，或者拷贝这些文件到服务器上面去。</p>
-
-<p>管理Rails应用还需要一些其他的功能，限于时间，我就没有实现了，包括：</p>
-
-<ul>
-<li>jenkins 自动化测试</li>
-<li>sandbox，staging环境</li>
-<li>mysql多主从架构</li>
-<li>多app负载均衡</li>
-</ul>
-
-
-<p>综上所述，一个复杂的多服务器应用架构，可以用上面的几个版本库定义出来，并且可以根据需要动态进行修改。
-这种配置方式适用于几十台机器之内的半静态架构，并且可以多人同时管理。</p>
-
-<p>更进一步，如果利用aws或者digitalocean的api，服务器创建也可以采用配置文件定义。
-不过我觉得使用起来并不是很方便，就没有这样做了。</p>
-
-<p>如果机器数量多，或者需要动态伸缩，配置文件可能就不太适合了，可以用ansible-tower这种在线配置管理工具。
-不过我觉得大多数的公司都不会达到这样的级别，因此配置文件就够用了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -882,6 +838,10 @@ RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-25
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/work-in-car/">车作为第二空间</a>
       </li>
     
@@ -895,10 +855,6 @@ RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-25
     
       <li class="post">
         <a href="/blog/electronic-car/">电动车优势劣势以及选择</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/nas-hardware/">家用NAS机器设计方案</a>
       </li>
     
   </ul>

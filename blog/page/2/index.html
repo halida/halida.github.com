@@ -9,8 +9,8 @@
   <meta name="author" content="机械唯物主义">
 
   
-  <meta name="description" content="作为程序员，需要移动工作，同时开发环境也比较复杂，便携的笔记本性能不够，就算是再好的笔记本也会有功耗墙来阻止性能的发挥。 我的方案是：便携笔记本电脑结合强力台式机进行开发。方法是这样的： 编辑代码需要快速反应，所以编辑代码还是要在笔记本里面，修改自动推到台式机上。 1
-lsyncd - &hellip;">
+  <meta name="description" content="现在家庭网络普遍使用的是千兆，是否有必要升级呢？ 首先看需求。可能带宽不够的情况： 大文件拷贝？只是少数情况，稍微多等一下就好。
+远程游戏和高清视频？4K屏幕，60hz刷新率,需要带宽11.4Gbps，10G可能都不够，但是视频传输可以压缩，80MB/s应该够了。 然后如果需要改造升级，需要考虑 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,70 @@ lsyncd - &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/no-need-10g/">家庭网络没必要上万兆</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2022-12-31T11:17:45+08:00" pubdate data-updated="true">Dec 31<span>st</span>, 2022</time>
+        
+         | <a href="/blog/no-need-10g/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在家庭网络普遍使用的是千兆，是否有必要升级呢？</p>
+
+<p>首先看需求。可能带宽不够的情况：</p>
+
+<ul>
+<li>大文件拷贝？只是少数情况，稍微多等一下就好。</li>
+<li>远程游戏和高清视频？4K屏幕，60hz刷新率,需要带宽11.4Gbps，10G可能都不够，但是视频传输可以压缩，80MB/s应该够了。</li>
+</ul>
+
+
+<p>然后如果需要改造升级，需要考虑：</p>
+
+<ul>
+<li>速度卡在瓶颈，硬盘瓶颈200MB/s就很多了，换用SSD或者NVME提升明显。</li>
+<li>更换设备要全部换，路由器，双端的网卡，万兆的商用退役设备很便宜，光口短距离也可以用电缆直连，不需要光电转换模块，如果想买新的设备，2.5G的TP-Link价格也下来了，还有便宜的2.5G网卡。</li>
+<li>万兆的设备功耗更大，也需要考虑进来。</li>
+<li>如果需要提升延迟，那么最大的提升就是无线换有线，升级速率提升不大。</li>
+</ul>
+
+
+<p>所以我考虑的方案：</p>
+
+<ul>
+<li>如果没有出现性能瓶颈，不需要升级，需求还不够强烈。</li>
+<li>如果要升级，少数需要高速的网络单独买2.5G交换机加上2.5G网卡，或者万兆的交换机，单独组一个高速子网就好。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -924,58 +988,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/laptop-input/">膝上键盘鼠标方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2021-02-07T09:50:36+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
-        
-         | <a href="/blog/laptop-input/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我现在的工作环境并没有桌子，支撑电脑的是落地机械臂<a href="https://kesrer.tmall.com">科思睿</a>，
-不选择桌子的原因是用机械臂更灵活，可以根据需要随意移动位置，调整高度。
-但是机械臂只能支撑电脑，不能很好地支撑键盘鼠标，所以我考虑一些其他的解决方案。</p>
-
-<p>膝上桌方案：买一个可以放在腿上的平面，放鼠标键盘，鼠标放在键盘下方（空格键下），选择薄鼠标，手不会碰到。
-但是鼠标本身会滑动，并不是很方便。
-主要的问题变成了如何选择一个好的鼠标键盘整合方案，因为腿上面积太小，鼠标的体验不是很好。</p>
-
-<p>笔记本触摸板键盘：使用上和笔记本体验一样。但是市场上没有看到什么触摸板和键盘的一体解决方案，可供选择的太少了。</p>
-
-<p>Thinkpad小红点键盘方案：比如<a href="https://item.jd.com/10021174175484.html">这个</a>，小红点和键盘整合在一起，不需要动很大范围就可以控制鼠标，熟练了之后体验差不了鼠标太多。</p>
-
-<p>小红点键盘的主要缺点就是贵，官方有线的200，无线的500多，并且新的版本键盘体验没有旧的好，联想官方也不怎么继续开发了。我后来选择了一个第三方改的<a href="https://jiushuma.taobao.com/">版本</a>，把笔记本键盘变成USB的方式。本来无线键盘体验更好，考虑到续航和价格，暂时不考虑了。</p>
-
-<p>现在使用了好几个月，体验感觉很好，手腕不需要移动就可以随时切换鼠标和键盘，我觉得值得推荐。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -993,6 +1005,10 @@ ssh协议是安全的，不用担心暴露出去。</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/work-in-car/">车作为第二空间</a>
       </li>
     
@@ -1006,10 +1022,6 @@ ssh协议是安全的，不用担心暴露出去。</p>
     
       <li class="post">
         <a href="/blog/electronic-car/">电动车优势劣势以及选择</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/nas-hardware/">家用NAS机器设计方案</a>
       </li>
     
   </ul>
