@@ -1,0 +1,81 @@
+---
+layout: post
+title: "低成本IPKVM控制多台主机"
+date: 2024-07-07 22:48:21 +0800
+comments: true
+categories:
+---
+
+目标：用便宜的价格，网络kvm控制多台主机
+
+解决方案：
+
+- pikvm安装在便宜的arm主机，比如斐讯N1，带有USB otg用于模拟键盘鼠标
+- 主机通过USB转TTL控制kvm切换器hk4401，用于切换多台主机，节省成本
+
+## 准备设备
+
+- 闲鱼购买N1盒子，80左右
+- 视频采集卡，注意看一下[是否兼容](https://docs.pikvm.org/v2/#required-parts)，我买的是onten US323，58元
+- USB公对公线，需要割掉电源线VCC，只留数据线，用于主机USB otg模拟键盘鼠标，5元
+- [hk4401](https://docs.pikvm.org/xh_hk4401/) kvm1对4切换器，USB TTL协议控制切换，淘宝购买，122元
+- USB转TTL串口线，要买FTDI正品芯片的，不然通信出问题，买USB转杜邦线版本，接口Vcc5v，Gnd，TX，RX，以及杜邦线转USB，这样测试的时候互换TX RX，确保接对。价格30+5元
+- 不算hdmi线，一起成本 80+58+5+122+30+5=300，可以控制1-4台机器
+
+接线方式如图
+
+```
+N1 -usb- 公对公 -usb- PC
+   -usb- 采集卡 -hdmi- PC
+```
+
+加上kvm切换器
+
+```
+N1 -usb- 公对公 -usb- hk4401
+   -usb- 采集卡 -hdmi- hk4401
+   -usb- TTL线 -usb控制口- hk4401
+
+hk4401 -usb- PC1
+hk4401 -hdmi- PC1
+
+hk4401 -usb- PC2
+hk4401 -hdmi- PC2
+```
+
+## 安装系统
+
+- 按照[视频](https://www.bilibili.com/video/BV1h84y1o7Zp/)的方式安装
+- 下载操作系统版本: Armbian_24.5.0_amlogic_s905d_jammy_6.1.87_server_2024.04.25.img.gz
+- [设置设备](https://blog.heysh.xyz/2023/05/20/ipkvm_4_poor_man/)支持otg
+- 用[fruity-pikvm](https://github.com/jacobbar/fruity-pikvm)安装pikvm
+- 先直接用N1连PC，看看是否可以正常监控屏幕，以及成功虚拟鼠标键盘
+
+## kvm切换器配置
+
+- 测试hk4401自带的USB控制器正常切换4个口（设备上灯变化）
+- FTDI FT232线，接口：VCC5v, Gnd，TX，RX，和杜邦线转USB线连起来，连上hk4401控制口
+- 不需要按照文档里面的配置反转，直接就可以收发
+- 设备接上后会通电，开始往N1发送数据，用`tio /dev/ttyUSB0 19200`，可以收到数据： G01gA，如果没有，TX RX线反向看看。
+
+用python测试发送，可以看到设备上灯变了
+
+```python
+import serial
+tty = serial.Serial("/dev/ttyUSB0", 19200, timeout=2)
+tty.write(b'G01gA\x00'.encode())
+```
+
+- 如果成功，就可以改/etc/kvmd/override.yml [配置文件](https://gist.github.com/halida/8d443347a95bf51c8fe7f7641c48cf5d)
+- `sudo service kvmd restart`
+- pikvm UI上面可以看到当前是哪个PC灯亮，以及点击可以切换，就是成功
+
+## 综合使用问题
+
+- 为了方便远程控制，N1电源，PC电源前面都可以加上智能开关控制开机。PC的BIOS设置成来电启动，N1默认断电后开机自动启动，这样通过智能开关就可以控制包括pikvm在内的所有机器开关机
+- 如果要在外网使用，配置公网IP，路由器对应的端口转发就可以
+- pikvm可以设置晚上自动关机，这样不用到的时候自动关机省电
+- 有的时候键盘鼠标无法识别，pikvm断电重启后会好
+- N1主机必须开启，PC才能够识别到显示器，不然可能开不了机或者屏幕分辨率出现问题
+- hk4401的电源是通过任意一个USB取电的，所以N1和PC任何一台有电，hk4401都会有电
+- fruity-pikvm版本比较旧，没有办法虚拟光驱设备，远程安装系统
