@@ -17,8 +17,9 @@ preview:
 commit:
 	git add .;git ci -am "update"
 
+# python2: pygments
 install:
-	sudo apt install libyajl-dev
+	sudo apt install libyajl-dev python2
 
 # docker run
 PWD=`pwd`
