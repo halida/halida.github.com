@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ubuntu搭建wordpress - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="虽然ubuntu里面已经有了wordpress的安装包，不过它好像是和apache整合起来的，
+我的ubuntu服务器上面主要跑的是nginx，这里整理一下安装的步骤吧。 架构 比较简单，nginx接收到访问wordpress的请求，交给php-cgi进程渲染结果，然后返回。
+跑的进程有： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/ubuntu-wordpress/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ubuntu搭建wordpress</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T11:27:00+00:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>虽然ubuntu里面已经有了wordpress的安装包，不过它好像是和apache整合起来的，
+我的ubuntu服务器上面主要跑的是nginx，这里整理一下安装的步骤吧。</p>
+
+<h2>架构</h2>
+
+<p>比较简单，nginx接收到访问wordpress的请求，交给php-cgi进程渲染结果，然后返回。
+跑的进程有：nginx, php-cgi, mysql。</p>
+
+<h2>安装软件</h2>
+
+<p>首先是安装必须的软件：</p>
+
+<pre><code>sudo aptitude install nginx mysql-server mysql-client unzip php5-cgi php5-mysql
+</code></pre>
+
+<p>安装的时候会提示你输入一下mysql的root密码。</p>
+
+<h2>设置mysql</h2>
+
+<p>mysql默认不是utf8的，我们需要修改一下：</p>
+
+<pre><code>sudo vi /etc/mysql/my.cnf
+</code></pre>
+
+<p>加上：</p>
+
+<pre><code>[mysql]
+default-character-set=utf8
+[client]
+default-character-set=utf8
+[mysqld]
+character-set-server=utf8
+</code></pre>
+
+<p>然后重启mysql：</p>
+
+<pre><code>sudo service mysql restart
+</code></pre>
+
+<p>给wordpress准备一个数据库：</p>
+
+<pre><code>mysql -u root -p
+</code></pre>
+
+<p>进入命令行后, 我们需要：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="c1"># 创建一个数据库</span>
+</span><span class='line'>create database wordpress<span class="p">;</span>
+</span><span class='line'><span class="c1"># 建立对应的mysql的用户</span>
+</span><span class='line'>create user wordpress identified by <span class="s1">&#39;密码&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="c1"># 设置权限</span>
+</span><span class='line'>grant all privileges on wordpress.* to wordpress<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>准备php进程</h2>
+
+<p>我们单独跑一个php-cgi服务：</p>
+
+<pre><code>sudo vi /etc/init.d/php-fastcgi
+</code></pre>
+
+<p>内容：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="ch">#!/bin/bash</span>
+</span><span class='line'><span class="nv">BIND</span><span class="o">=</span><span class="m">127</span>.0.0.1:9000
+</span><span class='line'><span class="nv">USER</span><span class="o">=</span>www-data
+</span><span class='line'><span class="nv">PHP_FCGI_CHILDREN</span><span class="o">=</span><span class="m">15</span>
+</span><span class='line'><span class="nv">PHP_FCGI_MAX_REQUESTS</span><span class="o">=</span><span class="m">1000</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">PHP_CGI</span><span class="o">=</span>/usr/bin/php-cgi
+</span><span class='line'><span class="nv">PHP_CGI_NAME</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$PHP_CGI</span><span class="sb">`</span>
+</span><span class='line'><span class="nv">PHP_CGI_ARGS</span><span class="o">=</span><span class="s2">&quot;- USER=</span><span class="nv">$USER</span><span class="s2"> PATH=/usr/bin PHP_FCGI_CHILDREN=</span><span class="nv">$PHP_FCGI_CHILDREN</span><span class="s2"> PHP_FCGI_MAX_REQUESTS=</span><span class="nv">$PHP_FCGI_MAX_REQUESTS</span><span class="s2"> </span><span class="nv">$PHP_CGI</span><span class="s2"> -b </span><span class="nv">$BIND</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="nv">RETVAL</span><span class="o">=</span><span class="m">0</span>
+</span><span class='line'>
+</span><span class='line'>start<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nb">echo</span> -n <span class="s2">&quot;Starting PHP FastCGI: &quot;</span>
+</span><span class='line'>      start-stop-daemon --quiet --start --background --chuid <span class="s2">&quot;</span><span class="nv">$USER</span><span class="s2">&quot;</span> --exec /usr/bin/env -- <span class="nv">$PHP_CGI_ARGS</span>
+</span><span class='line'>      <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$PHP_CGI_NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>stop<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="nb">echo</span> -n <span class="s2">&quot;Stopping PHP FastCGI: &quot;</span>
+</span><span class='line'>      killall -q -w -u <span class="nv">$USER</span> <span class="nv">$PHP_CGI</span>
+</span><span class='line'>      <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$PHP_CGI_NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> in
+</span><span class='line'>    start<span class="o">)</span>
+</span><span class='line'>      start
+</span><span class='line'>  <span class="p">;;</span>
+</span><span class='line'>    stop<span class="o">)</span>
+</span><span class='line'>      stop
+</span><span class='line'>  <span class="p">;;</span>
+</span><span class='line'>    restart<span class="o">)</span>
+</span><span class='line'>      stop
+</span><span class='line'>      start
+</span><span class='line'>  <span class="p">;;</span>
+</span><span class='line'>    *<span class="o">)</span>
+</span><span class='line'>      <span class="nb">echo</span> <span class="s2">&quot;Usage: php-fastcgi {start|stop|restart}&quot;</span>
+</span><span class='line'>      <span class="nb">exit</span> <span class="m">1</span>
+</span><span class='line'>  <span class="p">;;</span>
+</span><span class='line'><span class="k">esac</span>
+</span><span class='line'><span class="nb">exit</span> <span class="nv">$RETVAL</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>把这个服务跑起来：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>sudo chmod u+x /etc/init.d/php-fastcgi
+</span><span class='line'>sudo update-rc.d php-fastcgi defaults
+</span><span class='line'>sudo service php-fastcgi start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>设置nginx</h2>
+
+<p>我们增加一个nginx配置文件：</p>
+
+<pre><code>sudo vi /etc/nginx/sites-available/your-domain.com
+</code></pre>
+
+<p>内容（需要修改对应的参数）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>server<span class="o">{</span>
+</span><span class='line'>        listen <span class="m">80</span><span class="p">;</span>
+</span><span class='line'>        server_name your-domain.com<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>          root /home/halida/wordpress<span class="p">;</span>
+</span><span class='line'>          index index.php index.html index.htm<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="c1"># this serves static files that exist without running other rewrite tests</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span>-f <span class="nv">$request_filename</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              expires 30d<span class="p">;</span>
+</span><span class='line'>              break<span class="p">;</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="c1"># this sends all non-existing file or directory requests to index.php</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span>!-e <span class="nv">$request_filename</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              rewrite ^<span class="o">(</span>.+<span class="o">)</span>$ /index.php?q<span class="o">=</span><span class="nv">$1</span> last<span class="p">;</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span><span class='line'>            root /home/halida/wordpress<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>            fastcgi_pass    <span class="m">127</span>.0.0.1:9000<span class="p">;</span>
+</span><span class='line'>            fastcgi_index   index.php<span class="p">;</span>
+</span><span class='line'>            fastcgi_param   SCRIPT_FILENAME /home/halida/wordpress<span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+</span><span class='line'>            include         fastcgi_params<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>设置使用这个配置文件：</p>
+
+<pre><code>sudo ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled
+</code></pre>
+
+<h2>设置wordpress</h2>
+
+<p>我们直接从官方网站上面下载wordpress：</p>
+
+<pre><code>wget http://wordpress.org/latest.zip
+unzip latest.zip
+cp wp-config-sample.php wp-config.php
+</code></pre>
+
+<p>修改wp-config.php，填写上我们前面设置的mysql数据库信息。</p>
+
+<p>wordpress就这样安装好了。然后访问你的域名位置，就可以使用了。</p>
+
+<p>引用材料：</p>
+
+<ul>
+<li><a href="http://tomasz.sterna.tv/2009/04/php-fastcgi-with-nginx-on-ubuntu/">ubuntu下面nginx安装wordpress</a></li>
+<li><a href="http://codex.wordpress.org/Installing_WordPress#Famous_5-Minute_Install">wordpress安装教程</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-28T11:27:00+00:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/ubuntu-wordpress/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/ubuntu-wordpress/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/reverse-ssh/" title="Previous Post: 如何从外网访问内网主机">&laquo; 如何从外网访问内网主机</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/split-big-model-in-rails/" title="Next Post: rails里面拆分大的model">rails里面拆分大的model &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/ubuntu-wordpress/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/ubuntu-wordpress/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

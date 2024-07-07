@@ -1,0 +1,1532 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。 什么是oauth？ 在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/19/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/oauth/">Oauth个人总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T19:29:00+00:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
+        
+         | <a href="/blog/oauth/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://hueniverse.com/wp-content/uploads/2007/12/My-Endpoints-300x267.png" alt="image" /></p>
+
+<p>最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。</p>
+
+<h2>什么是oauth？</h2>
+
+<p>在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net），
+用户希望利用另外一个网站（priter.example.net）来打印这些照片， 但是因为安全性的考虑， 用户不想提供用户名和密码给它，
+希望只是提供一个受限的访问权限。 oauth就是为了实现这样的功能产生的。</p>
+
+<p>oauth本身是一个标准， 它指定了一系列的操作规范， 服务提供方（就是上面的photos.example.net）提供一系列的API，
+任何需要访问用户资源的第三方网站或者应用， 遵循这套规范， 向用户请求权限， 然后用户授权了之后， 这些第三方网站就能够获得需要的信息，
+同时兼顾了用户的安全需求。</p>
+
+<h2>oauth的过程</h2>
+
+<p>oauth的流程基于http协议， 通过POST请求实现数据通讯。首先定义一下涉及到的几个角色(引用<a href="http://zh.wikipedia.org/wiki/OAuth">维基百科</a>):</p>
+
+<ul>
+<li><strong>服务提供方(server)</strong>: 用户使用服务提供方来存储受保护的资源，如照片，视频，联系人列表。</li>
+<li><strong>用户(resource owner)</strong>: 存放在服务提供方的受保护的资源的拥有者。</li>
+<li><strong>客户端(client)</strong>: 要访问服务提供方资源的第三方应用，通常是网站，如提供照片打印服务的网站。在认证过程之前，客户端要向服务提供者申请客户端标识。</li>
+</ul>
+
+
+<p>整体流程分成3个步骤：</p>
+
+<ul>
+<li>client向服务器获得<code>request_token</code>， 包含token和secret， token用来作标识， secret用来做后续的通讯验证。</li>
+<li>client把resource owner导向到server， 让resource owner授权， 获得一个<code>verifier</code>， 通过后server又把用户重导向到client。</li>
+<li>client利用获得的<code>verifier</code>， 向server申请一个新的<code>access_token</code>， 申请成功后，就可以利用它来访问resource owner的受限资源。</li>
+</ul>
+
+
+<p>具体过程如下图：
+<img src="http://www.formatix.eu/wp-content/uploads/2009/12/diagram-oauth-handshake.png" alt="image" /></p>
+
+<p>为了安全起见， 这些通讯操作都应该在https下面进行。</p>
+
+<h2>疑问</h2>
+
+<p>下面是我在看<a href="rfc">rfc</a>的时候遇到的一些疑问， 以及我对它们的解答。</p>
+
+<h3>在第二步的时候， 如何跳转回client？</h3>
+
+<p>几个地方， 可以在网站创建<code>consumer_key</code>的时候设置默认callback， 以及在申请<code>request_token</code>的时候传入参数<code>oauth_callback</code>，
+就我用linkedin API的时候， 在authorize过程传入<code>oauth_callback</code>。</p>
+
+<h3>nonce的作用？</h3>
+
+<p>文档在<a href="http://tools.ietf.org/html/rfc5849#section-3.3">rfc3.3</a>，
+client生成的一个随机字符串， 让服务器记忆， 防止有中间人记录了通讯， 重复进行这样的请求来做攻击。
+每次给server的请求， 都会生成一个新的nonce。
+为了防止产生大量的nonce给服务器带来负担， 服务器会考虑利用时间来给出限制(具体如何做我也不是很明白， 猜测就是做一个延时吧)。</p>
+
+<h3>为什么要分离 <code>request_token</code> 和 <code>access_token</code>， 而不是只用request_token？</h3>
+
+<p>恩， 不是很清晰地明白具体会引发什么安全隐患， 个人猜测：
+<code>request_token</code>在resource owner， client， server之间通讯会有安全隐患，
+真正做访问的只有一个access_token， 获得<code>access_token</code>只在client和server之间发生一次， 这样限制一下更安全？</p>
+
+<h3>如何通过token和secret让服务器知道自己的？</h3>
+
+<p>用&#8221;HMAC-SHA1&#8221;, &ldquo;RSA-SHA1&rdquo;, &ldquo;PLAINTEXT&#8221;三种方式验证，
+利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
+
+<h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>
+
+<p>根据我看<a href="https://github.com/pelle/oauth-plugin">oauth-plugin的实现</a>， 最后追溯到的是一个随机字串生成器， 看起来只要服务器生成后记住就可以了。</p>
+
+<h3>可能的安全问题</h3>
+
+<p><a href="rfc">rfc</a>里面列出来很多安全性的考虑， 我因为只关心具体的使用， 就不看它们了， 等有担忧的时候再看。</p>
+
+<h3>oauth2.0</h3>
+
+<p>根据<a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">Eran的说法</a>，oauth2.0状况不妙，facebooke和google做的还可以，那么我先不跟踪它了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/you-can-be-happy/">你想要多快乐，就能多快乐</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-10T10:50:00+00:00" pubdate data-updated="true">Sep 10<span>th</span>, 2012</time>
+        
+         | <a href="/blog/you-can-be-happy/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://www.cavstheblog.com/wp-content/uploads/2012/03/happy-sad.jpeg" alt="image" /></p>
+
+<p>我们每个人都有开心和沮丧的时候。</p>
+
+<p>工资涨了， 和朋友一起去外面玩， 很久没有见面的老朋友来拜访， 遇到这些事情， 我们会开心；</p>
+
+<p>丢失了手机， 被老板或父母教训， 不小心摔坏了心爱的杯子， 遇到这些事情， 我们会沮丧；</p>
+
+<p>我们总是想让自己更开心一些， 但是生活中往往那些让你郁闷的事情发生的更多一些，
+要不然就是平平淡淡， 上学放学， 上班下班， 吃饭睡觉。</p>
+
+<p>不过在我们身边， 往往有一类人， 他们的生活不是很好， 或许一直都混得很惨，
+读书掉车尾， 工作天天被老板骂， 或者在街上摆小摊，
+不过他们一直保留着笑容， 好像天天都很快乐， 情绪一直很high，
+不像我们大多数， 摆着一副 “我很烦， 不要来惹我“的表情。</p>
+
+<p>他们到底用了什么魔法？ 能够在生活不如意的时候， 保持快乐？</p>
+
+<p>抱着这样的疑问， 你可能上前去问： “请问你， 为什么这么快乐呢？”</p>
+
+<p>她可能给出一些匪夷所思解答： “因为今天天空云彩很漂亮啊～”</p>
+
+<p>你可能又问： “但是今天你又被老板骂耶。。”</p>
+
+<p>她可能好像一点都不在意的样子： “又不是第一天了， 都习惯啦。。”</p>
+
+<p>这个时候， 你估计只有摇摇头, 摆摆手， 当她脑子里缺根筋了。</p>
+
+<p>不过且慢， 我们需要的是快乐， 如果我们可以模拟这样的状况， 那么我们不就掌握了快乐的诀窍吗？</p>
+
+<p>假如， 我们遇到不开心的事情， 可以摆摆手把问题撇到一边， 说， “生活总是会遇到不开心的事情啦～”；</p>
+
+<p>假如， 我们可以因为各种小事而兴奋半天： “今天又是一个大晴天耶！”；</p>
+
+<p>那么我们应该要更快乐的吧。</p>
+
+<p>不过大家可能会说： “遇到这样那样的事情， 怎么可能摆摆手就过去了嘛， 还有这些无关紧要的事情， 我怎么可能开心得起来。。”</p>
+
+<p>但是有人就能够开心得起来， 那么， 我们是否可以怀疑一下：</p>
+
+<p>事情发生了也就发生了， 可能是好事也是坏事。但是因为我们的认知状况不同， 会产生完全不一样的情感反应！</p>
+
+<p>也就是说， 我们可以通过改变自己对事物的解读方式， 改变我们的情感反应， <strong>我们自己的情感， 是可以被自己操控的</strong>！</p>
+
+<p>从理论上， 我们可以做到， 想让自己多快乐， 就能多快乐， 不需要改变周围的事物， 只是改变自己的认知， 来达到让自己更快乐的目的。</p>
+
+<p>我们每天辛苦工作， 休息日还要加班， 很多时候为了更好的房子， 更好的服装， 可以去更多的地方玩， 这些的目的， 都是为了让我们更快乐，
+但是每个人的能力不同， 我们认为自己需要的物质条件， 可能永远都无法获得， 我们可能永远都没有办法在居住的城市里面买到一套房子。</p>
+
+<p>但是如果我们只需要改变自己对事物的看法， 就能获得快乐， 那么就完全可以放下辛苦工作， 只赚一点点生活费， 也能生活得很快乐了。</p>
+
+<p>那么我们可以尝试一下， 遇到事情， 用能够给自己带来快乐的方式解读：</p>
+
+<p><strong>被老板骂， 很开心</strong>， 因为： “老板关心我的工作， 而不是把我炒鱿鱼， 还来教训我， 这是一个多么好的反思自己工作方式的机会呀～”</p>
+
+<p><strong>丢了手机， 很开心</strong>， 因为： “还好遇到的是小偷， 如果硬抢， 那么我丢的可不一定只是手机了， 可能手也没有了。。”</p>
+
+<p><strong>不小心摔坏了心爱的杯子， 很开心</strong>， 因为： “旧的不去， 新的不来， 我有机会用到更喜欢的杯子了！”</p>
+
+<p>听起来很阿Q， 但是我们获得了快乐的能力， 可以不在执着于一些我们不真正需要的东西了， 因为我们能够让自己， 想要多快乐， 就能多快乐！</p>
+
+<p>恩， 还没有完， 我们是否可以进一步想想, 这样我们也能够想让自己多不快乐， 就多不快乐，
+为什么要这样呢？ 因为<strong>情感只是我们的工具</strong>（待续）。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/new-blog-system/">老书换新封</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-06T16:01:00+00:00" pubdate data-updated="true">Sep 6<span>th</span>, 2012</time>
+        
+         | <a href="/blog/new-blog-system/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2ntGD.jpg"></p>
+
+<p>博客已然数月没有更新了，作为博客的主人我很惭愧，现在改头换面重新开张，在此我小小地列一下来龙去脉。</p>
+
+<p>原先的博客系统是本人折腾的产物，写文档采用<a href="http://en.wikipedia.org/wiki/ReStructuredText">ReST</a>格式，页面采用静态更新，回复全部交由<a href="http://disqus.com/">Disqus</a>打理。
+虽磕磕碰碰年许，还是凑合能用。不过时代发展迅速，<a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a>成为主流，与之相比，ReST显得太重了，毕竟，它主要的目标还是在于文档编写。</p>
+
+<p>我逐渐产生了移植博客系统到<a href="http://octopress.org/">Octopress</a>的打算，由于历史成本，一直未能顺利完成，折腾了许久，再加上自己开发的系统设计考虑不周，发布过程比较痛苦，写博客这件事算是耽搁下来了。
+原以为写博客系统和写文章可以一起搞定，但最后还是又验证了那个谚语：一个人同时只能做好一件事。
+博客系统和写博文混杂起来对心智负担甚重，还是先专注写文章吧。</p>
+
+<p>回首已多月，最后我终于下定决心投入时间整顿它们，全部移植到Octopress上去。
+从ReST转移到Markdown耗费了一些功夫，有<a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>在，工作还算顺利，有些许的格式混乱，容我以后时间充裕时再慢慢调整吧，
+若您看到什么格式混乱的地方，还请包涵，这些我都会在将来的几个月里面慢慢整理完毕的～</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/hackthon-in-may/">黑客马拉松活动小记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-07T15:01:12+08:00" pubdate data-updated="true">May 7<span>th</span>, 2012</time>
+        
+         | <a href="/blog/hackthon-in-may/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://topgeek.org/wp-content/uploads/2012/04/hackson.jpg" alt="image" /></p>
+
+<h2>活动</h2>
+
+<p>上周的周末（5/5-5/6）， 我们参加了 <a href="http://topgeek.org/?p=399">黑客马拉松</a>
+活动， 简单点的介绍， 就是一群程序员/美工/产品经理， 花费1整天的时间，
+鼓捣出一个酷的东西。 黑客的文化在于创造， 分享， 进步，
+hackathon的活动是黑客文化的一个体现。</p>
+
+<h2>过程</h2>
+
+<p>参与活动可以考虑预先组队和现场组队， 我们是预先组好的， 4个人：
+我(GuruDigger)， 蔡金(GuruDiggger)， 吴杰蔚(住隔壁， 交大硕士)，
+周航(EMC云存储), 准备做的产品， 是我的一个Idea:
+<a href="http://gurudigger.com/balloons/164">豆瓣match</a> ，
+通过豆瓣上面的喜好资料， 来寻找志同道合的对象。</p>
+
+<p>一天时间非常的紧张， 我们提前一天的晚上， 小聚了一下， 讨论了一下产品，
+以及具体的分工。 我负责web前端和数据挖掘算法， 吴杰蔚考虑推荐算法，
+周航负责爬豆瓣数据， 蔡金负责页面设计。</p>
+
+<p>黑客马拉松举办的场地是在江湾体育场的创智天地， 我们早上9点开始， 到了现场，
+我们抢了一个靠近门的位置， 没有理会现场的举办方， 直接开工了。</p>
+
+<p>我把网站的架子弄起来（rails），
+我们在如何让ubuntu默认安装的mysql可以让其他机器访问到这点上花费了比较多的时间，
+然后上午的时间就结束了。</p>
+
+<p>中午在现场吃饭， 也是社交的时间， 到处找人聊天， 以及认识新朋友。
+平时很少有机会聊的一些话题。</p>
+
+<p>下午的时候， 我遇到了技术问题：
+基本上的时间都花费在了如何让豆瓣用户登录这一块上面。 我本来采用的是
+<a href="https://github.com/ballantyne/omniauth-douban">omniauth-douban</a> ，
+花费了大量时间， 流程还是没有走通顺， 后来换了道哥的
+<a href="https://github.com/lidaobing/douban-ruby">douban-ruby</a> ,
+看懂了豆瓣oauth的逻辑, 总算实现了登录和替用户发豆邮的功能。
+周航这边导数据也遇到了一些问题， 不过总算都搞定了。</p>
+
+<p>开发期间， 抽空去看了一下其他团队。 团队采用的技术区别还是比较大， ruby,
+python, java, node.js, objective-C, 还有一组是用.net的，
+现场学习新的技术。。 采用的开发工具也百花齐放， eclipse, Xcode, emacs,
+vim, sublime, textmate&hellip; 如果是非技术的人过来， 看大家的电脑屏幕，
+是搞不清楚大家在做什么的。</p>
+
+<p>就做的东西而言， 大多数还是以做产品为导向， 有做团购搜索的，
+有做青年旅社查找应用的， 有做平台的， 都是大东西啊。
+让我眼前一亮的只有一个： 基于js+webgl的3D小游戏。
+引擎是组里面一个做游戏的牛人现场写的。
+我觉得这个产品算是最符合黑客精神的了。</p>
+
+<p>晚上我的精力不足， 效率低下， 不过把网站的整体流程跑出来了。
+10点钟我们离开场地回去， 我和蔡金整理好UI， 然后我把整体流程跑顺， 处理bug，
+我弄到了4点才去睡觉。 不过， 产品的完成度总算是能够应付第二天的展示了。</p>
+
+<p>第二天7点半我起床， 和蔡金一起去场地。 这一天都是展示日， 没有我什么事情，
+就在下面休息。 最后的结果是， 我们的产品得到了三等奖，
+应该算是理所应当的吧。 第一名是Chop, 一个聊天的产品。</p>
+
+<p><img src="http://image20.it168.com/201205_500x375/1041/349bd5185b1d5905.jpg" alt="image" /></p>
+
+<h2>小结</h2>
+
+<p>就开发而言。 我觉得有些可以总结的：</p>
+
+<ul>
+<li>Hackathon活动一天都应该处于一个集中精神做事情的状态，
+我前一天没有休息好， 造成这一天精力不充沛， 时间效率不高。</li>
+<li>为了更好的产能， 可以做的是提前把技术细节都准备好， 现场做的只是拼装，
+但是我觉得这样就太作弊了， 不算是好的行为。
+毕竟现场搞定问题才是意义所在。</li>
+<li>开发的时候， 因为分工做好了， 沟通链减少很多， 基本上都在全力开发中。</li>
+<li>一天的时间非常紧张， 项目计划需要弄好。 我们还是错误预估了工作量，
+预期要做的根据喜好推荐用户的功能没有做出来，
+只能通过部分的随机来模拟一个效果。如果还有下次的活动，
+一定要考虑清楚工作量。</li>
+<li>成功的很大因素靠产品设计， 在这点上面蔡金考虑产品考虑得很好。
+直截了当地解决问题。</li>
+</ul>
+
+
+<p>然后就是本次活动：</p>
+
+<ul>
+<li>黑客精神应该是用技术的方式巧妙解决问题。 参与者做的大都是产品导向，
+解决问题的方式也不是很开创性质的。 只能算是做出来一个东西吧。</li>
+<li>奇怪的评委， VC或者公司大员，
+有人还提问“你们的盈利模式是什么”（我把这个当成一个笑话来看），
+如果这个活动是以产品开发为主题还差不多。
+但是不符合“黑客马拉松”的气氛。</li>
+<li>和硅谷双线举办的效果不好， 基本上是双方分开做自己的事情。
+这样就没有太多的意义了。</li>
+<li>我觉得应该得到第一名的那个3D游戏连第二轮都没有进入，
+在这样的评委组成下， 意料以外情理之中。</li>
+</ul>
+
+
+<p>我觉得让开发者们时不时地聚在一起，
+花费一天两天的时间做一个小原型的活动很有意义，
+但是不应该像本次活动一样办成一个大会形式了。 如果下次还有类似的活动，
+我还是会去的。 然后我会考虑做一个更有黑客精神的东西。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/TDD/">TDD 测试驱动开发</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-05-01T22:08:26+08:00" pubdate data-updated="true">May 1<span>st</span>, 2012</time>
+        
+         | <a href="/blog/TDD/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>TDD是这样一种开发方式，引用至wikipedia，以及中文：</p>
+
+<p>利用测试来驱动软件程序的设计和实现。</p>
+
+<p><img src="http://dl.dropbox.com/u/1167873/images/tdd.png" alt="image" />
+具体内容我就不多说了，网络上面的资料很多。</p>
+
+<p>我没有试过TDD，比较像样的测试也没有做过，所以没有什么权力来评价TDD，</p>
+
+<p>考虑到我们公司现有的开发流程－－谈需求，开发代码，测试，验收，</p>
+
+<p>以及我们公司经常出现需求变更的状况，TDD可能可用，下次开发时要实际应用一下。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/unicorn-config/">Unicorn配置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-21T11:05:54+08:00" pubdate data-updated="true">Apr 21<span>st</span>, 2012</time>
+        
+         | <a href="/blog/unicorn-config/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/hYztb.png"></p>
+
+<h2>什么是unicorn?</h2>
+
+<p><a href="http://unicorn.bogomips.org/">unicorn</a> 是ruby下面的一个基于Rack的HTTP
+server. 类似的工具有 passenger, thin 等。</p>
+
+<h2>unicorn简单的使用方式</h2>
+
+<p>在你的rails项目下面， 直接执行下面的代码就可以了</p>
+
+<pre><code>unicorn_rails
+</code></pre>
+
+<h2>unicorn的原理</h2>
+
+<p>它的工作模式是master/worker多进程模式。 简单地说，
+首先建立一个master进程， 然后fork出来worker进程。</p>
+
+<p>worker进程处理进来的请求， master负责管控， 当worker消耗内存过多，
+或者相应时间太长， 杀掉worker进程。</p>
+
+<p>这里是一篇github使用他们的文档：</p>
+
+<p><a href="https://github.com/blog/517-unicorn">https://github.com/blog/517-unicorn</a></p>
+
+<h2>unicorn详细配置</h2>
+
+<p>一般来说， 按照这个架构方式:</p>
+
+<p><img src="/images/posts/s6dth.png">
+nginx负责端口映射， 从80端口映射到本地unix socket,
+然后unicorn按照daemon方式执行。</p>
+
+<h2>设置nginx</h2>
+
+<p>nginx只需要设置一下端口转发就可以了。 （对于rails， 另外提供静态资源服务）</p>
+
+<pre><code>server
+{
+    listen 80;
+    server_name doubanmash.com;
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre>
+
+<h2>设置unicorn</h2>
+
+<p>基本摘抄 <a href="https://github.com/blog/517-unicorn">上面github的配置</a> ，
+文件保存为./config/unicorn.rb， 稍微解释一下。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+</span><span class='line'><span class="n">rails_env</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;RAILS_ENV&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;production&#39;</span>
+</span><span class='line'><span class="c1"># 需要设置一下rail的路径</span>
+</span><span class='line'><span class="no">RAILS_ROOT</span> <span class="o">=</span> <span class="s2">&quot;/rails/path&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 设置生产和开发环境下面跑的worker数量</span>
+</span><span class='line'><span class="n">worker_processes</span> <span class="p">(</span><span class="n">rails_env</span> <span class="o">==</span> <span class="s1">&#39;production&#39;</span> <span class="p">?</span> <span class="mi">16</span> <span class="p">:</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># rails环境是需要预先加载的， 节省时间和内存</span>
+</span><span class='line'><span class="n">preload_app</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 每个请求最长的响应时间， 超过了就杀掉worker</span>
+</span><span class='line'><span class="n">timeout</span> <span class="mi">30</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 监听端口设置， 可以设置成unix socket或者tcp， 这里是用tcp, 因为开发环境可以直接看网站</span>
+</span><span class='line'><span class="c1"># listen &#39;/data/github/current/tmp/sockets/unicorn.sock&#39;, :backlog =&gt; 2048</span>
+</span><span class='line'><span class="n">listen</span> <span class="mi">8080</span><span class="p">,</span> <span class="ss">backlog</span><span class="p">:</span> <span class="mi">2048</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">before_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">##</span>
+</span><span class='line'>  <span class="c1"># 这里是实现重启的时候无缝衔接的代码。</span>
+</span><span class='line'>  <span class="c1"># 首先unicorn提供了这样一个机制：</span>
+</span><span class='line'>  <span class="c1"># 当我们发送 USR2 信号给master的时候， unicorn就会把旧的pidfile加上.oldbin后缀，</span>
+</span><span class='line'>  <span class="c1"># 然后启动一个新的master， 新的master也会fork worker出来。</span>
+</span><span class='line'>  <span class="c1">#</span>
+</span><span class='line'>  <span class="c1"># 下面的代码就是当新的master起来的时候， 检查oldbin这个文件， 告诉旧的master退出（发送QUIT信号）。</span>
+</span><span class='line'>  <span class="c1"># 这样我们保证了无缝重启。</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">old_pid</span> <span class="o">=</span> <span class="no">RAILS_ROOT</span> <span class="o">+</span> <span class="s1">&#39;/tmp/pids/unicorn.pid.oldbin&#39;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="n">old_pid</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">server</span><span class="o">.</span><span class="n">pid</span> <span class="o">!=</span> <span class="n">old_pid</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="s2">&quot;QUIT&quot;</span><span class="p">,</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">old_pid</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">,</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ESRCH</span>
+</span><span class='line'>      <span class="c1"># someone else did our job for us</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">##</span>
+</span><span class='line'>  <span class="c1"># fork了之后， 原先开启的socket就不能用了， 重新开启</span>
+</span><span class='line'>  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="o">.</span><span class="n">establish_connection</span>
+</span><span class='line'>  <span class="c1"># Redis 和 Memcached 的连接是按需的， 不需要重新开启</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>信号是外界给unicorn发命令的方式， 我们利用发信号来控制unicorn。
+上面的配置中无缝重启的部分利用到了这个机制。 最好看看 <a href="http://unicorn.bogomips.org/SIGNALS.html">unicorn
+信号文档</a> 。</p>
+
+<p>更多的配置， 可以见 <a href="http://unicorn.bogomips.org/Unicorn/Configurator.html">unicorn
+配置文档</a></p>
+
+<h2>具体使用</h2>
+
+<p>设置完成后， 在命令行下面执行</p>
+
+<pre><code>bundle exec unicorn_rails -c ./config/unicorn.rb -D
+</code></pre>
+
+<p>如果是生产环境</p>
+
+<pre><code>bundle exec unicorn_rails -c ./config/unicorn.rb -D -E production
+</code></pre>
+
+<p>当新版本上线， 需要重启的时候， 执行</p>
+
+<pre><code>kill -USR2 `cat ${RAILS_ROOT}/tmp/pids/unicorn.pid`
+</code></pre>
+
+<h2>如何监控</h2>
+
+<p>好像有的时候, unicorn master会出现内存泄漏的状况，
+还需要一个进程来监控它。 有人推荐我用 <a href="http://godrb.com/">god</a> ，
+不过我还没有评测过。</p>
+
+<h2>性能和易用性</h2>
+
+<p>没有评测过， 等我有时间的时候考虑一下。</p>
+
+<h2>结论</h2>
+
+<p>听说rails的初学者去用passenger， 熟悉了一些之后会用unicorn，
+我对为什么要用它并没有什么太多的感受。 听说应该是它的可配置性，
+以及比较好的性能吧。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pjax/">Pjax是什么以及为什么推荐大家用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-19T16:21:04+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2012</time>
+        
+         | <a href="/blog/pjax/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://webification.com/wp-content/uploads/2011/03/pjaxascii.png" alt="image" /></p>
+
+<h2>什么是pjax?</h2>
+
+<p>现在很多网站(<a href="https://twitter.com/">facebook</a>,
+<a href="https://twitter.com/">twitter</a>)都支持这样的一种浏览方式，
+当你点击一个站内的链接的时候， 不是做页面跳转， 而是只是站内页面刷新。
+这样的用户体验， 比起整个页面都闪一下来说， 好很多。</p>
+
+<p>其中有一个很重要的组成部分， 这些网站的ajax刷新是支持浏览器历史的，
+刷新页面的同时， 浏览器地址栏位上面的地址也是会更改，
+用浏览器的回退功能也能够回退到上一个页面。</p>
+
+<p>那么如果我们想要实现这样的功能， 我们如何做呢？</p>
+
+<p>我发现pjax提供了一个脚本支持这样的功能。</p>
+
+<p>pjax项目地址在
+<a href="https://github.com/defunkt/jquery-pjax">https://github.com/defunkt/jquery-pjax</a>
+。 实际的效果见： <a href="http://pjax.heroku.com">http://pjax.heroku.com</a>/
+没有勾选pjax的时候， 点击链接是跳转的。 勾选了之后，
+链接都是变成了ajax刷新。</p>
+
+<h2>为什么要用pjax?</h2>
+
+<p>pjax有好几个好处：</p>
+
+<ul>
+<li><p>用户体验提升。</p>
+
+<p>页面跳转的时候人眼需要对整个页面作重新识别， 刷新部分页面的时候，
+只需要重新识别其中一块区域。自从我在自己的网站
+<a href="http://gurudigger.com/">GuruDigger</a> 上面采用了pjax技术后，
+不由觉得访问其他只有页面跳转的网站难受了许多。 同时，
+由于刷新部分页面的时候提供了一个loading的提示，
+以及在刷新的时候旧页面还是显示在浏览器中，
+用户能够容忍更长的页面加载时间。</p></li>
+<li><p>极大地减少带宽消耗和服务器消耗。</p>
+
+<p>由于只是刷新部分页面， 大部分的请求（css/js）都不会重新获取，
+网站带有用户登录信息的外框部分都不需要重新生成了。
+虽然我没有具体统计这部分的消耗， 我估计至少有40%以上的请求，
+30%以上的服务器消耗被节省了。</p></li>
+</ul>
+
+
+<p>坏处我觉得也有：</p>
+
+<ul>
+<li><p>IE6等历史浏览器的支持</p>
+
+<p>虽然我没有实际测试， 但是由于pjax利用到了新的标准，
+旧的浏览器兼容会有问题。 不过pjax本身支持fallback，
+当发现浏览器不支持该功能的时候， 会回到原始的页面跳转上面去。</p></li>
+<li><p>复杂的服务器端支持</p>
+
+<p>服务器端需要根据过来的请求， 判断是作全页面渲染还是部分页面渲染，
+相对来说系统复杂度增大了。 不过对于设计良好的服务器代码，
+支持这样的功能不会有太大的问题。</p></li>
+</ul>
+
+
+<p>综合起来， 由于用户体验和资源利用率的提升， 坏处是可以完全得到弥补的。
+<strong>我强烈推荐大家使用。</strong></p>
+
+<h2>如何使用pjax?</h2>
+
+<p>直接看 <a href="https://github.com/defunkt/jquery-pjax">官方文档</a> 就可以了。</p>
+
+<p>我觉得做技术的人要养成看一手的技术资料的习惯。</p>
+
+<p>有一个rails针对pjax的 <a href="https://github.com/rails/pjax_rails">gem插件</a>
+可以直接使用。 也有
+<a href="https://github.com/jacobian/django-pjax">django的支持</a> 。</p>
+
+<h2>pjax的原理</h2>
+
+<p>为了能够处理问题， 我们需要能够理解pjax的运作方式。
+pjax的代码只有一个文件：
+<a href="https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js">https://github.com/defunkt/jquery-pjax/blob/master/jquery.pjax.js</a></p>
+
+<p>如果有能力， 可以自己去看一遍。 我这里解释一下原理。</p>
+
+<p>首先， 我们在html里面指定， 需要做pjax的链接内容是哪些，
+以及点击之后需要更新的部分（放在data-pjax属性里面）:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a[data-pjax]&#39;</span><span class="p">).</span><span class="nx">pjax</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当加载了pjax脚本之后， 它会拦截这些链接的事件， 然后包装成一个ajax请求，
+发送给服务器。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;click.pjax&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>    <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">handleClick</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">pjax</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="nx">pjax</span><span class="p">.</span><span class="nx">xhr</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个请求带有X-PJAX的HEADER标识， 服务器在收到这样的请求的时候，
+就知道只需要渲染部分页面返回就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;X-PJAX-Container&#39;</span><span class="p">,</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pjax接受到返回的请求之后， 更新data-pjax指定的区域，
+同时也会更新浏览器的地址。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">options</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">status</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">extractContainer</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">...</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span>
+</span><span class='line'>  <span class="nx">context</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了能够支持浏览器的后退， 利用到了history的api， 记录下来对应的信息，</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">id</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="nx">uniqueId</span><span class="p">(),</span>
+</span><span class='line'>  <span class="nx">url</span><span class="o">:</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">container</span><span class="o">:</span> <span class="nx">context</span><span class="p">.</span><span class="nx">selector</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">fragment</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">timeout</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">timeout</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">push</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span><span class="p">(</span><span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span> <span class="nx">container</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当浏览器后退的时候， 拦截事件， 根据记录的历史信息， 产生一个新的ajax请求。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;popstate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">state</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">state</span> <span class="o">&amp;&amp;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">container</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">container</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">push</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">fragment</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">fragment</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">timeout</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">timeout</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">scrollTo</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">contents</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:start&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;start.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'>        <span class="nx">pjax</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">state</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;pjax:end&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>        <span class="c1">// end.pjax event is deprecated</span>
+</span><span class='line'>        <span class="nx">container</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;end.pjax&#39;</span><span class="p">,</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="nx">options</span><span class="p">])</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">.</span><span class="nx">pjax</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="p">...</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了支持fallback， 一个是在加载的时候判断浏览器是否支持history push state
+API：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="c1">// Is pjax supported by this browser?</span>
+</span><span class='line'><span class="nx">$</span><span class="p">.</span><span class="nx">support</span><span class="p">.</span><span class="nx">pjax</span> <span class="o">=</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="nx">history</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">pushState</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">replaceState</span>
+</span><span class='line'>  <span class="c1">// pushState isn&#39;t reliable on iOS until 5.</span>
+</span><span class='line'>  <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/((iPod|iPhone|iPad).+\bOS\s+[1-4]|WebApps\/.+CFNetwork)/</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另一个是当发现请求一段时间没有回复的时候（可以设置参数timeout），
+直接做页面跳转。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span></span><span class="nx">options</span><span class="p">.</span><span class="nx">beforeSend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">timeoutTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;pjax:timeout&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">options</span><span class="p">]))</span>
+</span><span class='line'>        <span class="nx">xhr</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">},</span> <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Clear timeout setting so jquerys internal timeout isn&#39;t invoked</span>
+</span><span class='line'>    <span class="nx">settings</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>既然都看到这里了， 你为什么不去实际使用一下pjax呢？ 有那么多好处，
+我觉得几乎所有网站都应该采用pjax。 赶紧用起来吧！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rails-intro/">Rails介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-13T20:05:20+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2012</time>
+        
+         | <a href="/blog/rails-intro/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我现在算是一个rails程序员了， 作为一门技术的使用者，
+必要的时候要向其他人推广和介绍这门技术， 下面是我准备的slide,
+不定期更新。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rspec/">Rspec</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-13T23:00:51+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2012</time>
+        
+         | <a href="/blog/rspec/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="https://www.rapleaf.com/images/developers/open_source/rspec.gif" alt="image" /></p>
+
+<p>我现在在做的 <a href="http://gurudigger.com">GuruDigger</a> 项目一直没有用测试框架,
+最近我做了几次大的重构, 结果出现了许多bug,
+为了能够保证以后项目不会在重构中挂掉, 我还是需要把测试给整起来.</p>
+
+<p>rails的测试框架用得比较多的是rspec.</p>
+
+<h2>rspec的原理</h2>
+
+<p>我们有一段代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">exp</span> <span class="n">number</span> <span class="n">n</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="n">n</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="n">result</span> <span class="o">*=</span> <span class="n">number</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">result</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们需要给出一个单元测试. rspec的写法是这样的:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">describe</span> <span class="n">exp</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">it</span> <span class="s2">&quot;should work&quot;</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">8</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">125</span>
+</span><span class='line'>    <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我们来解释一下. 里面的describe和it是什么意思呢?
+rspec里面的测试是采用描述性的方式进行的.
+describe说明具体描述的是什么东西, it指代这个东西它的行为应该是怎么样.
+上面的代码一方面做好了测试,
+另外一方面也直观地描述了这个方法需要做的事情, 符合人类直觉.</p>
+
+<p>然后, 我们看具体验证的部分. 和其他单元测试框架的 assert_equal 函数不同,
+rspec-expectations 修改了Kernel, 给了一个should方法.
+这样让原先的外层函数调用, 变成了内层的方法调用,
+造成的结果就是写起来超级直观. 这个算是ruby比较常用的套路了.</p>
+
+<p>should的写法可以去看
+<a href="https://github.com/rspec/rspec-expectations">rspec-expectations的文档</a>.</p>
+
+<p><a href="https://github.com/rspec/rspec-mocks">https://github.com/rspec/rspec-mocks</a>
+这一块不太容易懂, 需要看看.</p>
+
+<h2>factory_girl</h2>
+
+<p>factory_girl是取代rails默认生成测试数据的yml格式的一种写法, 原生ruby,
+写起来比较舒服和能够嵌入ruby代码.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="c1"># 定义一个对象</span>
+</span><span class='line'><span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">first_name</span> <span class="s1">&#39;John&#39;</span>
+</span><span class='line'>    <span class="n">last_name</span>  <span class="s1">&#39;Doe&#39;</span>
+</span><span class='line'>    <span class="n">admin</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 用到的时候build一下就好.</span>
+</span><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上也有很详细的教程:</p>
+
+<p><a href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md</a></p>
+
+<h2>rspec和rails整合</h2>
+
+<p>上面是rspec做测试的部分, 下面我们看如何和rails整合. 其实文档都全了,
+我觉得大家还是直接去看官方的文档就好:</p>
+
+<p><a href="https://github.com/rspec/rspec-rails">https://github.com/rspec/rspec-rails</a></p>
+
+<p>重点是测试的几个类型.</p>
+
+<h2>rspec加上spork</h2>
+
+<p>rspec跑一遍下来超级慢, 于是就有了 <a href="http://spork.rubyforge.org/">spork</a>
+这样的东西. 原理就是先跑一个服务器, 加载好对应的环境.
+然后需要执行测试的时候, 就通知这个服务器开始测试. 服务器会fork一下,
+执行对应的测试.</p>
+
+<p>如何使用上面的文档都有. 重点是几步:</p>
+
+<ul>
+<li>用spork &mdash;bootstrap初始化spec_helper.rb,
+把每次fork需要做的事情填到对应的方法里面去.</li>
+<li>跑服务器, 执行spork</li>
+<li>跑测试. 执行rspec &mdash;drb</li>
+</ul>
+
+
+<h2>配置</h2>
+
+<p>这里有别人贴出来的配置, 还是挺复杂的, 需要搞搞清楚. 但是搞清楚了,
+开发起来你会发现非常舒服(前提是你的机器够好&hellip;)
+<a href="https://gist.github.com/1191428">https://gist.github.com/1191428</a></p>
+
+<h2>一些资料</h2>
+
+<p>rspec书籍:
+<a href="http://pragprog.com/book/achbd/the-rspec-book">http://pragprog.com/book/achbd/the-rspec-book</a></p>
+
+<p>rspec cheetsheet:
+<a href="http://cheat.errtheblog.com/s/rspec">http://cheat.errtheblog.com/s/rspec</a>/</p>
+
+<p>capybara cheetsheet:
+<a href="https://gist.github.com/428105">https://gist.github.com/428105</a>
+<a href="http://cheat.errtheblog.com/s/rspec_shoulda">http://cheat.errtheblog.com/s/rspec_shoulda</a>/</p>
+
+<p>rspec最佳实践:
+<a href="http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips">http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips</a>/</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/guard/">Guard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-11T17:32:57+08:00" pubdate data-updated="true">Mar 11<span>th</span>, 2012</time>
+        
+         | <a href="/blog/guard/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://livereload.com/images/LiveReload_350.png" alt="image" /></p>
+
+<h2>介绍</h2>
+
+<p><a href="https://github.com/guard/guard">guard</a> 是一个自动监控文件夹变更,
+执行特定操作的工具. 如果你有这样的需求, 就可以用它.</p>
+
+<p>guard可以和rails整合,
+<a href="http://railscasts.com/episodes/264-guard?view=asciicast">这里</a> 是介绍.</p>
+
+<h2>使用方法</h2>
+
+<p>比如, 简单地监控当前文件夹里面的变更, 如果变了就重新编译一下,
+我们先装好一个插件: guard-rake 新建一个文件夹,里面2个文件:</p>
+
+<p>Guardfile :</p>
+
+<pre><code>guard 'rake', :task =&gt; 'default' do
+  watch(/(.*)/) 
+end
+</code></pre>
+
+<p>Rakefile:</p>
+
+<pre><code>task :default do
+  sh 'cpp xxx.c -o hello'
+  sh './hello'
+end
+</code></pre>
+
+<p>然后在这个文件夹里面执行:</p>
+
+<pre><code>guard
+</code></pre>
+
+<p>每次这个文件夹里面出现了文件变更, 就会重新执行一下default,
+编译执行一下代码, 省去了每次自己点击的操作了.</p>
+
+<h2>原理</h2>
+
+<p>我们使用一个工具的时候一般来说最好还是需要知道一下这个工具的基本工作原理,
+不然遇到问题的话也比较好解决.</p>
+
+<p>底层根据操作系统采用对应的文件系统监控API(Listener). 在linux下面是调用
+<a href="http://en.wikipedia.org/wiki/Inotify">inotify</a>.</p>
+
+<p>guard的插件, 需要继承Guard, 实现run_on_change/initialize/start/stop
+这些API就可以了.</p>
+
+<p>guard本身定义了一套DSL. 在Guardfile里面写的东西,
+就会连接到对应的插件上面去. 比如上面的例子, guard &lsquo;rake&rsquo;,
+下面就会调用guard-rake写的一个插件定义类.</p>
+
+<h2>livereload</h2>
+
+<p>guard有各种各样的插件, 这里介绍一个神奇的livereload. 它的作用是:</p>
+
+<p>在做rails开发的时候, 每次更新了一个源文件,
+我们需要手动去刷新一下网站页面. 它能够让你的网页自动刷新.</p>
+
+<p>原理:</p>
+
+<p>guard维护一个本地的服务器. 网页内嵌有一个js, 连接上这个服务器.</p>
+
+<p>当修改文件的时候, guard能够获知修改, 通知所有连上来的客户端, 本地有更新.
+js接收到更新, 会去自动刷新网页.</p>
+
+<p>具体安装需要几个:
+<a href="https://github.com/guard/guard-livereload">guard-livereload</a>
+作为guard插件.
+<a href="https://github.com/johnbintz/rack-livereload">rack-livereload</a>
+作为rails rack的一个中间件, 用来嵌入livereload的js.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/20/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/18/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

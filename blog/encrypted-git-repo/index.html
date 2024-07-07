@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>加密git远端版本库 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。 那么解决办法就是： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/encrypted-git-repo/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">加密git远端版本库</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-06-08T10:39:36+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>我打算把所有服务器的配置文件用git管理起来，这样可以记录配置变更状况。
+但是有一个问题是，如何多人协作？服务器配置信息非常敏感，如果这个版本库泄漏，整个公司的服务器架构就彻底泄漏了。
+这个版本库只能在开发者本地电脑里面解密，远程托管版本库的服务器不应该知道文件里面的内容。</p>
+
+<p>那么解决办法就是：本地git版本库是解密的，在上传过程中内容全部加密，密钥保存在本地，同时密钥可以分享给其他开发者。</p>
+
+<p>考虑了几个解决方案：</p>
+
+<p><a href="https://github.com/AGWA/git-crypt">git-crypt</a>：可以加密部分文件，原理是加上了加密的fiter和diff，
+但是官方说只适合加密部分文件，而不适合全版本库加密。部分文件加密很容易造成信息泄漏，一定要全版本库加密才适合。</p>
+
+<p>串联sshfs和远程服务器加密文件系统encfs：首先用sshfs加载远端文件系统，然后用encfs创建加密文件系统。
+我估计无法解决多人同时push情况下的竞争条件，并且encfs有安全漏洞，使用上push/pull之前需要加载两层文件系统，不是很方便。</p>
+
+<p><a href="https://github.com/spwhitton/git-remote-gcrypt">git-remote-gcrypt</a>用gpg进行远端加密。
+比较符合我预期的模式，但是用gpg不是特别方便协作。但是别的方法走不通，只有这个方法可用。</p>
+
+<h2>使用方法</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span><span class="c1"># 安装git-remote-gcrypt和gnupg</span>
+</span><span class='line'>sudo apt-get install git-remote-gcrypt gnupg
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 创建一个gpg的key，需要设置用户名，邮箱，描述等，不要设置过期时间</span>
+</span><span class='line'>gpg --gen-key
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 记录一下生成的key的ID，比如2048R/A0F0B575里面的A0F0B575，2048代表加密轮数，越多越不容易破解</span>
+</span><span class='line'>gpg --list-keys
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 生成一个测试版本库</span>
+</span><span class='line'>mkdir test1 <span class="o">&amp;&amp;</span> <span class="nb">cd</span> test1
+</span><span class='line'>git init .
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;test&quot;</span> &gt; a.txt
+</span><span class='line'>git add . <span class="o">&amp;&amp;</span> git ci -m <span class="s2">&quot;update&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 在你的github上面创建一个project，比如：https://github.com/halida/ttt</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 配置远端加密版本库</span>
+</span><span class='line'>git remote add cryptremote gcrypt::git@github.com:halida/ttt.git
+</span><span class='line'><span class="c1"># 最好指定用哪个key加密，这样可以共享这个key给其他人用</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span><span class='line'><span class="c1"># push到远端</span>
+</span><span class='line'>git push cryptremote master
+</span><span class='line'><span class="c1"># 访问远端版本库，看看文件内容，和commit里面的信息，是不是都是加密的？</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如何分享给其他人</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span><span class="c1"># 导出key</span>
+</span><span class='line'>gpg --export-secret-key -a <span class="s2">&quot;share@share.com&quot;</span> &gt; secretkey.asc
+</span><span class='line'><span class="c1"># 把secretkey.asc分享给其他人，拷贝的时候记得先压缩加密一下再发送，更安全</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 别人电脑里面导入</span>
+</span><span class='line'>gpg --import secretkey.asc
+</span><span class='line'><span class="c1"># 下载代码</span>
+</span><span class='line'>git clone gcrypt::git@github.com:halida/ttt.git test2
+</span><span class='line'><span class="c1"># 也要指定一下用什么key加密</span>
+</span><span class='line'>git config remote.cryptremote.gcrypt-participants <span class="s2">&quot;A0F0B575&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用这种方法，可以用git管理一些私密又需要协作的信息（比如服务器配置），
+也可以把github当作私密的版本控制系统来用（commit的消息还是明文的）。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-06-08T10:39:36+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/encrypted-git-repo/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/encrypted-git-repo/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/password-authentication-is-bad/" title="Previous Post: 比密码登录更好的权限验证方式">&laquo; 比密码登录更好的权限验证方式</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/retire-some-programming-languages/" title="Next Post: 我们需要淘汰一些编程语言">我们需要淘汰一些编程语言 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/encrypted-git-repo/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/encrypted-git-repo/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

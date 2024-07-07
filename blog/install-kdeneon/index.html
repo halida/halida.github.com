@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>在新笔记本上安装Kdeneon - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近我2012年底买的rmbp电脑越来越不给力,于是打算换一台新的笔记本,操作系统选回Linux.
+为什么要用Linux而不继续买苹果呢,因为看新的苹果笔记本没有什么大的改进,还有我慢慢不喜欢苹果的软件锁死策略了,
+Linux可选性更高也更适合开发工作. 新的笔记本我选择Precision &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/install-kdeneon/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">在新笔记本上安装Kdeneon</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-09T09:58:40+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近我2012年底买的rmbp电脑越来越不给力,于是打算换一台新的笔记本,操作系统选回Linux.
+为什么要用Linux而不继续买苹果呢,因为看新的苹果笔记本没有什么大的改进,还有我慢慢不喜欢苹果的软件锁死策略了,
+Linux可选性更高也更适合开发工作.</p>
+
+<p>新的笔记本我选择Precision 5520 4K屏幕版本.价格比较贵(2万多).
+为什么选这个呢,因为是我的主打生产笔记本,期待能够长期使用就选商用版本,
+屏幕好一些可以坚持比较久,也对自己眼睛好点.</p>
+
+<h2>具体笔记本长什么样</h2>
+
+<p><a href="http://imgur.com/a/Fb7Lt">见图册</a>.</p>
+
+<p>笔记本到货之后检查外观,检查系统配置是否和自己买的一样,检查屏幕是否有坏点.</p>
+
+<h2>安装Linux</h2>
+
+<p>现在回到主题,笔记本拿回来还是要安装Linux的.我选择Kdeneon作为发行版.
+因为我对debian系比较熟悉,同时也更喜欢KDE桌面.KDE官方网站推荐这个版本.</p>
+
+<p><a href="https://neon.kde.org/">官方网站</a>下载稳定版Kdeneon,
+下载之后检查了一下checksum防止下载错误,然后用<a href="https://unetbootin.github.io/">UNetbootin</a>烧录到USB闪存上面准备安装.</p>
+
+<p>第一个坑:<strong>无法进入Live系统</strong>.<a href="http://askubuntu.com/questions/38780/how-do-i-set-nomodeset-after-ive-already-installed-ubuntu">查了一下</a>发现是开源的nouveau驱动不支持新版的Nvidia显卡驱动,需要在启动的时候关闭,设置方法:
+grub里面Linux那一行尾部加上 <code>nomodeset</code>,之后就可以进入Live系统了.</p>
+
+<p>系统安装好之后也要改,修改文件<code>/etc/default/grub</code>,在<code>GRUB_CMDLINE_LINUX_DEFAULT</code>后面加上<code>nouveau.modeset=0</code>,
+之后执行<code>sudo update-grub</code>.</p>
+
+<p>系统安装好之后,可以自动识别一下显卡驱动,执行<code>sudo ubuntu-drivers devices</code>,然后根据提示,安装对应的驱动版本,比如:<code>sudo apt install nvidia-375</code>.</p>
+
+<p>第二个坑:<strong>磁盘无法识别</strong>,系统安装过程中提示<code>Ubi-partman failed with exit code 141</code>,发现是因为硬盘选项SATA->RAID中,用到了Intel RST driver,现在开源系统还不能很好地处理,需要换成其他设置.</p>
+
+<p>第三个坑:<strong>无法休眠</strong>,我已经习惯苹果笔记本的合起来休眠功能,但是系统装好之后,却发现只有Sleep,却没有Hibernate.
+<a href="http://askubuntu.com/questions/868208/how-to-activate-hibernation-in-16-04-1-systemd">找了一下</a>,
+发现是需要关闭<code>Secure boot</code>,不然无法控制休眠.回到BIOS关闭之后,执行<code>systemctl hibernate</code>成功了.</p>
+
+<p>但是在KDE下面还是没有办法使用Hiberrnate,我下载了KDE的电源控制UI<code>Powerdevil</code>,看到原理是ibus查询org.freedesktop.login1.Manager的CanHibernate,后端是logind.根据<a href="https://help.ubuntu.com/stable/ubuntu-help/power-hibernate.html">这篇文档</a>,增加了logind允许使用Hibernate的配置就可以了.</p>
+
+<p>第四个坑:<strong>中文输入法</strong>.系统安装好之后没有UI设置如何选输入法,以及什么中文输入法比较好,找来找去,还是用ibus-pinyin吧.
+安装:<code>sudo apt-get install ibus-qt4 ibus-gtk ibus-gtk3 ibus-pinyin</code>,启动执行<code>ibus-setup</code>.</p>
+
+<p>但是各个窗口都没有办法输入中文,怎么办?查了以下,设置了环境变量之后,窗口才会响应输入法,环境变量设置方法如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="nb">export</span> <span class="nv">XMODIFIERS</span><span class="o">=</span><span class="s2">&quot;@im=ibus&quot;</span>
+</span><span class='line'><span class="nb">export</span> <span class="nv">GTK_IM_MODULE</span><span class="o">=</span><span class="s2">&quot;ibus&quot;</span>
+</span><span class='line'><span class="nb">export</span> <span class="nv">QT_IM_MODULE</span><span class="o">=</span><span class="s2">&quot;ibus&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其实不用自己手动选择,用<code>im-config</code>,它会修改<code>~/.xinputrc</code>,增加<code>run_im ibus</code>,在进入桌面环境的时候设置这些环境变量.
+但是终端里面的环境变量还是要手动加到自己的shell初始化脚本里面.</p>
+
+<p>第五个坑:<strong>4K屏幕分辨率</strong>,因为屏幕分辨率很高,窗口都会很小,在KDE下,可以通过设置Display->Scale解决.
+不过还是有很多非KDE的程序,比如Steam,TeamViewer没有办法改,他们没有用到Qt的基础架构就没有办法scale了.
+我现在暂时没有找到简单的解决方案,就放着吧.</p>
+
+<p>第六个坑:<strong>PPTP客户端</strong>,设置好了之后,可以连接,但是连接之后本地的DNS死活解析不到,实在找不到原因,莫非是因为本地安装的dnsmasq的问题?现在只能用kcptun加ss解决问题.</p>
+
+<p>好吧弄了那么久,终于可以正常使用系统了.</p>
+
+<h2>常用软件</h2>
+
+<p>这些是我常用的工具:</p>
+
+<ul>
+<li>基础支持: <code>build-essential openssh-server default-jre curl</code></li>
+<li>常用软件: <code>tmux zsh tree etherwake</code></li>
+<li>开发相关: <code>emacs git-core ack-grep mysql-server redis-server</code></li>
+</ul>
+
+
+<p>然后一些手动安装的工具:</p>
+
+<ul>
+<li>Chrome: 官方下载</li>
+<li>Steam: 记得安装源里面的,官方下载的安装有问题</li>
+<li>proxychains-ng: github下载编译好的可执行文件</li>
+<li>ss: 源里面就有</li>
+<li>Dropbox: 官方下载</li>
+<li>OverDrive: Google Drive linux客户端,需要购买</li>
+</ul>
+
+
+<p>开发环境相关软件:</p>
+
+<ul>
+<li>Virtualbox: 官方下载就好</li>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>: zsh配置环境</li>
+<li>rvm: ruby环境</li>
+<li><a href="https://github.com/ysbaddaden/prax.cr">prax</a>: linux下类似<a href="http://pow.cx/">pow</a>的工具,可以输入域名:app.dev,自动启动和访问本地的ruby项目.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-09T09:58:40+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/install-kdeneon/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/install-kdeneon/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/link-domain-name-to-local-pc/" title="Previous Post: 研究如何给本地机器绑定域名">&laquo; 研究如何给本地机器绑定域名</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/gns3/" title="Next Post: GNS3介绍,安装和使用">GNS3介绍,安装和使用 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/install-kdeneon/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/install-kdeneon/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

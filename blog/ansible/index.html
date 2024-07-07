@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ansible介绍和服务器管理思考 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
+这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。 我觉得好的服务器管理方式应该是这样的： 能够定义服务器的功能， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/ansible/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ansible介绍和服务器管理思考</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
+这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。</p>
+
+<p>我觉得好的服务器管理方式应该是这样的：</p>
+
+<ul>
+<li>能够定义服务器的功能，通过写程序或者配置的方式说明服务器到底是怎么样的</li>
+<li>通过这个定义，自动化地配置服务器</li>
+<li>可以手动或者自动修改定义，更新整体的架构</li>
+<li>整个过程不要引入太多的复杂度，更好地反映服务器管理的本质</li>
+</ul>
+
+
+<p>以前我学习了一段时间的chef，整体架构偏复杂了。因为是server/agent架构，服务器上面要跑一个chef的监控程序，
+这样对于大规模的服务器来说是性能更好，但是对于大多数小公司来说，没有agent的模式就足够用了。执行速度上也偏慢。</p>
+
+<p>现在重新学习了解了ansible，觉得在复杂度和易用性上面平衡得很好。主要有几点：</p>
+
+<ul>
+<li>和host服务器的通讯采用ssh的方式，host不需要安装额外的软件，除了python-simplejson</li>
+<li>module插件是传输一个python文件到host执行，参数命令行传入，简洁快速</li>
+<li>整体架构上面尽量减少了复杂度，概念上只有playbook &ndash; role &ndash; module，我觉得足够满足抽象了</li>
+</ul>
+
+
+<p>用ansible这种服务器配置管理工具，我可以做到以下事情：</p>
+
+<ul>
+<li>设置翻墙/下载服务器，需要的时候可以快速创建</li>
+<li>定义公司的服务器架构，进行归一化配置，自动更新</li>
+<li>遇到性能瓶颈或者需要更新服务器的时候，快速创建应用服务器</li>
+</ul>
+
+
+<p>以后小规模的服务器管理，就变得很简单了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/ansible/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/ansible/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016-summary/" title="Previous Post: 2016年度总结">&laquo; 2016年度总结</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ruby-need-static-type-checking-system/" title="Next Post: ruby需要一个静态类型验证系统">ruby需要一个静态类型验证系统 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/ansible/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/ansible/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

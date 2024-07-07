@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用chef对少量服务器进行配置管理 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="原先介绍了chef，现在需要面对一个实际的问题：如何用chef管理少量的服务器。 我希望： 能够对几台或者十几台服务器进行配置管理。
+针对每台服务器，写yml格式的配置文件，执行一个命令之后，就可以配置好这台服务器，同时源码管控这个yml文件的变更。
+支持复杂的服务器配置，包括启动项目管理， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/chef-manage-small-group-of-servers/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用chef对少量服务器进行配置管理</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-05T10:12:09+08:00" pubdate data-updated="true">May 5<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原先<a href="http://blog.dev/blog/introduce-chef/">介绍了chef</a>，现在需要面对一个实际的问题：如何用chef管理少量的服务器。</p>
+
+<p>我希望：</p>
+
+<ul>
+<li>能够对几台或者十几台服务器进行配置管理。</li>
+<li>针对每台服务器，写yml格式的配置文件，执行一个命令之后，就可以配置好这台服务器，同时源码管控这个yml文件的变更。</li>
+<li>支持复杂的服务器配置，包括启动项目管理，自动告警，日志归总等。</li>
+<li>不需要管理服务器，比如chef-server这样的东西，只需要留有本地的配置文件。</li>
+</ul>
+
+
+<p>我采用的解决方案：</p>
+
+<ul>
+<li>用<a href="https://github.com/tobami/littlechef">littlechef</a>，这个项目可以把<a href="https://docs.chef.io/chef_solo.html">chef-solo</a>，一个本地跑chef的方法，部署到远端服务器上面去，同时拷贝本地的recipe和配置文件到远端，执行需要的操作。</li>
+<li>写recipe，让部署能够通过写node配置文件进行配置，比如启动服务，日志归总，服务器管理员用户，自动重启更新等。</li>
+<li>用yml格式撰写node配置文件，以及datatag配置文件，然后用自动化脚本转换成json格式。手动写json太反人类了。</li>
+<li>远端的脚本用ruby写，脚本里面的参数不是用erb渲染出来的，而是把配置序列化成yml，ruby脚本再读取它们。这样远端服务器上面的执行代码是规整的，人可以阅读。</li>
+</ul>
+
+
+<p>都弄好之后，可以写这样的服务器配置文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span></span><span class="nn">---</span>
+</span><span class='line'>  <span class="c1"># 服务器名字</span>
+</span><span class='line'>  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;test&quot;</span>
+</span><span class='line'>  <span class="c1"># 基础配置的recipe</span>
+</span><span class='line'>  <span class="l l-Scalar l-Scalar-Plain">base-system</span><span class="p p-Indicator">:</span>
+</span><span class='line'>    <span class="c1"># 是否跑软件包更新</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">update</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span class='line'>    <span class="c1"># 是否设置自动更新</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">auto-upgrade</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># base-system会自动创建一个deployer管理员用户，谁可以通过公钥的方式访问这个用户</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">authorized_keys</span><span class="p p-Indicator">:</span>
+</span><span class='line'>      <span class="p p-Indicator">-</span> <span class="s">&quot;linjunhalida&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 写在databags里面的配置参数，可以连接到slack发提醒</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">notify</span><span class="p p-Indicator">:</span> <span class="s">&#39;test&#39;</span>
+</span><span class='line'>    <span class="c1"># 是否每天判断服务器是否需要重启或者更新</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">check</span><span class="p p-Indicator">:</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">need_reboot</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">need_upgrade</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span class='line'>    <span class="c1"># 设置服务器定期重启</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">schedule-reboot</span><span class="p p-Indicator">:</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">minute</span><span class="p p-Indicator">:</span> <span class="s">&#39;26&#39;</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">hour</span><span class="p p-Indicator">:</span> <span class="s">&#39;8&#39;</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">weekday</span><span class="p p-Indicator">:</span> <span class="s">&#39;2&#39;</span>
+</span><span class='line'>    <span class="c1"># 设置服务器自动升级安全更新</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">schedule-upgrade</span><span class="p p-Indicator">:</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">reboot</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">minute</span><span class="p p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">hour</span><span class="p p-Indicator">:</span> <span class="s">&#39;0&#39;</span>
+</span><span class='line'>      <span class="l l-Scalar l-Scalar-Plain">weekday</span><span class="p p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span><span class='line'>    <span class="c1"># 服务器启动的时候跑的应用</span>
+</span><span class='line'>    <span class="l l-Scalar l-Scalar-Plain">start</span><span class="p p-Indicator">:</span>
+</span><span class='line'>      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;railsapp&quot;</span>
+</span><span class='line'>        <span class="l l-Scalar l-Scalar-Plain">user</span><span class="p p-Indicator">:</span> <span class="s">&#39;deployer&#39;</span>
+</span><span class='line'>        <span class="l l-Scalar l-Scalar-Plain">pwd</span><span class="p p-Indicator">:</span> <span class="s">&#39;/home/deployer/apps/railsapp/current&#39;</span>
+</span><span class='line'>        <span class="l l-Scalar l-Scalar-Plain">cmds</span><span class="p p-Indicator">:</span>
+</span><span class='line'>          <span class="p p-Indicator">-</span> <span class="s">&#39;bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">thin</span><span class="nv"> </span><span class="s">restart</span><span class="nv"> </span><span class="s">-C</span><span class="nv"> </span><span class="s">config/thin.yml&#39;</span>
+</span><span class='line'>          <span class="p p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">resque:restart_workers&#39;</span>
+</span><span class='line'>          <span class="p p-Indicator">-</span> <span class="s">&#39;RAILS_ENV=staging</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">ts:restart&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l l-Scalar l-Scalar-Plain">run_list</span><span class="p p-Indicator">:</span>
+</span><span class='line'>    <span class="p p-Indicator">-</span> <span class="s">&quot;recipe[chef-solo-search]&quot;</span> <span class="c1"># so chef-solo search can work</span>
+</span><span class='line'>    <span class="p p-Indicator">-</span> <span class="s">&quot;recipe[base-system]&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>chef部署之后，会创建目录<code>/etc/base-system</code>，里面存放各种配置和执行脚本，同时安装到crontab，/etc/rc.local等各种地方。
+服务器的关键操作，比如重启，安全更新结果，都会通过notify功能汇报到slack上面。
+我可以通过node配置文件，清晰看到每台服务器是如何配置的。并且这个系统可以演化，更换一种配置方式，只需要重新跑一下部署。</p>
+
+<p>不过还是有一些难办的问题：</p>
+
+<ul>
+<li>littlechef项目成熟度不高，使用起来不是很舒服。</li>
+<li>架构复杂：chef已经很复杂了，远端还要部署一个ruby环境，架构复杂带来调试和理解上面的难度。</li>
+<li>学习成本高：维护者需要弄懂chef，远端编织起来的ruby框架，之后才能配置服务器，最后可能只是需要加上一个小东西。</li>
+<li>维护成本：又多了一个项目了。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-05T10:12:09+08:00" pubdate data-updated="true">May 5<span>th</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/chef-manage-small-group-of-servers/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/chef-manage-small-group-of-servers/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/right-way-to-use-sns/" title="Previous Post: 正确使用社交网络的方法">&laquo; 正确使用社交网络的方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/learning-asp/" title="Next Post: 学习ASP.NET心得">学习ASP.NET心得 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/chef-manage-small-group-of-servers/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/chef-manage-small-group-of-servers/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

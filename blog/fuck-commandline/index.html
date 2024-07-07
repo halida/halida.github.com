@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>更好的命令行 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="命令行大家应该都熟悉了，但是命令行其实是很烂的，
+输入和输出都采用字符串的方式，而不是一个规整的数据结构。
+这样的后果是，每个程序都需要自己解析输入，以及提供一个特殊结构的输出，
+很容易出现解析上面的问题。 从本质上面说，命令行就是一个函数执行的接口，终端就是一个状态机，
+每一个命令就是一个函数。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/fuck-commandline/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">更好的命令行</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-23T08:56:28+08:00" pubdate data-updated="true">May 23<span>rd</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>命令行大家应该都熟悉了，但是命令行其实是很烂的，
+输入和输出都采用字符串的方式，而不是一个规整的数据结构。
+这样的后果是，每个程序都需要自己解析输入，以及提供一个特殊结构的输出，
+很容易出现解析上面的问题。</p>
+
+<p>从本质上面说，命令行就是一个函数执行的接口，终端就是一个状态机，
+每一个命令就是一个函数。那么为什么不像通用的编程语言的函数一样来定义？</p>
+
+<p>比如这样来写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="c1"># 普通操作</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">date</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Sat May 23 09:18:38 CST 2015&quot;</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">rm</span><span class="p">(</span><span class="s1">&#39;/fdas/fdas/fda&#39;</span><span class="p">,</span> <span class="ss">directory</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">force</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出结构化</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="p">{</span><span class="ss">mode</span><span class="p">:</span> <span class="s1">&#39;drwxr-xr-x&#39;</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">group</span><span class="p">:</span> <span class="s1">&#39;halida&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">}</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span><span class="p">(</span><span class="ss">columns</span><span class="p">:</span> <span class="o">[</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:size</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Gemfile.lock&#39;</span><span class="p">,</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">123</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 管道</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">history</span> <span class="o">&gt;&gt;</span> <span class="nb">select</span><span class="p">{</span><span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="n">row</span><span class="o">[</span><span class="ss">:cmd</span><span class="o">]</span> <span class="o">=~</span> <span class="sr">/mina/</span> <span class="p">}</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="ss">cmd</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mina init&#39;</span><span class="p">},</span> <span class="ss">run_at</span><span class="p">:</span> <span class="s1">&#39;2014-02-01 10:00:21&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">ls</span> <span class="o">&gt;&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Gemfile.lock&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 很多命令应该用面向对象的方式来执行，更容易理解</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span> <span class="o">=</span> <span class="n">git</span><span class="o">-</span><span class="n">get</span><span class="o">-</span><span class="n">commit</span><span class="p">(</span><span class="s1">&#39;master&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span><span class="mi">3</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">master</span><span class="o">.</span><span class="n">committer</span>
+</span><span class='line'><span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;James&#39;</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s1">&#39;james@gmail.com&#39;</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 输出日志就算是以文字的方式体现，也最好结构化起来，方便解析</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="s2">&quot;Process file (filename) finished, spend time (spendtime)&quot;</span><span class="p">,</span> <span class="ss">filename</span><span class="p">:</span> <span class="s2">&quot;xxx.mov&quot;</span><span class="p">,</span> <span class="ss">spendtime</span><span class="p">:</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">spendtime</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">220</span><span class="o">.</span><span class="n">seconds</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上搜索了一下，看起来没有什么好的解决方案，有时间我可以开发一个看看。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-23T08:56:28+08:00" pubdate data-updated="true">May 23<span>rd</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/fuck-commandline/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/fuck-commandline/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/rails-export-data/" title="Previous Post: rails导出数据经验整理">&laquo; rails导出数据经验整理</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/zhuangxiugongshi/" title="Next Post: 是否要用装修公司">是否要用装修公司 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/fuck-commandline/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/fuck-commandline/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

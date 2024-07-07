@@ -1,0 +1,1546 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
+我在这里整理一下自己在网站开发中使用cache的思路。 首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
+中间经过了很多的层级， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/15/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/website-cache/">网站cache机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-11T19:45:00+00:00" pubdate data-updated="true">Aug 11<span>th</span>, 2013</time>
+        
+         | <a href="/blog/website-cache/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/cache.jpeg"></p>
+
+<p>在网站开发中，cache机制是一个非常好用的性能提升方法。其实在其他领域，cache也有着广泛的应用。
+我在这里整理一下自己在网站开发中使用cache的思路。</p>
+
+<p>首先，网站的通讯模型并不复杂，所有的操作都是用户发起一个请求，然后服务器端回应请求返回数据。
+中间经过了很多的层级，按照用户端到服务器端的距离，可以分为：</p>
+
+<ul>
+<li>用户端：用户在浏览器上面进行一个操作。</li>
+<li>http通讯：浏览器根据用户操作，发起一个http请求并收到来自服务器的回复。</li>
+<li>页面渲染：网站服务器根据请求渲染页面返回用户。</li>
+<li>数据model：根据请求生成的对象模型和业务模型。</li>
+<li>数据库查询：服务器上面缓存的数据，提供数据持久化和访问服务。</li>
+</ul>
+
+
+<p><img src="/images/posts/website_model.png"></p>
+
+<p>同时，我们可以发现一些特性和规律：</p>
+
+<ul>
+<li>用户的访问符合2/8原理，大部分的访问集中在局部的功能和页面上面。</li>
+<li>上层访问下层资源的频率，也大致符合2/8原理。</li>
+<li>用户的响应时间取决于一次请求的深度。</li>
+</ul>
+
+
+<p>我们可以根据这些特性，利用cache机制来优化整体访问延迟时间，以及优化服务器性能。</p>
+
+<h2>方法和注意点</h2>
+
+<h3>短接</h3>
+
+<p>针对每个请求，越在上层返回，请求处理消耗的时间越少。所以如果要尽量提升性能，就要尽量短接请求。
+我们可以用cache，预测结果，拆分请求的方式来减少反应时间。</p>
+
+<ul>
+<li>cache：如果下面层级的数据没有更新，可以缓存这部分的数据，下次请求进来的时候返回，消除下层操作的时间成本和性能消耗。</li>
+<li>预测结果：针对结果确定的请求，可以先返回结果，后进行操作。
+比如浏览器端用户点击关注按钮，可以先更新页面，然后ajax发起请求；服务器端直接返回成功的结果，后台异步再进行处理。</li>
+<li>拆分请求：如果一个请求有多步操作，那么可以先返回快的操作，然后再返回慢的操作。
+比如先返回外框页面，通过ajax获得内部耗时区块信息；或者服务端多线程渲染不同的区块，最后合并返回给用户。</li>
+</ul>
+
+
+<p>针对不同层级的cache短接方法：</p>
+
+<ul>
+<li>用户端：用js缓存数据，用户点击的时候，渲染对应的区块。</li>
+<li>http：如果用户已经请求过这个页面，而这个页面也没有更改过，可以利用<a href="http://www.mobify.com/blog/beginners-guide-to-http-cache-headers/">http的cache机制</a>只返回http头，基本不消耗服务器资源以及砍掉服务器准备数据和渲染时间。</li>
+<li>页面渲染：如果页面其中一个区块的数据没有变更，直接返回上次渲染的页面。</li>
+<li>数据model和数据库查询：同上，数据没有变更，就可以返回上次生成的对象。</li>
+</ul>
+
+
+<h3>平衡</h3>
+
+<p>在进行cache设计的时候，我们需要平衡好开发成本，系统复杂度，性能，以及资源消耗，
+要对做的事情，带来什么样的后果和收益心中有数，针对不同的策略进行权衡。</p>
+
+<ul>
+<li><p>页面渲染：如果一个页面包含有静态的部分和动态的部分，可以把他们拆分开来，缓存静态的部分，节省这部分的渲染时间。
+但是如果这两块页面混杂起来，需要花费一些心思，比如用js来动态合并。由此给前端带来一定的复杂度。这部分的复杂度会带来更多的bug，更高的测试成本，以及未来改动更加困难。</p></li>
+<li><p>caceh机制需要考虑过期的方式。如何应对嵌套cache？如果cache内部是根据多个对象渲染的，
+是基于推还是基于拉的方式让cache过期？rails在这方面有<a href="https://github.com/rails/cache_digests">比较成熟的解决方案</a>。</p></li>
+</ul>
+
+
+<h3>降维</h3>
+
+<p>如果cache的数据维度过多，会造成cache爆炸。比如说页面需要根据语言，用户，国家等来生成，各维护一个版本的cache的话就有点多了，需要想办法降低维度：</p>
+
+<ul>
+<li>合并重复的数据，比如合并一些重复的国家和语言。</li>
+<li>拆分静态和动态的数据，比如前端js动态更新页面来做多国语言和跟用户有关的内容。不过也需要权衡由此带来的复杂度。</li>
+</ul>
+
+
+<p>同时也要考虑这些手段带来的复杂度是否能够把控。</p>
+
+<h3>热点优化</h3>
+
+<p>2/8原理：在消耗资源多的地方使力。比如在网站首页，列表的前几页等经常访问到的页面花大功夫，
+而不要太花时间去优化很少被访问到的地方。</p>
+
+<h3>ORM cache</h3>
+
+<p>csdn robbin<a href="http://robbinfan.com/blog/38/orm-cache-sumup">针对ORM cache优化</a>非常有心得，可以学习一下。</p>
+
+<h3>cache服务器</h3>
+
+<p>cache的实现方式，可以用文件，内存，或者单独的cache服务器。
+如果服务端采用多个进程来服务，最好采用一个cache服务器，
+这样不会出现每个进程各自维护一份同样内容cache的状况。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/nested-set-model/">Nested Set Model介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-27T16:15:00+00:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/nested-set-model/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_07_27_tree.jpg"></p>
+
+<h2>问题</h2>
+
+<p>我们很多时候，需要在传统的关系型数据库中间实现树状结构，
+比如说部门层级图，树状留言图等。</p>
+
+<p>一般来说，针对树状结构的操作有：</p>
+
+<ul>
+<li>访问一个节点</li>
+<li>增加一个节点</li>
+<li>删除一个节点及其子项</li>
+<li>移动节点</li>
+<li>遍历一个节点及其子项</li>
+</ul>
+
+
+<p>我们可以常用简单的数据结构实现，记录一个项目的父节点就可以了，比如：</p>
+
+<pre><code>Category: id integer, parent_id: integer, content: string
+</code></pre>
+
+<p>数据就是这样：</p>
+
+<pre><code>ID  |  PARENT_ID | content
+ 0  |    null    |   ...  
+ 1  |      0     |   ...  
+ 2  |      1     |   ...  
+ 3  |    null    |   ...  
+ 4  |      2     |   ...  
+ 5  |      4     |   ...  
+</code></pre>
+
+<p>这样的数据结构下面，遍历节点及其子项的操作需要用到迭代，
+在关系型数据库中，基本上有多少层的子项，就要多少SQL查询，
+为了保证一致性，需要用存储过程来实现这样的遍历，
+一个是麻烦另外一个是也会有性能问题。
+那么有什么好的解决方案呢？</p>
+
+<h2>Nested Set Model</h2>
+
+<p>我们可以换另外一种抽象方式来表示数据，
+假设我们把树状图中的每个节点当做一个集合，父节点集合包含了所有的子节点集合，
+那么我们可以把树转换成一个集合图：</p>
+
+<p><img src="/images/posts/2013_07_27_set.jpg"></p>
+
+<p>然后，我们把所有的集合都当做一个数值的范围，父节点集合范围包含了所有子节点集合的范围，
+那么集合图就会变成这样：</p>
+
+<p><img src="/images/posts/2013_07_27_set_number.jpg"></p>
+
+<p>这样一个节点可以用范围的两个数值来表示，比如：</p>
+
+<pre><code>ID  |  PARENT_ID |  lft  |  rgt  |  content
+ 0  |    null    |   1   |  10   |  ...  
+ 1  |      0     |   2   |   9   |  ...  
+ 2  |      1     |   3   |   8   |  ...  
+ 3  |    null    |  11   |  12   |  ...  
+ 4  |      2     |   4   |   7   |  ...  
+ 5  |      4     |   5   |   6   |  ...  
+</code></pre>
+
+<p>其中，lft和rgt分别代表范围的左边距和右边距。</p>
+
+<p>这样，我们可以通过这样的SQL来查询一个项目的所有子项：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span></span><span class="k">select</span> <span class="n">child</span><span class="p">.</span><span class="o">*</span> <span class="k">from</span>
+</span><span class='line'>    <span class="n">categories</span> <span class="k">as</span> <span class="n">child</span><span class="p">,</span> <span class="n">categories</span> <span class="k">as</span> <span class="n">parent</span>
+</span><span class='line'><span class="k">where</span>
+</span><span class='line'>    <span class="n">child</span><span class="p">.</span><span class="n">lft</span> <span class="k">between</span> <span class="n">parent</span><span class="p">.</span><span class="n">lft</span> <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">rft</span>
+</span><span class='line'>    <span class="k">and</span> <span class="n">parent</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一行SQL就可以解决问题，非常方便。不过带来的代价是添加和移动上面的复杂度。</p>
+
+<h2>具体实现</h2>
+
+<p>首先是如何初始化一棵树。做法很简单，
+深度优先遍历这棵树，然后按顺序赋值，维护一个当前最大顺序即可。
+ruby代码实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">init_tree</span> <span class="n">root_nodes</span>
+</span><span class='line'>  <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">set_value</span> <span class="n">node</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">lft</span> <span class="o">=</span> <span class="n">count</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">child</span> <span class="k">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span>
+</span><span class='line'>      <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="n">set_value</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">rgt</span> <span class="o">=</span> <span class="n">count</span>
+</span><span class='line'>    <span class="n">node</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="n">root_node</span> <span class="k">in</span> <span class="n">root_nodes</span>
+</span><span class='line'>    <span class="n">set_value</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>添加一个节点，把父节点尾部rgt，以及之后的所有位置统统移后2位即可，
+用一行SQL就可以实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span></span><span class="k">update</span> <span class="n">categories</span> <span class="k">set</span>
+</span><span class='line'>    <span class="n">rgt</span> <span class="o">=</span> <span class="n">rgt</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">lft</span> <span class="o">=</span> <span class="n">lft</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span class='line'><span class="k">where</span>
+</span><span class='line'>    <span class="n">lft</span> <span class="o">&gt;</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>移动一个节点比较复杂，因为要把范围内的子项也一起移动走。
+操作基本上就是把节点范围内的所有项目（包括自己）移动到目标位置，
+然后把目标位置和当前位置之间的所有项目也更新到应该对应的位置上面。
+具体实现比较复杂，你可以去看<a href="https://github.com/collectiveidea/awesome_nested_set/blob/master/lib/awesome_nested_set/move.rb">awesome_nested_set的具体实现</a>。</p>
+
+<p>其他的操作非常简单就不给出示例了。</p>
+
+<h2>结论</h2>
+
+<p>采用nested set model可以很方便地实现树状结构，
+具有很好的查询效率。不过在添加项目和移动项目上面有比较大的代价。
+如果项目非常多，操作可能就不是很经济了。
+我在想，应该有好的算法能够让每次更新的项目变得最少，
+不知道大家是否知道有这样的算法？</p>
+
+<h2>使用到的工具和库</h2>
+
+<p>Rails下面有一个Gem叫<a href="https://github.com/collectiveidea/awesome_nested_set">awesome_nested_set</a>来实现这种结构，
+利用它来实现的一个树状评论Gem
+<a href="https://github.com/elight/acts_as_commentable_with_threading">acts_as_commentable_with_threading</a>
+。如果你有兴趣，可以去看看具体的源码。</p>
+
+<h2>引用材料</h2>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Nested_set_model">wikipedia</a></li>
+<li><a href="http://threebit.net/tutorials/nestedset/tutorial1.html">tutorial</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/website-support-retina-device/">如何支持视网膜屏幕</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T15:42:00+00:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+        
+         | <a href="/blog/website-support-retina-device/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近网站版本更新，过程中发现有需要针对视网膜屏幕做优化，
+不然普通的图片在rmbp或者new iPad上面看起来一片模糊，体验很不好。
+调研了一下，发现有无数种方法，这里整理一下，欢迎大家拍砖。</p>
+
+<h2>css background解法</h2>
+
+<p>根据<a href="http://cocoathings.blogspot.com/2013/02/safari-and-retina-images.html">这里的方法</a>，在CSS里面写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span></span><span class="p">.</span><span class="nc">aClass</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">background</span><span class="p">:</span> <span class="nb">url</span><span class="p">(</span><span class="sx">image.png</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">background</span><span class="p">:</span> <span class="bp">-webkit-</span><span class="nf">image-set</span><span class="p">(</span><span class="nb">url</span><span class="p">(</span><span class="sx">image.png</span><span class="p">)</span> <span class="mi">1</span><span class="n">x</span><span class="p">,</span> <span class="nb">url</span><span class="p">(</span><span class="sx">image_2x.png</span><span class="p">)</span> <span class="mi">2</span><span class="n">x</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样需要把所有图片都放到css里面，比较复杂，需要设计一个预编译流程。</p>
+
+<h2>gem js解法</h2>
+
+<p>如果你用rails，这里有一个针对的gem可以用：<a href="https://github.com/jhnvz/retina_rails">retina_rails</a>。</p>
+
+<p>它的方法是跑一个<a href="https://github.com/imulus/retinajs">js脚本</a>，检查是否是retina设备，
+如果是的话，搜索所有页面上的img，然后替换成2倍分辨率的图片文件（在原先图片文件名后面加上@2x，当然也有办法自己设置）。</p>
+
+<p>它首先需要页面加载好低分辨率的图片，然后计算大小并且限定，然后替换成高分辨率的图片。
+页面的图片会首先模糊，然后变成清晰的，并且它依赖到了js，在js加载之后才会工作，不能直接展示好一个完美的页面。</p>
+
+<h1>rewrite解法</h1>
+
+<p>在<a href="http://stackoverflow.com/a/16848459/73048">stackoverflow上面</a>看到的一个有趣的解法，
+用js判断是否是retina设备，然后在cookie里面加上是否是retina的标示，服务器端发现如果有这个参数的话，返回对应大小的图片。</p>
+
+<p>这种解法很巧妙，不过需要服务器端支持，并且文件规则要统一，对于rails这种文件名带有tag的部署方式就不太好支持。</p>
+
+<h2>svg图片解法</h2>
+
+<p>图片全部都用svg，然后就没有模糊的问题了。不过有些浏览器不支持svg，以及不是所有图片都可以做成svg的。</p>
+
+<h2>缩小大图片解法</h2>
+
+<p>直接用一个2倍长宽的大图片，然后设置好大小成小尺寸。实现起来最简单，
+但是问题是比较消耗带宽，以及大图片缩小的方式是浏览器的缩放算法，并不是点阵完美的。</p>
+
+<h2>其他网站用到的方法</h2>
+
+<p>上面是我看到的一些解决方法，然后我也去看了一下一些著名网站是如何解决这个问题的：</p>
+
+<ul>
+<li><a href="http://apple.com/">apple</a> 图片地址用js获得然后显示，然后一部分图片没有针对retina优化。</li>
+<li><a href="http://v2ex.com/">v2ex</a> 直接用2倍图片。</li>
+<li><a href="http://ruby-china.org/">ruby-china</a> 也直接用2倍图片。</li>
+<li><a href="https://github.com/">github</a> 图片全部放在css里面，好狠！</li>
+<li><a href="http://twitter.com/">twitter</a> 没有针对retina优化，图片是模糊的。</li>
+<li><a href="http://dribbble.com/">dribbble</a> 也是用大图。</li>
+<li><a href="http://google.com/">google</a> 也是放在css里面。</li>
+</ul>
+
+
+<h2>我的解决方案</h2>
+
+<p>考虑到实现方式，带宽消耗等问题，我首先采用gem的方法，同时做出来了一些简单的修改。
+img加上data-at2x，里面放置了retina图片的地址，然后js只针对所有设置这个属性的图片进行修改。</p>
+
+<p>针对会造成图片模糊然后变清晰的状况，我考虑直接返回image是retina的版本。
+第一次可以用这个js插件，然后设置cookie，然后服务器返回retina图片的版本。</p>
+
+<p>考虑了上面这个复杂的解决方案，我还是放弃了，还是直接用2x图片吧，最简单。其实图片也不会大多少，
+因为大多数图片还是区块比较多的，压缩算法已经很好地处理了这种状况了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/recommander-similar-items/">如何实现推荐类似文章功能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-13T20:31:00+00:00" pubdate data-updated="true">Jun 13<span>th</span>, 2013</time>
+        
+         | <a href="/blog/recommander-similar-items/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/recommander-similar-items.jpg"></p>
+
+<p>我最近在调整我们网站<a href="http://gurudigger.com">GuruDigger</a>的类似文章推荐功能。
+原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
+我需要采用更好的方式来处理这个问题。</p>
+
+<h2>整体思路</h2>
+
+<p>推荐文章可以用协同过滤（<a href="http://en.wikipedia.org/wiki/Collaborative_filtering">Collaborative Filtering</a>），
+不过要业务逻辑符合这个模式，以及数据量足够大才行，我还是用基于文章内容（Content Based）的算法来解决。</p>
+
+<p>具体思路：</p>
+
+<ul>
+<li>首先是分词。文章需要拆分成单元为词的串，然后才有办法处理。</li>
+<li>然后从词串中获取能够代表文章内容意思的关键词。</li>
+<li>然后基于文章的关键词，来选择类似的文章。</li>
+</ul>
+
+
+<p>这种方法，文章数据只被利用到了词和词出现频率的信息，
+另外也可以通过基于语义的方式来分析出更多内容，
+对应的学术领域叫做<a href="http://en.wikipedia.org/wiki/Topic_modeling">Topic Modeling</a>，
+我现在这个思路算是一个很简单的方法。</p>
+
+<h2>分词</h2>
+
+<p>采用<a href="http://technology.chtsai.org/mmseg/">mmseg</a>的分词方法。原理看起来比较简单，大家可以稍微了解一下。
+具体实现采用的库是针对ruby的绑定<a href="https://github.com/pluskid/rmmseg-cpp">rmmseg-cpp</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">require</span> <span class="s1">&#39;rmmseg&#39;</span>
+</span><span class='line'><span class="no">RMMSeg</span><span class="o">::</span><span class="no">Dictionary</span><span class="o">.</span><span class="n">load_dictionaries</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_word_split</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">algor</span> <span class="o">=</span> <span class="no">RMMSeg</span><span class="o">::</span><span class="no">Algorithm</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">while</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">algor</span><span class="o">.</span><span class="n">next_token</span>
+</span><span class='line'>    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">to_utf8</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">out</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">to_utf8</span> <span class="n">text</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>提取关键词</h2>
+
+<p>分词完毕之后，还需要初步筛掉一些对了解文章内容不需要的词，这种词叫做<a href="http://zh.wikipedia.org/zh/%E5%81%9C%E7%94%A8%E8%AF%8D">停用词</a>，
+我随便在网络上面下载了一份，大致能用，<a href="/assets/posts/chinese_stop_words.txt">在这里下载</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">stop_words</span>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;chinese_stop_words.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">sort</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_filter_stop_words</span> <span class="n">words</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">words</span> <span class="o">-</span> <span class="n">stop_words</span><span class="p">)</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">stop_words</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">sw</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">word</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对了，分词之前，还需要对文章预处理一下，去掉一些比较杂的东西。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">cn_tokenize</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'>  <span class="c1"># Strip all HTML</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/&lt;[^&lt;&gt;]+&gt;/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># Strip all number</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[0-9]+/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># strip all url</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/(http|https):\/\/[^\s]*/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_word_split</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_filter_stop_words</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>我采用<a href="http://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>的方式给文章中所有词算好一个权重。
+关于tf-idf的介绍，可见<a href="http://www.ruanyifeng.com/blog/2013/03/tf-idf.html">这里</a>。</p>
+
+<p><img src="/images/posts/tf-idf.png"></p>
+
+<p>我采用的是一个叫<a href="https://github.com/reddavis/TF-IDF">tf_idf</a>的Gem，
+同时我把文章title，tag等也当做词加入进文章内容中。为了表示title和tag的重要性，
+出现在title和tag中的词，相当于出现在文章中的次数为系数k（我选取的是10和5）。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">pre_token</span> <span class="n">item</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">dw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">gw</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">taggings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">gw</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">dw</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;tf_idf&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">caculate</span> <span class="n">items</span>
+</span><span class='line'>  <span class="n">corpus</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">pre_token</span><span class="p">(</span><span class="n">item</span><span class="p">)}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">data</span> <span class="o">=</span> <span class="no">TfIdf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">tf_idf</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>选择类似的文章</h2>
+
+<p>把文章抽象成一个在关键词作为维度的多维空间的向量，然后2篇文章的相似度就是它们之间的夹角。
+这种方法叫<a href="http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html">余弦相似度</a>。
+按照<a href="en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
+
+<p><img src="/images/posts/cosine-similarity.png"></p>
+
+<p>实现起来很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span>  <span class="k">def</span> <span class="nf">similars</span> <span class="n">data</span><span class="p">,</span> <span class="n">d1</span>
+</span><span class='line'>    <span class="n">data</span><span class="o">.</span><span class="n">each_with_index</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d2</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">same_keys</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">keys</span> <span class="o">&amp;</span> <span class="n">d2</span><span class="o">.</span><span class="n">keys</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">=</span> <span class="n">same_keys</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">d1</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">*</span> <span class="n">d2</span><span class="o">[</span><span class="n">k</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">/=</span> <span class="p">(</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span> <span class="o">*</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>      <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">i</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面函数返回的就是按照相似度排列的item列表了。
+我考虑只展示前5个相似度比较高的，如果还是没有，选择相似度最高的2个。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">filter_similars</span> <span class="n">similars</span><span class="p">,</span> <span class="n">i</span>
+</span><span class='line'>  <span class="n">selected</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="n">similars</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># escape same item</span>
+</span><span class='line'>    <span class="k">next</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar for score too low</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">selected</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">selected</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>稍微调整一下之后，列出来相似文章还是大致靠谱的。关于整体开发过程，还是有一些可以说的。</p>
+
+<p>在调研上面花费了很多时间，走了弯路。这个领域我不熟悉，搜索资料，尝试各种其他方法上面，花费了不少的时间。
+比如有一个python专门关于Topic Modeling的库叫<a href="http://radimrehurek.com/gensim/">gensim</a>，
+我打算用它，不过现在项目主要用ruby，我尝试互相调用，最后还是失败了，还是走回全部ruby的方法。</p>
+
+<p>现在全部流程是批次的，每次有新的文章进来，都需要重新算，一次计算需要消耗我自己rMBP时间100秒左右，
+计算开销还是很大的。不过现在网站压力不大，放到后台慢慢算。</p>
+
+<p>关于推荐准确率，瓶颈主要在关键词获取，现在的方案中，分数比较高的词很多还是会不准确，
+如果要提升的话，可能要用更多数据输入过滤掉更多的词，或者通过语义分析只提取名词，
+不过现在得到的结果还行，优化的问题等真正需要面对的时候再说，先去做其它一些更重要的事情吧。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/continuous-integration-systems/">持续集成测试系统评估</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-04T23:11:00+00:00" pubdate data-updated="true">Jun 4<span>th</span>, 2013</time>
+        
+         | <a href="/blog/continuous-integration-systems/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/Continuous_Integration.png"></p>
+
+<p>今天打算弄一个<a href="http://en.wikipedia.org/wiki/Continuous_Integration">持续集成</a>系统，
+用来自动化测试我们<a href="http://gurudigger.com/">GuruDigger</a>的代码。选型和测试结果如下。</p>
+
+<h2>gitlab-ci</h2>
+
+<p><a href="http://gitlab.org/">gitlab-ci</a>和GitLab是一起的，安装过程非常复杂，需要创建系统用户等等，我安装失败就没有继续了。</p>
+
+<h2>cruisecontrol.rb</h2>
+
+<p><a href="https://github.com/thoughtworks/cruisecontrol.rb">cruisecontrol.rb</a>是thoughtworks的一个东西，安装还是比较简单的。</p>
+
+<ul>
+<li>首先把源代码下载下来。</li>
+<li>替换gemspec里面的<code>rcov</code>成<code>"simplecov-rcov", '0.2.3'</code>，因为rcov不支持1.9.x之后的版本。</li>
+<li><code>bundle install</code>。</li>
+<li><code>./cruise start</code>启动服务器。</li>
+<li>访问3333端口网站，或者用<code>./cruise</code>命令行进行操作。</li>
+</ul>
+
+
+<p>不过这个项目看起来很老了，也没有什么更新，功能上面看起来也很简单，只是点击跑一下测试显示结果，不是很满足要求。</p>
+
+<h2>travis-ci</h2>
+
+<p><a href="https://travis-ci.org">travis-ci</a>它可以针对github的开源项目免费测试，针对私有项目就没有办法了，可以去<a href="https://github.com/travis-ci/travis-ci">下载安装源码</a>，不过上面说还不稳定不推荐自己折腾。</p>
+
+<h2>cijoe</h2>
+
+<p><a href="https://github.com/defunkt/cijoe">看起来</a>使用比较简单，不过我死活没有跑起来。
+更新也还是2年以前，放弃之。</p>
+
+<h2>jenkins</h2>
+
+<p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins">好像是</a>比较受欢迎的CI系统，
+安装非常简单，只要下载war文件，然后执行<code>java -jar jenkins.war</code>，之后访问8080端口网站即可。
+不过添加测试用例的过程就有点复杂，我还没有深入。看起来jenkins是我需要的东西。(待续)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/no-need-real-book-any-more/">把书籍全部电子化</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-26T22:43:00+00:00" pubdate data-updated="true">May 26<span>th</span>, 2013</time>
+        
+         | <a href="/blog/no-need-real-book-any-more/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/ebook.jpg"></p>
+
+<p>最近，我开始实践完全的书籍电子化方案，渐渐<a href="http://www.douban.com/note/275080812/">把现在手头上拥有的实体书都出掉</a>。
+我认为现在的书籍电子化方案已经非常成熟，留存实体书，对于我来说，已经没有太多实际意义。
+我同时也建议大家评估一下，看看要不要采用这种方案。</p>
+
+<h2>电子书的优点</h2>
+
+<p>首先，电子书<strong>不占空间</strong>。实体书需要书柜放置，如果住在大城市，书柜本身占用面积对应的房价，
+不知道比书本身贵多少倍。书非常笨重，经常搬家的人应该知道在所有的东西里面，
+书籍是单位体积下面最重的。我在电脑里面可以随随便便放上千本书，所占用的硬盘空间可以忽略不计。</p>
+
+<p>电子书<strong>检索非常方便</strong>。当我需要寻找一本电子书的时候，我不需要去在书柜里面一本本翻，
+我只需要利用操作系统的全局搜索功能，输入关键词即可。
+如果我需要在一本书里面找一个我想要寻找的段落，不需要一页页地翻，
+用电子书应用程序内置的搜索就轻松完成目标。</p>
+
+<p>电子书<strong>方便携带</strong>。就算是最小的书，也比我的手机大很多，
+我可以在手机里面放很多本电子书，在任何想看书的时候，都可以打开来看。</p>
+
+<p>电子书<strong>有很好的软件辅助</strong>。可以内嵌字典，可以设置书签，可以拷贝内容，
+比实体书方便很多。</p>
+
+<h2>不足之处</h2>
+
+<p>电子书有这些优点，比较起来也有一些缺点，不过对于我来说问题不大。这里一一说明。</p>
+
+<p>电子书<strong>阅读吃力</strong>。这个应该说是对于电子书最广泛的批评了。很多人偏好实体书也主要是这个原因。
+我现在看电子书有几种方式：在我的<a href="http://blog.linjunhalida.com/blog/new-mac-book-pro/">笔记本rMBP</a>上面，iPad上面，以及我的手机上面。
+在这些平台，我的眼睛没有出现任何问题。rMBP和new iPad采用retina屏幕，看东西非常舒服，
+不会出现其他液晶屏看久了眼睛难受的状况。如果你没有这些设备，我建议你可以考虑买一台。</p>
+
+<p>很多<strong>实体书没有电子版</strong>。这个问题的确不好办，这种状况也只能购买实体书了。
+不过还有另外的解决办法。现在有很多扫描仪可以用，<a href="http://jandan.net/2009/12/12/diy-book-scanner.html">专门扫描全书的设备</a>也有，
+淘宝上面有很多<a href="http://s.taobao.com/search?q=%CA%E9%BC%AE%C9%A8%C3%E8">书籍扫描服务和设备</a>。
+对于我来说，除了新书，基本没有发现找不到电子版的状况。好书一定有很多人需要，很多人需要一般就会有电子版放出来。</p>
+
+<h2>一些经验</h2>
+
+<p>电子书往往有多种格式，比如pdf，epub，mobi等，我比较喜欢epub，因为格式开放，
+同一份电子书文件可以在电脑，手机上面阅读。pdf次之，因为我只能在电脑和iPad上面获得好的展示效果。
+至于其他各种第三方的格式，使用不便我一般不搜集。</p>
+
+<p>如果我听说了一本好书想要下载，我会直接用google搜索那本书的名字+下载，
+一般都会有，主要放出来的地方是新浪爱问，或者各种专业领域论坛。
+我一般看英文书，如果不是教科书和专业书籍（贵死了买不起），
+我会选择直接购买。amazon.com购买英文电子书，卓越亚马逊购买中文电子书。</p>
+
+<p>我会按照类型把书籍整理起来，放到对应的文件夹里面去，而全部的书籍文件夹，
+我会采用dropbox同步，你可以用国内的<a href="https://jianguoyun.com/">坚果云</a>服务。
+这样这些资料不会丢失，并且可以很方便地分享给其他人。
+最好你用一些全局搜索工具监控这个文件夹，方便需要的时候快速检索。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/email-css/">如何写邮件样式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T21:29:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/email-css/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/email_css.jpg"></p>
+
+<p>最近一段时间都在写邮件的样式，以及测试邮件在各种邮箱中的展示效果，搞得焦头烂额，痛定思痛，在这里整理获得的一些撞墙经验吧。</p>
+
+<h2>基本的原则</h2>
+
+<h3>用table来控制架构</h3>
+
+<p>虽然现在css已经进化到<a href="http://www.hongkiat.com/blog/coding-graphics-with-css3/">可以用来画画的地步</a>，
+但是各种邮箱客户端往往各自为政，你调试得非常完美的邮件，在用户那边，被客户端蹂躏得惨不忍睹。
+我们还是需要退而求其次，找一个各种客户端都支持得非常好的布局方案：利用<code>table</code>来布局。</p>
+
+<p>用table的方式安排页面各个元素的方法，有着悠久的历史，虽然不优雅，但是能够解决问题。
+删除掉各种在web端应用广泛的<code>float</code>，<code>position</code>吧，勇敢回归<code>table</code>。</p>
+
+<h3>inline css样式</h3>
+
+<p>邮件中带有css外链？邮件中含有<code>&lt;style&gt;</code>区块？很抱歉，在<code>Gmail</code>以及各种在线邮箱客户端中，
+它们都会被当做嫌疑分子，有杀错没漏过地一律干掉。唯一可以通行的就只有嵌入在tag中的<code>style</code>属性了。
+不过不要紧，你不需要手写这些，现在有很多第三方的工具来帮助你自动生成，比如<a href="https://github.com/alexdunae/premailer">premailer</a>。</p>
+
+<h3>注意可用的css样式</h3>
+
+<p>虽然<code>style</code>可以通行，但是广大客户端为了显示正常，还会过滤掉一些影响大局稳定的css属性，
+比如Gmail就会杀掉<code>position: absolute</code>的样式，hotmail看<code>float</code>不顺眼。</p>
+
+<p>还有就是客户端应用程序的邮件显示渲染系统一般进行了客制化，邮件的样式还是最好还是限制在css1/css2标准里面安全一些。</p>
+
+<p>有一个<a href="http://www.campaignmonitor.com/css/">各个客户端的css支持表格</a>，聊胜于无。</p>
+
+<h3>text模式和html模式</h3>
+
+<p><a href="http://webmarketingtoday.com/articles/html-email-multi/">按照需要</a>，
+一封邮件可以同时提供<code>text</code>和<code>html</code>两份，用户可以选择自己喜欢的看。
+如果你的用户期望看到<code>text</code>格式的邮件，最好提供一份。</p>
+
+<h3>显示图片和非显示图片</h3>
+
+<p>因为安全因素考虑，大多数邮件客户端都不默认显示邮件的图片，需要用户手动确认。
+所以你的邮件必须要能够在这种情况下面显示得不至于太寒碜。</p>
+
+<h2>各种需要处理状况</h2>
+
+<p>上面这些都是总览，这里整理一些其他额外需要注意的状况。</p>
+
+<p>gmail会根据你的文字宽度给你添加<code>&lt;wbr&gt;</code>的标签强制换行。我最后采用<code>table</code>布局的方式解决了这个问题。</p>
+
+<p>不同平台下的不同浏览器会采用不同的字体。所以你也页面不要根据开发环境的字体预设宽度。</p>
+
+<p>有些android手机（比如我的galaxy nexus）gmail客户端会限制页面的宽度，有些文字段落会压缩掉宽度，没有找到解决办法。</p>
+
+<h2>测试</h2>
+
+<p>邮件显示效果的测试，我觉得是最烦的一件事情了。维度太多。需要测试的有：</p>
+
+<ul>
+<li>不同的邮件客户端，thunderbird，outlook，foxmail，它们还有不同的版本。</li>
+<li>不同的在线邮箱在不同浏览器下面展示的效果。维度大概是在线邮箱系统数量乘以浏览器数量了。</li>
+<li>不同操作系统。主要是字体影响比较大。</li>
+<li>多平台，各种手机客户端，平板设备。现在是移动时代，很多人有在移动设备上读邮件的习惯。</li>
+</ul>
+
+
+<p>全部测试一遍很不现实，只能根据用户特征把主流的一些环境测试一下。</p>
+
+<h2>经验</h2>
+
+<p>花费了那么多时间，这里整理一下主要的经验以供借鉴：</p>
+
+<p>如果简单的邮件，只是改一份文件就好，如果模块复杂，还是需要根据区块拆分一下。
+也可以用一些预处理的工具来让文件变得更易读。
+我是用haml，sass，以及rails的render partial功能来把复杂邮件模块化的。</p>
+
+<p>因为邮件需要不断地调整，最好养成完成一个部分的改动后就<code>git commit</code>一下，或者至少<code>git add</code>变动，
+因为很容易在改动中造成错误。</p>
+
+<p>要进行流程控制，每次修改完毕后都过一遍测试，总是会出现一个环境改动正确了，其他环境又出现展示问题的状况。</p>
+
+<h2>资料</h2>
+
+<ul>
+<li><a href="http://www.reachcustomersonline.com/how-to-code-html-email-newsletters-all-new-version/">详细的如何写邮件样式的教程</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/reliable-email-delivery/">保证电子邮件的送达率</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T19:15:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/reliable-email-delivery/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/email.jpg"></p>
+
+<p>现在大多数网站都会发送各种各样的邮件，保证邮件送达率至关重要，这里整理一下我调研的一些结果。</p>
+
+<p>要让邮件正常到达用户的收件箱，需要保证几点：</p>
+
+<ul>
+<li>让收件方验证邮件来源是非伪造的，需要设置<code>PTR</code>，<code>SPF</code>，<code>DKIM</code>。</li>
+<li>让收件方认可发送者是可靠的。</li>
+</ul>
+
+
+<h2>如何让收件方验证邮件来源是非伪造的</h2>
+
+<h3>PTR</h3>
+
+<p>ptr是<a href="http://en.wikipedia.org/wiki/List_of_DNS_record_types">DNS记录的一种类型</a>，有一个用途在于反方向从IP推导到域名，比如：</p>
+
+<pre><code>dig -x 203.208.36.17
+</code></pre>
+
+<p>把DNS的<code>MX</code>类型记录指向到你邮件服务器的地址一般就可以了。</p>
+
+<h3>SPF</h3>
+
+<p>SPF(<a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>)这是一套电子邮件验证系统，通过在DNS记录中添加一个TXT类型的记录，指定谁有权以域名的名义发送邮件。如果你没有设置这条记录，很容易就被当做非法邮件spam掉。</p>
+
+<p>这里是<a href="http://www.zytrax.com/books/dns/ch9/spf.html">配置方法</a>，以及一个简单的例子：</p>
+
+<pre><code>v=spf1 a mx ptr include:spf.mtasv.net ~all
+</code></pre>
+
+<p>这一行主要说明spf.mtasv.net(<a href="https://postmarkapp.com/">postmark</a>，一个邮件发送服务商)代发的邮件是被认可的。</p>
+
+<p>如果你域名挂靠在<a href="http://bluehost.com">bluehost</a>上面，这里是<a href="http://www.mail-tester.com/spf/bluehost#create-spf-record">对应的设置方法</a>。</p>
+
+<p>设置完毕，等待生效后，可以通过这种方式验证是否设置成功：</p>
+
+<pre><code>dig txt your-domain.com
+</code></pre>
+
+<p>返回的信息需要带有你设置的SPF记录。</p>
+
+<h3>DKIM</h3>
+
+<p>邮件本身是纯文本，协议也没有防止伪造的部分，在发送的过程中很容易被篡改，
+DKIM(<a href="http://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail</a>)
+对邮件用私钥加密，同时公钥信息放在域名DNS上面，这样收件方就可以验证邮件的真实性。</p>
+
+<p>如果你用<code>ubuntu</code>以及<code>postfix</code>，这里是<a href="https://help.ubuntu.com/community/Postfix/DKIM">设置教程</a>，以及一个简略的安装过程整理：</p>
+
+<ul>
+<li>安装<code>opendkim</code> <code>sudo aptitude install opendkim</code></li>
+<li>设置 <code>/etc/opendkim.conf</code></li>
+<li>告诉<code>postfix</code>采用<code>opendkim</code>，设置<code>/etc/postfix/main.cf</code></li>
+<li>启动和重启对应的服务。</li>
+</ul>
+
+
+<p>原理很简单，运行<code>opendkim</code>进程服务器，然后<code>postfix</code>把它当做一个过滤器来用，设置完成之后，对于所有的邮件，都会加上一个<code>DKIM-Signature</code>，一个具体的例子：</p>
+
+<pre><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.net; s=brisbane;
+c=relaxed/simple; q=dns/txt; l=1234; t=1117574938; x=1118006938;
+h=from:to:subject:date:keywords:keywords;
+bh=MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=;
+b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
+</code></pre>
+
+<p>一些参数的含义：</p>
+
+<ul>
+<li><code>b</code>：具体的数字签名。</li>
+<li><code>bh</code>：body hash。</li>
+<li><code>d</code>：签名的域名。</li>
+<li><code>s</code>：selector。一个域名可能有多个邮件发送服务器，需要用一个selector来区分。</li>
+</ul>
+
+
+<p>然后接收方就会去检查<code>brisbane._domainkey.example.net</code>的DNS记录，你可以通过这种方式来查看是否它设置正确：</p>
+
+<pre><code>dig txt brisbane._domainkey.example.net
+</code></pre>
+
+<p>内容格式是<code>k=rsa\; p=MIGfMA0GCSqGSIb3DQEBA...</code>。</p>
+
+<h3>检查是否设置成功</h3>
+
+<p>发送一封邮件到gmail里面，这样检查信息：</p>
+
+<p><img src="/images/posts/gmail_sign.png"></p>
+
+<p>出现<code>mailed-by</code>表示你SPF设置正确了，出现<code>signed-by</code>表示你DKIM设置正确了。</p>
+
+<h2>让收件方认可发送者是可靠的</h2>
+
+<p>上面是一些技术上面的部分，同时还需要在内容上面以及行为上面让收件方认可你：</p>
+
+<ul>
+<li>收件人需要认可邮件内容。你发送的东西对于用户是有信息含量的，如果用户看到你的邮件就标注spam，再多的设置也没有用。</li>
+<li>邮件中带有退订链接。当用户不想收到你的邮件的时候，可以点击退订，防止用户直接把你spam掉。</li>
+<li>控制发送频率。各个邮箱提供商会检查来自一个IP的邮件投递速率，如果你发送速度过于频繁，也容易进黑名单。</li>
+</ul>
+
+
+<h2>第三方的服务</h2>
+
+<p>设置了上面的这些东西，你的邮件还是有可能被spam，以及你也不清楚到底邮件的到达率有多少，我建议针对商业的网站，还是需要采用一些第三方的邮件发送服务。这里推荐几个：</p>
+
+<ul>
+<li><a href="http://www.mailgun.com/">mailgun</a></li>
+<li><a href="postmarkapp.com">postmark</a></li>
+<li>搜狐的<a href="http://sendcloud.sohu.com/">sendcloud</a></li>
+</ul>
+
+
+<p>采用了这些第三方服务之后，你需要对应地更新<code>SPF</code>和<code>DKIM</code>。
+同时如果可能，尽量选择独立IP的服务，这样不会因为其他人发spam影响到你的邮件送达率。</p>
+
+<p>mailgun和postmark都会<a href="http://www.quora.com/Why-are-Mailgun-and-Postmark-so-much-more-expensive-than-Sendgrid-and-AWS-SES">想办法保证你的邮件送达</a>，
+因此价格也比其他的邮件服务商要贵，但是还是物有所值的。</p>
+
+<p>mailgun带有<a href="http://documentation.mailgun.com/api-campaigns.html">campaign服务</a>，
+你可以设置一个campaign，然后发送带有这个campaign ID的邮件，之后会统计出送达率，开启率，链接点击率等信息给你。</p>
+
+<p>还有就是针对国内垃圾邮件乱飞的状况，很多国内的邮箱服务商会比较严格，造成国外的第三方邮件发送服务不好用的状况，比如：</p>
+
+<ul>
+<li>mailgun发到QQ邮箱，新浪邮箱里面会被spam掉。</li>
+<li>postmark和mailgun都发不了邮件到tom邮箱里面。</li>
+</ul>
+
+
+<p>需要注意一下。</p>
+
+<h2>引用资料以及工具</h2>
+
+<ul>
+<li><a href="http://aplawrence.com/Blog/B961.html">PTR为什么重要</a></li>
+<li><a href="https://idndx.com/2012/04/07/how-to-increase-your-email-delivery-rate/">中文资料</a></li>
+<li><a href="http://mxtoolbox.com/SuperTool.aspx?action=blacklist">检查是否进黑名单</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/commandline-proxy/">命令行下使用全局代理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T15:15:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/commandline-proxy/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/wlogo.png"></p>
+
+<p>最近<a href="http://bitbucket.org/">Bitbucket</a>的git ssh访问被墙了，如果设置电脑全局翻墙会很麻烦，我需要能够有针对一个terminal，一个命令的翻墙方式。</p>
+
+<p>询问了友邻之后，有几个工具浮出水面：<code>tsocks</code>以及<code>proxychains</code>。</p>
+
+<p>调研了一下<code>tsocks</code>，2002年就不再更新了，osx下面编译没有成功，不过ubuntu的源里面是有的。下载下来发现，它需要修改一个设置文件<code>/etc/tsocks.conf</code>，比较麻烦，于是我放弃使用这个工具。</p>
+
+<p><code>proxychains</code>要好一些，<a href="https://github.com/haad/proxychains">github上面的页面</a>有mac下面用<code>homebrew</code>的安装方法，ubuntu的源里面也有，使用起来也是一行代码可以搞定的。</p>
+
+<p>首先需要跑一个socks5 proxy，使用：</p>
+
+<pre><code>$ ssh -fN -D 4321 some.example.com
+</code></pre>
+
+<p>然后设置参数执行命令就好了：</p>
+
+<pre><code>$ PROXYCHAINS_SOCKS5=4321 proxychains wget http://wikileaks.org/IMG/wlogo.png
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/debug-rails-autolink/">调试rails Autolink</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-09T22:03:00+00:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/debug-rails-autolink/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/debug-rails-autolink.jpg"></p>
+
+<p>今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com
+</code></pre>
+
+<p>而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com。
+</code></pre>
+
+<p>我首先判断一下这个问题是否是一个问题。在使用中，中文的逗号和句号都是参见的分割符，用户会很容易就使用这种方法。我觉得这个问题需要解决。</p>
+
+<p>首先是界定问题。这个很明显是渲染链接出错。我采用的是<code>rails_autolink</code>gem，因为在rails3.2中，原先的<code>autolink</code>功能被移除了。</p>
+
+<p>我下载了它的代码库，找到具体做这件事的文件：<code>lib/rails_autolink/helpers.rb</code>，和对应的位置：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="no">AUTO_LINK_RE</span> <span class="o">=</span> <span class="sr">%r{</span>
+</span><span class='line'><span class="sr">  (?: ((?:ed2k|ftp|http|https|irc|mailto|news|gopher|nntp|telnet|webcal|xmpp|callto|feed|svn|urn|aim|rsync|tag|ssh|sftp|rtsp|afs|file):)// | www\. )</span>
+</span><span class='line'><span class="sr">  [^\s&lt;]+</span>
+</span><span class='line'><span class="sr">}x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它是利用正则来找到链接位置，然后替换的。在<code>[^\s&lt;]+</code>里面，没有取消掉中文的分隔符，这样把后面的东西全部匹配掉了。</p>
+
+<p>找到了问题，如何解决呢？我尝试去掉分隔符，把它替换成<code>[^\s&lt;\p{P}]+</code>，但是发现<code>.</code>是应该被匹配到的，也被包含在了<code>\p{P}</code>里面，于是我要细分以下。
+文档中有：</p>
+
+<pre><code>/\p{Pc}/ - 'Punctuation: Connector'
+/\p{Pd}/ - 'Punctuation: Dash'
+/\p{Ps}/ - 'Punctuation: Open'
+/\p{Pe}/ - 'Punctuation: Close'
+/\p{Pi}/ - 'Punctuation: Initial Quote'
+/\p{Pf}/ - 'Punctuation: Final Quote'
+/\p{Po}/ - 'Punctuation: Other'
+</code></pre>
+
+<p>然后我完全不清楚每一个组里面有什么符号，google也找不到解释，这个时候我只能去挖ruby源码了。
+我用<code>find | grep</code>来找<code>Punctuation</code>，被我找到具体的定义位置在：<code>enc/unicode/name2ctype.h</code>里面。英文的句号被分组在<code>Punctuation: Other</code>中。</p>
+
+<p>这条路走不通，我又回头好好思考了一下，我觉得这个需求并不是全局的，只是针对采用中文的用户有效。我放弃做一个全局的方案，然后提交<code>Pull Request</code>，
+改成自己客制化一个repo算了。于是我<code>fork</code>了这个项目，然后把<code>[^\s&lt;]+</code>改成<code>[^\s&lt;，。]+</code>，<code>push</code>上去，<code>Gemfile</code>里面换成<code>gem 'rails_autolink', github: "halida/rails_autolink"</code>，
+发布到服务器上面去，问题解决了。</p>
+
+<p>但是问题并没有完全结束，我必须在以后的版本里面注意到采用了一个客制化的gem，可能会有各种问题出现。未来的地雷需要小心不要踩到。
+这是一个简单的bug处理，上面是我debug的整个过程，体力活，是以为记，大家对于这个过程有什么看法吗？</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/16/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/14/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

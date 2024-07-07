@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何写邮件样式 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近一段时间都在写邮件的样式，以及测试邮件在各种邮箱中的展示效果，搞得焦头烂额，痛定思痛，在这里整理获得的一些撞墙经验吧。 基本的原则 用table来控制架构 虽然现在css已经进化到可以用来画画的地步，
+但是各种邮箱客户端往往各自为政，你调试得非常完美的邮件，在用户那边，被客户端蹂躏得惨不忍睹 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/email-css/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何写邮件样式</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T21:29:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/email_css.jpg"></p>
+
+<p>最近一段时间都在写邮件的样式，以及测试邮件在各种邮箱中的展示效果，搞得焦头烂额，痛定思痛，在这里整理获得的一些撞墙经验吧。</p>
+
+<h2>基本的原则</h2>
+
+<h3>用table来控制架构</h3>
+
+<p>虽然现在css已经进化到<a href="http://www.hongkiat.com/blog/coding-graphics-with-css3/">可以用来画画的地步</a>，
+但是各种邮箱客户端往往各自为政，你调试得非常完美的邮件，在用户那边，被客户端蹂躏得惨不忍睹。
+我们还是需要退而求其次，找一个各种客户端都支持得非常好的布局方案：利用<code>table</code>来布局。</p>
+
+<p>用table的方式安排页面各个元素的方法，有着悠久的历史，虽然不优雅，但是能够解决问题。
+删除掉各种在web端应用广泛的<code>float</code>，<code>position</code>吧，勇敢回归<code>table</code>。</p>
+
+<h3>inline css样式</h3>
+
+<p>邮件中带有css外链？邮件中含有<code>&lt;style&gt;</code>区块？很抱歉，在<code>Gmail</code>以及各种在线邮箱客户端中，
+它们都会被当做嫌疑分子，有杀错没漏过地一律干掉。唯一可以通行的就只有嵌入在tag中的<code>style</code>属性了。
+不过不要紧，你不需要手写这些，现在有很多第三方的工具来帮助你自动生成，比如<a href="https://github.com/alexdunae/premailer">premailer</a>。</p>
+
+<h3>注意可用的css样式</h3>
+
+<p>虽然<code>style</code>可以通行，但是广大客户端为了显示正常，还会过滤掉一些影响大局稳定的css属性，
+比如Gmail就会杀掉<code>position: absolute</code>的样式，hotmail看<code>float</code>不顺眼。</p>
+
+<p>还有就是客户端应用程序的邮件显示渲染系统一般进行了客制化，邮件的样式还是最好还是限制在css1/css2标准里面安全一些。</p>
+
+<p>有一个<a href="http://www.campaignmonitor.com/css/">各个客户端的css支持表格</a>，聊胜于无。</p>
+
+<h3>text模式和html模式</h3>
+
+<p><a href="http://webmarketingtoday.com/articles/html-email-multi/">按照需要</a>，
+一封邮件可以同时提供<code>text</code>和<code>html</code>两份，用户可以选择自己喜欢的看。
+如果你的用户期望看到<code>text</code>格式的邮件，最好提供一份。</p>
+
+<h3>显示图片和非显示图片</h3>
+
+<p>因为安全因素考虑，大多数邮件客户端都不默认显示邮件的图片，需要用户手动确认。
+所以你的邮件必须要能够在这种情况下面显示得不至于太寒碜。</p>
+
+<h2>各种需要处理状况</h2>
+
+<p>上面这些都是总览，这里整理一些其他额外需要注意的状况。</p>
+
+<p>gmail会根据你的文字宽度给你添加<code>&lt;wbr&gt;</code>的标签强制换行。我最后采用<code>table</code>布局的方式解决了这个问题。</p>
+
+<p>不同平台下的不同浏览器会采用不同的字体。所以你也页面不要根据开发环境的字体预设宽度。</p>
+
+<p>有些android手机（比如我的galaxy nexus）gmail客户端会限制页面的宽度，有些文字段落会压缩掉宽度，没有找到解决办法。</p>
+
+<h2>测试</h2>
+
+<p>邮件显示效果的测试，我觉得是最烦的一件事情了。维度太多。需要测试的有：</p>
+
+<ul>
+<li>不同的邮件客户端，thunderbird，outlook，foxmail，它们还有不同的版本。</li>
+<li>不同的在线邮箱在不同浏览器下面展示的效果。维度大概是在线邮箱系统数量乘以浏览器数量了。</li>
+<li>不同操作系统。主要是字体影响比较大。</li>
+<li>多平台，各种手机客户端，平板设备。现在是移动时代，很多人有在移动设备上读邮件的习惯。</li>
+</ul>
+
+
+<p>全部测试一遍很不现实，只能根据用户特征把主流的一些环境测试一下。</p>
+
+<h2>经验</h2>
+
+<p>花费了那么多时间，这里整理一下主要的经验以供借鉴：</p>
+
+<p>如果简单的邮件，只是改一份文件就好，如果模块复杂，还是需要根据区块拆分一下。
+也可以用一些预处理的工具来让文件变得更易读。
+我是用haml，sass，以及rails的render partial功能来把复杂邮件模块化的。</p>
+
+<p>因为邮件需要不断地调整，最好养成完成一个部分的改动后就<code>git commit</code>一下，或者至少<code>git add</code>变动，
+因为很容易在改动中造成错误。</p>
+
+<p>要进行流程控制，每次修改完毕后都过一遍测试，总是会出现一个环境改动正确了，其他环境又出现展示问题的状况。</p>
+
+<h2>资料</h2>
+
+<ul>
+<li><a href="http://www.reachcustomersonline.com/how-to-code-html-email-newsletters-all-new-version/">详细的如何写邮件样式的教程</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T21:29:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/email-css/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/email-css/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/reliable-email-delivery/" title="Previous Post: 保证电子邮件的送达率">&laquo; 保证电子邮件的送达率</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/no-need-real-book-any-more/" title="Next Post: 把书籍全部电子化">把书籍全部电子化 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/email-css/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/email-css/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

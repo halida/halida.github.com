@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>更合理的文件备份方法 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="重要资料需要通过备份保证不丢失，这里整理一下我研究的备份策略。 首先资料应该远程备份，不能和当前的存储介质在一个区域，不然出事了就一起完蛋了。 资料备份应该自动和定期，手动太繁琐，很容易坚持不下去。不定期备份起不到备份的效果。 资料应该可以增量备份，不然空间占用太多。 增量备份需要和备份比较计算， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/borgbackup/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">更合理的文件备份方法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-03-27T13:30:20+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2021</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>重要资料需要通过备份保证不丢失，这里整理一下我研究的备份策略。</p>
+
+<p>首先资料应该远程备份，不能和当前的存储介质在一个区域，不然出事了就一起完蛋了。</p>
+
+<p>资料备份应该自动和定期，手动太繁琐，很容易坚持不下去。不定期备份起不到备份的效果。</p>
+
+<p>资料应该可以增量备份，不然空间占用太多。</p>
+
+<p>增量备份需要和备份比较计算，所以远端机器必须参与计算。
+现在大家常用的工具是rsync，但是并不能很好地做到增量计算。</p>
+
+<p>我推荐用<a href="https://borgbackup.readthedocs.io/">borgbackup</a>，
+服务器安装borgbackup之后，并不需要跑服务，执行备份的时候，会通过ssh执行服务器端的可执行文件来跑服务器的工作，架构比较简单。
+其它还有一些工具都比较重量级需要跑服务，就不推荐了。</p>
+
+<p>安装：<code>sudo apt install borgbackup</code></p>
+
+<p>本地机器可以通过命令行工具查看备份，比较备份结果，把某个历史镜像加载到本地，具体可以看<a href="https://borgbackup.readthedocs.io/en/stable/quickstart.html">教程</a>，
+或者快速例子：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>mkdir -p ~/data/workspace/borg
+</span><span class='line'><span class="nb">cd</span> ~/data/workspace/borg
+</span><span class='line'>
+</span><span class='line'>borg init -e none backup
+</span><span class='line'>borg create backup::1 data
+</span><span class='line'>borg create backup::2 data
+</span><span class='line'>borg list backup
+</span><span class='line'><span class="c1"># 1                                    Wed, 2020-10-28 13:55:56 [xxx]</span>
+</span><span class='line'><span class="c1"># 2                                    Wed, 2020-10-28 13:56:13 [xxx]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 换名称</span>
+</span><span class='line'>borg create backup::<span class="sb">`</span>date +%FT%T<span class="sb">`</span> data
+</span><span class='line'>
+</span><span class='line'><span class="c1"># list files</span>
+</span><span class='line'>borg list backup::2
+</span><span class='line'><span class="c1"># recover</span>
+</span><span class='line'>borg extract backup::1
+</span><span class='line'>borg extract backup::1 data/a.txt
+</span><span class='line'>
+</span><span class='line'>borg delete backup::1
+</span><span class='line'>
+</span><span class='line'>borg diff backup::1 <span class="m">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 加载备份到本地，可以拷贝需要恢复的文件出来</span>
+</span><span class='line'>borg mount
+</span><span class='line'>borg umount
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果需要定期备份到远端，
+本地机器加上一个cronjob定期跑备份即可：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>crontab -e
+</span><span class='line'><span class="m">1</span> <span class="m">14</span> * * * ~/scripts/backup_laptop.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>脚本内容在<a href="https://gist.github.com/halida/e2de6c3704c7febf139d5ff39d1756fb">这里</a>。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-03-27T13:30:20+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2021</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/borgbackup/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/borgbackup/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/small-it-arch/" title="Previous Post: 小型IT系统如何架构">&laquo; 小型IT系统如何架构</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/outside-coding/" title="Next Post: 如何做到不带包随时远程工作">如何做到不带包随时远程工作 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/borgbackup/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/borgbackup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

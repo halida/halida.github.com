@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>调试rails autolink - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如： 我今天发现一个好的网站，它是：www.dreamore.com 而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。 我今天发现一个好的网站，它是：www. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/debug-rails-autolink/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">调试rails Autolink</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-09T22:03:00+00:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/debug-rails-autolink.jpg"></p>
+
+<p>今天遇到一个bug，在我们网站GuruDigger里面的留言或者私信中，会自动把网址转换成链接，比如：</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com
+</code></pre>
+
+<p>而对于下面这种状况，就错误地把后面的内容（就是那个句号）全部加到链接里面去了。</p>
+
+<pre><code>我今天发现一个好的网站，它是：www.dreamore.com。
+</code></pre>
+
+<p>我首先判断一下这个问题是否是一个问题。在使用中，中文的逗号和句号都是参见的分割符，用户会很容易就使用这种方法。我觉得这个问题需要解决。</p>
+
+<p>首先是界定问题。这个很明显是渲染链接出错。我采用的是<code>rails_autolink</code>gem，因为在rails3.2中，原先的<code>autolink</code>功能被移除了。</p>
+
+<p>我下载了它的代码库，找到具体做这件事的文件：<code>lib/rails_autolink/helpers.rb</code>，和对应的位置：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="no">AUTO_LINK_RE</span> <span class="o">=</span> <span class="sr">%r{</span>
+</span><span class='line'><span class="sr">  (?: ((?:ed2k|ftp|http|https|irc|mailto|news|gopher|nntp|telnet|webcal|xmpp|callto|feed|svn|urn|aim|rsync|tag|ssh|sftp|rtsp|afs|file):)// | www\. )</span>
+</span><span class='line'><span class="sr">  [^\s&lt;]+</span>
+</span><span class='line'><span class="sr">}x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它是利用正则来找到链接位置，然后替换的。在<code>[^\s&lt;]+</code>里面，没有取消掉中文的分隔符，这样把后面的东西全部匹配掉了。</p>
+
+<p>找到了问题，如何解决呢？我尝试去掉分隔符，把它替换成<code>[^\s&lt;\p{P}]+</code>，但是发现<code>.</code>是应该被匹配到的，也被包含在了<code>\p{P}</code>里面，于是我要细分以下。
+文档中有：</p>
+
+<pre><code>/\p{Pc}/ - 'Punctuation: Connector'
+/\p{Pd}/ - 'Punctuation: Dash'
+/\p{Ps}/ - 'Punctuation: Open'
+/\p{Pe}/ - 'Punctuation: Close'
+/\p{Pi}/ - 'Punctuation: Initial Quote'
+/\p{Pf}/ - 'Punctuation: Final Quote'
+/\p{Po}/ - 'Punctuation: Other'
+</code></pre>
+
+<p>然后我完全不清楚每一个组里面有什么符号，google也找不到解释，这个时候我只能去挖ruby源码了。
+我用<code>find | grep</code>来找<code>Punctuation</code>，被我找到具体的定义位置在：<code>enc/unicode/name2ctype.h</code>里面。英文的句号被分组在<code>Punctuation: Other</code>中。</p>
+
+<p>这条路走不通，我又回头好好思考了一下，我觉得这个需求并不是全局的，只是针对采用中文的用户有效。我放弃做一个全局的方案，然后提交<code>Pull Request</code>，
+改成自己客制化一个repo算了。于是我<code>fork</code>了这个项目，然后把<code>[^\s&lt;]+</code>改成<code>[^\s&lt;，。]+</code>，<code>push</code>上去，<code>Gemfile</code>里面换成<code>gem 'rails_autolink', github: "halida/rails_autolink"</code>，
+发布到服务器上面去，问题解决了。</p>
+
+<p>但是问题并没有完全结束，我必须在以后的版本里面注意到采用了一个客制化的gem，可能会有各种问题出现。未来的地雷需要小心不要踩到。
+这是一个简单的bug处理，上面是我debug的整个过程，体力活，是以为记，大家对于这个过程有什么看法吗？</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-09T22:03:00+00:00" pubdate data-updated="true">May 9<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/debug-rails-autolink/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/debug-rails-autolink/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/remote-sound/" title="Previous Post: 手机远程收听电脑声音">&laquo; 手机远程收听电脑声音</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/commandline-proxy/" title="Next Post: 命令行下使用全局代理">命令行下使用全局代理 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/debug-rails-autolink/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/debug-rails-autolink/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

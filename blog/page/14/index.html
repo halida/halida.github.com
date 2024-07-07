@@ -1,0 +1,1347 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。 基本思路是这样： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/14/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ruby-memory-leak-debug/">Ruby内存泄漏调试方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-27T20:44:00+00:00" pubdate data-updated="true">Nov 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/ruby-memory-leak-debug/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_11_27_leak.jpg"></p>
+
+<p>只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。</p>
+
+<p>基本思路是这样：等待内存泄露到一定程度，进程的内存里面会大量充斥着没有被释放的对象，
+随机获取内存中的数据，就可以知道是什么对象泄露了，从而定位问题。</p>
+
+<p>我们先开始一个实验。创建文件leak.rb：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">s</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="mi">1000000</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;hello&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">while</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个文件生成了太多没有释放的字符串，并且一直处于循环等待状态。</p>
+
+<p>实际的应用程序代码比较多，不是那么明显就能发现内存泄露的代码，需要通过调试寻找线索。</p>
+
+<p>首先我们要编译一个带有debug信息的ruby版本。参数加上<code>-O0 -g</code>，<code>O0</code>是为了防止优化掉一些调试的符号表信息。
+如果你用的是rvm，可以采用下面的脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="c1"># 清空rvm编译环境参数</span>
+</span><span class='line'><span class="nb">unset</span> rvm_configure_env
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 编译一个单独的ruby版本，需要花费一定时间</span>
+</span><span class='line'>rvm install <span class="m">2</span>.0.0-debug --debug -j <span class="m">3</span> -- --enable-shared <span class="nv">optflags</span><span class="o">=</span><span class="s2">&quot;-O0 -ggdb&quot;</span> <span class="nv">debugflags</span><span class="o">=</span><span class="s2">&quot;-ggdb3&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 采用并且检查设置</span>
+</span><span class='line'>rvm use <span class="m">2</span>.0.0-debug
+</span><span class='line'>ruby -rrbconfig -e <span class="s1">&#39;puts RbConfig::CONFIG[&quot;optflags&quot;]&#39;</span>
+</span><span class='line'><span class="c1"># 结果应该带有：-O0 -ggdb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后我们在这个环境中执行程序，实际程序不要忘记安装支持的gem：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span>ruby leak.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之后，我们需要调试这个程序。如果你在linux下面，请使用<code>gdb</code>，
+如果在OSX下面，请使用编译ruby工具链中的debug工具，
+在我的机器OSX上面是用clang来编译的，所以我采用的是<code>lldb</code>，
+下面的例子以我的机器为准，gdb的命令其实也是一样的。</p>
+
+<p>另外开一个终端，启动<code>lldb</code>，然后连接上跑起来的进程：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="o">(</span>lldb<span class="o">)</span> attach <span class="m">77226</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面改成你用<code>ps aux|grep ruby</code>找到的进程号。</p>
+
+<p>attach做的事情就是在你调试进程里面开一个线程，这样就能够获得所有的内存信息，
+同时也不影响程序正常运行（只要你保证线程安全）。</p>
+
+<p>然后我们要知道进程内存消耗状况。在调试环境里面，我们可以执行C语言的函数，
+其中<code>rb_eval_string</code>可以用来直接执行ruby代码。
+我们首先需要做的是用<code>ObjectSpace</code>来遍历和列出所有ruby对象：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;GC.start&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_objs = Hash.new 0&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object {|o| $db_objs[o.class] += 1}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_objs.to_s&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
+回到执行<code>ruby leak.rb</code>的终端，可以看到打印出来的结果。
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;File.write(&#39;sys.log&#39;, $db_objs.to_s)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="p">{</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">=&gt;</span><span class="mi">1005019</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">RubyVM</span><span class="o">::</span><span class="no">InstructionSequence</span><span class="o">=&gt;</span><span class="mi">577</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">Hash</span><span class="o">=&gt;</span><span class="mi">28</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>发现String对象出奇地多，应该是内存泄露的主要组成部分。我们采样一下数据，看看是什么样的字符串：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;$db_strs = []&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;ObjectSpace.each_object.each_with_index {|o, i| $db_strs &lt;&lt; o if o.class == String and i%1000==0}&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">rb_eval_string</span><span class="p">(</span><span class="s2">&quot;puts $db_strs.sample(10).to_s&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="o">[</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>根据这个信息，我们回到源代码里面，找到对应的部分，思考为什么没有释放这个字符串，从而解决内存泄露的问题。</p>
+
+<p>我们甚至可以利用<code>rb_eval_string</code>来动态修改代码和解决bug，不过在这个例子里面没有办法删除掉造成内存泄露的<code>s</code>对象。如果你发现有方法，还请告诉我。</p>
+
+<p>但是如果内存泄露发生在C语言部分，应该如何发现？这个留到下次再介绍。
+还有就是如何调试生产环境的进程，这个也请等我研究清楚之后再分享给大家。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/">http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/</a></li>
+<li><a href="http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/">http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/why-write-diary/">为什么我要每天写日记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-24T21:23:00+00:00" pubdate data-updated="true">Nov 24<span>th</span>, 2013</time>
+        
+         | <a href="/blog/why-write-diary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_11_24_diary.jpg"></p>
+
+<p>我们年轻的时候，可能是发自内心的写作冲动，亦或是老师的布置，或长或短，都写过一段时间的日记。
+那个时候的日记，更像是心情日记，想到什么就写到什么，记录下青春期那复杂混乱又绚丽的内心世界。</p>
+
+<p>很少有人能够把这个习惯保留到现在。坚持了一段时间，但翻动日记的频率，随着热情渐渐消退了。
+不过，也会有新的际遇让人用新的方式重拾它。</p>
+
+<p>我是2012年8月5日开始重新写日记的，基本上每天都会记录，一直坚持到现在一年有余。
+在写日记之前很久，我就养成了每天记录工作和学习时间的习惯，
+而开始记录日记，则是对工作学习记录的一个很好的补充。</p>
+
+<p>我日记主要记以下内容：</p>
+
+<p>首先，<strong>整理和记录今天发生的事</strong>。人记忆力有限，昨天的事情已经不是很清楚，
+上个星期发生的事就算很重要，也模模糊糊，更别说去年的某个日期发生了什么事情了。
+如果不赶快记录下发生了什么，以后想要回溯的话，基本无迹可寻。</p>
+
+<p>写法基本上流水账即可，比如上午做了什么。遇到什么人，发生什么事情之类。
+重要的不是文笔上的修炼，而是发生事情的梳理。</p>
+
+<p>然后<strong>对今天的事情做出反思</strong>。有了前一个步骤的回顾，大致回忆想一天发生的事情了。
+这个时候要思考：今天有什么是做得比较好的，什么地方可以改进，学到了什么东西。
+每天进行反思是自我提升的一个重要手段。
+如果你有伴侣，可以两个人交流一下，效果会更好。</p>
+
+<p>最后<strong>给明天做计划</strong>。一般来说，第二天早上一起来就要开始忙了，晚上是整理明天该做什么事情的好时机。
+可以回顾一下自己的阶段性目标，然后按照重要性紧急性来安排计划。</p>
+
+<p>这几个项目都非常重要，因此是必须要做的事情，用日记的方式再合适不过了。</p>
+
+<p>安排写日记的时间，我觉得可以在晚上忙完所有事情闲下来，但离睡觉有一段距离的时候。
+这样有充足的时间来记录和整理，又不会困和累到写不动，
+并且做完之后大脑活跃，可以去学习或者做其他事情。</p>
+
+<p>我日记的记录方式，是采用emacs的org-mode，很技术宅的东西。
+我建议大家用evernote。这种整理的笔记要用云服务来备份，并且加上索引方便以后搜索。</p>
+
+<p>除了每天写日记以外，同样的，也要写周记，月记，年记。
+日记的粒度有点小，还需要更大的时间粒度来做汇总和长期的规划。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/daemonize-process/">如何让进程后台执行</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-20T03:51:00+00:00" pubdate data-updated="true">Nov 20<span>th</span>, 2013</time>
+        
+         | <a href="/blog/daemonize-process/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_11_20_daemon.jpg"></p>
+
+<p>很多时候我们需要让一个进程在后台执行。</p>
+
+<h2>终端下面执行命令</h2>
+
+<p>比如我们要执行<code>cmd</code>，可以简单地在命令行运行<code>cmd &amp;</code>。</p>
+
+<p>如果我们希望重定向输出到其他的地方，可以用：</p>
+
+<p><code>cmd 2&gt;&amp;1 &gt; run.log &amp;</code></p>
+
+<p>里面 <code>2&gt;&amp;1</code> 是把<code>stderr</code>重导向到<code>stdout</code>，然后<code>&gt; run.log</code>把<code>stdout</code>重导向到文件。</p>
+
+<p>但是如果关闭当前终端，后台跑的进程还是会被退出掉，这个时候需要<a href="http://libslack.org/daemon/manpages/daemon.1.html">工具</a>：</p>
+
+<p><code>daemon cmd</code></p>
+
+<p>如果你是用ruby写的程序，也可以<a href="https://github.com/ghazel/daemons">有一个Gem</a>来帮你完成这个工作。</p>
+
+<h2>原理</h2>
+
+<p>后台化主要做的事情就是让生成的后台进程不被你的命令行以及调用者影响到，
+具体需要做的步骤如下：</p>
+
+<ul>
+<li>首先是第一遍<code>fork()</code>，这样的目的是让新的进程不成为process group leader，后一步操作<code>setsid()</code>成功执行依赖这点。</li>
+<li><code>setsid()</code>让新的进程成为session group leader，这样发送给父进程process group的信号就不会影响到子进程。</li>
+<li>第二遍<code>fork()</code>，这样生成的进程不会是session group leader，不会重开终端（PGID和PID不同了）。</li>
+<li><code>chdir("/")</code>，把进程默认目录移动到root，这样进程可以和文件系统无关，当然也可以移动到后台进程管理的牡蛎里面去。</li>
+<li><code>umask(0)</code>限制后台进程的权限，主要是安全考虑，这一步可选。</li>
+<li><code>close()</code>文件描述符0，1，2，其实就是标准输入输出和错误，因为它们是从父进程中继承过来的。你也可以重新导向标准输出和错误用来做日志记录，重新导向标准输入用来做进程控制。</li>
+</ul>
+
+
+<p>示例代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">module</span> <span class="nn">Daemon</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="nb">self</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">run</span>
+</span><span class='line'>    <span class="mi">5</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
+</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">start</span>
+</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
+</span><span class='line'>      <span class="no">Process</span><span class="o">.</span><span class="n">fork</span> <span class="k">do</span>
+</span><span class='line'>        <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))</span>
+</span><span class='line'>        <span class="no">File</span><span class="o">.</span><span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="vg">$stdin</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stdout</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;s.log&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="vg">$stderr</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/dev/null&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">self</span><span class="o">.</span><span class="n">run</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">exit</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="nb">exit</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Daemon</span><span class="o">.</span><span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>保存成daemon.rb，然后执行<code>ruby daemon.rb</code>。</p>
+
+<p>我在上面的测试代码中，如果去掉<code>setsid</code>和第二遍fork，执行代码，关闭当前的终端，进程还是在后台正常执行。
+所以我不是很清楚它们的具体影响，欢迎有知道的人帮忙指导一下。</p>
+
+<p>更新疑问：</p>
+
+<p>有朋友回复，<code>setsid</code>用来设置成新的session和process group，这样就不会被来自父进程的killpg等操作影响，
+还有就是，第二遍fork是让进程不再是process group leader，这样不能重新获得一个终端。这个操作是可选的。</p>
+
+<p>引用材料：</p>
+
+<ul>
+<li><a href="https://github.com/ghazel/daemons">ruby daemons项目</a></li>
+<li><a href="http://stackoverflow.com/questions/3095566/linux-daemonize">stackoverflow上面的介绍</a></li>
+<li><a href="http://blog.csdn.net/luckyaslan/article/details/9094523">daemon为什么要fork两次</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/boolean-retrieval/">最简单的搜索引擎</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-30T23:52:00+00:00" pubdate data-updated="true">Oct 30<span>th</span>, 2013</time>
+        
+         | <a href="/blog/boolean-retrieval/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_07_27_iir.jpg"></p>
+
+<p>有一堆文本，我们需要能够根据一个或者好几个词语，搜索到含有这些词语的文本。
+我们可以简单粗暴地用<code>find .|xargs grep word</code>的方式来这样做。
+但是每次搜索都需要遍历全部文本，只是搜索一次可以承受，但是重复搜索的话就不能承受了。</p>
+
+<p>处理这种任务，我们用到搜索引擎。可以大如google，也可以小到嵌入在浏览器里面的文本搜索功能。</p>
+
+<h2>Boolean model</h2>
+
+<p>一个简单的模型，叫<a href="http://en.wikipedia.org/wiki/Standard_Boolean_model">Boolean model</a>，
+思路是这样的。</p>
+
+<p>我们把要搜索的全体文本叫做corpus，一份文本叫做document，文本可以拆分成一个个的关键字，叫做terms。</p>
+
+<p>为了能够搜索文本，我们需要对文本预处理，把document里面的字一个个拆出来，预处理一番，形成terms。</p>
+
+<p>如果用布尔值来标示一个document是否存在一个terms，我们可以做出来一个矩阵：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>        term1   term2   term3   ...
+</span><span class='line'>Document1     X       .       X
+</span><span class='line'>Document2     .       X       .
+</span><span class='line'>Document3     X       .       X
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>利用这个矩阵进行搜索，只要进行查表工作就可以了。</p>
+
+<p>因为terms的数量远远大于Document数量和长度，这个矩阵是稀疏的。为了节省空间，矩阵可以采用list表示。
+我们给document标示上ID：D1, D2, &hellip;，
+还有，我们也需要记录一下term出现在所有document里面的次数(document frequency)，列在term名字后面，
+缓存用来进行后续的运算。</p>
+
+<p>这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>term1(2) -&gt; D1, D3
+</span><span class='line'>term2(1) -&gt; D2
+</span><span class='line'>term3(2) -&gt; D1, D3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后是具体的搜索工作。</p>
+
+<p>搜索的语法我们可以支持AND和OR，比如term1 AND term2，
+处理的方法就是获取上面term1和term2的document列表，然后求交集即可。
+列表可以先排好序，这样交集操作消耗的时间，就和这两个列表元素的和相关。</p>
+
+<p>搜索语句可以归并成<code>(term or term) and term and ...</code>这样的形式，
+这样搜索语法的执行过程，就是每次取两个document列表，进行集合合并操作，一直到最后只剩下一个结果集合。</p>
+
+<p>这个操作的性能，取决于所有操作中，每次集合操作中两个集合的大小，
+而操作的顺序是可以变化的，
+一种启发式算法优化就是按照集合大小升序来做交集操作，这样尽量让每次生成的新集合小一些。
+这就是为什么要在前面记录document frequency。</p>
+
+<p>总体的思路就是这样。实际实现的话，会有很多东西需要考虑的：</p>
+
+<ul>
+<li>把document拆分成terms，需要处理英文文本里面时态变化，缩写，同义词合并，中文文本就要处理分词的问题。</li>
+<li>要能够根据搜索结果进行排序，比如根据term在文本中出现的词频，term在文本中出现的顺序和区域等。</li>
+<li>数据结构的保存方法，如何支持动态增加文本和更新文本。</li>
+<li>搜索语法需要支持更多的语法，两个terms间距搜索，模糊查询。</li>
+</ul>
+
+
+<p>更多关于这些问题的处理，还是去看教科书比较合适：
+<a href="http://nlp.stanford.edu/IR-book/html/htmledition/boolean-retrieval-1.html">Introduction to Information Retrieval</a>。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ordinary-or-extraordinary/">牛逼或怂逼</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-27T19:45:00+00:00" pubdate data-updated="true">Oct 27<span>th</span>, 2013</time>
+        
+         | <a href="/blog/ordinary-or-extraordinary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_10_27_tired.jpeg"></p>
+
+<p>不知啥时开始，举目皆是英雄。</p>
+
+<p>他们拥有牛逼哄哄的能力，手握不敢想象的资源，创下改变世界的伟业，
+地球跟随他们转动，历史就是他们的故事。</p>
+
+<p>这世上又还有普通人。英雄多了，普通人的生活也被恩泽，
+英雄开创出来的基业，里面一个个坑还要普通人去填的。
+但凡有坑可占，普通人亦可吃得饱，穿得暖，有地方住，还有点小玩头。</p>
+
+<p>英雄多了，普通人亦不值钱了，
+那些坑已然都挖好，谁人来站没啥区别，换换也就铲子的事儿，犯不着滴多点油水。
+真要耗油水抢地盘的地方不是蓝海就是红海，战刺刀的不是海盗就是海军陆战队，
+要和他们争，也非得上英雄不可，没超能力的还是靠边站吧。</p>
+
+<p>坑里面油水再少，也算过得下去，一家几口挤个公寓，交齐了月租也能其乐融融，
+本朝政府虽说变扭难养，至少也留口气给你呼吸或者说话，比起上世纪的伟人时代好过活许多，
+外面还有国内外的英雄们开疆扩土，坐着也能等着日子一天天变好。</p>
+
+<p>但人本性还是矫情，自己小日子过得不行，还要发贱探头去外面比，一比就完了。
+举目皆是英雄人英雄事，相较之下生活就粗鄙不堪，连带身边婆娘或汉子也俗气了，着实难过。
+难过也就罢了，落下一病，名为不甘心，
+发起病来容易抛妻弃子背井离乡去当英雄，结果底子弱没有超能力，
+英雄当不成，成了狗熊，连自己的一某三分地都丢了。
+只留得脑壳后面印下三个字：不后悔。</p>
+
+<p>所以咋办？
+要么牛逼，要么怂逼，不上不下还是认怂吧，
+没有超能力就不要戴面罩当英雄，不然脸被打得亲妈都认不出来。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/rails-customize-error-page/">Rails定制报错页面</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-20T10:58:00+00:00" pubdate data-updated="true">Oct 20<span>th</span>, 2013</time>
+        
+         | <a href="/blog/rails-customize-error-page/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2013_10_20_404.jpg"></p>
+
+<h2>需求</h2>
+
+<p>rails的默认报错处理，是返回<code>public/400.html</code>，<code>public/500.html</code>的内容。
+我们一般期望能够定制化它，根据用户登录或者状况返回一个动态渲染的页面。</p>
+
+<p>我们一般希望能够定制：500服务器错误，400地址不存在。</p>
+
+<h2>解决方案</h2>
+
+<p>在你的<code>app/controllers/application_controller.rb</code>的<code>ApplicationController</code>里面用<code>rescue_from</code>捕捉他们，并且只在生产环境这样做：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'>  <span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">Exception</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">500</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>      <span class="no">ExceptionNotifier</span><span class="o">::</span><span class="no">Notifier</span><span class="o">.</span><span class="n">exception_notification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span>
+</span><span class='line'>      <span class="kp">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">rescue_from</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">UnknownController</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="ss">with</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="n">exception</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>500报错需要能够通知管理员，上面的<code>exception_notification</code>是我利用<a href="https://github.com/smartinez87/exception_notification">exception_notification</a>gem2.6版本中发送报错信息邮件的功能来做到这件事。</p>
+
+<p>然后加上<code>render_error</code>方法，用来渲染报错页面，你可以在这里做定制渲染：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">render_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">template</span><span class="p">:</span> <span class="s2">&quot;errors/error_</span><span class="si">#{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ss">layout</span><span class="p">:</span> <span class="s1">&#39;layouts/application&#39;</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>    <span class="nb">format</span><span class="o">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">nothing</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="n">status</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还是有一个问题，无法捕捉<code>ActionController::RoutingError</code>和<code>AbstractController::ActionNotFound</code>，需要在<code>config/route.rb</code>里面最后捕捉：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">unless</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">consider_all_requests_local</span>
+</span><span class='line'>  <span class="n">match</span> <span class="s1">&#39;*not_found&#39;</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="s1">&#39;errors#error_404&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>加上<code>errors_controller.rb</code>，里面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">class</span> <span class="nc">ErrorsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">error_404</span>
+</span><span class='line'>    <span class="vi">@not_found_path</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:not_found</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">render_error</span> <span class="mi">404</span><span class="p">,</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>资源引用：</p>
+
+<ul>
+<li><a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages">http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages</a></li>
+<li><a href="http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404">http://stackoverflow.com/questions/7342851/catch-unknown-action-in-rails-3-for-custom-404</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pptp-vpn/">如何设置PPTP VPN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-21T10:04:00+00:00" pubdate data-updated="true">Sep 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/pptp-vpn/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>首先解释一下基本的概念。</p>
+
+<p>我们平时上网的时候， 比如访问douban.com， 电脑做的操作是， 首先连接上douban.com的服务器， 然后告诉服务器， 需要获取豆瓣的网页。 然后服务器会返回首页信息， 自己的电脑接收到了之后， 通过浏览器显示出一张网页出来。</p>
+
+<p>但是有的时候， 有些网站的网页（比如twitter）在传输过程中， 会在中间被政府屏蔽， 这样浏览器上面就会显示无法获取内容。</p>
+
+<p>为了解决这个问题， 我们一般的解决方案就是， 利用一台可以获取网站内容的服务器（主要在国外， 不会在中间被政府屏蔽）， 下载好网页， 然后加密一下（这样在中间政府就不知道你这个网页需要屏蔽了）， 传输回自己的电脑。</p>
+
+<p>简单画一下模型：</p>
+
+<p>原先的方式：</p>
+
+<pre><code>网站服务器 &lt; - 政府会在这里审查你看的东西 - &gt; 我的电脑
+</code></pre>
+
+<p>现在的方式：</p>
+
+<pre><code>网站服务器 &lt; - 这里是国外， 政府不审查 - &gt; 中转服务器
+中转服务器 &lt; - 数据加密了， 政府看不懂 - &gt; 我的电脑
+</code></pre>
+
+<p>能够实现这样功能的网络通讯方式有很多种， 这里我们提供一种最容易设置的方式： PPTP VPN。</p>
+
+<p><a href="http://zh.wikipedia.org/wiki/VPN">VPN</a>是一种网络虚拟技术， 简单地说， 就是你的电脑设置了VPN之后， 相当于和提供VPN的服务器在同一个局域网下面了， 你向网络发出的请求， 都通过这台服务器中转， 达到上面我们说需要实现的功能。</p>
+
+<p><a href="http://zh.wikipedia.org/wiki/PPTP">PPTP</a>是一种实现VPN的方法， 具体原理就不多说了， 用它的主要原因是windows电脑都默认带有这种VPN通讯方式， 设置起来方便一些。 不过缺点是容易在中间被干扰， 不是很稳定。</p>
+
+<h2>设置方式</h2>
+
+<p>首先你需要购买或者要到一个PPTP代理服务器的账号和密码，购买的话请自行Google。</p>
+
+<p>选择 开始 &ndash;> 控制面板， 点击网络和Internet连接， 在下面的页面点击： 创建一个到您的工作位置的网络连接。</p>
+
+<p><img src="/images/posts/pptp_vpn_1.png"></p>
+
+<p>选择虚拟专用网络连接（Virtual Private Network），</p>
+
+<p><img src="/images/posts/pptp_vpn_2.png"></p>
+
+<p>公司名称随便设置就好。</p>
+
+<p><img src="/images/posts/pptp_vpn_3.png"></p>
+
+<p>主机选择提供VPN服务的主机名称或者IP地址。</p>
+
+<p><img src="/images/posts/pptp_vpn_4.png"></p>
+
+<p>点击完成。</p>
+
+<p><img src="/images/posts/pptp_vpn_5.png"></p>
+
+<p>创建VPN完毕后， 需要设置一下。 回到网络和Internet连接页面， 点击网络连接。</p>
+
+<p><img src="/images/posts/pptp_vpn_6.png"></p>
+
+<p>你会看到刚刚建立的VPN网络， 右键点击属性：</p>
+
+<p><img src="/images/posts/pptp_vpn_7.png"></p>
+
+<p>安全面板， 点击高级， 点击设置， 点击允许这些协议， 扣掉 Microsoft CHAP， 只留下面MS-CHAP2。 一般的linux下面PPTP代理服务器只支持这个。</p>
+
+<p><img src="/images/posts/pptp_vpn_8.png"></p>
+
+<p>现在设置完毕了， 当你需要连接VPN的时候， 进入网络连接页面， 鼠标双击建立的网络。</p>
+
+<p><img src="/images/posts/pptp_vpn_9.png"></p>
+
+<p>会打开输入密码页面， 在这里输入用户名和密码，如果你不希望每次都输入， 勾选下面的保存密码功能：</p>
+
+<p><img src="/images/posts/pptp_vpn_10.png"></p>
+
+<p>如果一切正常， 点击连接之后， 就可以通过服务器访问国外网站了。
+当你连接的时候， 可能会出现问题：</p>
+
+<p><img src="/images/posts/pptp_vpn_11.png"></p>
+
+<p>你可以重新再试几次， 但是如果一直有问题，那么应该是你电脑所在的网络会有一些问题，不支持PPTP VPN， 这个时候我也没有办法， 只能通过更加复杂的方式来翻一下墙， 或者换一个网络再试一下了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/project-time-spending/">项目计划预估</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-26T19:40:00+00:00" pubdate data-updated="true">Aug 26<span>th</span>, 2013</time>
+        
+         | <a href="/blog/project-time-spending/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>进行一个项目开发项目，我们预期的状况是这样的：</p>
+
+<p><img src="/images/posts/2013_08_26_pm_1.jpg"></p>
+
+<p>需要实现一个例程，达到从A到B的一个操作。看起来很完美。</p>
+
+<p>但是实际开工之后却发现变成了这样的状况：</p>
+
+<p><img src="/images/posts/2013_08_26_pm_2.jpg"></p>
+
+<p>大量的细节在项目开始的时候没有预估到，比如：</p>
+
+<ul>
+<li>中间过程中出乎意料的复杂度。</li>
+<li>各种发现的例外状况。</li>
+<li>需求变更下的返工。</li>
+</ul>
+
+
+<p>这些状况构成了图片中其他的路径，工期的时间和路径的长度成等比关系。
+然后要把产品做得好，具体的分支细分还会更多。</p>
+
+<p>如果希望更快完成，我们可以尽量砍掉其中的路径：</p>
+
+<p><img src="/images/posts/2013_08_26_pm_3.jpg"></p>
+
+<ul>
+<li>开始之前有原型开发，预估到技术复杂度以及预先处理掉；</li>
+<li>例外状况不予接受，或者交给人来处理；</li>
+<li>小规模迭代，应对需求变更；至少尽快处理一个可用版本。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/css-two-column/">Css实现双栏同等高度</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-25T08:05:00+00:00" pubdate data-updated="true">Aug 25<span>th</span>, 2013</time>
+        
+         | <a href="/blog/css-two-column/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>问题</h1>
+
+<p>我们用css做双栏的方法，一般是通过边栏<code>float: right</code>，
+或者<code>position: absolute; right: 0; top: 0</code>来实现的。</p>
+
+<p>但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色，还是用右栏的背景色就很难说了，
+因为如果用左栏颜色，右栏高度不够的时候颜色不对；用右栏颜色，左栏高度不够的时候颜色不对。</p>
+
+<p>如图所示：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1JEqmNAwmnBN4ZxW6Mw_--qMD4F5yaNoUwBDYv0C0uRQ/pub?w=600&amp;h=720"></p>
+
+<p>那么我们应该怎么解决这个问题呢？解法很巧妙，采用下面的布局：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1TfJHqsQmOBuV9rDg9eF5A2VX9yjOO8tUYBQDm0mcB_Y/pub?w=600&amp;h=720"></p>
+
+<p>继承关系：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.L1
+</span><span class='line'>  .L2
+</span><span class='line'>    .L3l
+</span><span class='line'>    .L3r
+</span><span class='line'>    .clearfix</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样，L2的高度是L3l和L3r中长的那个的高度，
+L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上面，
+这样无论左右栏的高度如何变化，左右栏的颜色都是正确的。</p>
+
+<p>示例代码如下：</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/js-controller/">一种简单的前端框架写法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-18T00:04:00+00:00" pubdate data-updated="true">Aug 18<span>th</span>, 2013</time>
+        
+         | <a href="/blog/js-controller/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/mvc.png"></p>
+
+<p>现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
+这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。</p>
+
+<p>我们大多数的js操作，都是针对用户事件，做一个具体的反应，
+比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。
+这种用户操作模型已经被研究很多了，通用的抽象方式就是著名的<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC模型</a>。
+我们写js也可以这样抽象隔离，不过一般并不需要抽象出MVC里面的Model。
+View就是html的页面，Controller就是针对事件做出的反应。</p>
+
+<p>我们可以把一个逻辑相关的功能划分成一个Controller类，类里面记录相对应的一个页面区块，
+列出需要监听的事件，把事件绑定到类方法上面，方法里面修改和更新区块中特定的元素。
+一个轻量的前端框架<a href="http://spinejs.com/">Spine</a>，提供了这样的一个Controller类来满足我们的需求。</p>
+
+<h2>例子</h2>
+
+<p>假设我们需要做一个简单的功能，页面上面一个按钮，点击一次按钮，页面上面显示的数量就加一。</p>
+
+<p>页面部分包含了我们需要展示的东西：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;counter&quot;</span><span class="p">&gt;</span>
+</span><span class='line'>  <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;click&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span><span class='line'>  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;result&quot;</span><span class="p">&gt;</span>0<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对应的javascript（用<a href="http://coffeescript.org/">coffeescript</a>写）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span></span><span class="k">class</span> <span class="nx">CounterController</span> <span class="k">extends</span> <span class="nx">Spine</span><span class="p">.</span><span class="nx">Controller</span>
+</span><span class='line'>    <span class="c1"># 列出我们需要交互的页面元素</span>
+</span><span class='line'>    <span class="nv">elements:</span>
+</span><span class='line'>        <span class="s">&quot;.result&quot;</span><span class="o">:</span> <span class="s">&quot;result&quot;</span>
+</span><span class='line'>    <span class="c1"># 绑定我们关心的事件到on_click</span>
+</span><span class='line'>    <span class="nv">events:</span>
+</span><span class='line'>        <span class="s">&quot;click a.click&quot;</span><span class="o">:</span> <span class="s">&quot;on_click&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="c1"># 在Controller初始化的时候，会帮你做好上面的事件和元素绑定</span>
+</span><span class='line'>        <span class="k">super</span>
+</span><span class='line'>        <span class="c1"># 初始化变量</span>
+</span><span class='line'>        <span class="vi">@count = </span><span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 处理事件</span>
+</span><span class='line'>    <span class="nv">on_click: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">@count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="nx">@update</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 更新页面</span>
+</span><span class='line'>    <span class="nv">update: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">@result</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">@count</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 初始化</span>
+</span><span class='line'><span class="k">new</span> <span class="nx">CounterController</span><span class="p">(</span><span class="nv">el: </span><span class="s">&#39;.counter&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我一般会再做一个启动器，这样可以自动挂载，以及限定好作用域不超出对应的区块：</p>
+
+<p>页面修改成：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">data-controller</span><span class="o">=</span><span class="s">&quot;Counter&quot;</span><span class="p">&gt;</span>
+</span><span class='line'>  ...
+</span><span class='line'><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>增加代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span></span><span class="nv">init_controllers = </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-controller]&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">init_controller</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">init_controller = </span><span class="nf">(obj)-&gt;</span>
+</span><span class='line'>    <span class="nv">controller = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;Controller&quot;</span>
+</span><span class='line'>    <span class="nv">data = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">()</span>
+</span><span class='line'>    <span class="nv">data.el = </span><span class="nx">obj</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">controller</span><span class="p">](</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_controllers</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有常规的js页面操作都可以抽象成一个Controller类，
+按照这样的方法来组织js代码，复杂的js就能管理得井井有条，
+并且只需要引入Spine(几十K左右)，不需要复杂的框架代码和理解。
+当然我们还可以进一步，自动绑定页面元素和数据，比如<a href="http://angularjs.org/">Angularjs</a>。
+不过我个人觉得，普通功能不需要做得那么复杂，用我上面的方法组织就已经OK了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/15/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/13/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

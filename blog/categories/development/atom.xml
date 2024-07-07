@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: development | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/development/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[pow介绍]]></title>
+    <link href="http://blog.linjunhalida.com/blog/introduce-pow/"/>
+    <updated>2013-03-24T19:30:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/introduce-pow</id>
+    <content type="html"><![CDATA[<p><img src="http://pow.cx/images/logo-pow.png" alt="image" /></p>
+
+<p><a href="http://pow.cx/">Pow</a>是一个神奇的东西，原先你需要跑一个服务器应用，你可能需要在命令行下面执行一个命令，以及你自己需要时刻监控到这个程序的运行。但是有了POW，你需要做的事情只是做一个<code>ln</code>软链接就可以了。对了，它只能在OSX下面使用。</p>
+
+<p>安装：</p>
+
+<p><code>sh
+curl get.pow.cx | sh
+</code></p>
+
+<p>删除：</p>
+
+<p><code>
+curl get.pow.cx/uninstall.sh | sh
+</code></p>
+
+<p>如果你需要设置一个基于<a href="http://rack.github.com/">Rack</a>的应用，你需要做的是：</p>
+
+<p><code>sh
+cd ~/.pow
+ln -s /path/to/myapp
+</code></p>
+
+<p>就是这么简单。</p>
+
+<h2>原理</h2>
+
+<ul>
+<li>Pow把目录当做Rack应用来执行，目录主要含有<code>config.ru</code>配置文件和<code>public</code>静态文件目录。</li>
+<li>在访问到目录的时候，它自动创建一个worker，最多每个应用2个worker，15分钟没有请求后自动回收。</li>
+</ul>
+
+
+<h2>一些特性整理</h2>
+
+<ul>
+<li>链接到<code>~/.pow</code>里面的目录比如myapp会映射到<code>http://myapp.dev/</code>。</li>
+<li><code>www.myapp.dev</code>这种子域名都会映射到<code>myapp.dev</code>，除非你重新创建一个<code>www.myapp</code>目录。</li>
+<li><code>~/pow</code>多个软链接到同一个目录，只会生成一个worker。</li>
+<li>如果没有<code>myapp</code>，访问<code>myapp.dev</code>会给出提示。</li>
+<li>Pow支持端口转发功能，只要<code>echo 8080 &gt; ~/.pow/proxiedapp</code>，访问<code>proxiedapp.dev</code>就是访问本地端口8080。</li>
+<li>Pow支持只含有<code>public</code>目录，直接serve静态文件。</li>
+<li>重新启动服务：<code>touch tmp/restart.txt</code>，或者直接杀掉进程就好了。会重新加载环境。</li>
+<li>每次访问都重启服务：生成这个文件：<code>tmp/always_restart.txt</code>。但是它不会重新加载环境。</li>
+<li>log放在<code>~/Library/Logs/Pow</code>里面。</li>
+<li>重启Pow：<code>touch ~/.pow/restart.txt</code></li>
+</ul>
+
+
+<h2>设置</h2>
+
+<p>Pow启动前会去执行目录下<code>.powrc</code>和<code>.powenv</code>这2个脚本。</p>
+
+<p>如何设定ruby版本？</p>
+
+<ul>
+<li>用<a href="https://github.com/sstephenson/rbenv">rbenv</a>： <code>rbenv local 1.9.3-p194</code></li>
+<li>用rvm，添加.rvmrc：<code>rvm 1.8.7</code>
+因为rvm需要加载环境变量，你需要修改上面的2个脚本之一：
+<code>sh
+if [ -f "$rvm_path/scripts/rvm" ] &amp;&amp; [ -f ".rvmrc" ]; then
+source "$rvm_path/scripts/rvm"
+source ".rvmrc"
+fi
+</code></li>
+<li>或者直接设置<code>PATH</code>就好了。</li>
+</ul>
+
+
+<h2>FAQ</h2>
+
+<p><strong> 手动设置软链接太烦了，有什么方便的方法？</strong></p>
+
+<p>有的。 <code>gem install powder</code>，cd到你应用的目录，然后执行：</p>
+
+<pre><code>powder link
+</code></pre>
+
+<p>文档在<a href="https://github.com/Rodreegez/powder#readme">这里</a>。</p>
+
+<p><strong>如何让局域网的其他人访问到这个服务？</strong></p>
+
+<p>用<a href="http://xip.io/">xip.io</a>，它是一个把网络地址转换到具体IP的服务，方便进行一些调试。
+比如你的ip是<code>10.0.0.2</code>，用Pow跑的服务是<code>app</code>，那么同一个局域网的人就可以用<code>app.10.0.0.2.xip.io</code>来访问你的服务。</p>
+
+<p><strong>如何让外网的其他人访问到这个服务？</strong></p>
+
+<p>用<a href="https://forwardhq.com/">forward</a>。</p>
+
+<p>资料</p>
+
+<ul>
+<li><a href="http://pow.cx/manual.html">Pow文档</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

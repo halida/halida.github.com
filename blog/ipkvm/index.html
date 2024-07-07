@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>低成本IPKVM控制多台主机 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="目标：用便宜的价格，网络kvm控制多台主机 解决方案： pikvm安装在便宜的arm主机，比如斐讯N1，带有USB otg用于模拟键盘鼠标
+主机通过USB转TTL控制kvm切换器hk4401，用于切换多台主机，节省成本 准备设备 闲鱼购买N1盒子，80左右
+视频采集卡，注意看一下是否兼容， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/ipkvm/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">低成本IPKVM控制多台主机</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2024-07-07T22:48:21+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2024</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>目标：用便宜的价格，网络kvm控制多台主机</p>
+
+<p>解决方案：</p>
+
+<ul>
+<li>pikvm安装在便宜的arm主机，比如斐讯N1，带有USB otg用于模拟键盘鼠标</li>
+<li>主机通过USB转TTL控制kvm切换器hk4401，用于切换多台主机，节省成本</li>
+</ul>
+
+
+<h2>准备设备</h2>
+
+<ul>
+<li>闲鱼购买N1盒子，80左右</li>
+<li>视频采集卡，注意看一下<a href="https://docs.pikvm.org/v2/#required-parts">是否兼容</a>，我买的是onten US323，58元</li>
+<li>USB公对公线，需要割掉电源线VCC，只留数据线，用于主机USB otg模拟键盘鼠标，5元</li>
+<li><a href="https://docs.pikvm.org/xh_hk4401/">hk4401</a> kvm1对4切换器，USB TTL协议控制切换，淘宝购买，122元</li>
+<li>USB转TTL串口线，要买FTDI正品芯片的，不然通信出问题，买USB转杜邦线版本，接口Vcc5v，Gnd，TX，RX，以及杜邦线转USB，这样测试的时候互换TX RX，确保接对。价格30+5元</li>
+<li>不算hdmi线，一起成本 80+58+5+122+30+5=300，可以控制1-4台机器</li>
+</ul>
+
+
+<p>接线方式如图</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>N1 -usb- 公对公 -usb- PC
+</span><span class='line'>   -usb- 采集卡 -hdmi- PC</span></code></pre></td></tr></table></div></figure>
+
+
+<p>加上kvm切换器</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>N1 -usb- 公对公 -usb- hk4401
+</span><span class='line'>   -usb- 采集卡 -hdmi- hk4401
+</span><span class='line'>   -usb- TTL线 -usb控制口- hk4401
+</span><span class='line'>
+</span><span class='line'>hk4401 -usb- PC1
+</span><span class='line'>hk4401 -hdmi- PC1
+</span><span class='line'>
+</span><span class='line'>hk4401 -usb- PC2
+</span><span class='line'>hk4401 -hdmi- PC2</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>安装系统</h2>
+
+<ul>
+<li>按照<a href="https://www.bilibili.com/video/BV1h84y1o7Zp/">视频</a>的方式安装</li>
+<li>下载操作系统版本: Armbian_24.5.0_amlogic_s905d_jammy_6.1.87_server_2024.04.25.img.gz</li>
+<li><a href="https://blog.heysh.xyz/2023/05/20/ipkvm_4_poor_man/">设置设备</a>支持otg</li>
+<li>用<a href="https://github.com/jacobbar/fruity-pikvm">fruity-pikvm</a>安装pikvm</li>
+<li>先直接用N1连PC，看看是否可以正常监控屏幕，以及成功虚拟鼠标键盘</li>
+</ul>
+
+
+<h2>kvm切换器配置</h2>
+
+<ul>
+<li>测试hk4401自带的USB控制器正常切换4个口（设备上灯变化）</li>
+<li>FTDI FT232线，接口：VCC5v, Gnd，TX，RX，和杜邦线转USB线连起来，连上hk4401控制口</li>
+<li>不需要按照文档里面的配置反转，直接就可以收发</li>
+<li>设备接上后会通电，开始往N1发送数据，用<code>tio /dev/ttyUSB0 19200</code>，可以收到数据： G01gA，如果没有，TX RX线反向看看。</li>
+</ul>
+
+
+<p>用python测试发送，可以看到设备上灯变了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span></span><span class="kn">import</span> <span class="nn">serial</span>
+</span><span class='line'><span class="n">tty</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">,</span> <span class="mi">19200</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="n">tty</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;G01gA</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>如果成功，就可以改/etc/kvmd/override.yml <a href="https://gist.github.com/halida/8d443347a95bf51c8fe7f7641c48cf5d">配置文件</a></li>
+<li><code>sudo service kvmd restart</code></li>
+<li>pikvm UI上面可以看到当前是哪个PC灯亮，以及点击可以切换，就是成功</li>
+</ul>
+
+
+<h2>综合使用问题</h2>
+
+<ul>
+<li>为了方便远程控制，N1电源，PC电源前面都可以加上智能开关控制开机。PC的BIOS设置成来电启动，N1默认断电后开机自动启动，这样通过智能开关就可以控制包括pikvm在内的所有机器开关机</li>
+<li>如果要在外网使用，配置公网IP，路由器对应的端口转发就可以</li>
+<li>pikvm可以设置晚上自动关机，这样不用到的时候自动关机省电</li>
+<li>有的时候键盘鼠标无法识别，pikvm断电重启后会好</li>
+<li>N1主机必须开启，PC才能够识别到显示器，不然可能开不了机或者屏幕分辨率出现问题</li>
+<li>hk4401的电源是通过任意一个USB取电的，所以N1和PC任何一台有电，hk4401都会有电</li>
+<li>fruity-pikvm版本比较旧，没有办法虚拟光驱设备，远程安装系统</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2024-07-07T22:48:21+08:00" pubdate data-updated="true">Jul 7<span>th</span>, 2024</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/ipkvm/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/ipkvm/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/bed-car/" title="Previous Post: 床车方案">&laquo; 床车方案</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/radio-useless/" title="Next Post: 收音机没啥用了">收音机没啥用了 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/ipkvm/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/ipkvm/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近我2012年底买的rmbp电脑越来越不给力,于是打算换一台新的笔记本,操作系统选回Linux.
+为什么要用Linux而不继续买苹果呢,因为看新的苹果笔记本没有什么大的改进,还有我慢慢不喜欢苹果的软件锁死策略了,
+Linux可选性更高也更适合开发工作. 新的笔记本我选择Precision &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/6/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/install-kdeneon/">在新笔记本上安装Kdeneon</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-09T09:58:40+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2017</time>
+        
+         | <a href="/blog/install-kdeneon/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近我2012年底买的rmbp电脑越来越不给力,于是打算换一台新的笔记本,操作系统选回Linux.
+为什么要用Linux而不继续买苹果呢,因为看新的苹果笔记本没有什么大的改进,还有我慢慢不喜欢苹果的软件锁死策略了,
+Linux可选性更高也更适合开发工作.</p>
+
+<p>新的笔记本我选择Precision 5520 4K屏幕版本.价格比较贵(2万多).
+为什么选这个呢,因为是我的主打生产笔记本,期待能够长期使用就选商用版本,
+屏幕好一些可以坚持比较久,也对自己眼睛好点.</p>
+
+<h2>具体笔记本长什么样</h2>
+
+<p><a href="http://imgur.com/a/Fb7Lt">见图册</a>.</p>
+
+<p>笔记本到货之后检查外观,检查系统配置是否和自己买的一样,检查屏幕是否有坏点.</p>
+
+<h2>安装Linux</h2>
+
+<p>现在回到主题,笔记本拿回来还是要安装Linux的.我选择Kdeneon作为发行版.
+因为我对debian系比较熟悉,同时也更喜欢KDE桌面.KDE官方网站推荐这个版本.</p>
+
+<p><a href="https://neon.kde.org/">官方网站</a>下载稳定版Kdeneon,
+下载之后检查了一下checksum防止下载错误,然后用<a href="https://unetbootin.github.io/">UNetbootin</a>烧录到USB闪存上面准备安装.</p>
+
+<p>第一个坑:<strong>无法进入Live系统</strong>.<a href="http://askubuntu.com/questions/38780/how-do-i-set-nomodeset-after-ive-already-installed-ubuntu">查了一下</a>发现是开源的nouveau驱动不支持新版的Nvidia显卡驱动,需要在启动的时候关闭,设置方法:
+grub里面Linux那一行尾部加上 <code>nomodeset</code>,之后就可以进入Live系统了.</p>
+
+<p>系统安装好之后也要改,修改文件<code>/etc/default/grub</code>,在<code>GRUB_CMDLINE_LINUX_DEFAULT</code>后面加上<code>nouveau.modeset=0</code>,
+之后执行<code>sudo update-grub</code>.</p>
+
+<p>系统安装好之后,可以自动识别一下显卡驱动,执行<code>sudo ubuntu-drivers devices</code>,然后根据提示,安装对应的驱动版本,比如:<code>sudo apt install nvidia-375</code>.</p>
+
+<p>第二个坑:<strong>磁盘无法识别</strong>,系统安装过程中提示<code>Ubi-partman failed with exit code 141</code>,发现是因为硬盘选项SATA->RAID中,用到了Intel RST driver,现在开源系统还不能很好地处理,需要换成其他设置.</p>
+
+<p>第三个坑:<strong>无法休眠</strong>,我已经习惯苹果笔记本的合起来休眠功能,但是系统装好之后,却发现只有Sleep,却没有Hibernate.
+<a href="http://askubuntu.com/questions/868208/how-to-activate-hibernation-in-16-04-1-systemd">找了一下</a>,
+发现是需要关闭<code>Secure boot</code>,不然无法控制休眠.回到BIOS关闭之后,执行<code>systemctl hibernate</code>成功了.</p>
+
+<p>但是在KDE下面还是没有办法使用Hiberrnate,我下载了KDE的电源控制UI<code>Powerdevil</code>,看到原理是ibus查询org.freedesktop.login1.Manager的CanHibernate,后端是logind.根据<a href="https://help.ubuntu.com/stable/ubuntu-help/power-hibernate.html">这篇文档</a>,增加了logind允许使用Hibernate的配置就可以了.</p>
+
+<p>第四个坑:<strong>中文输入法</strong>.系统安装好之后没有UI设置如何选输入法,以及什么中文输入法比较好,找来找去,还是用ibus-pinyin吧.
+安装:<code>sudo apt-get install ibus-qt4 ibus-gtk ibus-gtk3 ibus-pinyin</code>,启动执行<code>ibus-setup</code>.</p>
+
+<p>但是各个窗口都没有办法输入中文,怎么办?查了以下,设置了环境变量之后,窗口才会响应输入法,环境变量设置方法如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span></span><span class="nb">export</span> <span class="nv">XMODIFIERS</span><span class="o">=</span><span class="s2">&quot;@im=ibus&quot;</span>
+</span><span class='line'><span class="nb">export</span> <span class="nv">GTK_IM_MODULE</span><span class="o">=</span><span class="s2">&quot;ibus&quot;</span>
+</span><span class='line'><span class="nb">export</span> <span class="nv">QT_IM_MODULE</span><span class="o">=</span><span class="s2">&quot;ibus&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其实不用自己手动选择,用<code>im-config</code>,它会修改<code>~/.xinputrc</code>,增加<code>run_im ibus</code>,在进入桌面环境的时候设置这些环境变量.
+但是终端里面的环境变量还是要手动加到自己的shell初始化脚本里面.</p>
+
+<p>第五个坑:<strong>4K屏幕分辨率</strong>,因为屏幕分辨率很高,窗口都会很小,在KDE下,可以通过设置Display->Scale解决.
+不过还是有很多非KDE的程序,比如Steam,TeamViewer没有办法改,他们没有用到Qt的基础架构就没有办法scale了.
+我现在暂时没有找到简单的解决方案,就放着吧.</p>
+
+<p>第六个坑:<strong>PPTP客户端</strong>,设置好了之后,可以连接,但是连接之后本地的DNS死活解析不到,实在找不到原因,莫非是因为本地安装的dnsmasq的问题?现在只能用kcptun加ss解决问题.</p>
+
+<p>好吧弄了那么久,终于可以正常使用系统了.</p>
+
+<h2>常用软件</h2>
+
+<p>这些是我常用的工具:</p>
+
+<ul>
+<li>基础支持: <code>build-essential openssh-server default-jre curl</code></li>
+<li>常用软件: <code>tmux zsh tree etherwake</code></li>
+<li>开发相关: <code>emacs git-core ack-grep mysql-server redis-server</code></li>
+</ul>
+
+
+<p>然后一些手动安装的工具:</p>
+
+<ul>
+<li>Chrome: 官方下载</li>
+<li>Steam: 记得安装源里面的,官方下载的安装有问题</li>
+<li>proxychains-ng: github下载编译好的可执行文件</li>
+<li>ss: 源里面就有</li>
+<li>Dropbox: 官方下载</li>
+<li>OverDrive: Google Drive linux客户端,需要购买</li>
+</ul>
+
+
+<p>开发环境相关软件:</p>
+
+<ul>
+<li>Virtualbox: 官方下载就好</li>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>: zsh配置环境</li>
+<li>rvm: ruby环境</li>
+<li><a href="https://github.com/ysbaddaden/prax.cr">prax</a>: linux下类似<a href="http://pow.cx/">pow</a>的工具,可以输入域名:app.dev,自动启动和访问本地的ruby项目.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/link-domain-name-to-local-pc/">研究如何给本地机器绑定域名</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-03T18:40:11+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2017</time>
+        
+         | <a href="/blog/link-domain-name-to-local-pc/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我家里有一些机器，这些机器上跑了一堆虚拟机，虚拟机都直接桥接网卡，
+这样每台机器都可以暴露出来给局域网访问。为了访问方便，
+每个机器最好用名称访问，而不是用IP地址。
+例如：两个虚拟机IP: 192.168.1.11，192.168.1.12，我希望可以用vps-sql，vps-dev的方式访问。</p>
+
+<p>首先设置路由器的DHCP服务器，把这些机器的IP地址固定，
+然后直接改自己电脑的/etc/hosts：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>192.168.1.11 vps-sql
+</span><span class='line'>192.168.1.12 vps-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是所有需要这个列表的机器都要改一遍，有什么更好的办法呢？</p>
+
+<p>我的路由器是RouteOS，可以修改默认推送的DNS设置，以及增加DNS cache。
+加了DNS cache之后，就可以直接访问了。</p>
+
+<p>但是又有一个问题：我的工作用机器需要翻墙，翻墙了之后，就会用翻墙服务器的DNS，本地的DNS就取不到了。
+万幸的是可以手动修改DNS采用本地的，不过用了本地的DNS，会被国内的GFW投毒，
+获取一些国外网站域名信息的时候，DNS数据包会被劫持掉，
+那么只有在本地搭建一个加密通讯的的DNS服务器。
+话说回来为什么这么重要的基础服务居然还是明文的数据包传输？</p>
+
+<p>我看了一下有<a href="https://dnscrypt.org/">dnscrypt</a>，在本地的一台机器A上面装好，
+把路由器的DNS设置为这个机器A就好了。
+不过这样的解决方案不是很稳定，如果本地机器A挂掉，那么局域网就没有DNS服务，大家都不能上网了。</p>
+
+<p>那么还有一个办法：就是注册一个短域名，把这些机器都绑定成子域名。
+虽然这样会把本地网络的信息暴露给了全世界，但是想了一下也没有什么风险。</p>
+
+<p>找了半天，买了一个便宜的llj.clicks域名，配置起来，总算完美地解决了这个问题。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/long-request-api-design/">长时API调用设计方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-03-28T20:59:03+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2017</time>
+        
+         | <a href="/blog/long-request-api-design/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>App B提供一个计算服务，App A需要访问这个服务。可以有两种模式：Pull和Push，各有优缺点。</p>
+
+<p>App A请求App B之后，B返回Job ID，
+Pull模式下，A定时获取一下Job执行状况，当Job完成之后，A获得结果。
+Push模式下，B完成请求之后调用A的Callback，发送结果给A。</p>
+
+<p>Pull模式下网络通讯消耗更多资源，并且不能第一时间返回结果。Push模式需要AB端都提供接口，复杂度更高，并且callback有可能丢失请求。</p>
+
+<p>伪代码如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="c1"># Pull模式</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># App A</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/works&quot;</span><span class="p">,</span> <span class="p">{</span><span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;square&#39;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">job_id</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span class='line'><span class="nb">sleep</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/jobs/12&quot;</span>
+</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;running&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+</span><span class='line'><span class="nb">sleep</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/jobs/12&quot;</span>
+</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="ss">result</span><span class="p">:</span> <span class="mi">144</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Push模式</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># App A</span>
+</span><span class='line'><span class="n">result</span> <span class="o">=</span> <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="s2">&quot;B/api/works&quot;</span><span class="p">,</span> <span class="p">{</span><span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;square&#39;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">,</span> <span class="ss">callback</span><span class="p">:</span> <span class="s1">&#39;A/api/check_job/:job_id&#39;</span><span class="p">}</span>
+</span><span class='line'><span class="n">result</span> <span class="o">==</span> <span class="p">{</span><span class="ss">job_id</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="ss">status</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="ss">percent</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/check_job&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">handle_result</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># App B</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/works&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Worker</span><span class="o">.</span><span class="n">perform_async</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">on</span> <span class="s1">&#39;api/jobs&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="no">Job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:job_id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Job</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Job</span> <span class="o">&lt;</span> <span class="no">Model</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nb">self</span><span class="o">.</span><span class="n">type</span>
+</span><span class='line'>    <span class="k">when</span> <span class="s1">&#39;square&#39;</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="ss">:running</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">3</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">percent</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nb">sleep</span> <span class="mi">3</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">value</span> <span class="o">**</span> <span class="mi">2</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="ss">:done</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">callback</span>
+</span><span class='line'>      <span class="no">HTTP</span><span class="o">.</span><span class="n">post</span> <span class="nb">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">as_json</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Worker</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">job</span> <span class="o">=</span> <span class="no">Job</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">job</span><span class="o">.</span><span class="n">perform</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ruby-have-no-program-optimize/">Ruby没有做到编程语言应该有的优化</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T11:06:03+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+        
+         | <a href="/blog/ruby-have-no-program-optimize/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby语言很慢。是的，这是一个设计缺陷。</p>
+
+<p>我们知道Ruby语言的执行方式是，首先编译成虚拟机字节码，然后丢给Ruby虚拟机执行。
+其它类似这样做的语言也很多，比如C#，java，python，但是为什么Ruby比他们慢很多？</p>
+
+<p>首先，我们看合理的这种编译到字节码的语言应该如何优化。比如java。
+首先是语法解析(parse)，把文本转换成抽象语法树(AST)，然后经过编译和适当的优化，变成字节码。
+然后丢给语言虚拟机，用JIT机制转换成机器代码。</p>
+
+<p>这样一套做下来，代码最后会变成机器语言的代码，执行速度从理论上，比传统的编译到机器代码的语言更优（因为机器代码是动态生成的，可以根据运行状况改动）。</p>
+
+<p>但是Ruby语言很多都没有做到。JIT这么难就不说了，语言的编译和优化，因为动态类型，很多优化也没有办法完成。最基本的AST缓存或者字节码缓存（python语言有做），
+Ruby也没有进行，可能是因为发现Ruby太动态了这方面优化不了吧。</p>
+
+<p>同样的，内存上面的优化，Ruby也很难进行。这个算是所有动态语言的缺点。
+静态语言的对象基本只要带属性，动态语言的对象还要带上方法表，函数和方法调用也要存名字，而不是直接引用地址，没有简单的办法优化。</p>
+
+<p>虽然现在机器的性能很高，应用的瓶颈也往往不在CPU端和内存端，但是慢就是慢，本来应该有办法做好的地方做差了。</p>
+
+<p>怎么弥补？首先要语言本身可以定义类型。但是这样Ruby就不是Ruby了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ruby-need-static-type-checking-system/">Ruby需要一个静态类型验证系统</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+        
+         | <a href="/blog/ruby-need-static-type-checking-system/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。</p>
+
+<p>Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
+但是实际上，这是一个缺陷。为什么呢？</p>
+
+<p>程序在执行的过程中，如果不知道一个变量的类型，只能动态去判断变量是什么，动态地查找处理变量的函数，
+比如一个方法调用：<code>a.run(b)</code>，就要去查找a的run方法，然后传入b参数。
+这样造成每次函数调用，都会进行一次判断和查找，极大地降低程序执行速度。</p>
+
+<p>另外一个问题就是，当传入的参数不正确(比如a没有run方法，或者run只接受一个参数)，只有程序实际执行的时候，才会知道这点。
+一方面要在函数和方法调用的时候来判断（更慢了），另外一方面本来能够静态识别出来的错误，留到了运行时。</p>
+
+<p>更可怕的是，当传入的参数类型错误的时候，不能立刻就知道，而是要等到很久之后才会被发现，
+这个时候你根本不知道这个参数是什么时候传进来的，Debug变得非常困难！
+其它语言定义了类型，在编译的时候就可以发现这样的错误，但是动态类型语言，比如Ruby/Python就没有办法。</p>
+
+<p>在实际进行Ruby编程的时候，我深刻地体会到了这几点。
+尤其是项目变得很大的时候，执行速度不说，出现问题找Bug变得很困难，
+程序可靠性没有办法通过编译阶段发现，而是只能留到执行时（testcase），
+并且执行时也做不到其它静态语言级别的函数参数类型验证。</p>
+
+<p>而在其它现代语言里面，类型定义不再向以前一样手动配置那么痛苦了。
+比如在C#里面，我们可以定义函数参数的类型，以及所有变量的类型，也可以不定义（dynamic），做到和Ruby一样的效果。
+但是还有更好的语法(var)，程序语言自动给你做好类型定义，不用自己手写了，方便很多。</p>
+
+<p>综上所述，静态类型验证系统是现代程序语言必备的一个功能，Ruby不应该缺少这样的功能。
+Matz本人也说，下一阶段会进行这种系统的设计。
+不过我觉得这么大的改动，只有在程序语言开始设计的时候才能做出，Ruby现在已经进入成熟阶段，再改就很难了。</p>
+
+<p>如果不是Rails，我可能会考虑其它语言，但是谁让web开发框架里面，Rails生态圈最好最成熟呢。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ansible/">Ansible介绍和服务器管理思考</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:16:50+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+        
+         | <a href="/blog/ansible/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>旧的服务器管理，基本上就是用ssh登录到服务器上面，进行一些操作。需要做的事情一般是：定期安全更新，新版本发布，新应用安装等。
+这样有很多缺点：人工操作引发错误，服务器状态无法跟踪，人工操作繁琐耗时等。</p>
+
+<p>我觉得好的服务器管理方式应该是这样的：</p>
+
+<ul>
+<li>能够定义服务器的功能，通过写程序或者配置的方式说明服务器到底是怎么样的</li>
+<li>通过这个定义，自动化地配置服务器</li>
+<li>可以手动或者自动修改定义，更新整体的架构</li>
+<li>整个过程不要引入太多的复杂度，更好地反映服务器管理的本质</li>
+</ul>
+
+
+<p>以前我学习了一段时间的chef，整体架构偏复杂了。因为是server/agent架构，服务器上面要跑一个chef的监控程序，
+这样对于大规模的服务器来说是性能更好，但是对于大多数小公司来说，没有agent的模式就足够用了。执行速度上也偏慢。</p>
+
+<p>现在重新学习了解了ansible，觉得在复杂度和易用性上面平衡得很好。主要有几点：</p>
+
+<ul>
+<li>和host服务器的通讯采用ssh的方式，host不需要安装额外的软件，除了python-simplejson</li>
+<li>module插件是传输一个python文件到host执行，参数命令行传入，简洁快速</li>
+<li>整体架构上面尽量减少了复杂度，概念上只有playbook &ndash; role &ndash; module，我觉得足够满足抽象了</li>
+</ul>
+
+
+<p>用ansible这种服务器配置管理工具，我可以做到以下事情：</p>
+
+<ul>
+<li>设置翻墙/下载服务器，需要的时候可以快速创建</li>
+<li>定义公司的服务器架构，进行归一化配置，自动更新</li>
+<li>遇到性能瓶颈或者需要更新服务器的时候，快速创建应用服务器</li>
+</ul>
+
+
+<p>以后小规模的服务器管理，就变得很简单了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016-summary/">2016年度总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-12-29T08:37:33+08:00" pubdate data-updated="true">Dec 29<span>th</span>, 2016</time>
+        
+         | <a href="/blog/2016-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>又到一年总结日。这一年各大城市房价暴涨，以前买不起房子的现在更买不起了。
+国际形势变化快，欧洲沦陷，中东一团糟，美国缓慢增长，
+中国没有现象中那么差了，甚至成为了相对更自由的国家。
+当然这个只是表象，中国还在继续向左走，希望以后不要变得太差。</p>
+
+<h2>去年</h2>
+
+<p>2016年，我工作上面没有什么成果，慢慢做了一些小系统，工作的效率不是很高。
+学习上，深入一些研究了Racket语言，但是并没有实际做一些项目。
+因为有结余，开始研究理财，东看看西看看，大致了解了市面上的一些投资产品，也没有深入。
+之后发现了<a href="https://blog.linjunhalida.com/blog/shuiku/">水库论坛</a>，开始了解房产的一些知识。</p>
+
+<p>本年可以列出来的一些重要事情：</p>
+
+<ul>
+<li>过年给老婆的亲戚拜年，完成了任务。</li>
+<li>年初和老婆去日本旅游。可惜没看到樱花。</li>
+<li>年中终于搞定了装修，去年<a href="https://blog.linjunhalida.com/blog/choose-furniture/">乐从买的沙发</a>到货了，然后<a href="https://blog.linjunhalida.com/blog/ikea/">去杭州宜家</a>买了剩下的家具。</li>
+<li>按照计划，老婆怀孕，明年生。</li>
+<li>考虑小孩出生要用车，<a href="https://blog.linjunhalida.com/blog/how-to-choose-a-car/">研究了汽车</a>，最后决定，还是滴滴打车方便。</li>
+<li>去杭州参加了一个旅游社区活动，去上海参加ruby聚会，去苏州上海考察了房价。</li>
+<li><a href="https://blog.linjunhalida.com/blog/bicycle-body-building/">买了自行车</a>骑行。</li>
+<li><a href="https://blog.linjunhalida.com/blog/new-desktop-computer/">买了电脑</a>。</li>
+</ul>
+
+
+<h2>回顾</h2>
+
+<p>过去的一年生活节奏又放缓了，工作学习健康生活都没有提高效率，反而下降了。
+<a href="https://blog.linjunhalida.com/blog/2015-summary/">去年的目标</a>也没有完成，希望下一年从微观上做好。</p>
+
+<h2>下一年</h2>
+
+<ul>
+<li>坚持运动。</li>
+<li>研究好理财，让财富可以积累(房产或者其它)。</li>
+<li>积累技术和业务设计：设计成熟网站，坚持打基础：弄通网络，linux系统，抽时间做业余项目。</li>
+<li>阅读太少，完成日常阅读。</li>
+<li>英语练好：能够无障碍和外国人交流。</li>
+<li>带小孩。</li>
+</ul>
+
+
+<p>以上。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/shuiku/">水库论坛告诉我什么是炒房</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-12-22T16:19:20+08:00" pubdate data-updated="true">Dec 22<span>nd</span>, 2016</time>
+        
+         | <a href="/blog/shuiku/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我现在家庭和工作已经稳定，每个月会有一笔存下来的的工资收入，因此如何善用这部分的工资成为我现在的目标。</p>
+
+<p>考察了理财产品，以及看了一些书籍，看了一些普通老百姓可以接触到的投资产品，比如中国股市，债券，黄金，美国股市等，
+发现很专业的投资领域估计不适合我，因为时间的机会成本：投入在工作上会收益更大一些。
+最后看了各方讨论，一般的结论是：对于非专业投资者，定投一个正收益的资产（比如美国股市ETF），长期收益率还是最高的。</p>
+
+<p>但是后来不知道什么渠道看到了水库论坛，发现完全不是这样。
+首先，非专业投资者的傻钱投资收益率一般是不会很高的，根本跑不过通货膨胀。
+然后就是有一条康庄大道可以走，就是买房。房子每年涨价超过10%，加上房贷的资金杠杆，收益率远远超过其它的理财产品，风险又很低。
+只要还有大量的看空人群，买房是普通人最好的投资方式。</p>
+
+<p>好，下面开始给大家介绍水库论坛。</p>
+
+<h2>水库论坛概况</h2>
+
+<p>水库论坛包括一个公众号(Shuiku-net)和一个网站shuiku.net，后面维护的人是一个老的上海炒房客，叫欧成效，专职炒房。估计现在资产过5亿吧。</p>
+
+<p>网站是他以前创建的一个用来讨论炒房的社区，<a href="http://www.shuiku.net/forum.php?mod=viewthread&amp;tid=61&amp;extra=page%3D1">社区的规则</a>也是很有特色的，大家可以看看。</p>
+
+<p>微信公众号是2015年创建的，里面整理和收集了水库论坛历年来他写的精华文章，比较成体系，<a href="https://mp.weixin.qq.com/s?__biz=MzAxNTMxMTc0MA==&amp;mid=206663049&amp;idx=1&amp;sn=b811130f28a5a8fd49fbd8204b90eb72&amp;chksm=12203b9a2557b28c53413e71624b1666e32079ff08f2329cb3eee6f870e519c7e4bc41c0a885&amp;scene=18&amp;key=564c3e9811aee0ab9321605a1aeecbff4fdbf5af068a1d54a5f403fbc06105db846d476f7db11de46bce97a345e2fe304eeb9093ed26813d47197423be6823f7ee88159dfbec951f89b2f49060dc2727&amp;ascene=0&amp;uin=MTIyMDU3MTc4MQ%3D%3D&amp;version=12010110&amp;nettype=WIFI&amp;fontScale=100&amp;pass_ticket=lHq3l3C%2FkzJF09vfN8Gu38UUN4mWhMd229lVR2Ql9BaDCJCJ%2F1CVGxq2ZqSUhCTg">这里是文章的目录</a>。
+强烈建议大家有时间就去看一遍。看两遍。</p>
+
+<h2>水库论坛讲了什么</h2>
+
+<p>微信里面的内容，分体用术，列出来以下内容：</p>
+
+<p>首先是体。就是他思考的理论基础。主要是奥派经济学。以前有一个铅笔经济学社（现在不行了）在推这个。主要内容就是科普经济学的常识。
+比如：交易带来价值，干扰交易减少价值，供需曲线等。这些我们应该都知道。
+他文章重点就是：利用这些基本的经济学规律，粉碎我们既有的一些错误观念，比如：
+实业兴国，以民为本，完善福利，抑制贫富分化，刺激经济，扶植国货，拉动内需，取消公路收费，少生孩子多养猪，义务教育，降低医疗费，加强监管，油气国营，提高产品质量，保护农民，严打囤地，鼓励自住，加税降房价，股票救市
+算是脑子非常清楚的人了。</p>
+
+<p>然后是用。就是如何用经济学知识赚钱。是他针对房地产市场的分析以及解释。内容包括：
+房地产市场的细分，什么才是职业炒家，上海房地产市场的概况，以及土地出让金等等。
+粉碎我们关于房地产领域的一堆错误观念：比如中国的房产比美国的房产更好，根本没有什么土地私有，土地出让金和房地产税其实是一回事。
+然后是讲了很多我不知道的内容：比如房地产市场不是一个市场，而是好几个市场（本地人，外地人，外国人，一手房，二手房），
+炒房的各种流派，流派最后为什么只有最后一种屯房流，上海的房子价格是如何涨起来的，香港楼市真正的崩溃历史，等等。</p>
+
+<p>之后是术：具体实际操作的一些技巧。包括：</p>
+
+<ul>
+<li>财务部分：如何获得更多的金钱，如何利用信用卡，如何保证现金流，资金的分层，如何精算贷款等。</li>
+<li>房地产相关：如何破限购，如何构建房产资产包，如何挑房子之类。</li>
+</ul>
+
+
+<p>还有一些零零散散的，包括军事，政治，人文的文章，也写得不错。都可以看。</p>
+
+<h2>精华</h2>
+
+<p>我当时看到这个微信公众号，忍不住一口气看完了，花费了大概一周的时间，后面又补看了一遍。主要是因为内容太精华了。
+打破了我非常多的旧观念。我已经被他说服，理财的精力要放在买房上面。
+同时虽然文章内容是关于房地产的，里面也可以抽出来一些共性的因素，切换到其它的市场使用。</p>
+
+<p>强烈建议大家都去看看，全部看一遍，看两遍。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/new-desktop-computer/">考虑买电脑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-12-03T11:17:36+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2016</time>
+        
+         | <a href="/blog/new-desktop-computer/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我现在用的rmbp是2012年底买的，用起来越来越不舒服了。主要原因是当时为了省钱，没有买256G的版本，而是128G，
+现在存储空间越来越不够，每个季度都要手动清除一遍内容。开始考虑替换笔记本。</p>
+
+<p><a href="http://www.apple.com/macbook-pro/">新的rmbp</a>出来，但是我已经不再想用苹果的笔记本了。一方面是其它厂商（比如dell，hp，华硕，联想）的高端笔记本已经追赶上来，
+另一方面是苹果的锁定策略把用户绑定在设备上面：新版的rmbp用了touch bar，也是一个通过体验来锁死用户的方法。
+虽然苹果的体验是最好的，但是使用上并不想根据苹果的方式来，就会千难万难。所以我考虑下一个笔记本安装linux。
+我一直是kde的粉丝，现在有了针对kde的ubuntu定制版<a href="https://neon.kde.org/">KDE neon</a>，我会考虑使用它。</p>
+
+<p><img src="http://images.apple.com/v/macbook-pro/l/images/specs/touchbar13_mbp_large_2x.jpg" alt="image" /></p>
+
+<p>经过研究，现在主流笔记本对linux支持比较好的是联想和dell，原先我给爸爸买了海淘代购的联想thinkpad，但是感觉没有想象中的好。
+只有考虑dell。dell的笔记本分民用商用XPS工作站，我考虑工作站precision系列以及高端机XPS。
+发现现在主流笔记本一般15寸才会有4核CPU，缺点是体积大一些；不过<a href="http://www.dell.com/en-us/shop/productdetails/xps-15-9550-laptop">dell xps</a>采用微边框，体积其实还好。</p>
+
+<p><img src="http://i.dell.com/das/dih.ashx/527x340/sites/imagecontent/products/publishingimages/hero/22617-home-laptop-xps-15-9550-non-touch-504x350.png" alt="image" /></p>
+
+<p>继续研究配置，发现笔记本都会有功耗和散热问题，性能会比台式机缩水一些：CPU要么是低压，要么虽然是标压但是散热不良会有限制。
+比较起来台式机的价格和性能有优势，因此很多人用便携本+台式机工作。我每天在家，这种工作方式应该适合我。</p>
+
+<p>我好久没有研究台式机了，发现现在的接口标准变化了很多，还有各种器件的型号和厂商要再再研究研究。
+最后得出适合我的机器：</p>
+
+<ul>
+<li>CPU：i7-6700 编译不会慢，但是价格也不会太贵。我也没有超频的需求</li>
+<li>内存：16G一张，以后可以最多拓展到64G，现在16G对于开虚拟机也够用了</li>
+<li>显卡：主流稳定的显卡就可以，并不会追最新的游戏，而是等steam打折入</li>
+</ul>
+
+
+<p>组装还是品牌机？组装机更便宜，但是要自己装，以及可能稳定性差一些。
+品牌机的话有质保，厂商考虑应该比自己更专业，但是价格贵好多。
+我考虑稳定和不折腾，还是看看品牌机。还是回到dell。为什么选择它呢？看官方网站上面的文档很细致，
+以及公司背景（dell被创始人重新回购），比较起来联想偏商业，HP胡搅瞎搞，华硕台企，
+感觉dell做事还是比较靠谱的，算是比较稳重的一个厂商。</p>
+
+<p>台式机dell也有民用商用XPS工作站，民用商用普通电脑性能达不到我的要求，
+工作站很多是图形方面或者高性能运算的，超出了我的需求（可以插1T内存的主板），
+最后还是用<a href="http://china.dell.com/cn/business/p/xps-8910-desktop/pd?ref=PD_Family">XPS台式机8910</a>。刚好双11打折，就买了（加了上门保修和无线鼠标键盘，7千出头）。
+dell的模式是下单后生产，等了一个多星期才到货。</p>
+
+<p><img src="http://i.dell.com/das/dih.ashx/527x340/sites/imagecontent/products/publishingimages/hero/desktop-xps-tower-8910-right-hero-504x350.png" alt="image" /></p>
+
+<p>配置如下：</p>
+
+<ul>
+<li>处理器 第六代智能英特尔® 酷睿™i7-6700 处理器 (8M 缓存, 最高至 4.0 GHz)</li>
+<li>操作系统  Windows 10 家庭版 64位 简体中文</li>
+<li>Microsoft 软件  Microsoft Office 家庭与学生版</li>
+<li>安全软件  McAfee Live Safe 12 个月 订阅</li>
+<li>戴尔服务: 硬件保修服务  3年 Premium Support: 上门服务 (消费者客户)</li>
+<li>光驱    托盘载入式 DVD光驱(读写 DVD/CD)</li>
+<li>键盘    Dell KM636 无线键盘&amp;鼠标 黑色, 英文</li>
+<li>FGA Module    VMAX1705_135_R/CN/HK/TW/BTO</li>
+<li>基本系统  XPS 8910</li>
+<li>硬盘    2TB 7200 rpm硬盘 + 32GB M.2 SSD 缓存</li>
+<li>显卡    NVIDIA® GeForce® GTX750Ti 含 2GB GDDR5 显卡内存</li>
+<li>无线    英特尔® 3165 1x1 802.11ac Wi-Fi 无线 LAN 和蓝牙</li>
+<li>内存    16GB 单通道 DDR4 2133MHz (16GBx1)</li>
+<li>无线驱动程序    无线 3165 驱动器</li>
+<li>Bundle    XPS 8910-D18N8</li>
+<li>芯片组 H170</li>
+</ul>
+
+
+<p>官方网站上面有<a href="http://content.etilize.com/User-Manual/1035806854.pdf">完整拆装文档</a>，看这个可以了解这个产品的结构。
+里面通过电源横移来节省空间还是很有意思的。dell allenware台式机也用了这个设计。
+内置无线网卡省得我拉线，多了一个用不到的光驱。</p>
+
+<p><img src="http://i.dell.com/sites/imagecontent/products/PublishingImages/xps-8910-desktop/desktop-tower-xps-pdp-Module-02.jpg" alt="image" /></p>
+
+<p>到货了之后检查状况良好之后使用。系统预装windows10，暂时我还是用这个系统，因为还有一些windows下的开发要做。
+机器存储采用2T硬盘加32G SSD缓存，这种架构我是第一次见，采用了Intel的<a href="http://www.pcpop.com/doc/0/827/827899.shtml">RST快速存储技术</a>，
+把SSD当作硬盘的缓存，同时兼顾大空间和快速读取的优势。实际用起来还是不错的，不需要另外再买大空间SSD。
+然后下载了几个steam的去年主流游戏（Bioshock Infinite），跑起来还不错。</p>
+
+<p>以后开发就在台式机上面跑linux虚拟机，rmbp连过去操作和在浏览器里面看效果。
+我重新买了一个rmbp的<a href="https://detail.tmall.com/item.htm?id=45379525357&amp;sku_properties=5919063:6536025">256G的存储拓展卡</a>解决空间问题，如果出门就拷贝虚拟机到笔记本里面临时用着。
+等明年黑五rmbp差不多该退休的时候，再考虑换一台dell的15寸XPS。</p>
+
+<p>现在还缺一个显示器没有买：我用惯了rmbp，最好还是要高清4K屏幕，等下次发现有打折再买吧。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/better-house-market/">更好的住宅行业</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-10-08T10:47:33+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2016</time>
+        
+         | <a href="/blog/better-house-market/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们国内现在的房子开发流程是这样：政府出让土地，开发商找银行贷款，缴纳大量的土地出让金，然后开发房子，
+卖出裸房，回收投资，赚钱。消费者购买高价的裸房，找装修公司装修。
+但是其他国家的模式一般是这样（在美国）：</p>
+
+<ul>
+<li>房地产商购买土地，造房子，然后直接卖装修好的房子。</li>
+<li>房地产商购买土地，造楼房，出租或者出售公寓房。</li>
+<li>个人购买土地，找房屋承建商，设计和建设房子（设计可以是专门的设计公司）</li>
+</ul>
+
+
+<p>模式不同在于，我们购买的是裸房，只是一个框架，之后才找装修公司装修，类似零售。
+他们的模式在于要么提供统一的标准化住房，要么根据用户需求定制造房并装修。</p>
+
+<p>我觉得他们的模式更合理。因为标准化造房可以利用批量化优势，降低材料采购成本，能够工业化生产提升质量和减少建设成本。
+比较一下：</p>
+
+<ul>
+<li>我们需要自己去采购施工材料，他们统一采购成本节省很多。</li>
+<li>我们施工的工人基本都是散工良莠不齐，他们施工可以长期雇佣施工队提高施工水平，积累施工技术规范和经验。</li>
+<li>我们基本都是现场施工，他们可以做到工厂预制件现场安装。</li>
+<li>住宅设计我们也就是制图员画画图，他们有积累（大量历史资料）和标准。</li>
+<li>我们很多住宅只能保证装起来，不能保证一些性能：比如空气流通率，住宅节能，火灾防护，他们可以达到这些要求。</li>
+</ul>
+
+
+<p>简单地说，我们现在是手工作坊阶段，他们是后工业化精益生产阶段。
+造成的结果是现在我们到处都是房子，但是缺省心省钱住起来舒服的好房子。
+大家买房装修过程基本上是劳民伤财，首先要变成一个装修专家，然后被装修公司和各大建材公司黑一遍，
+然后自己做监工累一遍，完工之后还得等一遍，最后因为设计只是根据自己需要以及自己耗费大量心血有感情了，卖房也不好卖。</p>
+
+<p>那么为什么我们国家的开发商大多不卖精装修的房子呢？
+我觉得：
+一个是消费者需求差异很大，家庭结构，经济水平，社会阶层，品味等，造成房子很难标准化。
+另外一个是因为房子有金融属性，裸房更好交易和保值。</p>
+
+<p>现在国内也有精装修的房子，一般分为两种：酒店式公寓，大城市新开发楼盘豪宅。
+它们的需求会明确一些，所以可以采用同样的设计，施工方批量施工节省成本提升利润。
+但是开发商利益和购房者利益不一致，以及信息不对称，这些精装修的房子往往质量堪忧。</p>
+
+<p>希望我们国家的住宅行业能够早日进步，端正目标造好房子（个人估计难）。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/5/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

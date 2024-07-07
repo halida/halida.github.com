@@ -1,0 +1,1156 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="整理一下如何管理好一个小型的IT系统架构。 除了大公司，大多数的小公司都不太会有高性能的需求，瓶颈主要在于管理复杂度，
+这里整理一下我的解决方案。 首先所有服务都上云，基础的模块是VPS，没有必要自己拥有机器，同时云服务并不通用。 VPS本身是可丢弃的，存储采用云存储架构。这样保证可用性， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/small-it-arch/">小型IT系统如何架构</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-03-27T12:56:05+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2021</time>
+        
+         | <a href="/blog/small-it-arch/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>整理一下如何管理好一个小型的IT系统架构。</p>
+
+<p>除了大公司，大多数的小公司都不太会有高性能的需求，瓶颈主要在于管理复杂度，
+这里整理一下我的解决方案。</p>
+
+<p>首先所有服务都上云，基础的模块是VPS，没有必要自己拥有机器，同时云服务并不通用。</p>
+
+<p>VPS本身是可丢弃的，存储采用云存储架构。这样保证可用性，架构上也保持简单。</p>
+
+<p>服务器采用ansible构建，构建脚本用git管理，这样就有一个全系统架构的索引和记录，
+配置文件另外用加密git来保存。</p>
+
+<p>可以用docker跑一些app，这样方便在各个vps之间转移，如果不需要可伸缩，不需要k8s这种重量级的方案，
+手动准备docker-compose文件就好。</p>
+
+<p>所有持久化用云存储：云数据库，key value文件数据库，采用AWS或者另外构建云存储架构。</p>
+
+<p>VPS本身出现问题，可以快速用ansible重建。</p>
+
+<p>云存储可以单独思考如何做备份，以及灾难演练，包括服务挂掉，数据丢失和损坏。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/population-problem/">如何解决人口老龄化问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-02-14T21:34:01+08:00" pubdate data-updated="true">Feb 14<span>th</span>, 2021</time>
+        
+         | <a href="/blog/population-problem/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>中国现在的生育率越来越低了，随着新生人口的减少，中国慢慢变得老龄化，后续问题很严重。</p>
+
+<h2>为什么现代人不生小孩</h2>
+
+<p>主要是生小孩能够获得的收益太少，投入又太多。</p>
+
+<p>以前农业社会，普通人获得生产力不需要经过长期的学习。
+娃能够吃饱，活下来几岁的时候就可以帮做家务，十几岁就可以投入农业劳作。
+同时农村丛林社会，不多生的族群很快就被干掉，激励大家努力多生。</p>
+
+<p>现代信息化社会，普通人需要经过很长的教育时间（姑且不论是否必要和有效率），能够给家族带来价值的周期太长。
+社会舆论上，也没有约束子女给父母赚钱的义务，父母也很难强迫。
+反过来，因为优生优育观念盛行，社会舆论对于父母不对子女投资有很大的压力。</p>
+
+<p>家族养老变成了社会养老，家庭交社保和投资获得保障，不生小孩经济上是有利的，通过社保，投资资产的方式，让生小孩的家庭补贴不生小孩的家庭。</p>
+
+<p>资本主义下，消费主义洗脑，让所有人更愿意把资源投入在花钱享受上。“工作主义”洗脑，女性更愿意通过工作来体现自己价值，而不是生育。资本获得了收益，个体利益损失了。</p>
+
+<p>简而言之，父母养小孩风险大，收益少。</p>
+
+<p>从供给上看：</p>
+
+<p>人口其实很大程度上是有多生意愿的家庭创造出来的，很多人就是不想生，或者生的少，多生家庭可以一直生下去。计划生育把他们都限制死了。</p>
+
+<p>超长的教育年限，压缩了育龄女性的生育时间。单身女性生育也不受鼓励。</p>
+
+<p>一夫一妻制度让男女资源错配，优质男性很快被消耗光，同阶层女性无法匹配到适合的优质男性。</p>
+
+<h2>生育率下降的问题</h2>
+
+<p>如果大家都不愿生育，模拟一下会怎么样？</p>
+
+<ul>
+<li>下一代人口减半，干活的人少了，真实的GDP随着人口的减少而下跌，</li>
+<li>物资少了，货币不变，造成通货膨胀，所有和人相关的服务都涨价得厉害。</li>
+<li>老人存的钱和财富变得不值钱，社保作为庞氏骗局破产，很多老人只能出来继续工作。</li>
+<li>国力下降，竞争力下降，被外国压迫，GDP降低更多，生活水平螺旋式下降。</li>
+<li>年轻人都变成香饽饽，到处都抢年轻人。</li>
+</ul>
+
+
+<h2>人口数量没有瓶颈</h2>
+
+<p>有的人说，人口多了，环境压力大，地球养不了太多的人口。</p>
+
+<p>其实现在生产力已经发展到普通人创造的价值远远高于人类本身的消耗，人口是核心资源。</p>
+
+<p>现代社会主要的瓶颈在处理信息，能源是不缺的，可以工业化大生产的东西都便宜到吓人，处理信息电脑只是杠杆，基本面还是要靠人脑。</p>
+
+<p>保障人幸福和健康的基础维护成本很低：一个100平的水泥格子，可以工业化大生产的粮食，肉和蔬菜，再加上维持网络和出行的电力。
+其他的娱乐和服务基本是信息化的，大规模复用下成本很低。
+普通人创造价值超过这些，可能只需要每天工作不到4小时，更别说人才和精英了，在信息化杠杆下，创造的价值可能是百万倍。</p>
+
+<p>人口增长的瓶颈可以很高很高，地球环境下可能一万亿都不成问题。</p>
+
+<h2>如何增加人口</h2>
+
+<p>现在一些老龄化国家有各种政策鼓励生育，但是效果都不是很好。因为并没有很好地解决生小孩收益低，风险大的问题。给钱，减税给不了多少钱，只能改善一点点。
+针对性把生育的劣势减少，加强优势的部分，其实可以解决的。</p>
+
+<ul>
+<li>养老权利和义务对等：多生育可以获得更多社保和养老收益，不生或者少生降低甚至没有收益。</li>
+<li>增加女性生育收益：放开婚育限制，单身女性可以自由生育，自由选择男方，同时可以通过生育养育过程获得收益，比如代孕，比如非婚生育从男方获得赡养费（很多有钱人愿意付钱多子女）</li>
+<li>保障多生群体积极性。有钱人愿意并且有资源多生，只是被各种限制住了。</li>
+<li>呼吁数量大于质量，扭转教育内卷的不正之风。</li>
+<li>呼吁女性家庭比工作重要。生小孩是自己的，工作是老板的。</li>
+</ul>
+
+
+<p>至于生育人口耗尽，生不了多少的问题，现代生产力发达，有的是办法解决。
+只要政策放开，有钱人通过代孕的方式，购买生育服务。中国女性如果受不了苦，还有外国穷国女性可以生。</p>
+
+<p>模拟一下：代孕一个人需要花费100万，养育一个人，包括吃住和看护教育费用每年10万，养到20岁可以工作，需要200万，一起要300万，再加上父辈有钱人的社会资源和智慧传递，一年算平均赚30万（不算天才可以创造千百倍收益），可以6年投入回本，后续都是赚的。</p>
+
+<p>创造1000万人口，需要30万亿，现在1年GDP可以创造3千万人口，补回来还是有可能的。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/home-server/">家用服务器整体策略思考</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-02-07T10:07:30+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
+        
+         | <a href="/blog/home-server/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很多重要资料因为性能，经济程度，私密性的原因，不适合存在云端网盘，因此需要做一个家庭内部的存储解决方案，同时也有很多应用需要本地跑，我整理了一下各种情况下的解决方案。</p>
+
+<p>首先是需求类型：</p>
+
+<ul>
+<li>存储看剧</li>
+<li>视频下载</li>
+<li>存储和访问家庭照片和视频</li>
+<li>科学上网</li>
+<li>外面连回家里</li>
+<li>全屋无线网络</li>
+<li>视频监控</li>
+<li>智能家居</li>
+<li>跑各种网络，应用实验，虚拟机</li>
+</ul>
+
+
+<p>为了满足这些需求，需要选择对应的设备。</p>
+
+<h2>路由</h2>
+
+<p>首先是路由类需求。因为网络需要很稳定，设备应该根据稳定需求分割开。
+一般来说是这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>主路由 - 光猫 - 外网出口
+</span><span class='line'>主路由 - 无线核心路由ac/ap
+</span><span class='line'>主路由 - 旁路软路由
+</span><span class='line'>主路由 - 高速路由 - 电脑，服务器
+</span><span class='line'>主路由 - 监控路由 - 监控主机，摄像头</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>主路由负责汇总所有网络，需要保证稳定性，其它工作交给其他设备。拨号上网也可以主路由来做。</li>
+<li>无线系统另外设计，汇总到主路由。</li>
+<li>科学上网方案很复杂，最好一个单独的设备来做，可以用软路由，也可以家庭服务器的虚拟机。</li>
+<li>大多数应用并不需要很高的速度，1G就差不多了，只有少部分可能需要10G/2.5G，比如视频或者数据编辑拷贝。可以另外用一个高速路由+SFP光纤的解决方案。</li>
+<li>监控系统独立性比较高，可以另外设置一个监控路由，连上所有的摄像头。</li>
+<li>如果连接网口过多，主路由也可以拆分成多层层级。</li>
+<li>部分子系统，比如监控，访客无线网络，保证安全性和性能，可以划分LAN来进行分割。</li>
+</ul>
+
+
+<h2>存储和运算</h2>
+
+<p>然后是存储和运算系统。我觉得需求可以划分到以下几类：</p>
+
+<p><strong>低功耗服务器</strong>：性能要求不高，但是需要24小时跑，比如一些定时触发的任务，本地的一些小服务，音乐系统什么的。可以选择树莓派或者最新制程的笔记本。</p>
+
+<p>机器的功耗往往是根据制程来，CPU的TDP只是用来算最高功率的。所以对功耗有要求的机器要选择最新制程的。
+树莓派功耗低一些，但是性能差很多，体积上是优势。如果是一些小应用，笔记本太大了。</p>
+
+<p><strong>高性能服务器</strong>：跑虚拟机，运算，解码什么的。可以需要的时候开机，平时关掉。直接主流CPU就可以了，不需要去考虑买二手服务器，服务器优化的方向是保证性能的同时长时间运行的稳定性，和家用的需求(长时间低功耗，或者短时间高功耗)是不一样的。</p>
+
+<p><strong>nas存储</strong>：存储大量的数据。因为对稳定性要求很高，最好单独做一台设备出来。</p>
+
+<p>存储对应的运算，比如电影解码服务系统emby，虚拟机，可以放到另外的机器里面，因为nas和运算或者解码对机器的要求是不一样的。网络带宽也足够支持存储和运算分离。</p>
+
+<p><strong>游戏主机</strong>：玩游戏。游戏需要针对性优化硬件，显卡专门针对游戏，功耗也高，我建议单独做一台机器。</p>
+
+<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派<a href="https://github.com/pikvm/pikvm">pikvm</a>来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
+
+<p>机器按照待机功耗分类（包含了整流的全系统功耗）：</p>
+
+<ul>
+<li>嵌入式 0.1w</li>
+<li>树莓派 2w</li>
+<li>低功耗CPU：J5005, J1800 6w</li>
+<li>最新制程CPU笔记本：10w</li>
+<li>最新制程CPU台式机：35w</li>
+</ul>
+
+
+<h2>应用</h2>
+
+<p>硬件选择好了之后，就是需要跑的各种应用了，我现在的解决方案：</p>
+
+<ul>
+<li>远程连进家里：wireguard和ssh，外网路由器端口转发，ddns获得dns地址</li>
+<li>NAS存储：truenas，优点是性能好，系统稳定，缺点是基于freebsd，不能跑虚拟机，只能另外用机器了。设置好samba文件共享，存储方案用raid0镜像存储，比较安全。另外需要找台旧机器也装truenas进行zfs镜像备份，放在别的地方，定时开机。</li>
+<li>低功耗服务器和高性能服务器：根据应用需要看看用proxmox虚拟机或者docker。</li>
+<li>视频系统：jellyfin，emby要钱还是用免费的jellyfin，我用的不多付费不是很划算。</li>
+<li>本地音乐：airsonic</li>
+<li>家庭照片和视频：photoprism</li>
+<li>下载：qbittorrent，百度云</li>
+<li><a href="http://blog.linjunhalida.com/blog/low-network-cross-gfw/">科学上网</a></li>
+</ul>
+
+
+<p>家庭服务器的架构搭好了之后，使用上没啥特别的感觉，就是想要做什么的时候就可以用对应的系统，不需要很操心。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/laptop-input/">膝上键盘鼠标方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-02-07T09:50:36+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
+        
+         | <a href="/blog/laptop-input/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我现在的工作环境并没有桌子，支撑电脑的是落地机械臂<a href="https://kesrer.tmall.com">科思睿</a>，
+不选择桌子的原因是用机械臂更灵活，可以根据需要随意移动位置，调整高度。
+但是机械臂只能支撑电脑，不能很好地支撑键盘鼠标，所以我考虑一些其他的解决方案。</p>
+
+<p>膝上桌方案：买一个可以放在腿上的平面，放鼠标键盘，鼠标放在键盘下方（空格键下），选择薄鼠标，手不会碰到。
+但是鼠标本身会滑动，并不是很方便。
+主要的问题变成了如何选择一个好的鼠标键盘整合方案，因为腿上面积太小，鼠标的体验不是很好。</p>
+
+<p>笔记本触摸板键盘：使用上和笔记本体验一样。但是市场上没有看到什么触摸板和键盘的一体解决方案，可供选择的太少了。</p>
+
+<p>Thinkpad小红点键盘方案：比如<a href="https://item.jd.com/10021174175484.html">这个</a>，小红点和键盘整合在一起，不需要动很大范围就可以控制鼠标，熟练了之后体验差不了鼠标太多。</p>
+
+<p>小红点键盘的主要缺点就是贵，官方有线的200，无线的500多，并且新的版本键盘体验没有旧的好，联想官方也不怎么继续开发了。我后来选择了一个第三方改的<a href="https://jiushuma.taobao.com/">版本</a>，把笔记本键盘变成USB的方式。本来无线键盘体验更好，考虑到续航和价格，暂时不考虑了。</p>
+
+<p>现在使用了好几个月，体验感觉很好，手腕不需要移动就可以随时切换鼠标和键盘，我觉得值得推荐。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/camper-trailer/">如何选购房车</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2020-04-30T09:36:10+08:00" pubdate data-updated="true">Apr 30<span>th</span>, 2020</time>
+        
+         | <a href="/blog/camper-trailer/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近研究了一下房车，思考了一下最优解，看完这篇文章，你可以减少房车选购的大量弯路。</p>
+
+<p>先给大家看一个<a href="http://www.expoon.com/e/bjktauzqw6g/" target="_blank">拖挂房车的样子</a>感受一下。</p>
+
+<h2>为什么要用房车，场景和需求</h2>
+
+<p>以下几类需求可以考虑选用房车：短途城市周边旅游；长途路线旅游；野外拓展；大城市高房租区域常住；自由职业者随性游玩。</p>
+
+<p>房车本质上是跟着走的住处，我们可以选择住酒店，但是酒店不能跟着走。</p>
+
+<p>房车主要满足的需求：睡眠，洗澡，做饭，上厕所；根据你的需求，选择合适的解决方案：</p>
+
+<ul>
+<li>一体式房车（不同底座）：这是最常见的房车</li>
+<li>床车：普通车的后座打倒睡觉</li>
+<li>拖挂房车：前面车辆带一个“房子”</li>
+</ul>
+
+
+<p>首先考虑直接住酒店是否满足需求：欧美的酒店很贵，中国的酒店便宜多了，如果可以酒店直接解决，不需要考虑房车。
+买房车之前，也先租住一个房车体验一下，看看是不是真的适合自己。</p>
+
+<p>如果你只是需要一个睡觉的地方，可以选择床车，有其它需求可以加配件，真的需要一个跟着走的空间，再来选择专门的房车。</p>
+
+<h3>选择拖挂房车，而不是一体式房车</h3>
+
+<p>拖挂房车和一体式房车相比的优缺点：</p>
+
+<ul>
+<li>结构简单成本低：不需要考虑车辆系统工程，设计制造成本大幅下降</li>
+<li>使用灵活：前车可把拖挂卸下，单独出去游玩，不去旅游的时候，拖挂放在家里也等与另外一套房子</li>
+<li>驾驶难度高一些</li>
+</ul>
+
+
+<p>优点太突出了，我建议大家选择拖挂就好了，十几万的拖挂已经很好用了，房车动辄二十万以上，并且是专用品平时不好开。
+因为这些优点，以后拖挂房车必然成为市面上的主要类型。</p>
+
+<p>拖挂的疑问：</p>
+
+<ul>
+<li>是否需要特殊驾照？C照可开，可上高速，完全没问题。</li>
+<li>是否难开？使用者的反馈是不难开，高速不要超过100，不下非铺装道路。</li>
+<li>不好停车？5-6米的拖挂，普通停车位就可以了。</li>
+<li>防盗？现在没人偷车，顶多偷里面的贵重物品。</li>
+<li>15年强制报废？我国的法规没有对拖挂有特殊处理，不过15年后旧拖挂早就过时了，可以留在家里当作备用房。</li>
+</ul>
+
+
+<h2>房车关键性能</h2>
+
+<p>按照重要性排序：结构稳定性，保温性，布局，水电燃气。</p>
+
+<p>安全第一，结构上一定是最重要的。然后是保温：其它东西都可以改，但是保温先天差难改。</p>
+
+<p>车辆的布局影响到使用，要根据你的需要来选择合适的布局。水电燃气是日常的使用，也需要能够满足需求。</p>
+
+<p>下面细分具体的每一块来具体分析。</p>
+
+<h3>整体结构</h3>
+
+<ul>
+<li>现在有小型的拖挂车上面拉一个帐篷，成本很低。我觉得只能用来野营，结构化的车体对于空间的私密性很重要。并且帐篷的保温性能会很差。</li>
+<li>外壳金属：结构性能好，但是对保温设计要求高，重量也更重对前车要求高，我不建议。</li>
+<li>车体可展开：虽然增加了空间，但是降低了车辆结构，保温性能，不建议。</li>
+<li>大小：根据旅行实际人数来选择，能够小一点就小一点。</li>
+</ul>
+
+
+<h3>布局</h3>
+
+<p>根据需求来：</p>
+
+<ul>
+<li>1/2人：床车就可以，或者单人双人小拖挂，或者大床+可变床卡座，内部360长度。</li>
+<li>3/4人：大床+2张小床+可变床卡座，内部420或者460长度。</li>
+<li>5人以上：人太多不舒服，可以考虑2辆，床车+大拖挂，或者一体式房车+拖挂。</li>
+</ul>
+
+
+<h3>电力解决方案</h3>
+
+<p>因为需要用各种电气，电力是非常稀缺的。现在主流的方案是铁锂电池+太阳能板。电力容量和产量要能够支持你的需求，基础的冰箱灯光，扩展的电磁炉，空调等。</p>
+
+<p>分析：</p>
+
+<ul>
+<li>是否用发电机？柴油非常吵，汽油难加油，一般不建议。实在要用空调这种大电气才考虑。</li>
+<li>电力系统电压越大，同样功率下电流就越少，线路就越安全，推荐采用48v系统（4个12v电池串联）。</li>
+<li>太阳能板电力产量还是太少，能够多就尽量多。</li>
+<li>充电系统用MPPT，虽然贵一些，但是充电效率高太多，路上电是非常稀缺的，值得投资。</li>
+<li>电池容量取决于你的需求，满足够用，太多了就重了。</li>
+<li>一般来说电池容量给空调使用还是太勉强，一天几个小时就消耗光了，不好解决。</li>
+</ul>
+
+
+<p>使用上的一些诀窍：</p>
+
+<ul>
+<li>路上充电：找店家给钱充电，充电桩，太阳能还是不能覆盖所有需求。</li>
+<li>主车混合动力：可以给房车充电，这样电力就不稀缺了。现在只有比亚迪支持。</li>
+</ul>
+
+
+<h3>水系统</h3>
+
+<ul>
+<li>根据做饭和洗澡的需要，水箱需要150L以上。</li>
+<li>热水还是用燃气热水器，电加热消耗电力太多了。</li>
+<li>水槽需要足够大，不然不好洗东西。</li>
+<li>淋浴空间也要大一些，不然很难受。</li>
+</ul>
+
+
+<h3>厕所</h3>
+
+<p>几种解决方案：</p>
+
+<ul>
+<li>厕所凳+垃圾袋：最简单便宜，但是丢粪便垃圾袋有点没公德。</li>
+<li>户外便携马桶：淘宝就有各种卖，不需要的时候可以拿走，比较灵活，但是体积大一些，倒黑水麻烦一点。</li>
+<li>和房车整合：使用体验上最好，内部清洗麻烦，一般采用进口马桶，成本比较高。</li>
+</ul>
+
+
+<p>比较起来，个人觉得整合的方案最适合，贵一点但是体验最好，上厕所不舒服实在太难受了。</p>
+
+<h3>做饭</h3>
+
+<ul>
+<li>还是用尽量燃气炉，用电磁炉耗电太多。</li>
+<li>外置灶一般不太用并且影响环境，预留接口就好。</li>
+<li>尽量煮菜，现在油烟问题不好解决，等研发出一体式下抽油烟机。</li>
+</ul>
+
+
+<h3>空调</h3>
+
+<ul>
+<li>采用家用空调这种成熟解决方案，外置主机减少噪音，其它方案很吵或者很贵。</li>
+<li>电力消耗还是比较大，太阳能无法支持，需要大容量电池，用发电机太吵影响睡眠。</li>
+<li>空调制热能力有限，可以靠柴暖补充，不过出去玩一般不会选择很冷的地方。</li>
+<li>等待有好的12v空调解决方案。</li>
+</ul>
+
+
+<h3>洗衣服</h3>
+
+<ul>
+<li>手洗太浪费时间，还是尽量机器洗。</li>
+<li>家用洗衣机体积和重量太大，现在房车一般选择大宇儿童滚筒，比较贵。也可以选择小波轮。</li>
+<li>衣服一般不晒在外面，影响不好。洗衣机必须带有甩干功能，或者单独甩干机。</li>
+<li>干衣机耗电太大，燃气干衣机本来不错，但是市面上还没有可用产品。</li>
+<li>也可以选择一段时间住酒店，专门洗衣晒衣。</li>
+</ul>
+
+
+<h3>冰箱</h3>
+
+<ul>
+<li>12v冰箱足够体积已经很好用了，就是电力系统要支持无需充电冰箱可以一直运行。</li>
+</ul>
+
+
+<h2>厂商选择</h2>
+
+<ul>
+<li>必须选择口碑好的，很多房车厂商设计制造能力不行，使用一堆问题。</li>
+<li>选择离你家近的，这样方便维修和二次改造。</li>
+</ul>
+
+
+<p>品牌推荐：</p>
+
+<ul>
+<li><a href="http://www.miyhy.com/pr/f/35.html">MIY 迷野</a> 不过最近有人说制造开始粗糙了。厂商在河北</li>
+<li><a href="http://www.expoon.com/e/bjktauzqw6g/">家之旅千里马460</a> 根据反馈，设计的还不错，江西萍乡</li>
+</ul>
+
+
+<h2>社区和自媒体</h2>
+
+<ul>
+<li>现在只有一个越野e族 <a href="http://bbs.fblife.com/gid_413.html">四海为家</a> 区块</li>
+<li><a href="https://www.ixigua.com/home/102425096584/">胡子哥漫游记</a></li>
+<li><a href="https://www.ixigua.com/home/52997192694/">续东玩房车</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/life-money/">普通中国人一辈子需要赚多少钱</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-06-01T12:38:37+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2019</time>
+        
+         | <a href="/blog/life-money/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们计算一下一个普通中国人一辈子需要的开销。看看一辈子赚多少钱是够用的，这样可以预先做好财务安排。</p>
+
+<p>我们先不考虑通货膨胀。也只考虑普通二线城市下基础的开销，这样把问题简化，计算一个基线。</p>
+
+<p>对于每个月的固定开销，我们通过理财收益率5%折算成需要多少钱，实际上这些钱要想办法投资出去，或者拿到收入当月开销掉，就按照5%粗略地估计一下好了。</p>
+
+<p>首先是父母。</p>
+
+<ul>
+<li>父母医疗备用钱：几次生病毛估估一起花70万</li>
+<li>父母住宿：老家小城市小房子100万</li>
+<li>父母养老吃用：每个月吃用3千，一年3.6，算理财收益年化5%，要72万</li>
+</ul>
+
+
+<p>一起：70*2+100+72 = 312万，双方父母就是624万。
+如果双方父母条件好，可以节省费用，不过也考虑老了接父母来大城市，房子费用要更高，我们就取312万好了。</p>
+
+<p>然后是自己夫妻。</p>
+
+<ul>
+<li>医疗备用钱：70万x2</li>
+<li>住宿根据城市级别，算2万一平100平200万好了，要给小孩预留地方住不能太小。</li>
+<li>吃用：每个月夫妻一起算6千，包括吃穿用度买手机下馆子，已经很省了，算理财5%年化，要144万。</li>
+</ul>
+
+
+<p>一起：70*2+200+144 = 484万。</p>
+
+<p>然后是小孩。毛估16年每年5万开销，80万一个，生2个保持每一代人口平衡。当然2个人还是少了，我们就先按照大家惯常的方案。</p>
+
+<p>那么一起：312 + 484 + 160 = 956万。
+也就是需要赚近1千万。</p>
+
+<p>如果考虑到老死房子消费掉不给小孩，就是656万，不过一般要留点给小孩，老了也要有住处，那么还是要计算起来。</p>
+
+<p>如果加上通货膨胀，这些钱不能留现金，一定要投资到房产之类的地方去，加上房贷勉强算保值吧。</p>
+
+<p>如果我们考虑提前退休，就要提前赚到这些钱，同时保持高效率的投资（很难，现阶段还是要靠买房+房贷），
+同时保持基础的生活消费水平，不能进行奢侈性开销。</p>
+
+<p>一辈子工作折算25年（30年减去年轻和年老的低收入阶段），平均每年家庭要赚38万才可以做到安稳。
+这是普通二线城市生活水平的状况，如果一线或者准一线，要再往上调整，大概60万吧。</p>
+
+<p>在这个收入的前提下，可以计算富余，根据时机进行奢侈性的开销，比如出国旅游，买点轻奢什么的。
+如果达不到这个收入，就只能努力赚钱，减少开销，不然后续钱就不够用了。</p>
+
+<p>那么最后的结论就是：看你们买买买花花花，以后钱不够用了别哭。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/spend-money-on-child/">请控制在小孩教育上面的花费</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-04-27T14:50:08+08:00" pubdate data-updated="true">Apr 27<span>th</span>, 2019</time>
+        
+         | <a href="/blog/spend-money-on-child/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在中产阶级家庭往往花费大量的资源在小孩上面，报早教，私立幼儿园，私立小学，各种兴趣班。
+大家因此觉得生不起小孩，养不起小孩。其实这样的操作是错误的。</p>
+
+<p>我们界定清楚目的：为了让以后小孩能够获得更好的发展。
+金钱资源是非常稀缺的，必须用在刀刃上面。使用方法也必须理性，不能被感性所左右，
+“再穷不能穷孩子”的思想要不得。不然容易出现花了钱，小孩反而总体发展更不好的结果。</p>
+
+<p>这里列一些大家容易忽视的问题：</p>
+
+<p><strong>智商差距</strong>：对于我们这一辈打拼出来的人，（比如各个程序员），论智商，下一代均值回归，大概率不如自己。
+因此不要对自己小孩抱有太高的期望。</p>
+
+<p><strong>时间复利</strong>：小孩成长起来需要十几年，同样的资源投资出去，十几年之后才能开始回收。
+需要考虑和现在投资在其他地方上面的比较。比如同样的钱现在买房，和投在小孩教育上面，很可能买房投资收益更高。</p>
+
+<p><strong>边际效应</strong>：投资资源在人身上，边际效应递减，到一定阶段，花大钱却没有什么效果。
+一个普通的小孩，花几百万美元送去国外常春藤，出来的工资收入可能和在国内好学校出来的差异不大。</p>
+
+<p>举一个极端的例子：上海父母卖上海房子给小孩出国读书，结果回来找不到工作，更别说把当初卖掉的房子买回来了。</p>
+
+<p>那么如何考虑投资小孩的边界？</p>
+
+<p>我觉得几个建议的方向：</p>
+
+<ul>
+<li><strong>保底</strong>：基本的生活习惯，学习习惯，性格养成，身体素质。这些如果没有培养好，后患很大，反而损失大量的时间精力资源。比如小的时候没注意管教好以后更难管，学会了赌博以后败光家底等等。</li>
+<li><strong>投入产出比高</strong>：直接见效，或者长期来看显著提升级别的。比如千把块钱掌握弹吉他以后好找女朋友，应试教育报学习班，高考提高一个级别的。</li>
+</ul>
+
+
+<p>不建议的几个方向：</p>
+
+<ul>
+<li><strong>投入产出低</strong>：英语双语幼儿园，一年一万多，但是也就学点单词，年纪大一些很容易就学会了。</li>
+<li><strong>可有可无</strong>：各种锦上添花兴趣班，比如学钢琴。花钱很多，花时间更多，结果平时也用不太上。</li>
+</ul>
+
+
+<p>还需要注意的一些地方：</p>
+
+<ul>
+<li><strong>优化效率</strong>：大人赚钱很难，小孩花钱很容易。一个兴趣班一万多，大人赚一万多不知道要花多少时间精力，这些钱花出去有没有效果？有效果，但是有什么长期效果又说不上来。</li>
+<li><strong>其他投资</strong>：同样的钱是否在其他方面对家庭更有帮助？比如改善家庭居住环境，治疗老人陈年疾病等等。一家人挤小房子，却给小孩买钢琴的傻事不要做。</li>
+<li><strong>大人自己发展</strong>：小孩的成长，往往取决于大人的成长。学校教育也就一个基本教育，大人的言传身教才是小孩的天花板，让小孩以后知道怎么发展，少走相当多的弯路。</li>
+<li><strong>多生几个</strong>：投资小孩教育有边际效应，花在一个小孩身上不如多生几个。研究教育的时间精力，还有购买的东西都可以在多个小孩间复用的。小孩之间也能帮传带，长大后相互照应。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/good-woman/">重男轻女是对的</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-04-27T13:34:31+08:00" pubdate data-updated="true">Apr 27<span>th</span>, 2019</time>
+        
+         | <a href="/blog/good-woman/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>整篇文章政治不正确，请谨慎阅读。</p>
+
+<p>在婚姻市场上面，大多数普通城市女是很差的。</p>
+
+<p>首先婚姻的目的是组建家庭，生育养育下一代。很多人都没有认清这点。</p>
+
+<p>现在的小姑娘，因为减肥和办公室工作身体素质不行，被消费主义带动得买买买，
+独生子女娇生惯养不吃苦耐劳，也不听话，被女权主义洗脑想要离开家庭去拼职场，
+从组建家庭养育下一代的角度上面，都是不及格的。</p>
+
+<p>普通女性年轻的时候玩得开心，或者拼职场，工资收入又高不到哪里去，
+一不小心就错过生育周期，错过结婚年龄找不到对象，
+上了年纪一塌糊涂，过一代就被淘汰掉了。</p>
+
+<p>为什么这样说？我们看聪明的男人会选择怎么样的女性？</p>
+
+<ul>
+<li>年轻：生育能力强</li>
+<li>漂亮：基因好</li>
+<li>贤惠：照顾家庭</li>
+<li>善良：会为了家庭奉献</li>
+<li>情绪稳定：给家庭成员提供情绪价值</li>
+</ul>
+
+
+<p>这样的女性非常有利于组建家庭和养育下一代。比较起来，大多数普通城市女，都是不及格的。</p>
+
+<p>那么正确的操作是怎么样子的？
+教育女儿的时候培养顾家贤惠商量情绪稳定，20岁到23岁年轻漂亮的时候尽快嫁掉。
+找一个30多岁的，看得出来前途如何的男性，因为家庭基础好，又会宠年轻女孩子。
+就算婚姻有问题，30岁之前离婚再找也还有机会。</p>
+
+<p>女性在婚姻市场上靠年轻漂亮善良贤惠，都不需要投入大量资源。</p>
+
+<p>至于男性，需要在社会上面打拼，需要投入大量资源培养。如果男性本身素质不行，不如长辈多准备点资产，比如房子继承。
+对于我们这一辈打拼出来的人，（比如各个程序员），论智力水平，下一代均值回归，大概率不如自己，投入资源培养下一代也要慎重，
+不如自己好好发展，利用时间的复利，然后让下一代继承，或者把发展赚取的资源多生几个小孩。</p>
+
+<p>所以重男轻女是正确的操作。</p>
+
+<p>当然，如果你的价值观是为了个人享受，而不是发展，那么就是另外的操作了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/career-build/">职业发展的框架</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-04-13T13:35:38+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2019</time>
+        
+         | <a href="/blog/career-build/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>首先存在环境。环境下面会有当前的最佳生存方式，叫做生态位。
+为了占据这个生态位，需要一整套的技巧和资源。
+获得这些技巧和资源，是职业build。
+职场发展就是找到生态位，准备职业build，然后切换当前的生态位到新的生态位。这种叫做转职。</p>
+
+<p>举例：转职路线：大学生到程序员，到资深程序员，到团队领导。</p>
+
+<p>大学生到程序员：转职任务：招聘
+预备条件：高校IT科班，足够的计算机背景知识，一定的编程经验。</p>
+
+<p>程序员到资深：一定的工作经验，能够负责一整套系统，没有转职任务。
+预备条件：能够熟练掌握工作需要的技术栈，完成工作。</p>
+
+<p>资深到团队领导：
+转职任务：在一定机缘下，能够带领几名程序员完成一个软件项目。
+预备条件：项目管理能力，人员管理激励能力。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/migrate-to-us/">不建议移民欧美</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-04-11T09:37:59+08:00" pubdate data-updated="true">Apr 11<span>th</span>, 2019</time>
+        
+         | <a href="/blog/migrate-to-us/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>世界观是需要随着时代变化而更新的。很多观念都会随着时代变化而过时。比如移民欧美。</p>
+
+<p>为什么以前出国好？
+欧美社会发达，同样劳动赚钱享受得多。中国外贸导向汇率压制，外币在国内消费能力更强。</p>
+
+<p>现在情况已经变化了。
+国内外发展差距越来越小，去国外工作生活享受提升不大，甚至生活更差。
+中国通货膨胀，国外赚钱国内花也不够用了。</p>
+
+<p>从未来发展考虑：</p>
+
+<ul>
+<li>国内社会发展更快，欧美垂垂老矣。</li>
+<li>国内阶层流通更开放，对于普通人机会更多，上升空间更大。</li>
+<li>欧美原先享受中国发展带来的红利，随着中西方技术代差越来越小，欧美人的日子会越来越难过。</li>
+</ul>
+
+
+<p>优缺点比较：
+国内缺点看得清楚，国外优点看得清楚，但是大家不容易看到国内优点和国外缺点。</p>
+
+<ul>
+<li>国内缺点：政治，自然环境，教育医疗等的发展程度。这些都会随着发展而得到改善。</li>
+<li>国外优点：社会发展程度，自然环境，收入相对高。会随着白左和中国红利减少而每况愈下。</li>
+<li>国内优点：同族群交流生活的方便程度，人力成本低，东西性价比高。</li>
+<li>国外缺点：生活开销大，人力成本高，不容易低消费，机会少，外国人社交圈。</li>
+</ul>
+
+
+<p>这里列一下大家不太清楚的国外缺点（以美国为例）：</p>
+
+<ul>
+<li>开销比国内高很多。住房教育医疗三座大山，收入月光。</li>
+<li>房子买起来比国内便宜，但是房产税物业费各种维护费用是一大笔钱，同比地段位置，还是比国内贵。</li>
+<li>公办教育一塌糊涂，好的私立教育很贵，普通人读不起，阶层固化。</li>
+<li>医疗费用非常高，性价比比国内差很多。</li>
+<li>劳动力成本高，什么事情都只能自己做，请不起人。</li>
+<li>社会制度完善，创业有很高的门槛，国内可以创业的人，来美国只能做寓公。</li>
+<li>美国绿卡和公民全球征税，每年要自己申报。政府剥削中产和有钱人太严重。</li>
+</ul>
+
+
+<p>现在一线城市人群已经意识到出国移民已经不是好的选择。
+但是大多数二三线人群还没有意识到，甚至还有出国移民的惯性。</p>
+
+<p>我的综合判断：</p>
+
+<ul>
+<li>体力劳动者去美国，劳动收益更高。</li>
+<li>有钱人去美国直接花钱享受提前几十年发展下的好的服务，但是资产要留在国内，也不要移民和绿卡让美国剥削。</li>
+<li>其它情况不要移民，国内更好。</li>
+</ul>
+
+
+<p>如果觉得中国大城市太辛苦，可以去二线城市，或者大城市周边的卫星小城市。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

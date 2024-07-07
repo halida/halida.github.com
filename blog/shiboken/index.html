@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>用shiboken做python绑定 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="pyside的项目已经beta了一段时间了,
+它采用的方法是开发一个名为shiboken的绑定生成工具来做处理.
+我们也可以利用这个工具来简化做python绑定的工作. 具体工作流程 上面的图代表了整个体系工作的方法. 用户提供2个信息: 需要绑定的库的头文件, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/shiboken/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">用shiboken做python绑定</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-07T11:23:31+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://www.pyside.org/docs/shiboken-0.5.0/_images/generatorworkings.png" alt="image" /></p>
+
+<p>pyside的项目已经beta了一段时间了,
+它采用的方法是开发一个名为shiboken的绑定生成工具来做处理.
+我们也可以利用这个工具来简化做python绑定的工作.</p>
+
+<h2>具体工作流程</h2>
+
+<p>上面的图代表了整个体系工作的方法. 用户提供2个信息: 需要绑定的库的头文件,
+以及建立一个需要绑定的库的描述信息文件(xml),
+以及在这个描述文件里面手动对生成内容做一些修改. 如果一切顺利的话,
+只需要在描述文件里面说明需要绑定到python里面的类/枚举等信息即可.</p>
+
+<h2>如何用?</h2>
+
+<p>具体可以见
+<a href="http://developer.qt.nokia.com/wiki/PySide_Binding_Generation_Tutorial">shiboken官方教程</a>,
+走到这一步的同学应该对英文没有压力的吧, 我就不再整理成中文了,
+毕竟作者他们也都不是英语母语的.</p>
+
+<p>一般情况下, 我们只需要直接下载里面附带的示例, 然后修改一番,
+就可以用来给我们自己的库来做绑定了. 我现在就是这样做的.</p>
+
+<h2>如何实现的?</h2>
+
+<p>上面都是具体的做法, 在实际的使用过程中还会遇到各种各样的问题,
+我们可能还需要对shiboken机制有一定的了解.</p>
+
+<h2>编译过程</h2>
+
+<p>我们写了xml描述文件之后, 实际执行的命令是generatorrunner,
+它会按照xml文件, 以及引入的库头文件, 生成wrapper的cpp/h文件. 之后,
+我们把这些文件编译成动态链接库, 这个链接库能够直接被python调用. 如下图:</p>
+
+<pre><code>global.h             generatorrunner                       gcc
+typesystem_foo.xml -------------------&gt; wrapper.h/cpp ---------&gt; libfoo.so
+</code></pre>
+
+<h2>generatorrunner运作机制</h2>
+
+<p>这里是
+<a href="http://www.pyside.org/docs/generatorrunner/overview.html">generator运作机制</a>
+的介绍.</p>
+
+<p><img src="http://www.pyside.org/docs/generatorrunner/_images/bindinggen-development.png" alt="image" />
+如上图, 分成几个模块, api extractor获取头文件的信息,
+typesystem和injected code就是那个xml描述文件.
+shiboken就是generatorrunner后台调用的cpp文件生成工具了.</p>
+
+<h2>结论</h2>
+
+<p>具体shiboken是如何处理的, 以及为了调试方便, 如何获取中间生成的类信息,
+这个我还需要时间去了解. 他们的作者也是很开放的, 如果发现问题, 可以往:
+<a href="mailto:pyside@lists.openbossa.org">pyside@lists.openbossa.org</a>
+邮件列表上面发邮件提问,
+作者基本上是会给回应的(毕竟他们是nokia雇来做这个事情的).</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-07T11:23:31+08:00" pubdate data-updated="true">Jan 7<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/shiboken/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/shiboken/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/pysideqwt-open-source/" title="Previous Post: pysideqwt开源经验">&laquo; pysideqwt开源经验</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/git/" title="Next Post: git学习总结">git学习总结 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/shiboken/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/shiboken/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

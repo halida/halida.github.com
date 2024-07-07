@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>局域网时代下科学上网 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="(2015-12-14更新KCPTUN方法) 我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
+但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
+访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/low-network-cross-gfw/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">局域网时代下科学上网</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-31T17:25:40+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>(2015-12-14更新KCPTUN方法)</p>
+
+<p>我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
+但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
+访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。</p>
+
+<p>要解决访问国外网站的问题，需要两步：</p>
+
+<ul>
+<li>要有一个保障国际出口带宽的国内服务。</li>
+<li>要有一个国外流量中转服务来绕过我们都知道的防火墙干扰。</li>
+</ul>
+
+
+<p>用户连接国内VPS的方案可以是VPN，可以是代理。我偏好VPN，因为全局翻墙下各种命令行工具也是可以用的。对于普通人来说只需要访问网页，各种代理协议也可以。</p>
+
+<p>国内VPS连接国外VPS的方法最好是常见的VPN，为什么呢，因为常见VPN各大国内外企或者国内互联网公司也在用，防火墙不太会干扰这些主流业务。
+如果用ssh，或者其它代理或者不知名的协议，一方面会被防火墙干扰，另外一方面包协议没有足够好的优先级，性能会差一些。</p>
+
+<p>我觉得最好的解决方案是：国内一台有良好国际出口带宽的VPS和一台国外VPS结合，提供pptp/l2tp/anyconnect VPN服务。</p>
+
+<p>这种方案我没有配置成功，因为不知道如何让国内VPS来做VPN中继。只能用其他的方案了：
+结合<a href="https://vnet.link/soft/vxgg">微林的云涟服务</a>以及ssh代理连到我买的国外VPS上网。</p>
+
+<p>云涟是一个提供良好国外出口流量的服务，方法是用openvpn或者anyconnect连接到一个阿里云里面CN2网络的VPS上面。
+有了好的出口带宽，之后用本地电脑命令行的ssh连到国外VPS，提供本地的一个sock5代理，再在浏览器上面设置代理访问网站。</p>
+
+<p>具体操作：</p>
+
+<ul>
+<li>注册<a href="https://vnet.link/?rc=18121">微林</a>，按照教程，本地电脑连接上VPN。</li>
+<li>购买一台便宜的国外VPS，比如<a href="https://www.digitalocean.com">DigitalOcean</a>。</li>
+<li>如果你是linux或者mac，在命令行执行 ssh -ND 1080 user@digital_ocean_vps_ip。</li>
+<li>设置浏览器的代理，用sock5，地址是127.0.0.1，端口1080。</li>
+</ul>
+
+
+<p>我现在用这种方法，访问国外网站非常顺畅，速度可以达到1MB/s。
+不过，成本会高一些，云涟的费用是1块钱每G，国内流量的费用是比较高的。
+国外VPS就便宜了，DigitalOcean是5美元一个月。</p>
+
+<p>期待有科学上网服务商提供这样的整体方案，省得大家自己弄了。</p>
+
+<p>2015-08-29更新：</p>
+
+<p>因为ssh提供sock5代理的性能问题，以及有协议特征容易被防火墙干扰，我建议大家换用shadowsocks。
+它是一个python写的客户端/服务器分离的sock5代理（国外服务器跑server端，client端和server端加密通讯，client端再启动一个sock5服务）。
+现在作者被喝茶，官方项目已经废掉了，不过还有<a href="https://github.com/Long-live-shadowsocks/shadowsocks">其他的镜像</a>。</p>
+
+<p>客户端和服务器双方预先保存密码，没有登录等操作，直接用密码加密通讯，
+同时可以选择多种加密方式，这样通讯没有协议特征，防火墙没有办法干扰。
+不过还是会有流量特征，防火墙如果开启智能学习的话，会把通讯劣化掉。不过现在好像没有进行这样的干扰。
+同时因为跑的是非主流协议，运营商会降低通讯的优先级，造成性能差一些。</p>
+
+<p>使用方法：</p>
+
+<ul>
+<li>购买一台便宜的国外VPS，比如<a href="https://www.digitalocean.com">DigitalOcean</a>。</li>
+<li><a href="https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Shadowsocks-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">在VPS上面安装SS</a>，然后执行<code>ssserver -p 4431 -k password</code>。记得修改-k的密码参数。</li>
+<li>注册<a href="https://vnet.link/?rc=18121">微林</a>，在vxTrans里面创建一个端口映射，指向你的VPS服务器的4431端口。通过微林的CN2精品网络保证出国带宽。</li>
+<li>在你本地机器上面安装SS，执行<code>sslocal -s 微林服务器地址 -p 微林服务器分配给你的端口号 -k password -l 1080</code>，这样连接到微林的端口转接，同时在本地启动了一个1080的sock5服务。</li>
+<li>设置浏览器的sock5代理，指向本地服务器的1080端口。</li>
+<li>如果你希望在命令行下面翻墙，可以安装<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a>，OSX下面可以用brew安装。</li>
+</ul>
+
+
+<p>2016-12-14更新：</p>
+
+<p>ss翻墙中间网络传输的速度不行，我发现了<a href="https://github.com/xtaci/kcptun">kcptun</a>这个神器，针对链路进行加速，看youtube高清视频一点问题都没有。</p>
+
+<p>使用方法：</p>
+
+<ul>
+<li>在你的服务器上面安装kcptun，直接下载官方的<a href="https://github.com/xtaci/kcptun/releases/latest">二进制包</a>就好。</li>
+<li>整体逻辑：<code>服务器ssserver - 服务器kcptun - 本地kcptun - 本地sslocal</code>，kcptun提供一个加速的链路，ss负责加密传输。</li>
+<li>服务器上面跑ss：<code>ssserver -p 4431 -k sskey</code></li>
+<li>服务器上面跑kcptun：<code>./server_linux_amd64 -t "127.0.0.1:4431" -l ":42871" -key "sharedkey" -mtu 1400 -sndwnd 2048 -rcvwnd 2048 -mode fast2</code></li>
+<li>本地机器上面跑kcptun： <code>./client_linux_amd64 -r "server.com:42871" -l ":4432" -key "sharedkey" -mtu 1400 -sndwnd 106 -rcvwnd 2048 -mode fast2</code></li>
+<li>本地机器上面跑ss：<code>sslocal -s 127.0.0.1 -p 4432 -k sskey -b 0.0.0.0 -l 1081</code></li>
+<li>里面42871是kcp的端口，kcptun把服务器sserver的4431端口映射到本地的4432端口让sslocal访问。sharedkey是你kcptun本地和服务器共享的密钥，sskey是ss共享的密钥，server.com是你vps的地址，都要修改一下。其它的参数你感兴趣可以去官方网站上面看解释。</li>
+<li>打开浏览器，设置SOCK5代理，端口1081就可以了。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-31T17:25:40+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/low-network-cross-gfw/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/low-network-cross-gfw/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/zhuangxiugongshi/" title="Previous Post: 是否要用装修公司">&laquo; 是否要用装修公司</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/common-data-exchange-format/" title="Next Post: 什么通用数据交换格式更好">什么通用数据交换格式更好 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/low-network-cross-gfw/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/low-network-cross-gfw/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

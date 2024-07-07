@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何阅读ruby源码 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近阅读ruby源码非常顺手，这里整理一下阅读心得。 首先，为什么要阅读源码？因为几点： 用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
+最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/how-to-read-ruby-source-code/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何阅读ruby源码</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-03T19:55:17+08:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/2014_01_03.jpg"></p>
+
+<p>最近阅读ruby源码非常顺手，这里整理一下阅读心得。</p>
+
+<p>首先，为什么要阅读源码？因为几点：</p>
+
+<ol>
+<li><p>用到的工具，一定要清楚实现，这样遇到问题能够处理。我在rails开发过程中，遇到一些诡异bug，调试了很久，
+最后定位问题到了第三方gem上面。如果我对于它们的代码足够熟悉，可以很快定位到问题点，不需要浪费那么多的时间。</p></li>
+<li><p>熟悉实现也是一个学习的过程。在看源码的过程中，我对于ruby的使用，如何做架构，都有了更深刻的认识。
+写代码水平靠自己磨练，同时借鉴别人的代码也必不可少。很多知识和技巧自己悟出来就慢了，看别人的东西能够学到更多。</p></li>
+</ol>
+
+
+<p>然后是重点：如何阅读。</p>
+
+<p>读懂代码之前，我们要把项目的文档看一遍，知道如何使用它。
+使用方法是项目的接口，熟悉它们，我们就把“未知”限定在项目的源代码之内，
+对于理解源码有了坚实的基础。</p>
+
+<p>之后我们要熟悉源代码的文件树结构。好的项目的文件安排是模块化的，
+一个文件就是一个系统模块，ruby项目，一般是一个文件一个类。
+这样一个复杂项目，就被切分成一小块一小块人能够理解的部分了。</p>
+
+<p>在这里要停一下，回顾前面看到的文档，列出一些核心的入口，
+然后基于这些入口，对于项目的实现提出一些猜想，
+然后从这些入口出发，寻找对应的函数，一步步顺着方法调用，看对应的代码。</p>
+
+<p>举个实际的例子。
+我看sinatra源码的时候，关注了几个入口：<code>get/post</code>方法，如何被rack调用。
+我会列出猜想：get/post代码应该是记录这些block到一个内部的数据结构中，
+在代码里面，有针对rack做一个接口，调用的时候会去解析http请求，分发到对应的block里面。</p>
+
+<p>然后我开始用<code>find</code>和<code>grep</code>寻找<code>get</code>，遇到函数调用，就用同样的方法一路看过去。
+最后发现<code>get</code>方法实际上是给类创建了一个方法：<code>#{verb} #{path}</code>，然后绑定它。
+和我想的不太一样，并不是用一个数据结构。</p>
+
+<p>然后我又去看rack调用过程，最后弄清楚了如何分发请求，如何调用请求，以及在执行中快速跳出，
+并且学到了<a href="http://ruby-china.org/topics/16349">一个小技巧</a>。</p>
+
+<p>在阅读源码的过程中，我弄清楚了：调用栈，数据结构，类架构，以及验证了阅读代码前的各种猜想，
+通过了解里面一些看不懂的部分，学到了新的知识。整个顺藤摸瓜过程是非常愉快的。</p>
+
+<p>对了，最后还有一点，记得记笔记。研究过程不记录就白研究了，下次你是绝对想不起来的。
+我会把上面跟踪函数调用栈中遇到的核心区块记录下来，整理成一个执行过程文档，
+下次需要的时候直接看这个文档就可以了。这是一个示例（当然只有我自己才看得懂啦）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>call =&gt; dup.call! 复制自己一份。。
+</span><span class='line'>call!(env) =&gt;
+</span><span class='line'>@request  = Request.new(env)
+</span><span class='line'>@response = Response.new
+</span><span class='line'>invoke { dispatch! } =&gt; route!
+</span><span class='line'>route! =&gt;
+</span><span class='line'>base.routes 遍历
+</span><span class='line'>returned_pass_block = process_route(...) 
+</span><span class='line'>process_route 里面检查pattern是否匹配，返回对应的block</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-03T19:55:17+08:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/how-to-read-ruby-source-code/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/how-to-read-ruby-source-code/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/too-old-to-program/" title="Previous Post: Too Old to Program">&laquo; Too Old to Program</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-summary/" title="Next Post: 2013总结与2014计划">2013总结与2014计划 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/how-to-read-ruby-source-code/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/how-to-read-ruby-source-code/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

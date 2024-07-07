@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>一种简单的前端框架写法 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
+这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。 我们大多数的js操作，都是针对用户事件，做一个具体的反应，
+比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/js-controller/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">一种简单的前端框架写法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-18T00:04:00+00:00" pubdate data-updated="true">Aug 18<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/mvc.png"></p>
+
+<p>现在网站基本上js漫天飞，一不小心就写得乱七八糟，得需要好好整理才行。
+这里分享一个简易整理法，不需要很复杂就可以把js弄得非常清爽。</p>
+
+<p>我们大多数的js操作，都是针对用户事件，做一个具体的反应，
+比如说点击一个按钮弹出一个对话框，当用户提交表单的时候做一些验证之类。
+这种用户操作模型已经被研究很多了，通用的抽象方式就是著名的<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC模型</a>。
+我们写js也可以这样抽象隔离，不过一般并不需要抽象出MVC里面的Model。
+View就是html的页面，Controller就是针对事件做出的反应。</p>
+
+<p>我们可以把一个逻辑相关的功能划分成一个Controller类，类里面记录相对应的一个页面区块，
+列出需要监听的事件，把事件绑定到类方法上面，方法里面修改和更新区块中特定的元素。
+一个轻量的前端框架<a href="http://spinejs.com/">Spine</a>，提供了这样的一个Controller类来满足我们的需求。</p>
+
+<h2>例子</h2>
+
+<p>假设我们需要做一个简单的功能，页面上面一个按钮，点击一次按钮，页面上面显示的数量就加一。</p>
+
+<p>页面部分包含了我们需要展示的东西：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;counter&quot;</span><span class="p">&gt;</span>
+</span><span class='line'>  <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;click&quot;</span><span class="p">&gt;</span>Click Me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span><span class='line'>  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;result&quot;</span><span class="p">&gt;</span>0<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对应的javascript（用<a href="http://coffeescript.org/">coffeescript</a>写）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span></span><span class="k">class</span> <span class="nx">CounterController</span> <span class="k">extends</span> <span class="nx">Spine</span><span class="p">.</span><span class="nx">Controller</span>
+</span><span class='line'>    <span class="c1"># 列出我们需要交互的页面元素</span>
+</span><span class='line'>    <span class="nv">elements:</span>
+</span><span class='line'>        <span class="s">&quot;.result&quot;</span><span class="o">:</span> <span class="s">&quot;result&quot;</span>
+</span><span class='line'>    <span class="c1"># 绑定我们关心的事件到on_click</span>
+</span><span class='line'>    <span class="nv">events:</span>
+</span><span class='line'>        <span class="s">&quot;click a.click&quot;</span><span class="o">:</span> <span class="s">&quot;on_click&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="c1"># 在Controller初始化的时候，会帮你做好上面的事件和元素绑定</span>
+</span><span class='line'>        <span class="k">super</span>
+</span><span class='line'>        <span class="c1"># 初始化变量</span>
+</span><span class='line'>        <span class="vi">@count = </span><span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 处理事件</span>
+</span><span class='line'>    <span class="nv">on_click: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">@count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="nx">@update</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># 更新页面</span>
+</span><span class='line'>    <span class="nv">update: </span><span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">@result</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="nx">@count</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># 初始化</span>
+</span><span class='line'><span class="k">new</span> <span class="nx">CounterController</span><span class="p">(</span><span class="nv">el: </span><span class="s">&#39;.counter&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我一般会再做一个启动器，这样可以自动挂载，以及限定好作用域不超出对应的区块：</p>
+
+<p>页面修改成：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">data-controller</span><span class="o">=</span><span class="s">&quot;Counter&quot;</span><span class="p">&gt;</span>
+</span><span class='line'>  ...
+</span><span class='line'><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>增加代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span></span><span class="nv">init_controllers = </span><span class="nf">-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;[data-controller]&#39;</span><span class="p">).</span><span class="nx">each</span> <span class="nf">-&gt;</span>
+</span><span class='line'>        <span class="nx">init_controller</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">init_controller = </span><span class="nf">(obj)-&gt;</span>
+</span><span class='line'>    <span class="nv">controller = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;Controller&quot;</span>
+</span><span class='line'>    <span class="nv">data = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">()</span>
+</span><span class='line'>    <span class="nv">data.el = </span><span class="nx">obj</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nb">window</span><span class="p">[</span><span class="nx">controller</span><span class="p">](</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">init_controllers</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所有常规的js页面操作都可以抽象成一个Controller类，
+按照这样的方法来组织js代码，复杂的js就能管理得井井有条，
+并且只需要引入Spine(几十K左右)，不需要复杂的框架代码和理解。
+当然我们还可以进一步，自动绑定页面元素和数据，比如<a href="http://angularjs.org/">Angularjs</a>。
+不过我个人觉得，普通功能不需要做得那么复杂，用我上面的方法组织就已经OK了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-18T00:04:00+00:00" pubdate data-updated="true">Aug 18<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/js-controller/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/js-controller/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/website-cache/" title="Previous Post: 网站cache机制">&laquo; 网站cache机制</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/css-two-column/" title="Next Post: css实现双栏同等高度">css实现双栏同等高度 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/js-controller/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/js-controller/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

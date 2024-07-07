@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>我的emacs配置 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="每个emacs使用者的配置都是不一样的, 都会根据自己的习惯和喜好来调整.
+这里我整理一些对emacs用户调整有帮助的内容, 以及我自己觉得不错的配置. emacs配置如何管理? 配置多了, 放在.emacs里面不是一回事, 我的解法是,
+.emacs导入真正放配置的目录, 然后require: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/my-emacs-config/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">我的emacs配置</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-04T20:48:50+08:00" pubdate data-updated="true">Dec 4<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>每个emacs使用者的配置都是不一样的, 都会根据自己的习惯和喜好来调整.
+这里我整理一些对emacs用户调整有帮助的内容, 以及我自己觉得不错的配置.</p>
+
+<h2>emacs配置如何管理?</h2>
+
+<p>配置多了, 放在.emacs里面不是一回事, 我的解法是,
+.emacs导入真正放配置的目录, 然后require:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(add-to-list 'load-path (expand-file-name "~/Dropbox/sync/emacs/srcs"))
+</span><span class='line'>(load "main")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>main.el是配置的汇总, 配置按照模块和功能分割成不同的文件:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(provide 'main)
+</span><span class='line'>
+</span><span class='line'>;; requires
+</span><span class='line'>(require 'mylib)
+</span><span class='line'>(require 'template)
+</span><span class='line'>(require 'mypython)
+</span><span class='line'>(require 'mydired)
+</span><span class='line'>(require 'myc)
+</span><span class='line'>(require 'mykeymap)
+</span><span class='line'>(require 'mygtd)
+</span><span class='line'>(require 'top-mode)
+</span><span class='line'>(require 'tabbar)
+</span><span class='line'>(require 'fullscreen)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>dropbox是我同步emacs配置的工具, 你也可以用其他网盘工具.</p>
+
+<h2>如何绑定自己的键位?</h2>
+
+<p>每个emacs用户都会自己设定键位, 不会傻傻地M-x然后输入字符. 我个人的经验,
+绑定键位的指导思想是: 对于显示buffer, 切换buffer之类使用非常频繁的功能,
+找一些方便的直接键位来绑定, 比如:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key [C-tab] 'other-window)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于一些其他不是那么频繁, 但是经常要使用的功能,
+都可以绑定到间接键位上面. 我发现C-;没有使用, 按起来还很方便,
+然后把所有自己定义的功能都加到上面去了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(global-set-key (kbd "C-; 1") 'gtd)
+</span><span class='line'>(global-set-key (kbd "C-; 2") 'note)
+</span><span class='line'>(global-set-key (kbd "C-; 3") 'scratch)
+</span><span class='line'>(global-set-key (kbd "C-; 4") 'py-shell)
+</span><span class='line'>(global-set-key (kbd "C-; 5") 'woman)
+</span><span class='line'>(global-set-key (kbd "C-; 7") 'twit-follow-recent-tweets)
+</span><span class='line'>(global-set-key (kbd "C-; C-7") 'twit-post)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于针对某些mode的键位绑定, 只需要改变那个mode的键位就可以了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(define-key dired-mode-map (kbd "b") 'dired-up-directory)</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>一定要设置的功能</h2>
+
+<p>有些功能是如此的强大, 以至于缺少了他们emacs就不完整了..</p>
+
+<ul>
+<li><p><a href="http://www.emacswiki.org/emacs/InteractivelyDoThings">ido</a>,
+如果你发现开启文件和切换buffer输入有点累的话, 用ido来节省输入.</p></li>
+<li><p><a href="http://www.emacswiki.org/emacs/AutoComplete">auto-complete</a>
+自动补全. 这里面的补全方案默认是取当前buffer的词语的,
+对于我写python代码来说足够用了.
+至于c/c++/java..等我写的时候再配置吧.</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(require 'auto-complete)
+</span><span class='line'>(global-auto-complete-mode t)
+</span><span class='line'>;; 匹配项目不用动手腕啦
+</span><span class='line'>(define-key ac-complete-mode-map "\C-n" 'ac-next)
+</span><span class='line'>(define-key ac-complete-mode-map "\C-p" 'ac-previous)</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>漂亮的配色. color-theme有一堆配色可以选的.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(require 'color-theme)
+</span><span class='line'>(color-theme-arjen)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还有一些零散的配置, 都放在
+<a href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/main.el">main.el</a>
+里面.</p>
+
+<ul>
+<li><p>template 模板系统. 写东西怎么不能用模板呢.
+一遍遍地输入同样的东西多烦. 我用的是
+<a href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/template.el">template.el</a>,
+不过感觉用的不是很熟, 还要改改.</p></li>
+<li><p><a href="http://orgmode.org/">org-mode</a>. 用来写notes/todo/gtd的. 看看吧,
+功能强大.</p></li>
+</ul>
+
+
+<h2>其他有价值的东西</h2>
+
+<ul>
+<li>shell-command功能. 可以在buffer当前目录执行命令. 如果不想它卡死的话,
+可以在命令后面加&amp;(linux).</li>
+<li><a href="http://www.lysator.liu.se/~tab/artist/">artist-mode</a>,
+可以在emacs里面画图.
+<a href="http://www.cinsk.org/emacs/emacs-artist.html">artist-mode视频介绍</a></li>
+<li>半透明. linux下面要开启特效才能半透明.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(set-frame-parameter (selected-frame) 'alpha '(80 50))
+</span><span class='line'>(add-to-list 'default-frame-alist '(alpha 80 50))</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://www.emacswiki.org/emacs/FullScreen">全屏</a>,
+不全屏怎么对得起emacs呢?</li>
+</ul>
+
+
+<h2>资源</h2>
+
+<p>emacs自带的info文档已经很多了, 不过有一些其他地方的资源不错, 值得提一下:</p>
+
+<ul>
+<li><a href="http://www.emacswiki.org/">emacs wiki</a>,
+我想emacs用户都应该知道这里吧.</li>
+<li><a href="http://bitbucket.org/linjunhalida/emacs">我的配置</a>, 好吧, 分享下.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-04T20:48:50+08:00" pubdate data-updated="true">Dec 4<span>th</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/my-emacs-config/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/my-emacs-config/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ipython/" title="Previous Post: ipython">&laquo; ipython</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/scons/" title="Next Post: scons介绍">scons介绍 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/my-emacs-config/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/my-emacs-config/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

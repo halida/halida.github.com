@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>解一道算法题 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近在学算法，看一本算法竞赛书，看到一定阶段来做算法题，随机抽了一道简单的coj 1132来做。 题目是求解一个数的所有除数组合出来的数之和(不包括自己)，比如：20 = 2 * 2 * 5，结果a(20) = 1 + 2 + 4 + 5 + 10 = 22。 首先我采用硬解的方法， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/coj-1132/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">解一道算法题</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T09:32:43+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/2014_02_07.jpeg"></p>
+
+<p>最近在学算法，看<a href="http://book.douban.com/subject/24749842/">一本算法竞赛书</a>，看到一定阶段来做算法题，随机抽了一道简单的<a href="http://coj.uci.cu/24h/problem.xhtml?abb=1132">coj 1132</a>来做。</p>
+
+<p>题目是求解一个数的所有除数组合出来的数之和(不包括自己)，比如：20 = 2 * 2 * 5，结果a(20) = 1 + 2 + 4 + 5 + 10 = 22。</p>
+
+<p>首先我采用硬解的方法，求出所有的除数，然后排列组合一下。发现超时了。
+回去看了一下题目，发现：测试用例数量<code>equal to about 2*10^5</code>，硬算的复杂度大概是n<sup>3</sup>*log(n)，难怪算不出来，只能去优化算法了。</p>
+
+<p>排列组合题目一般来说会有重合子问题，可以用动态规划来优化。先列出状态转移方程看看：</p>
+
+<p>假设要求解a(n)，n可以拆分成除数d1, d2, &hellip; dk (dk > dk-1)，每个除数的数量是m1, m2, &hellip;, mk，那么a(n)结果和<code>a(p)</code>相关，其中<code>p = d1^m1 * d2^m2 ... * dk-1^mk-1</code>，拆分一下a(n)：</p>
+
+<pre><code>a(n) = sum( d1^s1 * d2^s2 * ... * dk-1^sk-1 * dk^sk ) (所有可能的 sk &lt;= mk)
+     = d1^m1 * ... * dk-1^mk-1 + sum( d1^s1 * ... * dk-1^sk-1 ) * dk^sk
+     = p + a(p) * (1 + dk + dk ^ 2 + ... + dk ^ mk)
+     = p + a(p) * (1 - dk^(mk+1)) / (1 - dk)
+</code></pre>
+
+<p>题目中进行了大量运算(n &lt; 5*10<sup>5</sup> ，其中2/5的值都需要求解)，n利用到旧的p的概率很大，
+又能够减少一个级别的复杂度，缓存a(p)的值到数组就可以了。</p>
+
+<p>写程序的方法：每次计算a(n)都会先拆分除数列表，保存到一个vector数组里面。
+然后调用a(p)，算出来的结果缓存到一个结果数组中。</p>
+
+<p>之后进行优化：</p>
+
+<ul>
+<li><p>发现其实不关心d1到dk-1的值，只需要dk就行了，mk可以循环除得到，那么只需要保存每个n最大的除数即可。</p></li>
+<li><p>为了增加运行速度，求除数先维护一个素数数组，这样不用从2开始一个个除了。但是修改之后发现，计算素数数组的复杂度超了，反而不如原先算法快。</p></li>
+</ul>
+
+
+<p><a href="https://github.com/halida/online_judge_for_coj/blob/master/1132.cpp">代码在这里</a>。
+<a href="http://coj.uci.cu/24h/problem.xhtml?abb=1132">我的答案</a>时间消耗比<a href="http://coj.uci.cu/24h/bestsolutions.xhtml?abb=1132">最快的算法</a>多将近一倍，不知道大家有什么更好的算法没有？</p>
+
+<p>结论：</p>
+
+<ul>
+<li><p>首先看清楚题目，包括：算法具体内容，示例是否符合自己猜想的算法，各个参数的范围。参数的范围算是一个坑，有一道算法题目是算a+b，然后没有给参数范围，无数人就栽在这上面，因为a和b是天文数字几百位。。</p></li>
+<li><p>然后列出具体问题，寻找规律，列状态转移方程。空想比较慢，在纸上面看着一个实际问题方便寻找规律，验证算法正确性，以及考虑各种边界条件。</p></li>
+<li><p>一定要计算复杂度。比如上面我打算先算素数优化执行效率，但是求素数的复杂度更高，优化后速度变慢了。</p></li>
+</ul>
+
+
+<p>解算法题比<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>有意思多了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T09:32:43+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/coj-1132/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/coj-1132/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/programming-chaos/" title="Previous Post: programming chaos">&laquo; programming chaos</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/factorio/" title="Next Post: factorio介绍">factorio介绍 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/coj-1132/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/coj-1132/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

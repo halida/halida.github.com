@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>智能家居之灯光改造方案 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="灯光控制有几类需求： 只需要开关：普通灯
+调整亮度：渐开渐关的效果更舒服
+冷暖双色调光：主流需要调整灯光颜色就只需要冷暖
+颜色调光：一般情况下不需要，家里不是舞厅 控制灯光最好的方法还是有线方法： 灯线都走电箱，控制器都放电箱导轨上面。
+用模块控制：开关模块，LED 0-10v调光模块，调色模块 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/smarthome-light/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">智能家居之灯光改造方案</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2022-12-27T09:13:48+08:00" pubdate data-updated="true">Dec 27<span>th</span>, 2022</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>灯光控制有几类需求：</p>
+
+<ul>
+<li>只需要开关：普通灯</li>
+<li>调整亮度：渐开渐关的效果更舒服</li>
+<li>冷暖双色调光：主流需要调整灯光颜色就只需要冷暖</li>
+<li>颜色调光：一般情况下不需要，家里不是舞厅</li>
+</ul>
+
+
+<p>控制灯光最好的方法还是有线方法：</p>
+
+<ul>
+<li>灯线都走电箱，控制器都放电箱导轨上面。</li>
+<li>用模块控制：开关模块，LED 0-10v调光模块，调色模块。</li>
+<li>开关控制走485总线或者KNX总线，485转IP，上面还可以再用home assistant控制。</li>
+</ul>
+
+
+<p><img src="https://ipcsautomation.com/wp-content/uploads/2018/06/49blog-640x300.jpg" alt="image" /></p>
+
+<p>这样价格可能高一些，但是有线带来的稳定性不是无线可以比拟的。</p>
+
+<p>不过大家一般不会在装修阶段思考清楚这样设计，最后主要还是改造方案。</p>
+
+<ul>
+<li>网络方面最好采用zigbee协议，只组网，更少干扰。</li>
+<li>改造主要几个维度：是否换智能灯，开关是否有零线，是否多控。</li>
+</ul>
+
+
+<p>如果灯具是智能灯，开关通断会影响智能灯的工作，必须保持常通的模式。</p>
+
+<ul>
+<li>有的智能灯支持凌动开关的模式，原理就是开关保持常连，按一下就是快速断开连上，智能灯可以识别这个脉冲变化切换开关，但是对电源有冲击，个人觉得最好不要用。</li>
+<li>有的智能灯有的支持433射频开关，这样废弃掉旧的开关，用无线433射频开关控制。</li>
+<li>如果实在不行，就只能用无线开关接入，用home assistant总控配置了。</li>
+</ul>
+
+
+<p>如果是非智能灯，需要购买一个智能通断模块，放在开关处或者灯处。</p>
+
+<ul>
+<li>一般电灯开关的走线方式是只走一根火线，开关控制火线的通断，火线再接到灯上，零线连到灯。</li>
+<li>这种情况下，智能模块放到开关处就没有零线了，需要购买单火的智能模块，原理是保持一个微弱的电流让智能模块工作，
+副作用是灯那边也有电流，可能出现微亮的情况。如果是zigbee模块，这个电流就比较小，影响不大。</li>
+<li>如果不想用单火模块，就需要把智能模块放在灯上面，开关保持常闭，另外接无线开关（同上面智能灯的方法）。</li>
+</ul>
+
+
+<p>如果灯具需要多控，分情况：</p>
+
+<ul>
+<li>如果火线的入口和出口都在一个开关处，只要换一个单火模块串进来就可以了。</li>
+<li>如果不在一个开关处，可以串联起来，用凌动开关，这样一个开关发出脉冲信号，通断模块就可以开关。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2022-12-27T09:13:48+08:00" pubdate data-updated="true">Dec 27<span>th</span>, 2022</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/smarthome/'>smarthome</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/smarthome-light/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/smarthome-light/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/multi-room-music/" title="Previous Post: 智能家居之全屋音乐方案">&laquo; 智能家居之全屋音乐方案</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/pc-laptop-cowork/" title="Next Post: 笔记本结合台式机开发方案">笔记本结合台式机开发方案 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/smarthome-light/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/smarthome-light/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

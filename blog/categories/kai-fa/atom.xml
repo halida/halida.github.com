@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 开发 | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/kai-fa/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[librr介绍]]></title>
+    <link href="http://blog.linjunhalida.com/blog/librr/"/>
+    <updated>2013-12-11T19:15:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/librr</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2013_12_11_module.jpeg"></p>
+
+<p><a href="https://github.com/halida/librr">librr</a>是我最近离职休息玩的小项目，用处是给本地文档做一个索引，然后想查什么就可以搜索到。
+实现原理很简单，监控文件夹改动，有变化就把文件一行行读取出来，丢给<a href="http://lucene.apache.org/solr/">solr</a>进行索引。</p>
+
+<p>使用上面首先设置你要索引的文件夹：</p>
+
+<pre><code>librr add ./gtd
+</code></pre>
+
+<p>然后等一会让索引完成，就可以搜索数据了：</p>
+
+<pre><code>librr search emacs
+</code></pre>
+
+<p>我用它来索引自己的本地文档库，以后考虑索引一些大文件，比如csdn泄漏密码，酒店泄漏信息什么的。</p>
+
+<h2>架构</h2>
+
+<p>因为有文件夹监控，维护搜索进程等功能，librr需要跑一个后台进程，
+一个命令行工具作为后台进程的前端。</p>
+
+<p>后台进程有几个功能：</p>
+
+<ul>
+<li>监控文件夹中的文件改动</li>
+<li>响应命令行工具的http请求</li>
+<li>管理solr进程</li>
+</ul>
+
+
+<p>可以用多线程或者多进程来做，不过我选择了<a href="https://github.com/eventmachine/eventmachine">eventmachine</a>，采用异步无阻塞的架构。
+目的一个是熟悉eventmachine，一个是看看异步无阻塞的架构写起来如何。</p>
+
+<h2>具体细节</h2>
+
+<h3>命令行和后台通讯</h3>
+
+<p>命令行参数的解析交给<a href="https://github.com/halida/librr/blob/master/lib/librr/cmd_parser.rb">CmdParser</a>完成，利用了库<a href="http://whatisthor.com/">Thor</a>。
+<code>CmdParser</code>解析出来的参数交给<a href="https://github.com/halida/librr/blob/master/lib/librr/cmd_client.rb">CmdClient</a>传递给后台进程。
+如果后台进程没有起来，<code>CmdClient</code>会调用<a href="https://github.com/halida/librr/blob/master/lib/librr/server_controller.rb">ServerController</a>，启动一个后台进程。
+后台进程里面的<code>CmdServer</code>模块有一个<code>CmdServerHandler</code>，响应命令行过来的http请求，
+通知对应的后台模块处理，返回执行结果。</p>
+
+<h3>后台架构</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/runner.rb">Runner</a>负责启动eventmachine，初始化<code>Indexer</code>，<code>DirMonitor</code>，<code>CmdServer</code>这几个核心模块。
+因为模块初始化是有依赖的，它们的初始化方法<code>start</code>都可以传进去一个block，初始化完成后执行，这样可以按照顺序进行初始化。</p>
+
+<h3>监控文件夹功能</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor.rb#L3">DirMonitor.get_monitor</a>会根据当前的操作系统，生成对应的监控对象。</p>
+
+<p>OSX下面的<a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/osx_dir_monitor.rb">OsxDirMonitor</a>，
+会去跑一个利用系统API <a href="http://en.wikipedia.org/wiki/FSEvents">FSEvents</a>生成的可执行文件，管道输出获取结果。</p>
+
+<p>linux下面的<a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/linux_dir_monitor.rb">LinuxDirMonitor</a>
+用基于<a href="http://en.wikipedia.org/wiki/Inotify">linux inotify API</a>的ruby绑定<a href="https://github.com/nex3/rb-inotify">rb-inotify</a>。
+因为可以获得一个文件句柄，可以直接丢给eventmachine进行管理。</p>
+
+<h3>索引和搜索功能</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/indexer.rb">Indexer</a>是针对索引和搜索功能的包装，
+内部有一个<code>SolrManager</code>来管理solr进程，方式是用<code>EM.popen</code>，开启一个新的进程。
+索引文件夹因为用时很长，把逻辑拆成了异步来做，让后台进程能够同时去做其他的事情。</p>
+
+<h2>经验体会</h2>
+
+<p>首先，整个项目耗时比我预期的要多出来很多，一个原因是用到新技术必然会跳无数的坑，
+另一个原因是稍微复杂一些的项目考开发人员的细致程度，一点点的错误就会消耗无数的调试开发时间，
+而我开发的时候并没有进入非常投入的状态。</p>
+
+<p>然后是异步项目，需要把平常顺序执行的操作，用回调拆分得支离破碎，
+这样代码看起来不容易理解，执行异步不容易理清当前代码所在的环境也容易引入bug。
+并且开发模块的时候，要用用回调的方式来考虑问题，如果顺序依赖的话，需要准备对应的完成后事件的callback接口。
+这一块的调试花费了我好些时间。</p>
+
+<p>一个小项目，需要引入那么多正规项目需要有的东西：
+文档，<a href="https://github.com/halida/librr/issues">项目管理</a>，标准化代码文件结构，<a href="https://github.com/halida/librr/blob/master/lib/librr/logger.rb">日志系统</a>，
+<a href="https://github.com/halida/librr/tree/master/spec">测试</a>，功能模块化，<a href="https://github.com/halida/librr/blob/master/lib/librr/settings.rb">配置管理</a>，<a href="https://github.com/halida/librr/blob/master/librr.gemspec">发布方式</a>，<a href="https://github.com/halida/librr/tree/master/lib/librr/dir_monitor">多平台支持</a>。
+真是不容易啊。不过这种代码主要消耗在架构上面的项目写起来真的是非常有成就感。</p>
+
+<p>既然你都看到这里了，那么就试用一下<a href="https://github.com/halida/librr">librr</a>吧，欢迎<a href="https://github.com/halida/librr/issues">提交issue给我</a>。</p>
+]]></content>
+  </entry>
+  
+</feed>

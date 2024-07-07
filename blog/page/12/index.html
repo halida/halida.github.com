@@ -1,0 +1,1113 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。 回到正题。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/12/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/auto-update/">自动更新程序功能思考</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-15T08:16:11+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/auto-update/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>对于有经验的程序员来说，
+很多看起来比较简单的功能，实际做起来会非常复杂。
+而对于有经验的工作者而言，任何事情都是这样的。
+把事情做好需要的精力，是把事情做完需要精力的无数倍。
+同时带来的好处也很明显：卓越成果相比普通成果来说，有很高的溢价。</p>
+
+<p>回到正题。这里整理一下windows下面写一个可以自己自动更新的程序需要的考虑。</p>
+
+<p>首先，windows下面程序不能自动更新自己，程序开启的时候会锁住程序的可执行文件。
+因此，需要先做一个启动器，通过启动器来负责调用程序和更新程序的事情。
+同时这个启动器必须足够快足够小。我选择的是autoit，
+如果有更多开发资源，最好还是用C++写一个windows原生程序。</p>
+
+<p>启动器的逻辑是这样，分成检查更新和更新部分。
+用户开启程序，实际是调用启动器的更新部分后再启动程序。
+程序本身运行的时候，再定时监控是否有更新，实际调用启动器的检查更新部分，
+这样关于更新的逻辑都丢给启动器，模块化好一些。</p>
+
+<p>检查更新的逻辑比较简单，会去访问更新服务器上面一个版本文件，
+和本地程序的版本做比较，如果本地更旧，就下载程序到一个new_program目录下面。
+定时检查更新的时候需要随机化检查时间，防止无数客户端同时更新拖垮更新服务器。</p>
+
+<p>更新部分会在本地判断是否存在new_program目录，有的话就替换掉旧的程序，
+执行安装脚本做一些系统相关的配置，再启动。</p>
+
+<p>其中为了防止旧程序开启把旧程序目录锁住，需要关闭旧程序，或者跳过这块的更新。
+启动器本身也要能够被自动更新掉，逻辑上面需要照顾到这个问题。
+启动器对应的一些参数，比如更新服务器地址，更新目录，最好做成配置文件，方便修改。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/xiang-qing/">关于相亲活动</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T19:24:14+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/xiang-qing/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_04_05_xiangqing.jpg"></p>
+
+<p>这些年参加过不少的相亲活动，这里整理一下我对这些活动的认识。</p>
+
+<h2>需求</h2>
+
+<p>相亲，目的就是在一定的时间范围内搞定终身大事。
+虽然说不同人有不同的标准，一般还是会列一些项目，用来做快速选人。
+包括以下方面：</p>
+
+<ul>
+<li>人：年龄，第一感觉，性格，风格</li>
+<li>背景：地域，什么工作，收入，父母状况，家境</li>
+</ul>
+
+
+<p>依据各人的状况，加上一些偏好，比如身高，地域，职业，特性等等。</p>
+
+<p>这个时候，最好能够有大量的满足要求的人选，可以尽快选择出合适的对象。</p>
+
+<h2>相亲形式</h2>
+
+<p>首先列一些我觉得不是很好的形式：</p>
+
+<p><a href="http://blog.linjunhalida.com/blog/people-square-meetup/">人民广场相亲角</a>。形式是绝对的硬件条件匹配，年龄籍贯工作收入有房无房学历等等。
+父母上场。比起相亲来说，更像是父母消减焦虑的工具。靠谱程度？大海捞针吧。</p>
+
+<p><a href="http://www.feminism.cn/">8分钟</a>。形式就是一堆男男女女，在咖啡厅里面，女生3-5人坐在一桌，男生每8分钟轮换。
+在这8分钟里面，互相介绍。好处是可以看相当多的人，坏处是8分钟根本来不及了解对方。人也很杂。
+一个晚上人看得挺多，但是一个都不了解。</p>
+
+<p>小规模相亲活动。参与人员男女比例1:1，人数几十人。各种小游戏。
+参与后我觉得就是来玩玩的，游戏中怎么可能了解人，并且人数也不是很多，
+主题太功利了，比较容易惹来反感。</p>
+
+<p>然后是一些我觉得好的形式：</p>
+
+<p><a href="http://site.douban.com/181534/">暴走团</a>。周末出来在城市里面到处走走聊聊。
+大量的单身适龄男女（有对象的要么不来要么一起来），大量的自由聊天和组合机会。
+一次活动4个小时，近百号人你可以从头聊到尾，每次活动人都不一样。
+问题是参与没门槛，人比较杂，如果你要有一些条件限制的话就比较难筛。</p>
+
+<p>派趣网：一个相亲网站，用户审核过，必须是985学校，要放本人照片，介绍等等。
+大量高质量的人可供你接触。可惜现在不做了。</p>
+
+<h1>我觉得好的方式</h1>
+
+<p>首先要聚集靠谱的人。相亲难，首先难在找人。然后难在筛人。
+首先，相亲市场需要搜集满足互相匹配人群，比如男的要身高，稳定工作，有房之类，
+女的要长相过得去，教育水平。还有就是人要清楚根底，让参与者能够放心加入。</p>
+
+<p>之后是出来见面。一次一个人效率太低，还是要集体活动。</p>
+
+<ul>
+<li>活动本身不能直接以相亲形式，太露骨了，并且功利远离浪漫，不容易产生爱情火花。
+可以读书，旅游，徒步等形式。</li>
+<li>活动要有破冰环节，防止人聚集在小团体里面，要打散开，让人之间产生互动。</li>
+<li>活动还要有大量自由聊天，自由组合时间，方便大家互相接触，互相了解。</li>
+<li>还要有互动机会，比如一起做一些事情，这样能够从行为方式上面达到互相了解的目的，只是聊聊，是不能看清楚一个人的。</li>
+</ul>
+
+
+<p>可能还需要一些辅助。</p>
+
+<ul>
+<li>常识普及：相亲时限，如何交流，女性心理男性心理。可能90后这方面的问题不大，80后还是需要一些学习。</li>
+<li>中间人：沟通有障碍的时候，需要中间人作为意愿传达。这个中间人最好是两个人的朋友。</li>
+</ul>
+
+
+<p>现在没有看到满足这方面需求的专门性质的组织，但是一些非专门的组织在满足上面需求做得比较好，
+比如各种学生社团，公益组织，兴趣方向的俱乐部等等。有相亲需要的人可以好好利用这些机会。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/fu-mao/">关于服贸协定</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-05T19:02:35+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2014</time>
+        
+         | <a href="/blog/fu-mao/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_04_05_taiwan.jpg"></p>
+
+<p>最近台湾因为服贸的事情闹得比较大，一直都没有跟进这件事情。周末花时间看了一下资料。</p>
+
+<p>这里整理一些资料：</p>
+
+<ul>
+<li><a href="http://zh.wikipedia.org/zh/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E6%9C%8D%E5%8B%99%E8%B2%BF%E6%98%93%E5%8D%94%E8%AD%B0">wiki</a></li>
+<li><a href="http://billy3321.github.io/tisa2/">懒人包</a></li>
+<li><a href="http://tw.k7dg.com/%E8%BC%95%E9%AC%86%E5%9C%96%E8%A7%A3%E4%BB%80%E9%BA%BC%E6%98%AF%E6%9C%8D%E8%B2%BF%E5%95%8A/">图解服贸</a></li>
+<li><a href="http://smalltalk.xdite.net/posts/192538-taiwan-the-best-way-out-is-leverage-china">xdite的愤怒</a></li>
+<li><a href="http://chenglap-blog.logdown.com/posts/191906-how-to-face-fumao">服贸对台湾没好处</a></li>
+</ul>
+
+
+<p>看了半天还是没有头绪。这是我的理解：</p>
+
+<ul>
+<li>什么是服贸？大陆和台湾签订的贸易互相开放协议</li>
+<li>源头：台湾政府希望借由这个协定，让台湾经济有起色；大陆希望通过这个协定，满足大国策略的需要</li>
+<li>民众反对原因：</li>
+<li>不满足过程正义：全程黑盒，民众不知道状况，也没有监管。</li>
+<li>服贸协议本身会带来严重的后果：台湾本地会收到很大冲击，甚至可能让台湾香港化。</li>
+</ul>
+
+
+<p>我的看法：首先我还是不了解服贸协议本身，也不了解可能带来的后果。
+网上没有搜索到相关的资料（欢迎大家给出），所以我的看法就是：不置可否。
+请问大家是否有收集到比较好的解释性质的资料？非常感谢。</p>
+
+<p>这个过程还是知道了一些东西，比如台湾这些年发展得不好，年轻人基本台湾认同了。香港不行了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/view-point/">求视线范围的算法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-29T10:55:02+08:00" pubdate data-updated="true">Mar 29<span>th</span>, 2014</time>
+        
+         | <a href="/blog/view-point/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前段时间看到<a href="https://back.nothingtohide.cc/">有一个游戏</a>，玩家必须保持自己在监控设备的视线范围内。
+画面上面展示的效果是高亮出监视器的视线范围。如图：</p>
+
+<p><img src="/images/posts/2014_03_30_view.png"></p>
+
+<p>我思考了一下如何做到这点。首先定义问题：
+给出墙壁的边，以及若干监控点，需要实时渲染出监控点的可视范围
+（可以用一系列的三角形表示）。</p>
+
+<p>求视线范围的三角形列表，可以从房间所有墙壁的顶点往监控点做视线线段，
+找视线线段和墙壁边的连接中距离监控点最近的点，
+然后可视范围就是这些点和监控点组成的三角形了。</p>
+
+<p>填充三角形，可以用扫描线算法。把三角形根据水平线拆分成2个，
+然后从顶点往下做扫描线，求扫描线和两条边的交点，然后填充里面的区域。
+如下图所示：</p>
+
+<p><img src="/images/posts/2014_03_30_scan.png"></p>
+
+<p>求线段相交点的算法网上搜索一下就可以得到。</p>
+
+<p>估计一下算法复杂度，墙壁边是m(4&lt;m&lt;240)，求交点是m*m，应该是上界。
+常数应该比较大，包括求交点，找出距离监控点最近的点。
+可以优化一下参数，比如变形求交点算法（做垂线），快速找到距离监控点最近的点。</p>
+
+<p>大家想想看有什么更好的解法？</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/pitfalls-of-programming/">Pitfalls of Programming</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T21:19:12+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+         | <a href="/blog/pitfalls-of-programming/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_03_09_siren.jpg"></p>
+
+<p>There are some dangerous zones there, waiting for a careless programmer to fall,
+I list some of them, see what you get.</p>
+
+<p>First one: <strong>spend too much time on the detail</strong>. We all say the Devil is in the detail, and it is so as we write program.
+Some tiny little misunderstood of concept, or miss taking care of one small condition will lead to a fatal error.
+And it makes programmer addictive to the detail: each fraction of detail brings some joy.
+Lots of programmers spend enormous hours on seek more details, in the language, in the library, in the code,
+so forget to do the most important job: getting things done.</p>
+
+<p><img src="/images/posts/2014_03_09_magnify.png"></p>
+
+<p>Second one: <strong>Chase new things</strong>. Yes, nodejs is cool, angularjs is cool, mongodb is cool, html5 is cool too.
+But is it stable? Is it fits your needs? Can it survive long or just a flash in the sky?
+Think twice before you use it (or even start to learn it).</p>
+
+<p><img src="/images/posts/2014_03_09_baby.jpg"></p>
+
+<p>And the third: <strong>language or tech hater</strong>. Windows sucks, PHP is not cool, Java is ugly.
+Maybe that&rsquo;s true, and take it with no deep thinking brings you a pair of coloured glasses.
+Rational people think at the margin, consider things in different angles,
+Maybe the thing you hates is the best solution, even compare with your favorites.</p>
+
+<p><img src="/images/posts/2014_03_09_glasses.jpg"></p>
+
+<p>There are also other pitfalls, like: be a jack of all trades, code before think, etc.
+Senior programmer meets them all, and with experiences of the past, they learn not to listen to the siren&rsquo;s songs.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/guan-yu-rails/">关于Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T19:56:01+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+         | <a href="/blog/guan-yu-rails/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_03_09_twitter.jpg"></p>
+
+<p>这几年世界上很多东西都被软件改变了（当然前几年也是），
+软件开发成为了一个很酷的职业。对于一个程序员来说，就算改变世界的软件不是自己做的，一般来说也还是会有一定的自豪感。</p>
+
+<p>我们<a href="http://ruby-china.org/">Rails程序员</a>也是，<a href="http://rubyonrails.org/">Rails</a>基本上代表了网站开发领域的最先进技术吧。而网站开发又是软件领域潮流最前的方向之一。
+Rails很酷，<a href="https://www.ruby-lang.org/">Ruby语言</a>也很酷，开发效率非常高，工作得很开心。</p>
+
+<p>但是这只是我们的想法。实际工作中，我们大部分的时间在做前端，写一些简单的<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>，
+然后做出来一个<a href="http://spreecommerce.com/">电商网站</a>，丢给老板或者客户。做一次还好，但是学了Rails就要重复做这些，
+不然怎么对得起学习Ruby，Rails，Javascript，<a href="http://haml.info/">haml</a>，<a href="http://sass-lang.com/">sass</a>，<a href="http://coffeescript.org/">coffeescript</a>，<a href="http://jquery.com/">jQuery</a>，<a href="http://getbootstrap.com/">bootstrap</a>，<a href="http://angularjs.org/">angularjs</a>。。。这些鬼东西投入的学习成本？</p>
+
+<p>作为一个Rails开发者，做了这么久，我不由反思自己在干什么。我在做网站。我在用Rails开发网站。
+从本质上面来说，不管Rails多酷，做网站多酷，写Ruby多酷，都不能改变我在做一件低技术含量的活的事实。</p>
+
+<p>对的，做网站是一个低技术含量的事情。</p>
+
+<p><img src="/images/posts/2014_03_09_low.jpg"></p>
+
+<p>做网站不容易，需要学习类似于html，css，服务端开发，Ruby，mysql等等东西。
+做网站很复杂，因为你需要把这些东西结合起来。</p>
+
+<p>所以网站开发者的工资会很高。但是，这也改变不了做网站是一个低技术含量事情的事实。</p>
+
+<p>上面列出来的技术，心智正常的人，拥有初等的英语读写能力，只要愿意投入时间，都能够掌握。
+这也是为什么有那么多的人，不管他是医生，老师，卡车司机，都能够成功转职成网站开发者。</p>
+
+<p>而其它行业？比如行医，需要进入医学院，经过长时间的学习，训练，阶段性地考核，
+最后生存下来的才能成为医生，并且职业过程中每年都有各种<a href="http://www.med66.com/webhtml/zhinan/yishi.shtml">审核和考试</a>。
+比如电气工程师。有多少网站程序员能够掌握微积分？没有需要对吧。网站程序员只要<a href="http://programmers.stackexchange.com/questions/89158/do-you-have-to-be-good-at-math-to-be-a-good-programmer">会加减乘除就好了</a>。
+就算是本行业，知识也分容易掌握的和不容易掌握的。
+比如不是写脚本语言的那种真正的程序员，至少<a href="http://en.wikipedia.org/wiki/Computer_architecture">懂机器</a>，至少知道<a href="http://en.wikipedia.org/wiki/Compiler">程序是怎么编译的</a>。
+Rails程序员有多少知道微机体系架构，<a href="http://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Ruby程序可执行文件</a>里面到底有什么东西的？都被抽象掉了吧。</p>
+
+<p>从掌握的知识深度而言，Rails程序员，其实和木工类似。</p>
+
+<p><img src="/images/posts/2014_03_09_wood.jpeg"></p>
+
+<p>人人只要愿意学，就可以当木工。手艺好坏有区别，但是再怎么有差异，做的都是木工活。
+你可以说自己的工具多么好用，自己掌握了很多技巧，做东西多么快多么好，最后带来的价值就还是一个木工的价值。</p>
+
+<p>但是确确实实有很多网站改变了世界，它们的价值是从哪里出来的？
+这是一个玄妙的问题。为什么都是木工活，有的木工活就是那么值钱？</p>
+
+<p>有的是发现了巨大的需求，并且想办法满足了；
+有的是对行业深刻的洞见，把行业颠覆了；
+有的是做高技术含量的东西，碰巧用了网站这个形式；
+但不管怎样，有玄机的地方都不在木工活上面。</p>
+
+<p>最后，结论是什么？</p>
+
+<ul>
+<li>首先，看看自己掌握的技能，是不是和木工活一样，任何人花时间都能学会，如果是的话，就不要骄傲。</li>
+<li>然后，因为基于自己技能，创造出的东西是木盒子还是<a href="http://zh.wikipedia.org/zh/%E6%89%98%E5%8D%A1%E9%A9%AC%E5%85%8B">托卡马克引擎</a>，靠的是非木工活其他的技能，因此要多看书，多向其他专家请教，多思考多实践。</li>
+<li>工作的时候要时刻警惕，自己是在做木工活的部分，还是有价值的部分？尽量不要浪费时间。</li>
+</ul>
+
+
+<p>以上内容纯属本人每周写作练习，里面有很多逻辑谬误和语法错误，请勿动气请勿当真，谢谢。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/factorio/">Factorio介绍</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-15T17:04:35+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2014</time>
+        
+         | <a href="/blog/factorio/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/factorio/factorio-logo.png"></p>
+
+<p>最近发现一个好游戏<a href="https://www.factorio.com/">factorio</a>，消耗了很多时间在它上面。这里整理一篇介绍。</p>
+
+<p><a href="https://www.factorio.com/">factorio</a>是一款集成了资源采集，流水线运输，自动化生产，基地防守的2D游戏。
+玩家在一个自动生成的地图上面，采集资源，合成物品，搭建各种自动化采集，合成，运输的机械。</p>
+
+<h2>图示</h2>
+
+<p>玩家可以采集资源</p>
+
+<p><img src="/images/posts/factorio/mining.gif"></p>
+
+<p>可以制造自动采集资源的机器</p>
+
+<p><img src="/images/posts/factorio/automining.png"></p>
+
+<p>资源可以通过各种机器，转变成其他产品</p>
+
+<p><img src="/images/posts/factorio/production.png"></p>
+
+<p>制造生产线</p>
+
+<p><img src="/images/posts/factorio/automing.gif"></p>
+
+<p>生产线需要电力</p>
+
+<p><img src="/images/posts/factorio/energy.gif"></p>
+
+<p>复杂的生产线，生产运输带</p>
+
+<p><img src="/images/posts/factorio/production_line.png"></p>
+
+<p>很多物品需要研究之后使用，研究也需要生产线</p>
+
+<p><img src="/images/posts/factorio/research_line.png"></p>
+
+<p>9.0版本新增加的石油生产线</p>
+
+<p><img src="/images/posts/factorio/oil_production_line.png"></p>
+
+<p>一个完整的生产线例子</p>
+
+<p><img src="/images/posts/factorio/full_production_line.png"></p>
+
+<h2>上手</h2>
+
+<ul>
+<li><a href="https://www.factorio.com/">官方网站</a>有demo下载，如果觉得好玩可以去购买正式版。</li>
+<li>遇到问题可以去查<a href="http://www.factorioforums.com/wiki/index.php?title=Main_Page">wiki页面</a>，也可以去<a href="http://www.factorioforums.com/forum/viewtopic.php">官方论坛</a>。</li>
+<li>游戏提供mod支持，如果觉得原版不过瘾，这里有一些<a href="http://www.factorioforums.com/wiki/index.php?title=Mods">mod</a>可以下载。个人推荐dytech。</li>
+</ul>
+
+
+<h2>攻略</h2>
+
+<ul>
+<li><a href="http://www.factorioforums.com/forum/viewtopic.php?f=8&amp;t=2039">这里</a>有优化的science-pack生产线设计方案。</li>
+</ul>
+
+
+<h2>作弊</h2>
+
+<p>按<code>``或者</code>/`进入控制台模式，然后可以用<a href="http://www.factorioforums.com/wiki/index.php?title=Lua/Game">这里</a>的命令。</p>
+
+<p>我主要用的是：</p>
+
+<ul>
+<li><p>改变游戏速度：<code>game.speed=1</code></p></li>
+<li><p>获取物品：<code>game.player.insert{name="iron-plates",count=100}</code></p></li>
+</ul>
+
+
+<p>一些常用的物品列表：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>装备：
+</span><span class='line'>power-armor-mk2
+</span><span class='line'>basic-exoskeleton-equipment
+</span><span class='line'>fusion-reactor-equipment 
+</span><span class='line'>basic-laser-defense-equipment-3
+</span><span class='line'>energy-shield-mk2-equipment
+</span><span class='line'>
+</span><span class='line'>电力：
+</span><span class='line'>substation
+</span><span class='line'>big-electric-pole
+</span><span class='line'>solar-panel
+</span><span class='line'>
+</span><span class='line'>科研：
+</span><span class='line'>lab
+</span><span class='line'>science-pack-1
+</span><span class='line'>science-pack-2
+</span><span class='line'>speed-module-3
+</span><span class='line'>
+</span><span class='line'>原料:
+</span><span class='line'>steel-plate
+</span><span class='line'>
+</span><span class='line'>防御
+</span><span class='line'>laser-turret
+</span><span class='line'>
+</span><span class='line'>robot
+</span><span class='line'>roboport
+</span><span class='line'>construction-robot
+</span><span class='line'>
+</span><span class='line'>敌人
+</span><span class='line'>biter-spawner
+</span><span class='line'>creeper-spawner</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/coj-1132/">解一道算法题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T09:32:43+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/coj-1132/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_02_07.jpeg"></p>
+
+<p>最近在学算法，看<a href="http://book.douban.com/subject/24749842/">一本算法竞赛书</a>，看到一定阶段来做算法题，随机抽了一道简单的<a href="http://coj.uci.cu/24h/problem.xhtml?abb=1132">coj 1132</a>来做。</p>
+
+<p>题目是求解一个数的所有除数组合出来的数之和(不包括自己)，比如：20 = 2 * 2 * 5，结果a(20) = 1 + 2 + 4 + 5 + 10 = 22。</p>
+
+<p>首先我采用硬解的方法，求出所有的除数，然后排列组合一下。发现超时了。
+回去看了一下题目，发现：测试用例数量<code>equal to about 2*10^5</code>，硬算的复杂度大概是n<sup>3</sup>*log(n)，难怪算不出来，只能去优化算法了。</p>
+
+<p>排列组合题目一般来说会有重合子问题，可以用动态规划来优化。先列出状态转移方程看看：</p>
+
+<p>假设要求解a(n)，n可以拆分成除数d1, d2, &hellip; dk (dk > dk-1)，每个除数的数量是m1, m2, &hellip;, mk，那么a(n)结果和<code>a(p)</code>相关，其中<code>p = d1^m1 * d2^m2 ... * dk-1^mk-1</code>，拆分一下a(n)：</p>
+
+<pre><code>a(n) = sum( d1^s1 * d2^s2 * ... * dk-1^sk-1 * dk^sk ) (所有可能的 sk &lt;= mk)
+     = d1^m1 * ... * dk-1^mk-1 + sum( d1^s1 * ... * dk-1^sk-1 ) * dk^sk
+     = p + a(p) * (1 + dk + dk ^ 2 + ... + dk ^ mk)
+     = p + a(p) * (1 - dk^(mk+1)) / (1 - dk)
+</code></pre>
+
+<p>题目中进行了大量运算(n &lt; 5*10<sup>5</sup> ，其中2/5的值都需要求解)，n利用到旧的p的概率很大，
+又能够减少一个级别的复杂度，缓存a(p)的值到数组就可以了。</p>
+
+<p>写程序的方法：每次计算a(n)都会先拆分除数列表，保存到一个vector数组里面。
+然后调用a(p)，算出来的结果缓存到一个结果数组中。</p>
+
+<p>之后进行优化：</p>
+
+<ul>
+<li><p>发现其实不关心d1到dk-1的值，只需要dk就行了，mk可以循环除得到，那么只需要保存每个n最大的除数即可。</p></li>
+<li><p>为了增加运行速度，求除数先维护一个素数数组，这样不用从2开始一个个除了。但是修改之后发现，计算素数数组的复杂度超了，反而不如原先算法快。</p></li>
+</ul>
+
+
+<p><a href="https://github.com/halida/online_judge_for_coj/blob/master/1132.cpp">代码在这里</a>。
+<a href="http://coj.uci.cu/24h/problem.xhtml?abb=1132">我的答案</a>时间消耗比<a href="http://coj.uci.cu/24h/bestsolutions.xhtml?abb=1132">最快的算法</a>多将近一倍，不知道大家有什么更好的算法没有？</p>
+
+<p>结论：</p>
+
+<ul>
+<li><p>首先看清楚题目，包括：算法具体内容，示例是否符合自己猜想的算法，各个参数的范围。参数的范围算是一个坑，有一道算法题目是算a+b，然后没有给参数范围，无数人就栽在这上面，因为a和b是天文数字几百位。。</p></li>
+<li><p>然后列出具体问题，寻找规律，列状态转移方程。空想比较慢，在纸上面看着一个实际问题方便寻找规律，验证算法正确性，以及考虑各种边界条件。</p></li>
+<li><p>一定要计算复杂度。比如上面我打算先算素数优化执行效率，但是求素数的复杂度更高，优化后速度变慢了。</p></li>
+</ul>
+
+
+<p>解算法题比<a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>有意思多了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/programming-chaos/">Programming Chaos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-06T14:05:23+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
+        
+         | <a href="/blog/programming-chaos/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/posts/2014_02_06.jpeg"></p>
+
+<p>Programming, as a career, faces more chaos compares to other professionals.</p>
+
+<p>First, everyone can start programming after several months of study, it makes programmers are a group of people vary in coding abilities, basic understanding of computer science, and engineer training.</p>
+
+<p>Programming as a professional, start only decades ago, principle for this domain, like technology, tools, best practice, is still under developing.</p>
+
+<p>And IT industry always changes dramatically, that makes programming career path is not as clear as other professionals, many job positions, like big data analyst, not even existed several years ago.</p>
+
+<p>The chaos brings both risk and opportunity, make programming career both interesting and challenging.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/access-like-software/">Access类型软件调研</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T09:44:48+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+        
+         | <a href="/blog/access-like-software/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近要找一个微软Access类型的工具，做了一些调研，这里整理一下。</p>
+
+<p>Access类型列表：</p>
+
+<ul>
+<li><a href="http://alternativeto.net/software/microsoft-access/?sort=likes">alternativeto.net网站</a></li>
+<li><a href="http://superuser.com/questions/30776/open-source-alternative-to-filemaker-or-access">stackoverflow的问题</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Desktop_database_application_development_tools">wikipedia</a></li>
+</ul>
+
+
+<p>除了上面的，还顺藤摸瓜挖到一些。这里整理一下：</p>
+
+<h2>kexi</h2>
+
+<p><a href="http://www.calligra.org/kexi/">http://www.calligra.org/kexi/</a></p>
+
+<p><img src="/images/posts/2014_01_28_kexi1.png">
+<img src="/images/posts/2014_01_28_kexi2.png"></p>
+
+<p>是在KDE里面的组件。看起来还好，不过因为和KDE混在一起，不予考虑。</p>
+
+<p>同样也不考虑openoffce和gnome套件里面对应类似Access的软件。</p>
+
+<h2>Portofino</h2>
+
+<p><a href="http://www.manydesigns.com/en/portofino">http://www.manydesigns.com/en/portofino</a></p>
+
+<p><img src="/images/posts/2014_01_28_portofino.png"></p>
+
+<p>基于java的，主要还是CMS类型，还是需要编程能力来客制化。</p>
+
+<h2>vfront</h2>
+
+<p><a href="http://www.vfront.org/demo.php">http://www.vfront.org/demo.php</a></p>
+
+<p><img src="/images/posts/2014_01_28_vfront.gif"></p>
+
+<p>只是一个修改数据库的前端，不符合要求。</p>
+
+<h2>wavemaker</h2>
+
+<p><a href="http://www.wavemaker.com/product/demos.html">http://www.wavemaker.com/product/demos.html</a></p>
+
+<p><img src="/images/posts/2014_01_28_wavemaker.jpg"></p>
+
+<p>基于java，在浏览器里面进行编辑修改。功能好像很强大。</p>
+
+<h2>filemaker</h2>
+
+<p><a href="http://www.filemaker.com/hk/products/overview.html">http://www.filemaker.com/hk/products/overview.html</a></p>
+
+<p><img src="/images/posts/2014_01_28_filemaker.png">
+<img src="/images/posts/2014_01_28_filemaker2.jpg"></p>
+
+<p>国外主流，比Access份额要大。主要针对的还是苹果平台，手机平板都支持。</p>
+
+<h2>易表/狐表</h2>
+
+<p>易表 <a href="http://www.egrid2000.com/index.html#index">http://www.egrid2000.com/index.html#index</a></p>
+
+<p><img src="/images/posts/2014_01_28_egrid.gif"></p>
+
+<p>狐表 <a href="http://www.foxtable.com/">http://www.foxtable.com/</a></p>
+
+<p><img src="/images/posts/2014_01_28_foxtable.gif"></p>
+
+<p>一家公司前后开发的版本，用表格的形式，我觉得好复杂，产品形态更类似Excel。</p>
+
+<h2>雅奇</h2>
+
+<p><a href="http://www.yqmis.com/">http://www.yqmis.com/</a></p>
+
+<p><img src="/images/posts/2014_01_28_yq1.png"></p>
+
+<p><img src="/images/posts/2014_01_28_yq2.png"></p>
+
+<p>Access类型，网站介绍很强大，视频里面介绍的开发方式很顺畅，看起来挺不错，销量好像也大。可惜弄不到试用。价格近千。</p>
+
+<p>对了，首页一个美女自动做讲解。</p>
+
+<h2>搭建之星</h2>
+
+<p><a href="http://www.diylsoft.com/">http://www.diylsoft.com/</a></p>
+
+<p><img src="/images/posts/2014_01_28_djzx.jpg"></p>
+
+<p>有点粗糙，有免费版本。</p>
+
+<h2>魔方网表</h2>
+
+<p><a href="http://www.magicflu.com/">http://www.magicflu.com/</a></p>
+
+<p><img src="/images/posts/2014_01_28_mfwb.jpg"></p>
+
+<p>正式版免费，可以网络使用。</p>
+
+<h2>glom</h2>
+
+<p><a href="http://www.glom.org/wiki/index.php?title=Glom">http://www.glom.org/wiki/index.php?title=Glom</a></p>
+
+<p><img src="/images/posts/2014_01_28_glom.png"></p>
+
+<p>只有前端，数据库不管，有点简陋。</p>
+
+<h2>camelot</h2>
+
+<p><a href="http://www.python-camelot.com/">http://www.python-camelot.com/</a></p>
+
+<p><img src="/images/posts/2014_01_28_camelot.png"></p>
+
+<p>pyqt + sqlalchemy 架构合我的胃口。但是需要写太多的代码了。。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/11/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

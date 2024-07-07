@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>家用服务器整体策略思考 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="很多重要资料因为性能，经济程度，私密性的原因，不适合存在云端网盘，因此需要做一个家庭内部的存储解决方案，同时也有很多应用需要本地跑，我整理了一下各种情况下的解决方案。 首先是需求类型： 存储看剧
+视频下载
+存储和访问家庭照片和视频
+科学上网
+外面连回家里
+全屋无线网络
+视频监控
+智能家居 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/home-server/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">家用服务器整体策略思考</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-02-07T10:07:30+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>很多重要资料因为性能，经济程度，私密性的原因，不适合存在云端网盘，因此需要做一个家庭内部的存储解决方案，同时也有很多应用需要本地跑，我整理了一下各种情况下的解决方案。</p>
+
+<p>首先是需求类型：</p>
+
+<ul>
+<li>存储看剧</li>
+<li>视频下载</li>
+<li>存储和访问家庭照片和视频</li>
+<li>科学上网</li>
+<li>外面连回家里</li>
+<li>全屋无线网络</li>
+<li>视频监控</li>
+<li>智能家居</li>
+<li>跑各种网络，应用实验，虚拟机</li>
+</ul>
+
+
+<p>为了满足这些需求，需要选择对应的设备。</p>
+
+<h2>路由</h2>
+
+<p>首先是路由类需求。因为网络需要很稳定，设备应该根据稳定需求分割开。
+一般来说是这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>主路由 - 光猫 - 外网出口
+</span><span class='line'>主路由 - 无线核心路由ac/ap
+</span><span class='line'>主路由 - 旁路软路由
+</span><span class='line'>主路由 - 高速路由 - 电脑，服务器
+</span><span class='line'>主路由 - 监控路由 - 监控主机，摄像头</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>主路由负责汇总所有网络，需要保证稳定性，其它工作交给其他设备。拨号上网也可以主路由来做。</li>
+<li>无线系统另外设计，汇总到主路由。</li>
+<li>科学上网方案很复杂，最好一个单独的设备来做，可以用软路由，也可以家庭服务器的虚拟机。</li>
+<li>大多数应用并不需要很高的速度，1G就差不多了，只有少部分可能需要10G/2.5G，比如视频或者数据编辑拷贝。可以另外用一个高速路由+SFP光纤的解决方案。</li>
+<li>监控系统独立性比较高，可以另外设置一个监控路由，连上所有的摄像头。</li>
+<li>如果连接网口过多，主路由也可以拆分成多层层级。</li>
+<li>部分子系统，比如监控，访客无线网络，保证安全性和性能，可以划分LAN来进行分割。</li>
+</ul>
+
+
+<h2>存储和运算</h2>
+
+<p>然后是存储和运算系统。我觉得需求可以划分到以下几类：</p>
+
+<p><strong>低功耗服务器</strong>：性能要求不高，但是需要24小时跑，比如一些定时触发的任务，本地的一些小服务，音乐系统什么的。可以选择树莓派或者最新制程的笔记本。</p>
+
+<p>机器的功耗往往是根据制程来，CPU的TDP只是用来算最高功率的。所以对功耗有要求的机器要选择最新制程的。
+树莓派功耗低一些，但是性能差很多，体积上是优势。如果是一些小应用，笔记本太大了。</p>
+
+<p><strong>高性能服务器</strong>：跑虚拟机，运算，解码什么的。可以需要的时候开机，平时关掉。直接主流CPU就可以了，不需要去考虑买二手服务器，服务器优化的方向是保证性能的同时长时间运行的稳定性，和家用的需求(长时间低功耗，或者短时间高功耗)是不一样的。</p>
+
+<p><strong>nas存储</strong>：存储大量的数据。因为对稳定性要求很高，最好单独做一台设备出来。</p>
+
+<p>存储对应的运算，比如电影解码服务系统emby，虚拟机，可以放到另外的机器里面，因为nas和运算或者解码对机器的要求是不一样的。网络带宽也足够支持存储和运算分离。</p>
+
+<p><strong>游戏主机</strong>：玩游戏。游戏需要针对性优化硬件，显卡专门针对游戏，功耗也高，我建议单独做一台机器。</p>
+
+<p>如果机器比较多，可能还需要一个KVM系统来切换显示，成品ipkvm太贵了，可以用树莓派<a href="https://github.com/pikvm/pikvm">pikvm</a>来代替。对于高带宽需求的显示，视频可以访问远端文件本地播放，游戏可以用steam link或者nvidia shield moonlight来进行远端串流，性能也还可以。</p>
+
+<p>机器按照待机功耗分类（包含了整流的全系统功耗）：</p>
+
+<ul>
+<li>嵌入式 0.1w</li>
+<li>树莓派 2w</li>
+<li>低功耗CPU：J5005, J1800 6w</li>
+<li>最新制程CPU笔记本：10w</li>
+<li>最新制程CPU台式机：35w</li>
+</ul>
+
+
+<h2>应用</h2>
+
+<p>硬件选择好了之后，就是需要跑的各种应用了，我现在的解决方案：</p>
+
+<ul>
+<li>远程连进家里：wireguard和ssh，外网路由器端口转发，ddns获得dns地址</li>
+<li>NAS存储：truenas，优点是性能好，系统稳定，缺点是基于freebsd，不能跑虚拟机，只能另外用机器了。设置好samba文件共享，存储方案用raid0镜像存储，比较安全。另外需要找台旧机器也装truenas进行zfs镜像备份，放在别的地方，定时开机。</li>
+<li>低功耗服务器和高性能服务器：根据应用需要看看用proxmox虚拟机或者docker。</li>
+<li>视频系统：jellyfin，emby要钱还是用免费的jellyfin，我用的不多付费不是很划算。</li>
+<li>本地音乐：airsonic</li>
+<li>家庭照片和视频：photoprism</li>
+<li>下载：qbittorrent，百度云</li>
+<li><a href="http://blog.linjunhalida.com/blog/low-network-cross-gfw/">科学上网</a></li>
+</ul>
+
+
+<p>家庭服务器的架构搭好了之后，使用上没啥特别的感觉，就是想要做什么的时候就可以用对应的系统，不需要很操心。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2021-02-07T10:07:30+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2021</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/home-server/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/home-server/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/laptop-input/" title="Previous Post: 膝上键盘鼠标方案">&laquo; 膝上键盘鼠标方案</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/population-problem/" title="Next Post: 如何解决人口老龄化问题">如何解决人口老龄化问题 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/home-server/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/home-server/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

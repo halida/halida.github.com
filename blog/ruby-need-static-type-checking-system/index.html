@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ruby需要一个静态类型验证系统 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。 Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
+但是实际上，这是一个缺陷。为什么呢？ 程序在执行的过程中， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/ruby-need-static-type-checking-system/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ruby需要一个静态类型验证系统</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>越用Ruby，越觉得Ruby简陋。很多其它现代语言有的特性，Ruby都没有。其中一个就是静态类型验证系统。</p>
+
+<p>Ruby语言里面，是不需要定义函数的参数，以及变量的类型的，这样带来的好处就是写程序更简便了，这个被大家称为是优点。
+但是实际上，这是一个缺陷。为什么呢？</p>
+
+<p>程序在执行的过程中，如果不知道一个变量的类型，只能动态去判断变量是什么，动态地查找处理变量的函数，
+比如一个方法调用：<code>a.run(b)</code>，就要去查找a的run方法，然后传入b参数。
+这样造成每次函数调用，都会进行一次判断和查找，极大地降低程序执行速度。</p>
+
+<p>另外一个问题就是，当传入的参数不正确(比如a没有run方法，或者run只接受一个参数)，只有程序实际执行的时候，才会知道这点。
+一方面要在函数和方法调用的时候来判断（更慢了），另外一方面本来能够静态识别出来的错误，留到了运行时。</p>
+
+<p>更可怕的是，当传入的参数类型错误的时候，不能立刻就知道，而是要等到很久之后才会被发现，
+这个时候你根本不知道这个参数是什么时候传进来的，Debug变得非常困难！
+其它语言定义了类型，在编译的时候就可以发现这样的错误，但是动态类型语言，比如Ruby/Python就没有办法。</p>
+
+<p>在实际进行Ruby编程的时候，我深刻地体会到了这几点。
+尤其是项目变得很大的时候，执行速度不说，出现问题找Bug变得很困难，
+程序可靠性没有办法通过编译阶段发现，而是只能留到执行时（testcase），
+并且执行时也做不到其它静态语言级别的函数参数类型验证。</p>
+
+<p>而在其它现代语言里面，类型定义不再向以前一样手动配置那么痛苦了。
+比如在C#里面，我们可以定义函数参数的类型，以及所有变量的类型，也可以不定义（dynamic），做到和Ruby一样的效果。
+但是还有更好的语法(var)，程序语言自动给你做好类型定义，不用自己手写了，方便很多。</p>
+
+<p>综上所述，静态类型验证系统是现代程序语言必备的一个功能，Ruby不应该缺少这样的功能。
+Matz本人也说，下一阶段会进行这种系统的设计。
+不过我觉得这么大的改动，只有在程序语言开始设计的时候才能做出，Ruby现在已经进入成熟阶段，再改就很难了。</p>
+
+<p>如果不是Rails，我可能会考虑其它语言，但是谁让web开发框架里面，Rails生态圈最好最成熟呢。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-02-05T10:33:54+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby-sucks/'>ruby-sucks</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/ruby-need-static-type-checking-system/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/ruby-need-static-type-checking-system/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ansible/" title="Previous Post: ansible介绍和服务器管理思考">&laquo; ansible介绍和服务器管理思考</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ruby-have-no-program-optimize/" title="Next Post: ruby没有做到编程语言应该有的优化">ruby没有做到编程语言应该有的优化 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/ruby-need-static-type-checking-system/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/ruby-need-static-type-checking-system/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

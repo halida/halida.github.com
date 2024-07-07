@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>记一次调试ruby内存问题 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近我自己开发一个小项目librr玩，是一个本地索引文件夹的工具，在这个项目里面我用到了eventmachine，用来同时跑一个http服务器，监控两个进程。 开发过程中遇到一个bug：很多时候会发生CPU冲高的现象，并且内存消耗会快速变大。
+这个问题可以重现，所以是好bug， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/librr-debug-cpu-usage-high/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">记一次调试ruby内存问题</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-28T10:36:00+00:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/2013_11_28_bug.jpg"></p>
+
+<p>最近我自己开发一个小项目<a href="https://github.com/halida/librr/">librr</a>玩，是一个本地索引文件夹的工具，在这个项目里面我用到了<a href="https://github.com/eventmachine/eventmachine">eventmachine</a>，用来同时跑一个http服务器，监控两个进程。</p>
+
+<p>开发过程中遇到一个bug：很多时候会发生CPU冲高的现象，并且内存消耗会快速变大。
+这个问题可以重现，所以是<a href="http://ruby-china.org/topics/14898">好bug</a>，
+但是没有找到办法绕过去，如果不解决，这个项目就废了。</p>
+
+<p>这种没有数据提供的问题一般相对难解一些，
+如果是报错，就可以定位到问题所在，
+如果数据结果有问题，可以二分法定位出错位置。
+为了能够调查原因，我研究了<a href="http://blog.linjunhalida.com/blog/ruby-memory-leak-debug/">如何在ruby下调试内存泄漏</a>。
+用这个方法，我发现在出现问题的进程里面，创建了无数的Proc对象：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="p">{</span>
+</span><span class='line'>  <span class="no">Proc</span><span class="o">=&gt;</span><span class="mi">1233820</span><span class="p">,</span>
+</span><span class='line'>  <span class="no">RubyVM</span><span class="o">::</span><span class="no">Env</span><span class="o">=&gt;</span><span class="mi">1277897</span><span class="p">,</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">=&gt;</span><span class="mi">23125</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>采样几个Proc，用<code>proc.source_location</code>，定位到了是eventmachine里面<code>run_deferred_callbacks</code>中的<a href="https://github.com/eventmachine/eventmachine/blob/cfb1f71a35b1a10e5821bca9841fee3080ec1685/lib/eventmachine.rb#L975">一个地方</a>，但是为什么会发生这种现象？我走到了死胡同里面。</p>
+
+<p><code>run_deferred_callbacks</code>是eventmachine的核心方法，用来处理回调方法，我于是修改了librr的代码，
+一个个去掉回调，看看哪里有问题，结果发现，所有的回调都去掉了，还是有这样的问题发生，
+那么应该是跑evenmachine的主线有问题了。
+然后我用二分法隔离代码，终于发现问题的所在点，这是一个最小重现代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">require</span> <span class="s1">&#39;eventmachine&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">run</span>
+</span><span class='line'>  <span class="no">EventMachine</span><span class="o">.</span><span class="n">run</span> <span class="k">do</span>
+</span><span class='line'>    <span class="no">EM</span><span class="o">.</span><span class="n">next_tick</span><span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;12&quot;</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span>
+</span><span class='line'>  <span class="k">begin</span>
+</span><span class='line'>    <span class="k">raise</span>
+</span><span class='line'>  <span class="k">rescue</span> <span class="no">Exception</span>
+</span><span class='line'>    <span class="n">run</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在异常捕捉里面跑eventmachine，同时调用回调，就会出现问题。<a href="https://github.com/halida/librr/commit/48241915804eff62b724c58e576784fc0cd04b47">修改之后</a>，问题不再发生。</p>
+
+<p>如果有时间的话，我可能会研究一下eventmachine源码，定位到核心地点，这个bug才算真正解决掉。
+但是现在我要先把librr做完，先提交了<a href="https://github.com/eventmachine/eventmachine/issues/482">一个bug</a>，如果他们没有受理的话，我再继续寻找核心问题所在。</p>
+
+<p>总结一下学到了什么：</p>
+
+<ul>
+<li>二分法是定位bug的核心方法。</li>
+<li>这个bug消耗了我半周的时间，占据了开发过程中很大一部分比例，bug是项目的时间黑洞。</li>
+<li>debug需要的是逻辑思考，数据越多，脑子越清醒，思路越开阔，bug解决就越快。</li>
+<li>各种debug工具，比如gdb，perftools.rb，帮助了解状况，验证猜想，极大地提升效率。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-28T10:36:00+00:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/librr-debug-cpu-usage-high/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/librr-debug-cpu-usage-high/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ruby-memory-leak-debug/" title="Previous Post: ruby内存泄漏调试方法">&laquo; ruby内存泄漏调试方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/librr/" title="Next Post: librr介绍">librr介绍 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/librr-debug-cpu-usage-high/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/librr-debug-cpu-usage-high/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

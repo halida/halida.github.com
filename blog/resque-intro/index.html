@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>resque介绍和分析 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="resque resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能,
+来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合. 项目地址在
+https://github.com/defunkt/resque,
+如何使用里面写的很清楚, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/resque-intro/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Resque介绍和分析</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-23T10:38:25+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="https://a248.e.akamai.net/assets.github.com/img/7744a8503993132e8a14c79be38e3724c6564fa2/687474703a2f2f696d672e736b697463682e636f6d2f32303130303131312d6b6d326635676d747062713233656e70756a6272756a366d676b2e706e67" alt="image" /></p>
+
+<h2>resque</h2>
+
+<p>resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能,
+来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合.</p>
+
+<p>项目地址在
+<a href="https://github.com/defunkt/resque">https://github.com/defunkt/resque</a>,
+如何使用里面写的很清楚, 这里就不多说了. 具体逻辑也没有什么好说的,
+无非是需要调用任务了, 塞任务到队列里面, 然后worker取队列,
+然后把任务做掉.</p>
+
+<p>一些细节:</p>
+
+<p><strong>resque是如何enque的?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">redis</span><span class="o">.</span><span class="n">rpush</span> <span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>presistance如何做?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="ss">encode</span><span class="p">:</span> <span class="no">MultiJson</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>resque是如何取work的?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">decode</span> <span class="n">redis</span><span class="o">.</span><span class="n">lpop</span><span class="p">(</span><span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>resque-scheduler</h2>
+
+<p>resque-scheduler是基于resque的一个计划任务插件, 简单地说,
+就是能够利用它来做一些定时和定时循环的任务. 项目主页:
+<a href="https://github.com/bvandenbos/resque-scheduler">https://github.com/bvandenbos/resque-scheduler</a>,
+使用方法我也不多说了. 项目主页上都有.</p>
+
+<p><strong>resque-scheduler计划的队列如何处理?</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="c1"># First add this item to the list for this timestamp</span>
+</span><span class='line'><span class="n">redis</span><span class="o">.</span><span class="n">rpush</span><span class="p">(</span><span class="s2">&quot;delayed:</span><span class="si">#{</span><span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Now, add this timestamp to the zsets.  The score and the value are</span>
+</span><span class='line'><span class="c1"># the same since we&#39;ll be querying by timestamp, and we don&#39;t have</span>
+</span><span class='line'><span class="c1"># anything else to store.</span>
+</span><span class='line'><span class="n">redis</span><span class="o">.</span><span class="n">zadd</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>竟然根据每个timestamp做了一个队列.. 计划任务都保存到一个sorted set里面.</p>
+
+<p><strong>scheduler如何检查是否有新的任务?</strong></p>
+
+<p>核心在于这段代码:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">if</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="no">Resque</span><span class="o">.</span><span class="n">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">enqueue_delayed_items_for_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resque_scheduler</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">items</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">zrangebyscore</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="s1">&#39;-inf&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">at_time</span> <span class="o">||</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">timestamp</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">nil?</span> <span class="p">?</span> <span class="kp">nil</span> <span class="p">:</span> <span class="nb">Array</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span> <span class="k">unless</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>enqueue_delayed_items_for_timestamp比较复杂, 就不贴了.</p>
+
+<h2>结论</h2>
+
+<p>基本上resque的逻辑很直观, 和想象中的一样. resque-scheduler就不一样了.
+复杂很多.</p>
+
+<p>我学习他们的示例代码放在:
+<a href="https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque">https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque</a>/</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-08-23T10:38:25+08:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/resque-intro/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/resque-intro/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/treat-time-as-money/" title="Previous Post: 像对待金钱一样对待时间">&laquo; 像对待金钱一样对待时间</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/how-to-change-yourself/" title="Next Post: 如何改变一个人">如何改变一个人 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/resque-intro/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/resque-intro/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

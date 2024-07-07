@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>保证电子邮件的送达率 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="现在大多数网站都会发送各种各样的邮件，保证邮件送达率至关重要，这里整理一下我调研的一些结果。 要让邮件正常到达用户的收件箱，需要保证几点： 让收件方验证邮件来源是非伪造的，需要设置PTR，SPF，DKIM。
+让收件方认可发送者是可靠的。 如何让收件方验证邮件来源是非伪造的 PTR &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/reliable-email-delivery/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">保证电子邮件的送达率</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T19:15:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/email.jpg"></p>
+
+<p>现在大多数网站都会发送各种各样的邮件，保证邮件送达率至关重要，这里整理一下我调研的一些结果。</p>
+
+<p>要让邮件正常到达用户的收件箱，需要保证几点：</p>
+
+<ul>
+<li>让收件方验证邮件来源是非伪造的，需要设置<code>PTR</code>，<code>SPF</code>，<code>DKIM</code>。</li>
+<li>让收件方认可发送者是可靠的。</li>
+</ul>
+
+
+<h2>如何让收件方验证邮件来源是非伪造的</h2>
+
+<h3>PTR</h3>
+
+<p>ptr是<a href="http://en.wikipedia.org/wiki/List_of_DNS_record_types">DNS记录的一种类型</a>，有一个用途在于反方向从IP推导到域名，比如：</p>
+
+<pre><code>dig -x 203.208.36.17
+</code></pre>
+
+<p>把DNS的<code>MX</code>类型记录指向到你邮件服务器的地址一般就可以了。</p>
+
+<h3>SPF</h3>
+
+<p>SPF(<a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>)这是一套电子邮件验证系统，通过在DNS记录中添加一个TXT类型的记录，指定谁有权以域名的名义发送邮件。如果你没有设置这条记录，很容易就被当做非法邮件spam掉。</p>
+
+<p>这里是<a href="http://www.zytrax.com/books/dns/ch9/spf.html">配置方法</a>，以及一个简单的例子：</p>
+
+<pre><code>v=spf1 a mx ptr include:spf.mtasv.net ~all
+</code></pre>
+
+<p>这一行主要说明spf.mtasv.net(<a href="https://postmarkapp.com/">postmark</a>，一个邮件发送服务商)代发的邮件是被认可的。</p>
+
+<p>如果你域名挂靠在<a href="http://bluehost.com">bluehost</a>上面，这里是<a href="http://www.mail-tester.com/spf/bluehost#create-spf-record">对应的设置方法</a>。</p>
+
+<p>设置完毕，等待生效后，可以通过这种方式验证是否设置成功：</p>
+
+<pre><code>dig txt your-domain.com
+</code></pre>
+
+<p>返回的信息需要带有你设置的SPF记录。</p>
+
+<h3>DKIM</h3>
+
+<p>邮件本身是纯文本，协议也没有防止伪造的部分，在发送的过程中很容易被篡改，
+DKIM(<a href="http://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail</a>)
+对邮件用私钥加密，同时公钥信息放在域名DNS上面，这样收件方就可以验证邮件的真实性。</p>
+
+<p>如果你用<code>ubuntu</code>以及<code>postfix</code>，这里是<a href="https://help.ubuntu.com/community/Postfix/DKIM">设置教程</a>，以及一个简略的安装过程整理：</p>
+
+<ul>
+<li>安装<code>opendkim</code> <code>sudo aptitude install opendkim</code></li>
+<li>设置 <code>/etc/opendkim.conf</code></li>
+<li>告诉<code>postfix</code>采用<code>opendkim</code>，设置<code>/etc/postfix/main.cf</code></li>
+<li>启动和重启对应的服务。</li>
+</ul>
+
+
+<p>原理很简单，运行<code>opendkim</code>进程服务器，然后<code>postfix</code>把它当做一个过滤器来用，设置完成之后，对于所有的邮件，都会加上一个<code>DKIM-Signature</code>，一个具体的例子：</p>
+
+<pre><code>DKIM-Signature: v=1; a=rsa-sha256; d=example.net; s=brisbane;
+c=relaxed/simple; q=dns/txt; l=1234; t=1117574938; x=1118006938;
+h=from:to:subject:date:keywords:keywords;
+bh=MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=;
+b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
+</code></pre>
+
+<p>一些参数的含义：</p>
+
+<ul>
+<li><code>b</code>：具体的数字签名。</li>
+<li><code>bh</code>：body hash。</li>
+<li><code>d</code>：签名的域名。</li>
+<li><code>s</code>：selector。一个域名可能有多个邮件发送服务器，需要用一个selector来区分。</li>
+</ul>
+
+
+<p>然后接收方就会去检查<code>brisbane._domainkey.example.net</code>的DNS记录，你可以通过这种方式来查看是否它设置正确：</p>
+
+<pre><code>dig txt brisbane._domainkey.example.net
+</code></pre>
+
+<p>内容格式是<code>k=rsa\; p=MIGfMA0GCSqGSIb3DQEBA...</code>。</p>
+
+<h3>检查是否设置成功</h3>
+
+<p>发送一封邮件到gmail里面，这样检查信息：</p>
+
+<p><img src="/images/posts/gmail_sign.png"></p>
+
+<p>出现<code>mailed-by</code>表示你SPF设置正确了，出现<code>signed-by</code>表示你DKIM设置正确了。</p>
+
+<h2>让收件方认可发送者是可靠的</h2>
+
+<p>上面是一些技术上面的部分，同时还需要在内容上面以及行为上面让收件方认可你：</p>
+
+<ul>
+<li>收件人需要认可邮件内容。你发送的东西对于用户是有信息含量的，如果用户看到你的邮件就标注spam，再多的设置也没有用。</li>
+<li>邮件中带有退订链接。当用户不想收到你的邮件的时候，可以点击退订，防止用户直接把你spam掉。</li>
+<li>控制发送频率。各个邮箱提供商会检查来自一个IP的邮件投递速率，如果你发送速度过于频繁，也容易进黑名单。</li>
+</ul>
+
+
+<h2>第三方的服务</h2>
+
+<p>设置了上面的这些东西，你的邮件还是有可能被spam，以及你也不清楚到底邮件的到达率有多少，我建议针对商业的网站，还是需要采用一些第三方的邮件发送服务。这里推荐几个：</p>
+
+<ul>
+<li><a href="http://www.mailgun.com/">mailgun</a></li>
+<li><a href="postmarkapp.com">postmark</a></li>
+<li>搜狐的<a href="http://sendcloud.sohu.com/">sendcloud</a></li>
+</ul>
+
+
+<p>采用了这些第三方服务之后，你需要对应地更新<code>SPF</code>和<code>DKIM</code>。
+同时如果可能，尽量选择独立IP的服务，这样不会因为其他人发spam影响到你的邮件送达率。</p>
+
+<p>mailgun和postmark都会<a href="http://www.quora.com/Why-are-Mailgun-and-Postmark-so-much-more-expensive-than-Sendgrid-and-AWS-SES">想办法保证你的邮件送达</a>，
+因此价格也比其他的邮件服务商要贵，但是还是物有所值的。</p>
+
+<p>mailgun带有<a href="http://documentation.mailgun.com/api-campaigns.html">campaign服务</a>，
+你可以设置一个campaign，然后发送带有这个campaign ID的邮件，之后会统计出送达率，开启率，链接点击率等信息给你。</p>
+
+<p>还有就是针对国内垃圾邮件乱飞的状况，很多国内的邮箱服务商会比较严格，造成国外的第三方邮件发送服务不好用的状况，比如：</p>
+
+<ul>
+<li>mailgun发到QQ邮箱，新浪邮箱里面会被spam掉。</li>
+<li>postmark和mailgun都发不了邮件到tom邮箱里面。</li>
+</ul>
+
+
+<p>需要注意一下。</p>
+
+<h2>引用资料以及工具</h2>
+
+<ul>
+<li><a href="http://aplawrence.com/Blog/B961.html">PTR为什么重要</a></li>
+<li><a href="https://idndx.com/2012/04/07/how-to-increase-your-email-delivery-rate/">中文资料</a></li>
+<li><a href="http://mxtoolbox.com/SuperTool.aspx?action=blacklist">检查是否进黑名单</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-21T19:15:00+00:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/reliable-email-delivery/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/reliable-email-delivery/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/commandline-proxy/" title="Previous Post: 命令行下使用全局代理">&laquo; 命令行下使用全局代理</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/email-css/" title="Next Post: 如何写邮件样式">如何写邮件样式 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/reliable-email-delivery/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/reliable-email-delivery/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

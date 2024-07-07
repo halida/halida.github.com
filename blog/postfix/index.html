@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>postfix架构初探 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/postfix/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Postfix架构初探</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-27T23:57:00+00:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
+
+<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
+
+<h2>什么是postfix</h2>
+
+<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
+
+<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
+
+<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
+
+<ul>
+<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
+<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
+</ul>
+
+
+<h2>如何配置</h2>
+
+<p>我发现<a href="https://library.linode.com/email/postfix/postfix2.9.6-dovecot2.0.19-mysql">linode的ubuntu的配置文档</a>
+很不错，采用mysql作为数据库，存储域名，邮件用户，邮件用户别名信息，然后用dovecot来作为用户和外界通讯的服务器，
+按照这个配置，可以搭建好一个可用的邮件系统。</p>
+
+<h2>邮件流程</h2>
+
+<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
+
+<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
+
+<p>外面的服务器会通过smtp发送邮件到postfix，postfix服务器会接收邮件，经过一系列的处理过程，最后保存到本地的邮件目录存放地里面。
+按照上面的设置，会保存在<code>/var/mail/%domain/%username</code>目录中。</p>
+
+<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
+
+<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
+
+<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
+
+<p><strong>如何验证用户</strong></p>
+
+<p>dovecot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
+
+<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
+
+<ul>
+<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
+<li>postfix配置目录在<code>/etc/postfix</code></li>
+<li>dovecot配置目录<code>/etc/dovecot</code></li>
+<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
+<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
+<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
+</ul>
+
+
+<h2>更进一步的需求</h2>
+
+<p>前面做的事情只是比较基本的部分，如果要成为一个可靠的生产环境，还是需要一些其他的事情：</p>
+
+<ul>
+<li>用户管理系统</li>
+<li>spam过滤</li>
+<li><a href="http://blog.linjunhalida.com/blog/reliable-email-delivery/">保证电子邮件的送达率</a></li>
+</ul>
+
+
+<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
+
+<h2>2012-10-26问题整理</h2>
+
+<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
+
+<ul>
+<li>不是很懂postfix， 看文档</li>
+<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
+<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
+<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
+</ul>
+
+
+<h2>2013-12-08问题整理</h2>
+
+<p>因为服务器更换，需要重新装一遍邮件系统，前一次安装的日志没有留下来，
+于是我采用<a href="https://help.ubuntu.com/community/Postfix">ubuntu</a>的教程，结果耗费了一个星期都没有安装成功，几乎要崩溃了。
+后来找到现在用的安装教程，也是一路磕磕碰碰遇到很多问题。总结一下经验：</p>
+
+<ul>
+<li>一定一定要跟着教程走，不要自己想当然随便改，不然死都不知道怎么死的。</li>
+<li>走长路，每一步都要验证这一步走得正确。</li>
+<li>出现问题看log，好的日志会引导你走向正确的方向。</li>
+</ul>
+
+
+<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-10-27T23:57:00+00:00" pubdate data-updated="true">Oct 27<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ji-zhu/'>技术</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/postfix/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/postfix/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/standing-at-work/" title="Previous Post: 尝试站着工作">&laquo; 尝试站着工作</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/new-mac-book-pro/" title="Next Post: 买了新的笔记本">买了新的笔记本 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/postfix/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/postfix/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

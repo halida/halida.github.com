@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>比密码登录更好的权限验证方式 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="现在各个网站，工具都采用密码方式登录，我觉得很不方便，同时安全性也不能得到保障，
+这里我提出一种更安全更易用的权限验证方式，彻底解决这些问题。 首先我们看密码验证的缺点，从易用性和安全性来考虑。 密码的长度取决于人类记忆力。如果是随机密码，人类很难记住，最长大概8位，而现在云计算情况下， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/password-authentication-is-bad/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">比密码登录更好的权限验证方式</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-05-15T13:37:59+08:00" pubdate data-updated="true">May 15<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>现在各个网站，工具都采用密码方式登录，我觉得很不方便，同时安全性也不能得到保障，
+这里我提出一种更安全更易用的权限验证方式，彻底解决这些问题。</p>
+
+<p>首先我们看密码验证的缺点，从易用性和安全性来考虑。</p>
+
+<p>密码的长度取决于人类记忆力。如果是随机密码，人类很难记住，最长大概8位，而现在云计算情况下，10位以下暴力破解并不是很困难的事情。
+如果是非随机密码（比如一句话），单词的概率空间也和随机密码差不多甚至更少。
+为了获得更可靠的安全性，密码必须设置得更长一些，对人的负担更重。
+随着现在计算力的增长，为了安全，密码必须越设越长，而人的记忆能力是很难增长的。</p>
+
+<p>从使用方式上，密码会传播到远端平台，在本地/网络/远端任何一个节点被监听到，用户的密码和信息就会被泄漏掉。</p>
+
+<p>对于不同的网站或者应用，应该采用不同的密码，不然一个网站的信息泄漏了，就会影响到其他网站的安全性。
+但是对于普通人而言，记忆超过3个复杂密码是很困难的。这也是为什么普通人往往通用一个常用密码，
+然后现在各大网站很多的用户密码信息是泄漏的，对于普通人而言，常用密码已经被泄漏出去了。</p>
+
+<p>现在有第三方的密码记录工具，比如lastpass，但是它增加了单点失效的风险：如果lastpass被攻克了，用户的所有密码都会被泄漏。</p>
+
+<p>综上所述，密码验证方式缺陷很多，并不能很好地保障易用性和安全性。</p>
+
+<p>从原理上面思考，借鉴现成的一些安全领域经验，我觉得更好的验证方式如下：</p>
+
+<p>采用RSA方式生成公钥和私钥，私钥保存在一个绝对安全的单独硬件设备上，只提供解密服务。比如做成一个芯片，挂在脖子上或者植入皮下组织。
+本地电脑能够访问该设备。</p>
+
+<p>网站登录和验证过程采用和SSH协议一样的方式，基本上就是用户提供公钥给网站，网站通过公钥加密共享密钥过来，建立安全通讯频道。</p>
+
+<p>这种方式的好处：</p>
+
+<ul>
+<li>易用性：用户只要输入网站，在本地电脑上面刷一下芯片就可以登录了，无须繁琐的密码输入。</li>
+<li>秘密信息（私钥）保证安全，第三方除了偷窃芯片设备，没有任何办法获得私钥。</li>
+<li>本地/网络/远端通讯模型中，网络没有办法窃听通讯。就算在本地或者远端设置了木马窃听信息，也不会丢失私钥。</li>
+<li>一个网站被攻破，只代表这个网站的用户数据泄漏了，不影响该用户其他网站的安全性。</li>
+</ul>
+
+
+<p>一些我还没有想明白的问题：</p>
+
+<ul>
+<li>如何保证密钥设备被电脑读取的时候不开放给不相关的网站？这样当本地电脑中了木马的时候，也不会泄漏远端网站的信息？</li>
+<li>密钥设备丢失了怎么办？可以在家里备份保存一个。如果真的全部丢失了，只有一个个通知网站更换该用户的公钥，更换协议需要思考如何保证安全同时又能够做到替换。</li>
+</ul>
+
+
+<p>难点：</p>
+
+<ul>
+<li>因为涉及到硬件，比较难部署开，需要用户购买一个安全芯片，以及读取和烧录设备。</li>
+<li>需要改变用户习惯，随身携带一个安全芯片。</li>
+<li>需要各大网站支持这种登录方式。</li>
+</ul>
+
+
+<p>我觉得可能布开的方式是这样：首先要有一个大公司推动（比如苹果或者谷歌），在一个销量很大的设备上（比如手机），
+这个芯片也还是要做到设备独立，不能做到手机里面。后面要有一个所有大公司参与的标准化组织制定规则。
+感觉难度挺大的。不过这是更安全的做法，以后应该路径到达这种方式。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-05-15T13:37:59+08:00" pubdate data-updated="true">May 15<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/password-authentication-is-bad/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/password-authentication-is-bad/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/motobike/" title="Previous Post: 考虑摩托车">&laquo; 考虑摩托车</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/encrypted-git-repo/" title="Next Post: 加密git远端版本库">加密git远端版本库 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/password-authentication-is-bad/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/password-authentication-is-bad/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

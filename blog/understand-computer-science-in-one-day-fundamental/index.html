@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>一天弄懂计算机科学之体篇 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="首先就是计算机科学到底是什么？这个领域主要做的是什么事情？
+计算机科学并不是关于如何让你熟悉理解操作计算机的，
+计算机科学考虑的是：如何理解信息，记录信息，以及处理信息。 如何理解信息 信息是什么？信息是可能性的反面：确定性。
+一件事情有可能发生，然后告诉你实际发生了，这就是信息。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">一天弄懂计算机科学之体篇</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-07-16T13:30:16+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>首先就是计算机科学到底是什么？这个领域主要做的是什么事情？
+计算机科学并不是关于如何让你熟悉理解操作计算机的，
+计算机科学考虑的是：如何理解信息，记录信息，以及处理信息。</p>
+
+<h3>如何理解信息</h3>
+
+<p>信息是什么？信息是可能性的反面：确定性。
+一件事情有可能发生，然后告诉你实际发生了，这就是信息。
+比如我们知道明天有可能下雨，然后有一个神仙告诉你明天实际会不会下雨，这就是信息。</p>
+
+<p>信息与信息之间是有度的区别的，告诉你明天是否下雨，以及一个人生日的信息量是不同的。
+那么如何衡量信息的大小呢？可以用概率来看。概率越低，信息量越大。
+比如明天是否下雨的概率是1/2，一个人生日的概率是1/365。</p>
+
+<p>我们定义<a href="https://zh.wikipedia.org/zh-sg/%E7%86%B5_(%E4%BF%A1%E6%81%AF%E8%AE%BA">信息量</a>)：2^信息量=1/概率，下雨的信息量是1，生日的信息量是8.5左右。</p>
+
+<h3>如何记录信息</h3>
+
+<p>知道信息是什么了之后，我们可以考虑如何记录信息。
+比如我们需要存储一个字符串，一个字符的信息量就是所有可能的字符，
+比如简单的<a href="https://zh.wikipedia.org/zh-sg/ASCII">ASCII编码</a>，有255种均等可能的字符，信息量就是8。
+我们可以以1-255之间的数字定义一个字符，比如A就是65。</p>
+
+<p>然后我们去寻找可以存储信息的介质。
+任何有状态的介质都可以存储信息，比如算盘，小石子放在格子里面之类。
+我们可以根据状态的数量来判断一个介质能够存储多少信息量，
+比如算盘一个5串的格子，有6种状态，可以存储的信息量就是2.5。
+然后可以把字符串编码到这个介质上面，一个字符需要4个格子提供足够的信息量。</p>
+
+<p>因为格子的信息量足够，我们可以有很多种方法把字符映射到算盘上面。
+但是我们需要一种通用的方式来做这样的事情，这样我们可以很容易切换到其他介质上面去。
+最好的方法是提供一种中间编码形式，字符编码转换成这个编码，然后这个编码转换到介质上。
+我们用的是<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E8%BF%9B%E5%88%B6">二进制</a>，用这种0100这种方式表示。
+因为一个字符只有两种状态，方便编码转换。</p>
+
+<p>我们来看如何把一个字符转换到算盘上面。
+A=65=01000001，二进制编码到算盘也很简单，
+算盘的一格可以对应二进制的两位，算盘拨动1-4格4种状况就可以了。
+当然有更省存储空间的算法，我们会在后续介绍。</p>
+
+<p>我们可以寻找更便宜的存储介质，
+现在用的是磁性介质（硬盘），二极管（内存，闪盘等），
+一个1T磁盘可以存储1024<sup>4</sup>个字符，每个字符占用二进制的8位，一个磁盘就可以存储8T多的信息量。</p>
+
+<h3>如何处理信息</h3>
+
+<p>我们来到了最有趣的部分：如何处理信息。</p>
+
+<p>我们需要理解处理信息的本质，然后再思考，如何创造一个机器来实现信息的处理。</p>
+
+<p>比如我们需要把一张自拍照美化，其中的一个步骤就是把图片变白。
+用信息化的处理方式,就是把每个点按照<a href="https://zh.wikipedia.org/wiki/%E4%B8%89%E5%8E%9F%E8%89%B2%E5%85%89%E6%A8%A1%E5%BC%8F">RGB</a>的方式编码，
+RGB代表三原色，每个原色用0-255表示亮度，000就是黑色，255-255-255就是白色。
+我们把每个原色的权重加一个百分比，比如原先100就变成150，这样就实现了照片的美化处理。</p>
+
+<p>也有一些简单的方法，比如打印照片，打光，重新拍一张，或者专门做一个处理照片的机器。
+但是为什么要实现一台通用的处理信息的机器，来处理这个任务？</p>
+
+<p>因为几个原因：</p>
+
+<ul>
+<li>这个机器有很大的潜能，一秒钟内就可以处理好这个照片</li>
+<li>我们只需要对机器的指令做很简单的修改，就可以支持其他类似的工作</li>
+<li>数据是信息化的，可以快速方便地无限分发</li>
+</ul>
+
+
+<p>而创造这样的通用计算机器是可以做到的，方法是把所有信息处理的动作分解，一直到可以通用的动作，然后再通过机器实现就可以了。</p>
+
+<p>其中的一种通用的计算机模型如下：</p>
+
+<ul>
+<li>带有存储信息和指令的存储介质（指令本身也是信息）</li>
+<li>带有一组快速存储介质（我们叫他们寄存器），可以与各类运算和处理单元交互</li>
+<li>一个寄存器指向存储介质的一个地址，地址上带有让机器执行的指令，我们叫这个指令寄存器</li>
+<li>机器根据指令寄存器指向存储介质地址的指令，控制各类运算和处理单元对寄存器上面的数据进行处理，包括这个指令寄存器本身！可以进行的操作包括：
+
+<ul>
+<li>数学运算：加减乘除，逻辑运算之类</li>
+<li>状态查询：比如判断两个寄存器是否相等之类，保存结果到一个状态寄存器</li>
+<li>条件判断：根据状态寄存器的结果进行特定的操作，比如指令寄存器地址加一</li>
+<li>数据移动：把寄存器数据保存到存储介质，或者从存储介质读取数据到寄存器</li>
+</ul>
+</li>
+</ul>
+
+
+<p>比如上面的照片处理，可以用这个机器实现。机器的指令也保存在存储介质里面，具体如下：</p>
+
+<ul>
+<li>照片数据预先存放在存储介质上，按照RGB方式编码</li>
+<li>操作指令也存放在存储介质上，机器的指令寄存器设置到这个地址，开机</li>
+</ul>
+
+
+<p>指令列表：</p>
+
+<ul>
+<li><code>起始</code>：读取照片数据地址到寄存器A</li>
+<li>读取照片数据结尾地址到寄存器B</li>
+<li><code>循环</code>：从照片数据地址读取一个点的数据到寄存器C</li>
+<li>寄存器C加10%</li>
+<li>寄存器A加一</li>
+<li>判断寄存器A和B相等，如果相等跳过下一步指令</li>
+<li>设置指令寄存器值为<code>循环</code>地址（下一步机器就会跳转到前面开始的地方）</li>
+<li>设置指令寄存器值为<code>结尾</code>地址</li>
+<li><code>结尾</code>：停机</li>
+</ul>
+
+
+<p>这些指令实际上的操作就是：转移数据，对数据进行运算，同时机器下一步执行的指令位置也是可以通过数据来操作的。
+我们可以通过逻辑证明，带有这样功能的机器，可以把存储介质的状态，设置成任意我们想要的状态，从而证明这是一台可以进行通用信息处理的机器。</p>
+
+<p>我们可以用各种方式来实现这样的通用计算机器，
+比如机械齿轮，水力，算盘，甚至人工，但是最后我们会选择性能最好，价格最便宜的方案，现在就是用二极管，集成电路，
+每秒可以进行几十亿次的运算。</p>
+
+<p>以上内容就是信息科学的部分，我们知道信息的本质是什么，以及信息本身是以什么方式存在，然后是如何处理信息，
+之后我们可以利用这些原理，创造出来计算机，以及配套的支持环境，来实现所有的信息存储，操作和处理。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-07-16T13:30:16+08:00" pubdate data-updated="true">Jul 16<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/understand-computer-science-in-one-day/" title="Previous Post: 一天弄懂计算机科学">&laquo; 一天弄懂计算机科学</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/modern-pitfalls/" title="Next Post: 现代社会防骗指南">现代社会防骗指南 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/understand-computer-science-in-one-day-fundamental/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

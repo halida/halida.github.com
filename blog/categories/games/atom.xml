@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: games | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/games/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[factorio介绍]]></title>
+    <link href="http://blog.linjunhalida.com/blog/factorio/"/>
+    <updated>2014-02-15T17:04:35+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/factorio</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/factorio/factorio-logo.png"></p>
+
+<p>最近发现一个好游戏<a href="https://www.factorio.com/">factorio</a>，消耗了很多时间在它上面。这里整理一篇介绍。</p>
+
+<p><a href="https://www.factorio.com/">factorio</a>是一款集成了资源采集，流水线运输，自动化生产，基地防守的2D游戏。
+玩家在一个自动生成的地图上面，采集资源，合成物品，搭建各种自动化采集，合成，运输的机械。</p>
+
+<h2>图示</h2>
+
+<p>玩家可以采集资源</p>
+
+<p><img src="/images/posts/factorio/mining.gif"></p>
+
+<p>可以制造自动采集资源的机器</p>
+
+<p><img src="/images/posts/factorio/automining.png"></p>
+
+<p>资源可以通过各种机器，转变成其他产品</p>
+
+<p><img src="/images/posts/factorio/production.png"></p>
+
+<p>制造生产线</p>
+
+<p><img src="/images/posts/factorio/automing.gif"></p>
+
+<p>生产线需要电力</p>
+
+<p><img src="/images/posts/factorio/energy.gif"></p>
+
+<p>复杂的生产线，生产运输带</p>
+
+<p><img src="/images/posts/factorio/production_line.png"></p>
+
+<p>很多物品需要研究之后使用，研究也需要生产线</p>
+
+<p><img src="/images/posts/factorio/research_line.png"></p>
+
+<p>9.0版本新增加的石油生产线</p>
+
+<p><img src="/images/posts/factorio/oil_production_line.png"></p>
+
+<p>一个完整的生产线例子</p>
+
+<p><img src="/images/posts/factorio/full_production_line.png"></p>
+
+<h2>上手</h2>
+
+<ul>
+<li><a href="https://www.factorio.com/">官方网站</a>有demo下载，如果觉得好玩可以去购买正式版。</li>
+<li>遇到问题可以去查<a href="http://www.factorioforums.com/wiki/index.php?title=Main_Page">wiki页面</a>，也可以去<a href="http://www.factorioforums.com/forum/viewtopic.php">官方论坛</a>。</li>
+<li>游戏提供mod支持，如果觉得原版不过瘾，这里有一些<a href="http://www.factorioforums.com/wiki/index.php?title=Mods">mod</a>可以下载。个人推荐dytech。</li>
+</ul>
+
+
+<h2>攻略</h2>
+
+<ul>
+<li><a href="http://www.factorioforums.com/forum/viewtopic.php?f=8&amp;t=2039">这里</a>有优化的science-pack生产线设计方案。</li>
+</ul>
+
+
+<h2>作弊</h2>
+
+<p>按<code>``或者</code>/`进入控制台模式，然后可以用<a href="http://www.factorioforums.com/wiki/index.php?title=Lua/Game">这里</a>的命令。</p>
+
+<p>我主要用的是：</p>
+
+<ul>
+<li><p>改变游戏速度：<code>game.speed=1</code></p></li>
+<li><p>获取物品：<code>game.player.insert{name="iron-plates",count=100}</code></p></li>
+</ul>
+
+
+<p>一些常用的物品列表：</p>
+
+<p>```
+装备：
+power-armor-mk2
+basic-exoskeleton-equipment
+fusion-reactor-equipment
+basic-laser-defense-equipment-3
+energy-shield-mk2-equipment</p>
+
+<p>电力：
+substation
+big-electric-pole
+solar-panel</p>
+
+<p>科研：
+lab
+science-pack-1
+science-pack-2
+speed-module-3</p>
+
+<p>原料:
+steel-plate</p>
+
+<p>防御
+laser-turret</p>
+
+<p>robot
+roboport
+construction-robot</p>
+
+<p>敌人
+biter-spawner
+creeper-spawner
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

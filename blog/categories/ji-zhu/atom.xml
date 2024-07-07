@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 技术 | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/ji-zhu/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[postfix架构初探]]></title>
+    <link href="http://blog.linjunhalida.com/blog/postfix/"/>
+    <updated>2012-10-27T23:57:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/postfix</id>
+    <content type="html"><![CDATA[<p><img src="https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&amp;do=get&amp;target=PostfixComponentsNw.gif" alt="image" /></p>
+
+<p>最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。</p>
+
+<h2>什么是postfix</h2>
+
+<p>简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。</p>
+
+<p><img src="http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg" alt="image" /></p>
+
+<p>但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：</p>
+
+<ul>
+<li><a href="http://www.linuxjournal.com/article/9454">postfix介绍文章</a></li>
+<li><a href="https://help.ubuntu.com/community/PostfixBasicSetupHowto">ubuntu basic setup的文章</a></li>
+</ul>
+
+
+<h2>如何配置</h2>
+
+<p>我发现<a href="https://library.linode.com/email/postfix/postfix2.9.6-dovecot2.0.19-mysql">linode的ubuntu的配置文档</a>
+很不错，采用mysql作为数据库，存储域名，邮件用户，邮件用户别名信息，然后用dovecot来作为用户和外界通讯的服务器，
+按照这个配置，可以搭建好一个可用的邮件系统。</p>
+
+<h2>邮件流程</h2>
+
+<p>为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：</p>
+
+<p><strong>邮件是如何从外面发送进来， 被客户端接收的</strong></p>
+
+<p>外面的服务器会通过smtp发送邮件到postfix，postfix服务器会接收邮件，经过一系列的处理过程，最后保存到本地的邮件目录存放地里面。
+按照上面的设置，会保存在<code>/var/mail/%domain/%username</code>目录中。</p>
+
+<p><strong>邮件是如何通过客户端， 发送给其他邮件的。</strong></p>
+
+<p>通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。</p>
+
+<p>postfix也提供一个命令行的工具sendmail来<a href="http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/">在本地发送邮件</a>。</p>
+
+<p><strong>如何验证用户</strong></p>
+
+<p>dovecot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。</p>
+
+<p><strong>具体的邮件本地缓存位置，配置文件和进程。</strong></p>
+
+<ul>
+<li>邮件本地存储的目录， 见postfix配置参数<code>virtual_mailbox_base</code>。</li>
+<li>postfix配置目录在<code>/etc/postfix</code></li>
+<li>dovecot配置目录<code>/etc/dovecot</code></li>
+<li>里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 <code>/var/log/mail.log</code></li>
+<li>postfix master进程 <code>/usr/lib/postfix/master</code>， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。</li>
+<li>dovecot进程 <code>/usr/sbin/dovecot</code>， 用户验证进程 <code>dovecot-auth</code>， 还有以dovecot为用户的一些pop/imap服务器。</li>
+</ul>
+
+
+<h2>更进一步的需求</h2>
+
+<p>前面做的事情只是比较基本的部分，如果要成为一个可靠的生产环境，还是需要一些其他的事情：</p>
+
+<ul>
+<li>用户管理系统</li>
+<li>spam过滤</li>
+<li><a href="http://blog.linjunhalida.com/blog/reliable-email-delivery/">保证电子邮件的送达率</a></li>
+</ul>
+
+
+<p>很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。</p>
+
+<h2>2012-10-26问题整理</h2>
+
+<p>本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：</p>
+
+<ul>
+<li>不是很懂postfix， 看文档</li>
+<li>pop服务器不知道是什么， 最后看postfix设置才知道是dovecot</li>
+<li>跑起来后发现没有起来pop， 安装dovecot-pop3d</li>
+<li>用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。</li>
+</ul>
+
+
+<h2>2013-12-08问题整理</h2>
+
+<p>因为服务器更换，需要重新装一遍邮件系统，前一次安装的日志没有留下来，
+于是我采用<a href="https://help.ubuntu.com/community/Postfix">ubuntu</a>的教程，结果耗费了一个星期都没有安装成功，几乎要崩溃了。
+后来找到现在用的安装教程，也是一路磕磕碰碰遇到很多问题。总结一下经验：</p>
+
+<ul>
+<li>一定一定要跟着教程走，不要自己想当然随便改，不然死都不知道怎么死的。</li>
+<li>走长路，每一步都要验证这一步走得正确。</li>
+<li>出现问题看log，好的日志会引导你走向正确的方向。</li>
+</ul>
+
+
+<p>回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[oauth个人总结]]></title>
+    <link href="http://blog.linjunhalida.com/blog/oauth/"/>
+    <updated>2012-09-12T19:29:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/oauth</id>
+    <content type="html"><![CDATA[<p><img src="http://hueniverse.com/wp-content/uploads/2007/12/My-Endpoints-300x267.png" alt="image" /></p>
+
+<p>最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。</p>
+
+<h2>什么是oauth？</h2>
+
+<p>在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net），
+用户希望利用另外一个网站（priter.example.net）来打印这些照片， 但是因为安全性的考虑， 用户不想提供用户名和密码给它，
+希望只是提供一个受限的访问权限。 oauth就是为了实现这样的功能产生的。</p>
+
+<p>oauth本身是一个标准， 它指定了一系列的操作规范， 服务提供方（就是上面的photos.example.net）提供一系列的API，
+任何需要访问用户资源的第三方网站或者应用， 遵循这套规范， 向用户请求权限， 然后用户授权了之后， 这些第三方网站就能够获得需要的信息，
+同时兼顾了用户的安全需求。</p>
+
+<h2>oauth的过程</h2>
+
+<p>oauth的流程基于http协议， 通过POST请求实现数据通讯。首先定义一下涉及到的几个角色(引用<a href="http://zh.wikipedia.org/wiki/OAuth">维基百科</a>):</p>
+
+<ul>
+<li><strong>服务提供方(server)</strong>: 用户使用服务提供方来存储受保护的资源，如照片，视频，联系人列表。</li>
+<li><strong>用户(resource owner)</strong>: 存放在服务提供方的受保护的资源的拥有者。</li>
+<li><strong>客户端(client)</strong>: 要访问服务提供方资源的第三方应用，通常是网站，如提供照片打印服务的网站。在认证过程之前，客户端要向服务提供者申请客户端标识。</li>
+</ul>
+
+
+<p>整体流程分成3个步骤：</p>
+
+<ul>
+<li>client向服务器获得<code>request_token</code>， 包含token和secret， token用来作标识， secret用来做后续的通讯验证。</li>
+<li>client把resource owner导向到server， 让resource owner授权， 获得一个<code>verifier</code>， 通过后server又把用户重导向到client。</li>
+<li>client利用获得的<code>verifier</code>， 向server申请一个新的<code>access_token</code>， 申请成功后，就可以利用它来访问resource owner的受限资源。</li>
+</ul>
+
+
+<p>具体过程如下图：
+<img src="http://www.formatix.eu/wp-content/uploads/2009/12/diagram-oauth-handshake.png" alt="image" /></p>
+
+<p>为了安全起见， 这些通讯操作都应该在https下面进行。</p>
+
+<h2>疑问</h2>
+
+<p>下面是我在看<a href="rfc">rfc</a>的时候遇到的一些疑问， 以及我对它们的解答。</p>
+
+<h3>在第二步的时候， 如何跳转回client？</h3>
+
+<p>几个地方， 可以在网站创建<code>consumer_key</code>的时候设置默认callback， 以及在申请<code>request_token</code>的时候传入参数<code>oauth_callback</code>，
+就我用linkedin API的时候， 在authorize过程传入<code>oauth_callback</code>。</p>
+
+<h3>nonce的作用？</h3>
+
+<p>文档在<a href="http://tools.ietf.org/html/rfc5849#section-3.3">rfc3.3</a>，
+client生成的一个随机字符串， 让服务器记忆， 防止有中间人记录了通讯， 重复进行这样的请求来做攻击。
+每次给server的请求， 都会生成一个新的nonce。
+为了防止产生大量的nonce给服务器带来负担， 服务器会考虑利用时间来给出限制(具体如何做我也不是很明白， 猜测就是做一个延时吧)。</p>
+
+<h3>为什么要分离 <code>request_token</code> 和 <code>access_token</code>， 而不是只用request_token？</h3>
+
+<p>恩， 不是很清晰地明白具体会引发什么安全隐患， 个人猜测：
+<code>request_token</code>在resource owner， client， server之间通讯会有安全隐患，
+真正做访问的只有一个access_token， 获得<code>access_token</code>只在client和server之间发生一次， 这样限制一下更安全？</p>
+
+<h3>如何通过token和secret让服务器知道自己的？</h3>
+
+<p>用"HMAC-SHA1", &ldquo;RSA-SHA1&rdquo;, &ldquo;PLAINTEXT"三种方式验证，
+利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
+
+<h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>
+
+<p>根据我看<a href="https://github.com/pelle/oauth-plugin">oauth-plugin的实现</a>， 最后追溯到的是一个随机字串生成器， 看起来只要服务器生成后记住就可以了。</p>
+
+<h3>可能的安全问题</h3>
+
+<p><a href="rfc">rfc</a>里面列出来很多安全性的考虑， 我因为只关心具体的使用， 就不看它们了， 等有担忧的时候再看。</p>
+
+<h3>oauth2.0</h3>
+
+<p>根据<a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">Eran的说法</a>，oauth2.0状况不妙，facebooke和google做的还可以，那么我先不跟踪它了。</p>
+]]></content>
+  </entry>
+  
+</feed>

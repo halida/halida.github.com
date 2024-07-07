@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>GNS3介绍,安装和使用 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="GNS3是一个虚拟网络的工具,用它可以学习如何配置局域网,以及在实际进行物理配置之前测试是否工作正常. 我为什么要研究这个工具呢? 因为现在我的家用网络有一些需求需要进行复杂的路由配置, 实际配置出现问题很浪费时间,
+不如用一个虚拟工具来测试研究. 如果你对如何搭建局域网或者有类似建网需求, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/gns3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">GNS3介绍,安装和使用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-15T20:01:27+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://www.gns3.com/">GNS3</a>是一个虚拟网络的工具,用它可以学习如何配置局域网,以及在实际进行物理配置之前测试是否工作正常.</p>
+
+<p>我为什么要研究这个工具呢? 因为现在我的家用网络有一些需求需要进行复杂的路由配置, 实际配置出现问题很浪费时间,
+不如用一个虚拟工具来测试研究. 如果你对如何搭建局域网或者有类似建网需求, 可以考虑用这个工具.</p>
+
+<p>文档<a href="https://docs.gns3.com/">在这里</a>, 我就不重复写怎么安装了.
+在安装之前, 我先讲一下原理, 知道了原理, 后面过程会顺利很多.</p>
+
+<h1>原理</h1>
+
+<p>GNS3的底层是<a href="https://en.wikipedia.org/wiki/Dynamips">Dynamips</a>, 一个虚拟Cisco路由器的模拟器.
+GNS3同时它也支持其他的虚拟系统, 比如Vmware, Qemu, Virtualbox, docker等, 用这些虚拟化工具来模拟路由和主机.</p>
+
+<p>Dynamips是基于Linux的, 所以在Windows和MacOS下面,
+为了能够正常使用, 需要安装一个GNS的虚拟机(里面安装的是Ubuntu),
+因为它里面需要跑虚拟化(虚拟路由设备或者主机), 所以会出现嵌套虚拟,
+推荐使用Vmware来安装, 用VirtualBox性能会比较差.
+如果你是Linux系统, 建议直接用GNS Server.</p>
+
+<p>GNS Server是GNS的后端, 一个python写的管理系统, 它会根据前端的配置, 创建对应的虚拟化系统,
+比如你创建了2个主机(VPCS), 一个路由(比如用Qemu虚拟的RouteOS),
+它会创建两个VPCS进程, 用Dynamips虚拟化一个路由, 把他们连接起来.</p>
+
+<p>实际执行的命令如下:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># qemu RouteOS
+</span><span class='line'>/usr/bin/qemu-system-x86_64 -name RouteOS-1 -m 128M -smp cpus=1 -enable-kvm -machine smm=off -boot order=c \
+</span><span class='line'>  -drive file=/home/halida/GNS3/projects/routeos_simple/project-files/qemu/f280f531-91cd-4290-a61b-98d3299a2bb7/hda_disk.qcow2,if=ide,index=0,media=disk \
+</span><span class='line'>  -serial telnet:127.0.0.1:5000,server,nowait \
+</span><span class='line'>  -monitor tcp:127.0.0.1:54263,server,nowait \
+</span><span class='line'>  -net none -device e1000,mac=00:8f:b6:2b:b7:00,netdev=gns3-0 \
+</span><span class='line'>  -netdev socket,id=gns3-0,udp=127.0.0.1:10002,localaddr=127.0.0.1:10001 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:01,netdev=gns3-1 \
+</span><span class='line'>  -netdev socket,id=gns3-1,udp=127.0.0.1:10003,localaddr=127.0.0.1:10000 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:02 \
+</span><span class='line'>  -device e1000,mac=00:8f:b6:2b:b7:03 \
+</span><span class='line'>  -nographic
+</span><span class='line'>
+</span><span class='line'># vpc
+</span><span class='line'>/usr/bin/vpcs -p 5001 -m 0 -i 1 -F -R -s 10002 -c 10001 -t 127.0.0.1 startup.vpc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>参数里面会做几件事情: 创建虚拟的网口, 绑定在本地机器的特定端口上面, 然后各个进程会通过这些端口来进行通讯.
+同时也会把管理端口用telnet暴露出来, 方便前端用Console命令连上去配置.</p>
+
+<h2>安装过程</h2>
+
+<p>因为GNS的工具链主要在Linux, 我倾向于用Linux来装这样的测试环境. 所以里面推荐的GNS VM我就没有去装了.</p>
+
+<p>安装完毕之后, GNS是不自带路由器的镜像的, 它提供一些简单的虚拟设备,
+比如VPCS, 它其实就是一个单独的进程, 模拟一个主机设备, 带有设置IP, Ping等简易网络工具.
+你需要自己导入路由的设备.</p>
+
+<p>如果你是要模拟Cisco的设备, 可以在<a href="http://protechgurus.com/download-gns3-ios-images/">这里下载</a>,
+我是用来测试RouteOS的环境的, 直接在<a href="https://mikrotik.com/download">官方网站</a>下载ISO镜像, 本地用Qemu安装.</p>
+
+<p>选择虚拟系统: 如果是Cisco的路由器, 没得说, 只能用Dynamips, Dynamips一定要设置Idle-PC, 减少CPU性能消耗.
+如果是其他基于Linux的路由系统, 在Linux下面, 我觉得Qemu比VirtualBox和VMWare都好用, 它性能更好一些.
+当然用Docker这种内核共用虚拟性能会更好, 不过我没有尝试.</p>
+
+<p>GNS下安装RouteOS, 首先要去官方下载ISO镜像文件, 然后执行命令行:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 创建镜像文件
+</span><span class='line'>/usr/local/bin/qemu-img create -f qcow2 routeros-6.15.img 200M
+</span><span class='line'># 跑虚拟机, 安装系统
+</span><span class='line'>/usr/local/bin/qemu-system-i386 -m 512 -enable-kvm -boot d -cdrom mikrotik-6.15.iso routeros-6.15.img</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装好之后, 就可以用GNS导入这个镜像, 进行使用了. 官方下载的ISO, 可以免费使用一天, 用来测试问题不大.</p>
+
+<h2>模拟实验</h2>
+
+<p>我做了两个模拟实验, 用来学习GNS的使用.</p>
+
+<p>第一个是简单的RouteOS连接两个主机, DHCP分配IP地址.</p>
+
+<p><img src="http://i.imgur.com/bmtDUDc.png" alt="image" /></p>
+
+<p>用Console连上RouteOS-1, 进行这样的配置:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 创建一个bridge, 把端口都连接起来
+</span><span class='line'>/interface bridge add
+</span><span class='line'>/interface bridge port add interface=ether1 bridge=bridge1
+</span><span class='line'>/interface bridge port add interface=ether2 bridge=bridge1
+</span><span class='line'># 创建 dhcp, 给大家分配IP地址
+</span><span class='line'>/ip address add address=192.168.10.1/24 network=192.168.10.0 interface=bridge1
+</span><span class='line'>/ip pool add name=dhcp-pool ranges=192.168.10.10-192.168.10.254
+</span><span class='line'>/ip dhcp add name=dhcp-main interface=bridge1 address-pool=dhcp-pool
+</span><span class='line'>/ip dhcp network add address=192.168.10.0/24 gateway=192.168.10.1 netmask=24
+</span><span class='line'>/ip dhcp enable 0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后就可以进到两台机器的Console里面, 执行<code>ip dhcp</code>自动获取IP地址, 用<code>ping</code>去看是否可以连接到另外一台机器.</p>
+
+<p>第二个是简单的多路由通讯方案:</p>
+
+<p><img src="http://i.imgur.com/GEDQVOf.png" alt="image" /></p>
+
+<p>三个路由分别管理一个网段, 然后每个网段都可以通过路由的设置, 联系到其他网段里面的机器.</p>
+
+<p>这里只列出来RouteOS-1的配置, DHCP部分和上面重复, 就不写了:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># 设置连接到其他路由器端口的IP
+</span><span class='line'>/ip address add address=172.16.10.1/30 network=172.16.10.0 interface=ether1
+</span><span class='line'>/ip address add address=172.16.12.1/30 network=172.16.12.0 interface=ether2
+</span><span class='line'># 增加路由, 对方网段从哪里走
+</span><span class='line'>/ip route add dst-address=192.168.20.0/24 gateway=172.16.10.2
+</span><span class='line'>/ip route add dst-address=192.168.30.0/24 gateway=172.16.12.2</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-04-15T20:01:27+08:00" pubdate data-updated="true">Apr 15<span>th</span>, 2017</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/gns3/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/gns3/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/install-kdeneon/" title="Previous Post: 在新笔记本上安装Kdeneon">&laquo; 在新笔记本上安装Kdeneon</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/new-bag/" title="Next Post: 如何挑选背包">如何挑选背包 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/gns3/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/gns3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

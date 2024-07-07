@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[how to use gem]]></title>
+    <link href="http://blog.linjunhalida.com/blog/english-gem/"/>
+    <updated>2014-12-07T09:48:29+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/english-gem</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
+Gem is flaring, but handle without enough care, it may cut your finger bleeding.
+As a jeweler, I can share some knowledge about it.</p>
+
+<h2>Search</h2>
+
+<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
+or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
+
+<h2>Pick</h2>
+
+<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
+you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
+
+<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
+Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
+Some gem may change rails module, handle them with caution.</p>
+
+<h2>Use</h2>
+
+<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
+
+<p>You must know what you have done, read gem documents, wiki, know how to use it.
+I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
+
+<p>When something bad happens, check the gem project issue page,
+or you can debug it yourself by add log to the gem source code.</p>
+
+<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何使用Gem]]></title>
+    <link href="http://blog.linjunhalida.com/blog/gem/"/>
+    <updated>2014-12-07T09:41:47+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/gem</id>
+    <content type="html"><![CDATA[<p>作为rails开发者，无数好用的第三方Gem插件让工作变得更加简单。
+不过东西好用，也还是有一些需要注意的问题。这里整理一下我使用Gem的经验。</p>
+
+<h2>搜索</h2>
+
+<p>第一步是寻找到想要的Gem。最基础的方法是Google搜索，输入想要实现的功能，比如：<code>rails tagging</code>，
+也可以去<a href="https://www.ruby-toolbox.com/">ruby toolbox网站</a>上面根据分类寻找。</p>
+
+<h2>选择</h2>
+
+<p>找到Gem之后，需要选择质量高的Gem，不然会出现各种问题。主要看Github上面是否有很多人Follow，
+以及项目近期是否有足够的更新。</p>
+
+<p>不能随便引入Gem到项目里面，需要从增加的系统复杂度，拓展性，系统稳定性等方面综合考虑。
+除了引入Gem，可以考虑直接拷贝需要的代码文件到项目里面。一些会修改Rails等其他模块的Gem，需要谨慎引入。</p>
+
+<h2>使用</h2>
+
+<p>Gem导入之后，最好要固定版本，这样防止Gem功能变更引入Bug。</p>
+
+<p>选择好了Gem，需要对它有足够的了解。认认真真看一遍文档，wiki，如果文档不清晰，搜索一下使用教程。</p>
+
+<p>我个人偏好把Gem的实现原理弄懂，最好扫一遍源码，这样出现bug或者问题大概有一个方向，
+以及可以学会别人是怎么写ruby的。</p>
+
+<p>当使用Gem的时候出现了问题，可以去项目Github的Issue区块看看有没有人提交类似问题，
+没有的话自己可以通过看源码来调试解决，或者提交issue给官方项目。</p>
+
+<p>上面这些工作，关键点最好可以自己留存一份文档，一般一个Gem的问题，可能会重复解决好多次，比如<a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">安装rmagick的问题</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[capistrano介绍和入门]]></title>
+    <link href="http://blog.linjunhalida.com/blog/capistrano/"/>
+    <updated>2014-06-16T10:28:51+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/capistrano</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2014_06_16_cap.png"></p>
+
+<p><a href="http://capistranorb.com/">Capistrano</a>是一个ruby写的远程服务器自动化和部署工具。</p>
+
+<p>虽然我们可以直接连上服务器操作部署，甚至可以写脚本自动来做，但是比起自动化工具来说，有以下缺点：</p>
+
+<ul>
+<li>多台服务器任务量巨大。</li>
+<li>手动操作的话，需要连上服务器手动执行，步骤烦琐，容易操作错误和忘记事项。</li>
+<li>写脚本自动操作不能重用到其他项目里面去。</li>
+</ul>
+
+
+<p>用了自动化工具，可能第一次配置比较复杂，但是配置好了之后，发布工作就简单得只需要执行一个命令，轻松愉快。
+它也有学习复杂，因为有抽象出现问题难以找到原因，造成额外心智负担的问题，
+这个要开发者根据项目大小和类型来做权衡。</p>
+
+<p>看了官方文档，wiki，看了一天都没有看出门道，后来看官方网站上面的文档才慢慢弄懂。</p>
+
+<p>Capistrano的原理是这样：</p>
+
+<ul>
+<li>需要部署的服务器根据角色(role)区分: 比如有app，db，web，然后每个角色可以有多台服务器。</li>
+<li>针对不同角色，设置各类的任务，设置执行一些命令。</li>
+<li>可以根据阶段设置不同的stage，比如staging/production，staging用来本地测试环境的部署，production用来进行生产环境的部署。</li>
+<li>默认的一套发布流程包括了检查服务器环境，更新代码，初始化，上线等各种过程。</li>
+<li>每个过程都提供了钩子，把任务链接到钩子上面，就能够保证部署过程按照期待的状况进行。</li>
+</ul>
+
+
+<p>弄懂如何用cap比较麻烦，我整理了一下如何学习的资料：</p>
+
+<ul>
+<li>首先是去看<a href="http://capistranorb.com/">官方文档</a>，对于基础概念，有一定的了解。</li>
+<li>一定要实际部署一下，可以用本地环境测试，repo_url设置成本地，比如"user@localhost:/home/user/testapp"。</li>
+<li>弄清楚发布到服务器上面的文件架构。本地测试部署一次就清楚概念了。</li>
+<li>如果需要自动部署rails，可看<a href="https://ruby-china.org/topics/18616?page=2#replies">别人整理的一份详细文档</a>。</li>
+</ul>
+
+
+<p>然后学习一些原理性质的资料：</p>
+
+<ul>
+<li>弄清楚<a href="http://capistranorb.com/documentation/getting-started/flow/">发布过程和逻辑</a>。</li>
+<li>如何在服务器上面执行代码是用SSHKit库，需要<a href="https://github.com/capistrano/sshkit">看一遍文档</a>。</li>
+<li>看一遍用到的cap相关Gem，包括<a href="https://github.com/capistrano/capistrano/tree/master/lib/capistrano/tasks">capistrano</a>, <a href="https://github.com/capistrano/bundler/blob/master/lib/capistrano/tasks/bundler.cap">capistrano-bundle</a>, <a href="https://github.com/capistrano/rvm/blob/master/lib/capistrano/tasks/rvm.rake">capistrano-rvm</a>, <a href="https://github.com/capistrano/rails/blob/master/lib/capistrano/tasks/">capistrano-rails</a>里面rake是怎么执行的，弄清楚原理。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[librr介绍]]></title>
+    <link href="http://blog.linjunhalida.com/blog/librr/"/>
+    <updated>2013-12-11T19:15:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/librr</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2013_12_11_module.jpeg"></p>
+
+<p><a href="https://github.com/halida/librr">librr</a>是我最近离职休息玩的小项目，用处是给本地文档做一个索引，然后想查什么就可以搜索到。
+实现原理很简单，监控文件夹改动，有变化就把文件一行行读取出来，丢给<a href="http://lucene.apache.org/solr/">solr</a>进行索引。</p>
+
+<p>使用上面首先设置你要索引的文件夹：</p>
+
+<pre><code>librr add ./gtd
+</code></pre>
+
+<p>然后等一会让索引完成，就可以搜索数据了：</p>
+
+<pre><code>librr search emacs
+</code></pre>
+
+<p>我用它来索引自己的本地文档库，以后考虑索引一些大文件，比如csdn泄漏密码，酒店泄漏信息什么的。</p>
+
+<h2>架构</h2>
+
+<p>因为有文件夹监控，维护搜索进程等功能，librr需要跑一个后台进程，
+一个命令行工具作为后台进程的前端。</p>
+
+<p>后台进程有几个功能：</p>
+
+<ul>
+<li>监控文件夹中的文件改动</li>
+<li>响应命令行工具的http请求</li>
+<li>管理solr进程</li>
+</ul>
+
+
+<p>可以用多线程或者多进程来做，不过我选择了<a href="https://github.com/eventmachine/eventmachine">eventmachine</a>，采用异步无阻塞的架构。
+目的一个是熟悉eventmachine，一个是看看异步无阻塞的架构写起来如何。</p>
+
+<h2>具体细节</h2>
+
+<h3>命令行和后台通讯</h3>
+
+<p>命令行参数的解析交给<a href="https://github.com/halida/librr/blob/master/lib/librr/cmd_parser.rb">CmdParser</a>完成，利用了库<a href="http://whatisthor.com/">Thor</a>。
+<code>CmdParser</code>解析出来的参数交给<a href="https://github.com/halida/librr/blob/master/lib/librr/cmd_client.rb">CmdClient</a>传递给后台进程。
+如果后台进程没有起来，<code>CmdClient</code>会调用<a href="https://github.com/halida/librr/blob/master/lib/librr/server_controller.rb">ServerController</a>，启动一个后台进程。
+后台进程里面的<code>CmdServer</code>模块有一个<code>CmdServerHandler</code>，响应命令行过来的http请求，
+通知对应的后台模块处理，返回执行结果。</p>
+
+<h3>后台架构</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/runner.rb">Runner</a>负责启动eventmachine，初始化<code>Indexer</code>，<code>DirMonitor</code>，<code>CmdServer</code>这几个核心模块。
+因为模块初始化是有依赖的，它们的初始化方法<code>start</code>都可以传进去一个block，初始化完成后执行，这样可以按照顺序进行初始化。</p>
+
+<h3>监控文件夹功能</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor.rb#L3">DirMonitor.get_monitor</a>会根据当前的操作系统，生成对应的监控对象。</p>
+
+<p>OSX下面的<a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/osx_dir_monitor.rb">OsxDirMonitor</a>，
+会去跑一个利用系统API <a href="http://en.wikipedia.org/wiki/FSEvents">FSEvents</a>生成的可执行文件，管道输出获取结果。</p>
+
+<p>linux下面的<a href="https://github.com/halida/librr/blob/master/lib/librr/dir_monitor/linux_dir_monitor.rb">LinuxDirMonitor</a>
+用基于<a href="http://en.wikipedia.org/wiki/Inotify">linux inotify API</a>的ruby绑定<a href="https://github.com/nex3/rb-inotify">rb-inotify</a>。
+因为可以获得一个文件句柄，可以直接丢给eventmachine进行管理。</p>
+
+<h3>索引和搜索功能</h3>
+
+<p><a href="https://github.com/halida/librr/blob/master/lib/librr/indexer.rb">Indexer</a>是针对索引和搜索功能的包装，
+内部有一个<code>SolrManager</code>来管理solr进程，方式是用<code>EM.popen</code>，开启一个新的进程。
+索引文件夹因为用时很长，把逻辑拆成了异步来做，让后台进程能够同时去做其他的事情。</p>
+
+<h2>经验体会</h2>
+
+<p>首先，整个项目耗时比我预期的要多出来很多，一个原因是用到新技术必然会跳无数的坑，
+另一个原因是稍微复杂一些的项目考开发人员的细致程度，一点点的错误就会消耗无数的调试开发时间，
+而我开发的时候并没有进入非常投入的状态。</p>
+
+<p>然后是异步项目，需要把平常顺序执行的操作，用回调拆分得支离破碎，
+这样代码看起来不容易理解，执行异步不容易理清当前代码所在的环境也容易引入bug。
+并且开发模块的时候，要用用回调的方式来考虑问题，如果顺序依赖的话，需要准备对应的完成后事件的callback接口。
+这一块的调试花费了我好些时间。</p>
+
+<p>一个小项目，需要引入那么多正规项目需要有的东西：
+文档，<a href="https://github.com/halida/librr/issues">项目管理</a>，标准化代码文件结构，<a href="https://github.com/halida/librr/blob/master/lib/librr/logger.rb">日志系统</a>，
+<a href="https://github.com/halida/librr/tree/master/spec">测试</a>，功能模块化，<a href="https://github.com/halida/librr/blob/master/lib/librr/settings.rb">配置管理</a>，<a href="https://github.com/halida/librr/blob/master/librr.gemspec">发布方式</a>，<a href="https://github.com/halida/librr/tree/master/lib/librr/dir_monitor">多平台支持</a>。
+真是不容易啊。不过这种代码主要消耗在架构上面的项目写起来真的是非常有成就感。</p>
+
+<p>既然你都看到这里了，那么就试用一下<a href="https://github.com/halida/librr">librr</a>吧，欢迎<a href="https://github.com/halida/librr/issues">提交issue给我</a>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby内存泄漏调试方法]]></title>
+    <link href="http://blog.linjunhalida.com/blog/ruby-memory-leak-debug/"/>
+    <updated>2013-11-27T20:44:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/ruby-memory-leak-debug</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/2013_11_27_leak.jpg"></p>
+
+<p>只要是跑起来的服务器程序，都有可能遇到内存泄露问题，或大或小。
+可以用简单的看门狗方法，内存增加到一定程度就重启；
+但是重启只是隐藏问题，遇到严重的内存泄露，只能正视问题，想办法找到内存泄露的源点。
+这里我整理了一下ruby语言的内存泄露查找方法，欢迎反馈。</p>
+
+<p>基本思路是这样：等待内存泄露到一定程度，进程的内存里面会大量充斥着没有被释放的对象，
+随机获取内存中的数据，就可以知道是什么对象泄露了，从而定位问题。</p>
+
+<p>我们先开始一个实验。创建文件leak.rb：</p>
+
+<p><code>ruby
+s = []
+1000000.times { s &lt;&lt; "hello" }
+while true
+  sleep(1)
+end
+</code></p>
+
+<p>这个文件生成了太多没有释放的字符串，并且一直处于循环等待状态。</p>
+
+<p>实际的应用程序代码比较多，不是那么明显就能发现内存泄露的代码，需要通过调试寻找线索。</p>
+
+<p>首先我们要编译一个带有debug信息的ruby版本。参数加上<code>-O0 -g</code>，<code>O0</code>是为了防止优化掉一些调试的符号表信息。
+如果你用的是rvm，可以采用下面的脚本：</p>
+
+<p>```sh</p>
+
+<h1>清空rvm编译环境参数</h1>
+
+<p>unset rvm_configure_env</p>
+
+<h1>编译一个单独的ruby版本，需要花费一定时间</h1>
+
+<p>rvm install 2.0.0-debug &mdash;debug -j 3 &mdash; &mdash;enable-shared optflags=&ldquo;-O0 -ggdb&rdquo; debugflags=&ldquo;-ggdb3&rdquo;</p>
+
+<h1>采用并且检查设置</h1>
+
+<p>rvm use 2.0.0-debug
+ruby -rrbconfig -e &lsquo;puts RbConfig::CONFIG[&ldquo;optflags&rdquo;]&rsquo;</p>
+
+<h1>结果应该带有：-O0 -ggdb</h1>
+
+<p>```</p>
+
+<p>然后我们在这个环境中执行程序，实际程序不要忘记安装支持的gem：</p>
+
+<p><code>
+ruby leak.rb
+</code></p>
+
+<p>之后，我们需要调试这个程序。如果你在linux下面，请使用<code>gdb</code>，
+如果在OSX下面，请使用编译ruby工具链中的debug工具，
+在我的机器OSX上面是用clang来编译的，所以我采用的是<code>lldb</code>，
+下面的例子以我的机器为准，gdb的命令其实也是一样的。</p>
+
+<p>另外开一个终端，启动<code>lldb</code>，然后连接上跑起来的进程：</p>
+
+<p><code>
+(lldb) attach 77226
+</code></p>
+
+<p>上面改成你用<code>ps aux|grep ruby</code>找到的进程号。</p>
+
+<p>attach做的事情就是在你调试进程里面开一个线程，这样就能够获得所有的内存信息，
+同时也不影响程序正常运行（只要你保证线程安全）。</p>
+
+<p>然后我们要知道进程内存消耗状况。在调试环境里面，我们可以执行C语言的函数，
+其中<code>rb_eval_string</code>可以用来直接执行ruby代码。
+我们首先需要做的是用<code>ObjectSpace</code>来遍历和列出所有ruby对象：</p>
+
+<p><code>ruby
+p rb_eval_string("GC.start")
+p rb_eval_string("$db_objs = Hash.new 0")
+p rb_eval_string("ObjectSpace.each_object {|o| $db_objs[o.class] += 1}")
+p rb_eval_string("puts $db_objs.to_s")
+</code></p>
+
+<p>列出来之前先要垃圾处理一下。因为ruby有解释器全局锁，执行上面的代码应该不会造成线程安全问题。
+回到执行<code>ruby leak.rb</code>的终端，可以看到打印出来的结果。
+如果是实际运行的程序，你可能需要开启一个文件，把结果打印进去，而不是打印到标准输出里面：</p>
+
+<p><code>ruby
+p rb_eval_string("File.write('sys.log', $db_objs.to_s)")
+</code></p>
+
+<p>结果如下：</p>
+
+<p><code>ruby
+{
+  String=&gt;1005019,
+  RubyVM::InstructionSequence=&gt;577,
+  Hash=&gt;28,
+  ...
+}
+</code></p>
+
+<p>发现String对象出奇地多，应该是内存泄露的主要组成部分。我们采样一下数据，看看是什么样的字符串：</p>
+
+<p><code>ruby
+p rb_eval_string("$db_strs = []")
+p rb_eval_string("ObjectSpace.each_object.each_with_index {|o, i| $db_strs &lt;&lt; o if o.class == String and i%1000==0}")
+p rb_eval_string("puts $db_strs.sample(10).to_s")
+</code></p>
+
+<p>结果：</p>
+
+<p><code>
+["hello", "hello", "hello", "hello", "hello", "hello", "hello", "hello", "hello", "hello"]
+</code></p>
+
+<p>根据这个信息，我们回到源代码里面，找到对应的部分，思考为什么没有释放这个字符串，从而解决内存泄露的问题。</p>
+
+<p>我们甚至可以利用<code>rb_eval_string</code>来动态修改代码和解决bug，不过在这个例子里面没有办法删除掉造成内存泄露的<code>s</code>对象。如果你发现有方法，还请告诉我。</p>
+
+<p>但是如果内存泄露发生在C语言部分，应该如何发现？这个留到下次再介绍。
+还有就是如何调试生产环境的进程，这个也请等我研究清楚之后再分享给大家。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/">http://blog.nelhage.com/2013/03/tracking-an-eventmachine-leak/</a></li>
+<li><a href="http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/">http://tech.3scale.net/2013/04/09/using-gdb-to-inspect-ruby-processes-on-os-x/</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

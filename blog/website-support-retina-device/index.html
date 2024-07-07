@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何支持视网膜屏幕 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近网站版本更新，过程中发现有需要针对视网膜屏幕做优化，
+不然普通的图片在rmbp或者new iPad上面看起来一片模糊，体验很不好。
+调研了一下，发现有无数种方法，这里整理一下，欢迎大家拍砖。 css background解法 根据这里的方法，在CSS里面写： 1
+2
+3
+4
+.aClass &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/website-support-retina-device/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何支持视网膜屏幕</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T15:42:00+00:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近网站版本更新，过程中发现有需要针对视网膜屏幕做优化，
+不然普通的图片在rmbp或者new iPad上面看起来一片模糊，体验很不好。
+调研了一下，发现有无数种方法，这里整理一下，欢迎大家拍砖。</p>
+
+<h2>css background解法</h2>
+
+<p>根据<a href="http://cocoathings.blogspot.com/2013/02/safari-and-retina-images.html">这里的方法</a>，在CSS里面写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span></span><span class="p">.</span><span class="nc">aClass</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">background</span><span class="p">:</span> <span class="nb">url</span><span class="p">(</span><span class="sx">image.png</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">background</span><span class="p">:</span> <span class="bp">-webkit-</span><span class="nf">image-set</span><span class="p">(</span><span class="nb">url</span><span class="p">(</span><span class="sx">image.png</span><span class="p">)</span> <span class="mi">1</span><span class="n">x</span><span class="p">,</span> <span class="nb">url</span><span class="p">(</span><span class="sx">image_2x.png</span><span class="p">)</span> <span class="mi">2</span><span class="n">x</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样需要把所有图片都放到css里面，比较复杂，需要设计一个预编译流程。</p>
+
+<h2>gem js解法</h2>
+
+<p>如果你用rails，这里有一个针对的gem可以用：<a href="https://github.com/jhnvz/retina_rails">retina_rails</a>。</p>
+
+<p>它的方法是跑一个<a href="https://github.com/imulus/retinajs">js脚本</a>，检查是否是retina设备，
+如果是的话，搜索所有页面上的img，然后替换成2倍分辨率的图片文件（在原先图片文件名后面加上@2x，当然也有办法自己设置）。</p>
+
+<p>它首先需要页面加载好低分辨率的图片，然后计算大小并且限定，然后替换成高分辨率的图片。
+页面的图片会首先模糊，然后变成清晰的，并且它依赖到了js，在js加载之后才会工作，不能直接展示好一个完美的页面。</p>
+
+<h1>rewrite解法</h1>
+
+<p>在<a href="http://stackoverflow.com/a/16848459/73048">stackoverflow上面</a>看到的一个有趣的解法，
+用js判断是否是retina设备，然后在cookie里面加上是否是retina的标示，服务器端发现如果有这个参数的话，返回对应大小的图片。</p>
+
+<p>这种解法很巧妙，不过需要服务器端支持，并且文件规则要统一，对于rails这种文件名带有tag的部署方式就不太好支持。</p>
+
+<h2>svg图片解法</h2>
+
+<p>图片全部都用svg，然后就没有模糊的问题了。不过有些浏览器不支持svg，以及不是所有图片都可以做成svg的。</p>
+
+<h2>缩小大图片解法</h2>
+
+<p>直接用一个2倍长宽的大图片，然后设置好大小成小尺寸。实现起来最简单，
+但是问题是比较消耗带宽，以及大图片缩小的方式是浏览器的缩放算法，并不是点阵完美的。</p>
+
+<h2>其他网站用到的方法</h2>
+
+<p>上面是我看到的一些解决方法，然后我也去看了一下一些著名网站是如何解决这个问题的：</p>
+
+<ul>
+<li><a href="http://apple.com/">apple</a> 图片地址用js获得然后显示，然后一部分图片没有针对retina优化。</li>
+<li><a href="http://v2ex.com/">v2ex</a> 直接用2倍图片。</li>
+<li><a href="http://ruby-china.org/">ruby-china</a> 也直接用2倍图片。</li>
+<li><a href="https://github.com/">github</a> 图片全部放在css里面，好狠！</li>
+<li><a href="http://twitter.com/">twitter</a> 没有针对retina优化，图片是模糊的。</li>
+<li><a href="http://dribbble.com/">dribbble</a> 也是用大图。</li>
+<li><a href="http://google.com/">google</a> 也是放在css里面。</li>
+</ul>
+
+
+<h2>我的解决方案</h2>
+
+<p>考虑到实现方式，带宽消耗等问题，我首先采用gem的方法，同时做出来了一些简单的修改。
+img加上data-at2x，里面放置了retina图片的地址，然后js只针对所有设置这个属性的图片进行修改。</p>
+
+<p>针对会造成图片模糊然后变清晰的状况，我考虑直接返回image是retina的版本。
+第一次可以用这个js插件，然后设置cookie，然后服务器返回retina图片的版本。</p>
+
+<p>考虑了上面这个复杂的解决方案，我还是放弃了，还是直接用2x图片吧，最简单。其实图片也不会大多少，
+因为大多数图片还是区块比较多的，压缩算法已经很好地处理了这种状况了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-18T15:42:00+00:00" pubdate data-updated="true">Jul 18<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/frontend/'>frontend</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/website-support-retina-device/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/website-support-retina-device/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/recommander-similar-items/" title="Previous Post: 如何实现推荐类似文章功能">&laquo; 如何实现推荐类似文章功能</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/nested-set-model/" title="Next Post: nested set model介绍">nested set model介绍 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/website-support-retina-device/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/website-support-retina-device/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

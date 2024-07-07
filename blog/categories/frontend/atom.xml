@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: frontend | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/frontend/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[css实现双栏同等高度]]></title>
+    <link href="http://blog.linjunhalida.com/blog/css-two-column/"/>
+    <updated>2013-08-25T08:05:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/css-two-column</id>
+    <content type="html"><![CDATA[<h1>问题</h1>
+
+<p>我们用css做双栏的方法，一般是通过边栏<code>float: right</code>，
+或者<code>position: absolute; right: 0; top: 0</code>来实现的。</p>
+
+<p>但是这样存在一个问题，如果左右栏的底色不一样以及他们高度不一致，
+会显示出来底下区块的颜色。那么底下区块应该用左栏的背景色，还是用右栏的背景色就很难说了，
+因为如果用左栏颜色，右栏高度不够的时候颜色不对；用右栏颜色，左栏高度不够的时候颜色不对。</p>
+
+<p>如图所示：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1JEqmNAwmnBN4ZxW6Mw_--qMD4F5yaNoUwBDYv0C0uRQ/pub?w=600&amp;h=720"></p>
+
+<p>那么我们应该怎么解决这个问题呢？解法很巧妙，采用下面的布局：</p>
+
+<p><img src="https://docs.google.com/drawings/d/1TfJHqsQmOBuV9rDg9eF5A2VX9yjOO8tUYBQDm0mcB_Y/pub?w=600&amp;h=720"></p>
+
+<p>继承关系：</p>
+
+<p>```
+.L1
+  .L2</p>
+
+<pre><code>.L3l
+.L3r
+.clearfix
+</code></pre>
+
+<p>```</p>
+
+<p>这样，L2的高度是L3l和L3r中长的那个的高度，
+L3都透明，左栏的底色设置在L2上面，右栏的底色设置在L1上面，
+这样无论左右栏的高度如何变化，左右栏的颜色都是正确的。</p>
+
+<p>示例代码如下：</p>
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/linjunhalida/w4NgN/3/embedded/result,js,html,css/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何支持视网膜屏幕]]></title>
+    <link href="http://blog.linjunhalida.com/blog/website-support-retina-device/"/>
+    <updated>2013-07-18T15:42:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/website-support-retina-device</id>
+    <content type="html"><![CDATA[<p>最近网站版本更新，过程中发现有需要针对视网膜屏幕做优化，
+不然普通的图片在rmbp或者new iPad上面看起来一片模糊，体验很不好。
+调研了一下，发现有无数种方法，这里整理一下，欢迎大家拍砖。</p>
+
+<h2>css background解法</h2>
+
+<p>根据<a href="http://cocoathings.blogspot.com/2013/02/safari-and-retina-images.html">这里的方法</a>，在CSS里面写：</p>
+
+<p>```css
+.aClass {</p>
+
+<pre><code>background: url(image.png);
+background: -webkit-image-set(url(image.png) 1x, url(image_2x.png) 2x);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这样需要把所有图片都放到css里面，比较复杂，需要设计一个预编译流程。</p>
+
+<h2>gem js解法</h2>
+
+<p>如果你用rails，这里有一个针对的gem可以用：<a href="https://github.com/jhnvz/retina_rails">retina_rails</a>。</p>
+
+<p>它的方法是跑一个<a href="https://github.com/imulus/retinajs">js脚本</a>，检查是否是retina设备，
+如果是的话，搜索所有页面上的img，然后替换成2倍分辨率的图片文件（在原先图片文件名后面加上@2x，当然也有办法自己设置）。</p>
+
+<p>它首先需要页面加载好低分辨率的图片，然后计算大小并且限定，然后替换成高分辨率的图片。
+页面的图片会首先模糊，然后变成清晰的，并且它依赖到了js，在js加载之后才会工作，不能直接展示好一个完美的页面。</p>
+
+<h1>rewrite解法</h1>
+
+<p>在<a href="http://stackoverflow.com/a/16848459/73048">stackoverflow上面</a>看到的一个有趣的解法，
+用js判断是否是retina设备，然后在cookie里面加上是否是retina的标示，服务器端发现如果有这个参数的话，返回对应大小的图片。</p>
+
+<p>这种解法很巧妙，不过需要服务器端支持，并且文件规则要统一，对于rails这种文件名带有tag的部署方式就不太好支持。</p>
+
+<h2>svg图片解法</h2>
+
+<p>图片全部都用svg，然后就没有模糊的问题了。不过有些浏览器不支持svg，以及不是所有图片都可以做成svg的。</p>
+
+<h2>缩小大图片解法</h2>
+
+<p>直接用一个2倍长宽的大图片，然后设置好大小成小尺寸。实现起来最简单，
+但是问题是比较消耗带宽，以及大图片缩小的方式是浏览器的缩放算法，并不是点阵完美的。</p>
+
+<h2>其他网站用到的方法</h2>
+
+<p>上面是我看到的一些解决方法，然后我也去看了一下一些著名网站是如何解决这个问题的：</p>
+
+<ul>
+<li><a href="http://apple.com/">apple</a> 图片地址用js获得然后显示，然后一部分图片没有针对retina优化。</li>
+<li><a href="http://v2ex.com/">v2ex</a> 直接用2倍图片。</li>
+<li><a href="http://ruby-china.org/">ruby-china</a> 也直接用2倍图片。</li>
+<li><a href="https://github.com/">github</a> 图片全部放在css里面，好狠！</li>
+<li><a href="http://twitter.com/">twitter</a> 没有针对retina优化，图片是模糊的。</li>
+<li><a href="http://dribbble.com/">dribbble</a> 也是用大图。</li>
+<li><a href="http://google.com/">google</a> 也是放在css里面。</li>
+</ul>
+
+
+<h2>我的解决方案</h2>
+
+<p>考虑到实现方式，带宽消耗等问题，我首先采用gem的方法，同时做出来了一些简单的修改。
+img加上data-at2x，里面放置了retina图片的地址，然后js只针对所有设置这个属性的图片进行修改。</p>
+
+<p>针对会造成图片模糊然后变清晰的状况，我考虑直接返回image是retina的版本。
+第一次可以用这个js插件，然后设置cookie，然后服务器返回retina图片的版本。</p>
+
+<p>考虑了上面这个复杂的解决方案，我还是放弃了，还是直接用2x图片吧，最简单。其实图片也不会大多少，
+因为大多数图片还是区块比较多的，压缩算法已经很好地处理了这种状况了。</p>
+]]></content>
+  </entry>
+  
+</feed>

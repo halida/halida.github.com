@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>github最近DNS被污染的事情经过以及解法 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="缘由 最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/github-dns-issue/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">github最近DNS被污染的事情经过以及解法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T22:45:00+00:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/9MBJLOd.jpg"></p>
+
+<h2>缘由</h2>
+
+<p>最近发生了Github被封锁的现象，无论是网站，还是命令行的客户端，都没有办法访问到Github，
+事情的起因是有人写了自动去12306网站刷票的插件，这个插件的脚本托管在了github的网站上面，
+而插件的作者被喝茶，其他加了刷票插件的浏览器都被上头发通知取缔掉了这个行为，
+进而上头发了命令封锁掉了Github。</p>
+
+<p>根据我们国家防火墙的行为特征，我预期到只要满足一定条件的网站一定会被封锁：</p>
+
+<ul>
+<li>用户能够自由发布内容的网站，这个内容可以是中文，可以是各种敏感信息。</li>
+<li>这个网站大到了一定规模。</li>
+</ul>
+
+
+<p>Github原本只是放源码，但是之后它们又多出来可以发布内容的功能，满足了我的预期条件，我认为它们被封只是时间问题。
+原本我以为会是因为一些发布在Github上面的博客，哪成想竟然会是这样的原因。
+预期一件事情一定会发生，但是却预期不到发生时候的诱因，这应该是混沌科学领域的知识和智慧吧。</p>
+
+<h2>封锁策略</h2>
+
+<p>在shlug里面，Jiajun Wang介绍了封锁的方法(全文转载)：</p>
+
+<p>简单地说，由于 DNS 一般使用 <a href="http://tools.ietf.org/html/rfc1035">UDP协议</a>，
+只要在某个节点发现你查询某某网站，然后造一个假的回应包并在真正的包返回之前给你就行了，
+然后假的包里面只要把实际的IP改成另外一个IP就行。</p>
+
+<p>给你看个 wireshark 抓包应该清晰易懂。运行的命令是：</p>
+
+<pre><code>dig @8.8.8.8 twitter.com
+</code></pre>
+
+<p>可以看到实际上有两个返回，第一个返回的 ip 是 59.24.3.173
+第二个返回了 3 个 ip。（这个是对的）
+这个就是 dns 污染。</p>
+
+<p><img src="/images/posts/WHzaoTc.png"></p>
+
+<h2>解法</h2>
+
+<p>Github被封锁后，极大地影响到我们程序员的日常工作，包括Github上面放的开源版本库的访问，oh-my-zsh的更新，更严重的是homebrew的使用。
+全局翻墙算是一个解决方案，但是依赖很多，也有不方便的地方。
+这里我建议采用的是：<a href="http://dnscrypt.org/">dnscrypt</a>，让DNS都走安全的加密通道，以及采用opendns作为dns服务提供商。
+使用方法也很简单，下载对应的客户端，安装即可。</p>
+
+<h2>结论</h2>
+
+<p>Github被封，对于程序员整体来说是损害，但对于能够打破这个封锁的程序员来说却也是利好：又可以在竞争中筛掉一批竞争者了。
+政府可以随意限制我们的权利，对于中国人整体上面是非常严重的伤害，现代中国还在像以前一样闭关锁国，为了维持一个非正义政权的统治。
+我对中国的未来不是很看好。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T22:45:00+00:00" pubdate data-updated="true">Jan 21<span>st</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/github-dns-issue/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/github-dns-issue/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/obfuscated-openssh/" title="Previous Post: obfuscated-openssh介绍">&laquo; obfuscated-openssh介绍</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/learn-programming/" title="Next Post: 从零开始学编程">从零开始学编程 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/github-dns-issue/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/github-dns-issue/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何实现推荐类似文章功能 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="我最近在调整我们网站GuruDigger的类似文章推荐功能。
+原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
+我需要采用更好的方式来处理这个问题。 整体思路 推荐文章可以用协同过滤（Collaborative Filtering）， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/recommander-similar-items/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何实现推荐类似文章功能</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-13T20:31:00+00:00" pubdate data-updated="true">Jun 13<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/posts/recommander-similar-items.jpg"></p>
+
+<p>我最近在调整我们网站<a href="http://gurudigger.com">GuruDigger</a>的类似文章推荐功能。
+原先的类似文章推荐是基于用户自己打的标签，而标签大家往往打得比较随意，推荐的内容比较少，
+我需要采用更好的方式来处理这个问题。</p>
+
+<h2>整体思路</h2>
+
+<p>推荐文章可以用协同过滤（<a href="http://en.wikipedia.org/wiki/Collaborative_filtering">Collaborative Filtering</a>），
+不过要业务逻辑符合这个模式，以及数据量足够大才行，我还是用基于文章内容（Content Based）的算法来解决。</p>
+
+<p>具体思路：</p>
+
+<ul>
+<li>首先是分词。文章需要拆分成单元为词的串，然后才有办法处理。</li>
+<li>然后从词串中获取能够代表文章内容意思的关键词。</li>
+<li>然后基于文章的关键词，来选择类似的文章。</li>
+</ul>
+
+
+<p>这种方法，文章数据只被利用到了词和词出现频率的信息，
+另外也可以通过基于语义的方式来分析出更多内容，
+对应的学术领域叫做<a href="http://en.wikipedia.org/wiki/Topic_modeling">Topic Modeling</a>，
+我现在这个思路算是一个很简单的方法。</p>
+
+<h2>分词</h2>
+
+<p>采用<a href="http://technology.chtsai.org/mmseg/">mmseg</a>的分词方法。原理看起来比较简单，大家可以稍微了解一下。
+具体实现采用的库是针对ruby的绑定<a href="https://github.com/pluskid/rmmseg-cpp">rmmseg-cpp</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="nb">require</span> <span class="s1">&#39;rmmseg&#39;</span>
+</span><span class='line'><span class="no">RMMSeg</span><span class="o">::</span><span class="no">Dictionary</span><span class="o">.</span><span class="n">load_dictionaries</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_word_split</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">algor</span> <span class="o">=</span> <span class="no">RMMSeg</span><span class="o">::</span><span class="no">Algorithm</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="k">while</span> <span class="n">tok</span> <span class="o">=</span> <span class="n">algor</span><span class="o">.</span><span class="n">next_token</span>
+</span><span class='line'>    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">to_utf8</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">out</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">to_utf8</span> <span class="n">text</span>
+</span><span class='line'>  <span class="nb">String</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>提取关键词</h2>
+
+<p>分词完毕之后，还需要初步筛掉一些对了解文章内容不需要的词，这种词叫做<a href="http://zh.wikipedia.org/zh/%E5%81%9C%E7%94%A8%E8%AF%8D">停用词</a>，
+我随便在网络上面下载了一份，大致能用，<a href="/assets/posts/chinese_stop_words.txt">在这里下载</a>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">stop_words</span>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;chinese_stop_words.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">sort</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">cn_filter_stop_words</span> <span class="n">words</span>
+</span><span class='line'>  <span class="p">(</span><span class="n">words</span> <span class="o">-</span> <span class="n">stop_words</span><span class="p">)</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">stop_words</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">sw</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">word</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">any?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对了，分词之前，还需要对文章预处理一下，去掉一些比较杂的东西。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">cn_tokenize</span> <span class="n">text</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'>  <span class="c1"># Strip all HTML</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/&lt;[^&lt;&gt;]+&gt;/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># Strip all number</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/[0-9]+/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="c1"># strip all url</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/(http|https):\/\/[^\s]*/</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_word_split</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span> <span class="o">=</span> <span class="n">cn_filter_stop_words</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">out</span><span class="o">.</span><span class="n">reject</span> <span class="k">do</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>我采用<a href="http://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>的方式给文章中所有词算好一个权重。
+关于tf-idf的介绍，可见<a href="http://www.ruanyifeng.com/blog/2013/03/tf-idf.html">这里</a>。</p>
+
+<p><img src="/images/posts/tf-idf.png"></p>
+
+<p>我采用的是一个叫<a href="https://github.com/reddavis/TF-IDF">tf_idf</a>的Gem，
+同时我把文章title，tag等也当做词加入进文章内容中。为了表示title和tag的重要性，
+出现在title和tag中的词，相当于出现在文章中的次数为系数k（我选取的是10和5）。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">pre_token</span> <span class="n">item</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">dw</span> <span class="o">=</span> <span class="n">cn_tokenize</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">gw</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">taggings</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">t</span><span class="o">|</span> <span class="n">t</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">tw</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">gw</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">dw</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;tf_idf&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">caculate</span> <span class="n">items</span>
+</span><span class='line'>  <span class="n">corpus</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">pre_token</span><span class="p">(</span><span class="n">item</span><span class="p">)}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">data</span> <span class="o">=</span> <span class="no">TfIdf</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">tf_idf</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>选择类似的文章</h2>
+
+<p>把文章抽象成一个在关键词作为维度的多维空间的向量，然后2篇文章的相似度就是它们之间的夹角。
+这种方法叫<a href="http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html">余弦相似度</a>。
+按照<a href="en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
+
+<p><img src="/images/posts/cosine-similarity.png"></p>
+
+<p>实现起来很简单：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span>  <span class="k">def</span> <span class="nf">similars</span> <span class="n">data</span><span class="p">,</span> <span class="n">d1</span>
+</span><span class='line'>    <span class="n">data</span><span class="o">.</span><span class="n">each_with_index</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d2</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">same_keys</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">keys</span> <span class="o">&amp;</span> <span class="n">d2</span><span class="o">.</span><span class="n">keys</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">=</span> <span class="n">same_keys</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="n">d1</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">*</span> <span class="n">d2</span><span class="o">[</span><span class="n">k</span><span class="o">]</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span>
+</span><span class='line'>      <span class="n">score</span> <span class="o">/=</span> <span class="p">(</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span> <span class="o">*</span>
+</span><span class='line'>        <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>      <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">i</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面函数返回的就是按照相似度排列的item列表了。
+我考虑只展示前5个相似度比较高的，如果还是没有，选择相似度最高的2个。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="k">def</span> <span class="nf">filter_similars</span> <span class="n">similars</span><span class="p">,</span> <span class="n">i</span>
+</span><span class='line'>  <span class="n">selected</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="n">similars</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># escape same item</span>
+</span><span class='line'>    <span class="k">next</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">5</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># max similar for score too low</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">selected</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">score</span><span class="p">,</span> <span class="n">j</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">selected</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>结论</h2>
+
+<p>稍微调整一下之后，列出来相似文章还是大致靠谱的。关于整体开发过程，还是有一些可以说的。</p>
+
+<p>在调研上面花费了很多时间，走了弯路。这个领域我不熟悉，搜索资料，尝试各种其他方法上面，花费了不少的时间。
+比如有一个python专门关于Topic Modeling的库叫<a href="http://radimrehurek.com/gensim/">gensim</a>，
+我打算用它，不过现在项目主要用ruby，我尝试互相调用，最后还是失败了，还是走回全部ruby的方法。</p>
+
+<p>现在全部流程是批次的，每次有新的文章进来，都需要重新算，一次计算需要消耗我自己rMBP时间100秒左右，
+计算开销还是很大的。不过现在网站压力不大，放到后台慢慢算。</p>
+
+<p>关于推荐准确率，瓶颈主要在关键词获取，现在的方案中，分数比较高的词很多还是会不准确，
+如果要提升的话，可能要用更多数据输入过滤掉更多的词，或者通过语义分析只提取名词，
+不过现在得到的结果还行，优化的问题等真正需要面对的时候再说，先去做其它一些更重要的事情吧。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-13T20:31:00+00:00" pubdate data-updated="true">Jun 13<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/ji-qi-xue-xi/'>机器学习,</a>, <a class='category' href='/blog/categories/bian-cheng/'>编程,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/recommander-similar-items/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/recommander-similar-items/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/continuous-integration-systems/" title="Previous Post: 持续集成测试系统评估">&laquo; 持续集成测试系统评估</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/website-support-retina-device/" title="Next Post: 如何支持视网膜屏幕">如何支持视网膜屏幕 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/recommander-similar-items/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/recommander-similar-items/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

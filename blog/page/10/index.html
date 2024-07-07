@@ -1,0 +1,951 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（Linux From Scratch）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。 LFS的过程做成了书籍，可以下载阅读。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/page/10/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-arch/">从零开始构建linux</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-26T12:21:00+08:00" pubdate data-updated="true">Feb 26<span>th</span>, 2015</time>
+        
+         | <a href="/blog/linux-arch/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近去香港澳门购物旅游，在闲暇时间抽空扫了一遍LFS，LFS（<a href="http://www.linuxfromscratch.org/lfs">Linux From Scratch</a>）就是从零开始构建一个linux系统，通过这个过程，了解一个系统是如何搭起来的。</p>
+
+<p>LFS的过程做成了书籍，可以<a href="http://www.linuxfromscratch.org/lfs/downloads/stable/">下载阅读</a>。主要由准备编译环境，编译工具链，编译系统，配置系统这几个步骤组成。</p>
+
+<p>首先需要有一个支持编译的类Unix宿主环境，创建编译目录和专门用来编译的用户，把系统需要的工具包下载下来。</p>
+
+<p>然后是在宿主机上面创建编译工具链，首先用宿主机的编译系统编译gcc工具链，然后用gcc自己编译一遍gcc，
+这样隔离宿主机编译系统的影响。</p>
+
+<p>LFS提出了一个SBU（标准编译时间）的概念，每个工具包会列出SBU，让你知道编译这个工具包大概需要多少时间。</p>
+
+<p>编译好gcc之后，用编译工具把linux需要的各种包，分门别类安装到目标文件系统中。</p>
+
+<p>各种工具都安装好了，就开始进行系统的配置。设置磁盘的引导区指向到grub引导工具，然后用grub来加载linux内核。
+设置udev设备管理器，设置fstab文件系统加载器，init进程启动器，shadow增加用户，网络等。</p>
+
+<p>一切顺利之后，系统就可以启动使用了。我个人只是看了一遍，通过阅读来了解系统的架构。走一遍的话比较消耗时间，如果你时间充足，可以跟着做一下。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-2014-summary/">2014 Summary</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-04T12:00:19+08:00" pubdate data-updated="true">Jan 4<span>th</span>, 2015</time>
+        
+         | <a href="/blog/english-2014-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Another year has passed, time goes so fast with so little change to myself.
+Whether finished or not, new year resolution needs to be written.
+It can make your future more clear, and let you understand more about what happens last year.</p>
+
+<h2>Review</h2>
+
+<p>First take a look at <a href="http://blog.linjunhalida.com/blog/2013-summary/">last year</a>, what I&rsquo;ve done or not done:</p>
+
+<ul>
+<li>Tech: Have some archivement, finish nothing in the plan.</li>
+<li>Job: Major change, it take chances to get a good job.</li>
+<li>English: Stalled, it is hard to continue learning without purpose.</li>
+<li>Health: Got some muscle in the first half of the year, stalled later.</li>
+<li>Mate: I&rsquo;m got lucky.</li>
+<li>Piano: Leak of time and money, had to drop it for now.</li>
+</ul>
+
+
+<p>Not done well, issues:</p>
+
+<ul>
+<li>Didn&rsquo;t review the objectives. forget them.</li>
+<li>Have objective, didn&rsquo;t implement them.</li>
+<li>Have a plan, always delay it.</li>
+</ul>
+
+
+<p>I need take care of this issues for next year.</p>
+
+<h2>What is happened at 2014</h2>
+
+<h3>Big things</h3>
+
+<ul>
+<li>I was working at <a href="http://srslyy.com">Hospital of Shangrao IT department</a>, All the computer &amp; network related stuff. It does not fit for me totally, the only reason I take it is because I need a identity in Shangrao for get a decent date. It turns out that it&rsquo;s not working, so I quit it latterly.</li>
+<li>I join to organize <a href="http://sqmqnh.org">三清媚青年汇</a>, take part in several big event, and lots of small ones. Because it has no strong purpose and outcome, This organization goes no further.</li>
+<li>In the later half of the year, I found an remote coding job, <a href="https://ruby-china.org/topics/22879">it is need recruit now</a>.</li>
+<li>I met my girlfriend, and this relationship is advancing very well.</li>
+</ul>
+
+
+<h3>Tech</h3>
+
+<ul>
+<li>I developed an notice system when I work at the hospital, it use node-webkit, can auto-update itself.</li>
+<li>I create <a href="http://ffuu.org">a demo website</a> for learning rails.</li>
+<li>Finish reading a <a href="http://book.douban.com/subject/24749842/">algorithm book</a>, know something about algorithm.</li>
+<li>Finish reading <a href="http://book.douban.com/subject/4246128/">Understanding Cryptography</a>, got some basic knowlege about this domain.</li>
+<li>Read lots of document about protocols, like ftp，pptp，l2tp，ssh，SSL.</li>
+<li>Dig deeper on Rails, read Gem source code, start reading Rails source code.</li>
+<li>Learn how to create single page complex static website, using middleman/haml/sass/spine/coffeescript.</li>
+</ul>
+
+
+<p>Looks like I learned a lot, actually I can do better, time speeding is not in good effect.</p>
+
+<h3>Health</h3>
+
+<ul>
+<li>Gain some muscle.</li>
+<li>Stalled at the second half of the year.</li>
+<li>Join a gym, hope not waste my money.</li>
+</ul>
+
+
+<h3>Events</h3>
+
+<ul>
+<li>Visit lots of place in Shangrao as an event organizor.</li>
+<li>Drive around all the districts in Shangrao downtown.</li>
+<li>Go to Shanghai in the March for join ruby monthly meeting, and 上海暴走团 event.</li>
+<li>Go to Shanghai in the August for join ruby monthly meeting, and 上海暴走团 event.</li>
+<li>Go to Beijing in the October for join ruby yearly meeting, visit lots of place in Beijing.</li>
+</ul>
+
+
+<p>It is good to join the events out of my city, after eveluated.</p>
+
+<h3>Summary</h3>
+
+<p>I have had good days in 2014, mostly. Got some archivement both in career and life.
+It is unexpected at the beginning of 2014, but is reasonable because of the previous effort.
+In 2014, I was not studing/working/thinking hard enough, may have bad result in the future if I&rsquo;m doing the same way.
+Got more resposibility now, hard to keep on with the same speed, and left back from others already.
+2015 is the last year before I&rsquo;m 30, hope I can do better.</p>
+
+<h2>Plan for the next year</h2>
+
+<p>In the long run, I hope I can be a international level programmer, have a good life, got enough money to speed even when I&rsquo;m not working. For archive that, I need got some progress this year about life, work, and cash flow. What I want to be done:</p>
+
+<ul>
+<li>Keep learning: finish reading rails source code, keep learning things about network, linux, frontend.</li>
+<li>Find a tech direction, and dig deeper.</li>
+<li>Prepare the wedding.</li>
+<li>Read more books.</li>
+<li>Improving English, both oral and writing.</li>
+<li>Keeping healthy and fit.</li>
+<li>Connect with the local community.</li>
+<li>Keeping connection with great people online.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-summary/">2014总结与2015年计划</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-04T08:25:59+08:00" pubdate data-updated="true">Jan 4<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2014-summary/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>又一年过去了，时间走得越来越快，每一年的改变越来越小。
+不管是否完成了去年的计划，年度总结总是要做的。计划赶不上变化，
+但是计划本身能够让自己的目标更清晰，年度总结也让自己清楚一年到底做了什么。</p>
+
+<h2>回顾去年的计划</h2>
+
+<p>首先看看去年<a href="http://blog.linjunhalida.com/blog/2013-summary/">2014年计划</a>，几个项目的执行结果：</p>
+
+<ul>
+<li>技术：技术有了一定的成长，但是几个目标都没有完成。</li>
+<li>工作：变化很大，工作这种事情往往很难计划，看机会。</li>
+<li>英语：断了，坚持总是不容易的事情，被推着走和有目的的学习才能继续。</li>
+<li>健康：上半年锻炼有了一定的肌肉，但是下半年就停滞了。</li>
+<li>对象：完成目标。还是缘分起到了关键作用。</li>
+<li>钢琴：时间和金钱不够，只有暂时放弃了。</li>
+</ul>
+
+
+<p>执行结果很不到位，几个问题：</p>
+
+<ul>
+<li>缺少回顾。技术上面的几个目标，可以排计划执行，但是很快就忘记了。</li>
+<li>目标定出来了，缺少执行。项目本身没有拆解出来执行方案，只是列了出来，没有细化到能够做的事情。</li>
+<li>项目拆解出来了计划，但是每周优先度都排得低，最后周末做了其他事情，把英语的时间挤掉了。</li>
+</ul>
+
+
+<p>来年的计划需要解决上面的三个问题。</p>
+
+<h2>2014年总结</h2>
+
+<h3>大事</h3>
+
+<ul>
+<li>上半年我在<a href="http://srslyy.com">上饶市立医院</a>信息科工作，工作的内容包括装网线，修电脑，管机房，管网站，管系统等和电脑有关的所有事情。这份工作根本不适合我，只是为了能够相亲在本地安排的一个身份。发现对相亲没有什么帮助，我好不容易说服父母，辞掉了这份工作。</li>
+<li>上半年我加入了<a href="http://sqmqnh.org">三清媚青年汇</a>，负责了部分组织工作，组织了两次大型户外活动，以及无数次小型户外爬山骑行活动。最后因为没有一个核心凝聚点，让组织者获得能够坚持的回报，组织就这样不了了之了。</li>
+<li>下半年，我在网上找到了一份远程全职开发工作，总算是稳定了下来。<a href="https://ruby-china.org/topics/22879">现在也还在招人，待遇不错</a>。</li>
+<li>下半年我和女友江认识，发展顺利。</li>
+</ul>
+
+
+<h3>技术</h3>
+
+<ul>
+<li>在医院工作期间，我开发了一个通知系统，部署到全医院。采用node-webkit框架，有自动更新机制。</li>
+<li>为了学习rails，做了一个<a href="http://ffuu.org">深夜副能量网站</a>作为练习。</li>
+<li>看完<a href="http://book.douban.com/subject/24749842/">算法书</a>，对于算法有了一定了解。</li>
+<li>看完<a href="http://book.douban.com/subject/4246128/">加密学</a>，对加密领域有了一定的了解。</li>
+<li>看了各种网络协议，比如ftp，pptp，l2tp，ssh，SSL等。</li>
+<li>深入rails学习，看了各种Gem源码，以及开始阅读rails源码。</li>
+<li>通过一个外包项目，实践了如何编写一个单页静态富交互网站。采用技术：middleman/haml/sass/spine/coffeescript。</li>
+</ul>
+
+
+<p>看起来项目多，但是从时间投入上面并不多。一年其实可以学习相当多的东西。</p>
+
+<h3>健康</h3>
+
+<ul>
+<li>上半年进行了力量练习，有了一定的肌肉。</li>
+<li>上半年每周进行骑行活动。</li>
+<li>下半年断了。</li>
+<li>年底报了健身房，希望不要浪费这些钱。</li>
+</ul>
+
+
+<h3>活动</h3>
+
+<ul>
+<li>青年汇旅游了好多地方，以及我组织了各种爬山骑车活动。高峰期间一个月组织了6次大小活动。</li>
+<li>自行车探索完整个上饶市城区。</li>
+<li>3月去上海参加ruby聚会，以及上海暴走团活动。</li>
+<li>8月去上海参加shlug聚会，以及上海暴走团活动。</li>
+<li>10月初去北京ruby大会，去了故宫，颐和园，后海，西单商业区。</li>
+</ul>
+
+
+<p>定期参加各种活动是非常必要和有益的。参加之前要评估是否值得。</p>
+
+<h3>总结</h3>
+
+<p>总体来说，2014年我的生活很丰富，在事业上和感情上都有了成果，这些是我2014年初没有预料到的。
+回过头看，这些是以往积累带来的结果，并不值得骄傲。从这一年做的事情上面看，我的投入还是不够，
+包括学习，工作认真程度，思考。未来生活会进入快车道，积累不够，走的会很吃力。
+同比环比之下，我现在已经被其他人抛在后面了，未来各种责任上身，以及小地方环境限制，后面的路不是很好走。
+2015年是30岁之前的最后一年，希望有所成长。</p>
+
+<h2>2015年计划</h2>
+
+<p>从长远来说，我希望能够成为一个拥有国际竞争力的高级程序员，生活上面稳定安逸，拥有足够支持生活的被动现金流。
+2015年需要在生活，工作，现金流上面都开始进行方向性的发展。需要达到的目标有：</p>
+
+<ul>
+<li>技术长进。看完rails源码，继续学习网络，linux，前端等底层知识。</li>
+<li>寻找一个技术方向，深入学习。</li>
+<li>结婚事宜安排妥当。</li>
+<li>加强阅读。去年阅读量非常少，精神方面的提升有限。</li>
+<li>英语练好，口语能够达到自如和外国人交流的阶段，书面能够靠谱一些。</li>
+<li>坚持锻炼。</li>
+<li>和本地建立联系，不再脱离本地社交圈。</li>
+<li>和线上其他高质量人群建立联系，不然视野太局限了。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-old-is-better/">Old Is Better</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-27T22:28:42+08:00" pubdate data-updated="true">Dec 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/english-old-is-better/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We programmers face a pitfall: there are always new things to learn. like nodejs, swift, programming languages, development tools,
+machine learning, statistics, UI design, etc&hellip;</p>
+
+<p>Time is scare, life can be wasted by learn new things. The more you spend on learning, the more time you are wasting.</p>
+
+<p>New knowledge may has those porperties:</p>
+
+<ul>
+<li><code>Unstable</code>: With limited man power and usecase, you may face lots of unneccessary challenges.</li>
+<li><code>Limited Domain</code>: Those knowledge are limited under some special case, learned but never used.</li>
+<li><code>Homogenization</code>: Another dynamic typing, functional, script programming language.</li>
+<li><code>Too much for an human Brain</code>: A dev team have frontend, backend, designer is for good reason. those knowledge are not fit for one man&rsquo;s brain.</li>
+</ul>
+
+
+<p>Because of those properties, I recommand learn old things other then new one:</p>
+
+<ul>
+<li><code>Tested by time</code>: Like C, shell, even English, those are the things you will eventually use.</li>
+<li><code>Fundamantal</code>: tcp/ip protocol, Operation System, Database, Baisc Algorithm, maybe you are not using them everyday, that will bring great value when time comes.</li>
+<li><code>The thing you are using</code>: Level up is better than learn a new skill.</li>
+</ul>
+
+
+<p>Also, there are cases I think we can learn new things:</p>
+
+<ul>
+<li><code>Take Small Step</code>: You can take an overview, but deside before further learning.</li>
+<li><code>Expend current domain</code>: You can learn things which is supplement for your current knowledge domain, like you are a web developer, learn async web frameworks.</li>
+<li><code>Better replacement of current ones</code>: If you are PHP programmer, try to learn Rails.</li>
+<li><code>Next step abour your career</code>: If you want to be an data scientist, you need learn lots about statistic.</li>
+</ul>
+
+
+<p>Most of the time, investment on an old knowledge is better then the new one. An jack-of-all-trades programmer is cheaper than a domain expert.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/old-is-better/">喜新厌旧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-27T22:23:57+08:00" pubdate data-updated="true">Dec 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/old-is-better/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>程序员会面对一个陷阱：就是永远有新的知识可学。比如nodejs，swift，各种编程语言，各种各样的开发库，机器学习，统计学，交互设计等等。
+时间宝贵，我们很容易把时间浪费在学习上面，学了一堆，结果获得的成果寥寥。</p>
+
+<p>新的知识往往会有这样的一些问题：</p>
+
+<ul>
+<li><code>不够稳定</code>：新的东西往往没有充足的开发人力和实际应用，使用的时候各种坑，遇到各类的bug和问题，宝贵的时间就用来和这些坑纠结了。</li>
+<li><code>适用场景狭窄</code>：很多时候一个新东西是针对一个领域的特定问题的，如果你不实际用到它，学了完全没有用处。</li>
+<li><code>同质化</code>：经常会有一门新的编程语言冒出来，它们可能有一些好的特性，但是你真的需要再学一门编程语言吗？</li>
+<li><code>人力有限</code>：你确定需要学习前端，后端，服务器，机器学习，交互设计全部的知识？每样都没有时间学精，这么多东西也塞不进自己的脑子里面。</li>
+</ul>
+
+
+<p>因为新的知识有这样或者那样的问题，很多时候不如退一步，去学一些不那么酷，但是经久使用的旧知识：</p>
+
+<ul>
+<li><code>经过时间检验的知识</code>：比如C，脚本语言，甚至英语，这些你总归会用到的。</li>
+<li><code>不会变的基础知识</code>：tcp/ip协议，操作系统原理，数据库，基础算法。虽然平时工作不一定遇到，遇到的时候自己不懂就有得受了。</li>
+<li><code>继续深入现存技能</code>：打磨我们日常用到的技能，是投入产出比最高的。</li>
+</ul>
+
+
+<p>我觉得可以去学习新知识的情况：</p>
+
+<ul>
+<li><code>浅尝辄止</code>：可以了解新的一些事物，知道它们的潜力，但是不要轻易深入学习。</li>
+<li><code>工作领域的延伸</code>：比如你是普通web应用的开发者，可以学习重前端框架，异步后端框架，这些可以弥补现在掌握技能一些照顾不到的空缺。</li>
+<li><code>更先进的替代工具</code>：比如你现在是php开发者，可以去学习rails。</li>
+<li><code>下一个职业发展方向相关</code>：你希望成为一个新兴领域的专家，那么你需要投入大量的时间和精力在这个领域里面。</li>
+</ul>
+
+
+<p>大多数时候，学习新知识的投入产出比，比不上学习旧知识的投入产出比。一个什么都懂的万金油程序员，不如一个领域专家收入高。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-linux-disk-format/">How to Mount Disk to Linux Operation System</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-16T17:33:42+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/english-linux-disk-format/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<p>I&rsquo;ve bought a <a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">NAS</a> as home server recently, so I&rsquo;ve considered how to mount disk on it by using linux operating system.</p>
+
+<p>I&rsquo;ve got SSD and HDD, SSD is faster, but is more expensive, and write time limit. So SSD should mount at <code>/</code>, OS will run faster. Writing frequently location like <code>/home</code>, <code>/var</code> should mount on HDD, Temporary location <code>/tmp</code> should mount to file system <code>tmpfs</code>.</p>
+
+<p>About choosing file system. SSD can use <code>ext4</code> with <a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">some adjustment</a> to reduce write, HDD can use <code>ext4</code> for ordinary use, if used for file sharing and service, <a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a> is a good fit: Compressed storage, higher ID throughput.</p>
+
+<p>If you want setup NAS disk array, RAID0 is the simplest solution, multiple disks handle IO in the same time. If you have to store some important data, use RAID2: dual disk write the same data. But RAID1 spend too much disk space, software RAID5 can balance it well enough. If you know nothing about RAID, you can watch <a href="http://www.acnc.com/raid">this demo</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-disk-format/">Linux分区策略</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-16T17:21:51+08:00" pubdate data-updated="true">Dec 16<span>th</span>, 2014</time>
+        
+         | <a href="/blog/linux-disk-format/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="http://product-images.www8-hp.com/digmedialib/prodimg/lowres/c03690405.png" alt="image" /></p>
+
+<p>最近我购买了<a href="http://www8.hp.com/cn/zh/products/disk-backup/product-detail.html?oid=6280791">一台NAS</a>用作家庭服务器，需要考虑如何设置磁盘，如何分区和安排加载linux目录，这里整理一下思路。</p>
+
+<p>我有SSD和HDD（就是我们平常的硬盘），SSD读写更快，但是有写入寿命，以及平均价格更贵。SSD挂载在<code>/</code>，这样操作系统跑起来更快。<code>/home</code>，<code>/var</code>这种经常写操作的目录，就挂载在HDD上面。<code>/tmp</code>这种临时目录，可以用内存文件系统<code>tmpfs</code>。</p>
+
+<p>SSD的分区用<code>ext4</code>就好，不过需要<a href="http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd">设置一些参数用来减少写入</a>。HDD的分区根据状况，如果是普通操作，<code>ext4</code>就可以了，如果用来分享文件和媒体，可以用<a href="http://doc.freenas.org/9.3/freenas_intro.html#zfs-primer">ZFS</a>，压缩存储，更高的IO性能。</p>
+
+<p>如果用硬盘架设NAS，最简单的方法是RAID0，多磁盘同时读写增加性能。如果有重要数据，用RAID1，2个磁盘镜像备份。RAID1镜像有点浪费空间，可以用软件RAID5增加使用效率，如果你对RAID不熟悉，这里有一个<a href="http://www.acnc.com/raid">形象的演示</a>。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-backup-method/">Personal Data Backup Method</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-13T18:35:40+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2014</time>
+        
+         | <a href="/blog/english-backup-method/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;m thinking about how to backup personal data, we can divide them into groups which according to their importance, file size, and privacy.</p>
+
+<ul>
+<li>Important, Big size, Sensitive: Computer full disk data.</li>
+<li>Important, Small size, Sensitive: key information, like daily.</li>
+<li>Unimportant, Middle size, Sensitive: photos.</li>
+<li>Unimportant, Big size, insensitive: film, comics.</li>
+</ul>
+
+
+<p>We can use different methods to backup them, vary in price, space, security, and usability:</p>
+
+<ul>
+<li>Encrypted online backup service: high price, small space, secure, hard to use.</li>
+<li>Online backup service: fair price, small space, insecure, easy to use.</li>
+<li>NAS/Portable disk drive: low price, big space, secure, hard to use.</li>
+</ul>
+
+
+<p>So, this is the method I&rsquo;m using now:</p>
+
+<ul>
+<li>Use timemachine to backup computer into portable disk drive.</li>
+<li>Use <a href="https://lastpass.com/">lastpass</a> to keep website and server password.</li>
+<li>Use dropbox to save and sync notes, photos, and documents, I extended it to 20G.</li>
+<li>Use portable disk drive to backup film, music and comics.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/backup-method/">个人资料备份策略</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-13T17:33:29+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2014</time>
+        
+         | <a href="/blog/backup-method/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>思考了一下个人资料的备份策略。个人资料可以以重要程度，资料的大小，私密性作为区分。</p>
+
+<ul>
+<li>重要，文件大，私密性高：电脑全盘备份</li>
+<li>重要，文件小，私密性高：关键数据，比如日记</li>
+<li>不重要，文件中等，私密性高：图片</li>
+<li>不重要，文件大，私密性低：下载的电影，漫画</li>
+</ul>
+
+
+<p>根据不同的类型，可以选择不同的方式来备份。不同的备份方式有价格，空间，安全性，易用度等差异。</p>
+
+<ul>
+<li>加密网盘：价格高，空间小，安全性高，易用度低</li>
+<li>国外网盘：价格高，空间小，安全性中，易用度高</li>
+<li>国内网盘：价格低，空间大，安全性低，易用度高</li>
+<li>移动硬盘：价格低，空间大，安全性高，易用度低</li>
+<li>NAS：价格低，空间大，安全性高，易用度低</li>
+</ul>
+
+
+<p>因此，我现在选择的备份策略：</p>
+
+<ul>
+<li>备份电脑用timemachine备份到移动硬盘里面</li>
+<li><a href="https://lastpass.com/">lastpass</a>备份网站帐号密码和关键系统密码</li>
+<li>dropbox备份笔记和文档</li>
+<li>dropbox备份图片，因为我想办法把dropbox空间拓展到了20G。</li>
+<li>移动硬盘备份视频，漫画等</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/english-gem/">How to Use Gem</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-07T09:48:29+08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2014</time>
+        
+         | <a href="/blog/english-gem/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&rsquo;m a rails developer, as a benefit of rails developer, I&rsquo;ve got lots of <a href="http://rubygems.org/">Gems</a>.
+Gem is flaring, but handle without enough care, it may cut your finger bleeding.
+As a jeweler, I can share some knowledge about it.</p>
+
+<h2>Search</h2>
+
+<p>First thing to do is search the gem. search google by describe it, like <code>rails tagging</code>,
+or you can browse the list at <a href="https://www.ruby-toolbox.com/">ruby toolbox</a>.</p>
+
+<h2>Pick</h2>
+
+<p>You should pick the right gem with enough quality. there are lots of unqualified, unmaintained shitty gems there,
+you don&rsquo;t want to touch them. take a look at the following count on its github project page, and update activity.</p>
+
+<p>You should think first before import it into your project, how its complexity level? is is stable enough? can it be extended?
+Other than use the whole gem, you can copy one of it&rsquo;s files into your project to reduce the overhead.
+Some gem may change rails module, handle them with caution.</p>
+
+<h2>Use</h2>
+
+<p>Gem version need to be fixed, accidentially upgrading it may cause unexpected bug.</p>
+
+<p>You must know what you have done, read gem documents, wiki, know how to use it.
+I prefer figure out how gem works by read the source code, so if something goes wrong, you know how to deal with it.</p>
+
+<p>When something bad happens, check the gem project issue page,
+or you can debug it yourself by add log to the gem source code.</p>
+
+<p>You need write document about what you have learned, history repeats itself, you don&rsquo;t want to solve the same issue more than once, like <a href="http://stackoverflow.com/questions/9050419/cant-install-rmagick-2-13-1-cant-find-magickwand-h">install issue of rmagick</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/11/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/9/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

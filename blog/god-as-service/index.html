@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>进程监控遇到的麻烦事 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="此为技术死磕贴，非技术人士请跳过。 明天回家，为了能够让我在家里面连到公司的网络，以及让公司留下来的人能够使用到翻墙服务，我需要把几个脚本监控起来。
+这样不管这些脚本跑挂了，还是机器重启了，还是网络断掉又重新连起来了，这些进程都能够在状况恢复的时候立刻起来。 需要跑的脚本其实很简单，ssh翻墙， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/god-as-service/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">进程监控遇到的麻烦事</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T12:58:00+00:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>此为技术死磕贴，非技术人士请跳过。</p>
+
+<p>明天回家，为了能够让我在家里面连到公司的网络，以及让公司留下来的人能够使用到翻墙服务，我需要把几个脚本监控起来。
+这样不管这些脚本跑挂了，还是机器重启了，还是网络断掉又重新连起来了，这些进程都能够在状况恢复的时候立刻起来。</p>
+
+<p>需要跑的脚本其实很简单，ssh翻墙，以及ssh链接到服务器上面一个端口用作外网访问内网。都用一行脚本搞定：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span>autossh -M <span class="m">2121</span> -D <span class="m">10</span>.78.78.105:7070 linjunhalida.com -N -p <span class="m">2201</span>  -zZ OOO
+</span><span class='line'>autossh -M <span class="m">2132</span> linjunhalida.com -N -p <span class="m">2200</span> -zZ OOO -R <span class="m">6333</span>:localhost:22
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>为了能够让ssh自动重连，我采用了<a href="http://www.harding.motd.ca/autossh/">autossh</a>。
+因为我的ssh是<a href="http://blog.linjunhalida.com/blog/obfuscated-openssh/">打过混淆包头补丁</a>的，
+加了一个参数(-zZ)，autossh我也修改了一下源码支持这个参数。</p>
+
+<p>我的服务器是ubuntu，我还需要用一个工具来监控autossh，需要能够机器启动的时候执行它，以及它挂掉的时候自动起来。</p>
+
+<p>然后请教了各个网站的友邻，这里列一下大家给出来的办法：</p>
+
+<ul>
+<li>/etc/rc.local</li>
+<li>monit</li>
+<li>crontab</li>
+<li>supervisor</li>
+<li>/etc/init.d</li>
+<li>anacron</li>
+</ul>
+
+
+<p>最后我考量到学习成本，还是采用了<a href="http://godrb.com/">god</a>加/etc/init.d启动脚本的解决方案。</p>
+
+<p>god脚本：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span></span><span class="n">god_path</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">God</span><span class="o">.</span><span class="n">watch</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;gfw&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="s1">&#39;halida&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s2">&quot;/home/halida/workspace/sources/autossh&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;AUTOSSH_PATH&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;/home/halida/Dropbox/sync/bin/ssh&quot;</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;./autossh -M 2121 -D 10.78.78.105:7070 linjunhalida.com -N -p 2201  -zZ OOO&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span> <span class="n">god_path</span><span class="p">,</span> <span class="s2">&quot;log/gfw.log&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">keepalive</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">God</span><span class="o">.</span><span class="n">watch</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;bypass&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="s1">&#39;halida&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s2">&quot;/home/halida/workspace/sources/autossh&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;AUTOSSH_PATH&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;/home/halida/Dropbox/sync/bin/ssh&quot;</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;./autossh -M 2132 linjunhalida.com -N -p 2200 -zZ OOO -R 6333:localhost:22&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span> <span class="n">god_path</span><span class="p">,</span> <span class="s2">&quot;log/bypass.log&quot;</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">keepalive</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当前用户跑起来没有问题，但是god本身是需要设置成service跑起来的。
+还好我找到了别人分享的把god当做service的办法，
+丢到/etc/init.d里面的脚本如下(拷贝自<a href="https://gist.github.com/1640121">这里</a>)：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span></span><span class="ch">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">### BEGIN INIT INFO</span>
+</span><span class='line'><span class="c1"># Provides:             god</span>
+</span><span class='line'><span class="c1"># Required-Start:       $all</span>
+</span><span class='line'><span class="c1"># Required-Stop:        $all</span>
+</span><span class='line'><span class="c1"># Default-Start:        2 3 4 5</span>
+</span><span class='line'><span class="c1"># Default-Stop:         0 1 6</span>
+</span><span class='line'><span class="c1"># Short-Description:    God</span>
+</span><span class='line'><span class="c1">### END INIT INFO</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">NAME</span><span class="o">=</span>god
+</span><span class='line'><span class="nv">DESC</span><span class="o">=</span>god
+</span><span class='line'><span class="nv">GOD_BIN</span><span class="o">=</span>/usr/local/bin/god
+</span><span class='line'><span class="nv">UHOME</span><span class="o">=</span>/home/halida
+</span><span class='line'><span class="nv">GOD_CONFIG</span><span class="o">=</span><span class="nv">$UHOME</span>/workspace/god/god.rb
+</span><span class='line'><span class="nv">GOD_LOG</span><span class="o">=</span><span class="nv">$UHOME</span>/workspace/god/log/god.log
+</span><span class='line'><span class="nv">GOD_PID</span><span class="o">=</span>/var/run/god.pid
+</span><span class='line'>
+</span><span class='line'><span class="nb">set</span> -e
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Make sure the binary and the config file are present before proceeding</span>
+</span><span class='line'><span class="k">if</span> ! <span class="nb">test</span> -x <span class="nv">$GOD_BIN</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;Config file not found at </span><span class="si">${</span><span class="nv">GOD_BIN</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="m">0</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Create this file and put in a variable called GOD_CONFIG, pointing to</span>
+</span><span class='line'><span class="c1"># your God configuration file</span>
+</span><span class='line'><span class="k">if</span> ! <span class="nb">test</span> -f <span class="nv">$GOD_CONFIG</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;Config file not found at </span><span class="si">${</span><span class="nv">GOD_CONFIG</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="nb">exit</span> <span class="m">0</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">RETVAL</span><span class="o">=</span><span class="m">0</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> in
+</span><span class='line'>  start<span class="o">)</span>
+</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Starting </span><span class="nv">$DESC</span><span class="s2">: &quot;</span>
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> -c <span class="nv">$GOD_CONFIG</span> -l <span class="nv">$GOD_LOG</span> -P <span class="nv">$GOD_PID</span>
+</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'>  stop<span class="o">)</span>
+</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Stopping </span><span class="nv">$DESC</span><span class="s2">: &quot;</span>
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> quit
+</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'>  terminate<span class="o">)</span>
+</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Stopping </span><span class="nv">$DESC</span><span class="s2"> and all tasks: &quot;</span>
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> terminate
+</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'>  restart<span class="o">)</span>
+</span><span class='line'>    <span class="nb">echo</span> -n <span class="s2">&quot;Restarting </span><span class="nv">$DESC</span><span class="s2">: &quot;</span>
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> quit
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> -c <span class="nv">$GOD_CONFIG</span> -l <span class="nv">$GOD_LOG</span> -P <span class="nv">$GOD_PID</span>
+</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$NAME</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'>  status<span class="o">)</span>
+</span><span class='line'>    <span class="nv">$GOD_BIN</span> status
+</span><span class='line'>    <span class="nv">RETVAL</span><span class="o">=</span><span class="nv">$?</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'>  *<span class="o">)</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;Usage: god {start|stop|terminate|restart|status}&quot;</span>
+</span><span class='line'>    <span class="nb">exit</span> <span class="m">1</span>
+</span><span class='line'>    <span class="p">;;</span>
+</span><span class='line'><span class="k">esac</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">exit</span> <span class="nv">$RETVAL</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后设置启动执行这个服务：</p>
+
+<pre><code>sudo update-rc.d god default
+</code></pre>
+
+<p>跑god的时候遇到了问题，这个时候我浪费了非常多的时间。问题在于我的god是采用rvm以及非root用户安装的。环境不对。各种报错。</p>
+
+<p>然后我各种尝试，还打算丢掉god，采用其他的方式来跑脚本，但是都可耻地失败了。</p>
+
+<p>最后第二天我想到了办法，系统安装god：</p>
+
+<pre><code>sudo gem install god
+</code></pre>
+
+<p>重启之后验证成功。</p>
+
+<h2>结论</h2>
+
+<p>最后我的解决方案就是：god as a service，监控autossh。log都丢掉god目录下面。</p>
+
+<p>总结一下经验：</p>
+
+<ul>
+<li>请教友邻可以获得很多的帮助，前提是问题描述清楚。</li>
+<li>遇到难题不要死磕，休息一下，睡一觉或者放一段时间，就会有结果。</li>
+<li>死磕了之后要总结，下次就能少死磕一点。</li>
+</ul>
+
+
+<p>以上。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T12:58:00+00:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/god-as-service/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/god-as-service/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/learn-programming/" title="Previous Post: 从零开始学编程">&laquo; 从零开始学编程</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/i-am-a-atheist/" title="Next Post: 关于宗教信仰">关于宗教信仰 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/god-as-service/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/god-as-service/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails | 网络寻租]]></title>
+  <link href="http://blog.linjunhalida.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://blog.linjunhalida.com/"/>
+  <updated>2024-07-07T15:11:02+00:00</updated>
+  <id>http://blog.linjunhalida.com/</id>
+  <author>
+    <name><![CDATA[机械唯物主义]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[rails导出数据经验整理]]></title>
+    <link href="http://blog.linjunhalida.com/blog/rails-export-data/"/>
+    <updated>2015-05-20T08:42:25+08:00</updated>
+    <id>http://blog.linjunhalida.com/blog/rails-export-data</id>
+    <content type="html"><![CDATA[<p>最近做了一些rails数据导出的工作，就是把一些特定的ActiveRecord数据挖出来，保存到表格里面。
+需要注意几件事：执行速度，内存消耗，以及调试速度。</p>
+
+<h2>执行速度</h2>
+
+<p>导数据的程序基本上就是一个循环体，外部获取数据集，内部把一条数据转换成表格。
+在内部，往往需要通过一条记录作为主体，通过数据库逻辑关系顺藤摸瓜挖出一批数据，
+这样会形成一批短查询，因为是在循环体里面，会带来很大时间上的消耗，比如：</p>
+
+<p><code>ruby
+out = []
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  out &lt;&lt; [unit.company.name]
+end
+</code></p>
+
+<p>可以先把这些查询汇总起来，一次查询掉，然后在循环体内部筛选出对应的数据：</p>
+
+<p><code>
+out = []
+units = Unit.where("active_at" &lt; Time.now)
+company_names = Company.where(id: units.pluck(:company_id).uniq).pluck(:id, :name).to_h
+units.each do |unit|
+  out &lt;&lt; [company_names[unit.company_id]]
+end
+</code></p>
+
+<h2>内存消耗</h2>
+
+<p>查询大量数据的时候，可以首先查所有的ID，然后分批查询，这样防止序列化大量的数据库对象：</p>
+
+<p>```ruby
+unit_ids = Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).pluck(:id)
+group_size = 100
+unit_ids.in_groups_of(group_size, false) do |ids|
+  Unit.where(id: ids).each do |unit|</p>
+
+<pre><code>...
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>数据全部缓存在一个array中的话，会占用大量内存，最好是通过数据流的方式一个个输出处理，用后即丢：</p>
+
+<p>```ruby
+def export
+  Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).each do |unit|</p>
+
+<pre><code>yield([unit.name])
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>CSV.open(&lsquo;out.csv&rsquo;, wb) do |csv|
+  export { |row| csv &lt;&lt; row }
+end
+```</p>
+
+<p>在循环体内部，尽量用局部变量，不用的资源会更早释放。</p>
+
+<p>跑数据导出的时候，最好同时注意一下服务器的剩余内存。不要把其它服务搞挂了。</p>
+
+<h2>调试速度</h2>
+
+<p>导数据最花费时间的往往还是调试过程。</p>
+
+<p>调试的时候，可以只返回几条数据，检查完毕之后再全部跑。</p>
+
+<p><code>ruby
+debug = true
+index = 0
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  yield([unit.name])
+  index += 1
+  break if debug and index &gt;= 10
+end
+</code></p>
+
+<p>需要考虑数据并不是很规整，做好预防性编程。</p>
+
+<p><code>ruby
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  yield([unit.company.try(:name)]) # 公司可能不存在
+end
+</code></p>
+
+<p>很多时候难免特定数据不符合预设状况，最好循环体内部记录log，出现问题可以跟踪。
+比如下面的例子，unit没有oldest_driver的时候，会报错，记录了日志，就知道在哪条上面出现了问题。</p>
+
+<p><code>ruby
+logs = []
+Unit.where("active_at" &lt; Time.now).each do |unit|
+  logs &lt;&lt; "unit: #{unit.id}"
+  oldest_driver = unit.drivers.order('age desc').first
+  #
+  yield([ordest_driver.name])
+end
+</code></p>
+
+<p>导出数据可以生成两个版本，一个给客户，另外一个加上一些debug数据方便自己分析。</p>
+
+<p>```ruby
+def export
+  Unit.where(&ldquo;active_at&rdquo; &lt; Time.now).each do |unit|</p>
+
+<pre><code>yield([unit.name, 'debug', unit.id])
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>CSV.open(&lsquo;out.csv&rsquo;, wb) do |csv|
+  CSV.open(&lsquo;out_debug.csv&rsquo;, wb) do |debug_csv|</p>
+
+<pre><code>export { |row|
+  debug_csv &lt;&lt; row
+  csv &lt;&lt; row[1..1]
+}
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<h2>架构设计</h2>
+
+<p>代码架构上面最重要的是职责清晰。导出数据的逻辑比较简单，分离出导数据类，以及处理数据类就可以了：</p>
+
+<p>```ruby
+module Exporter
+  def iterator_to_csv(filename, iterator)</p>
+
+<pre><code>CSV.open(filename, wb) do |csv|
+iterator.call { |row| csv &lt;&lt; row }
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>class ExportActiveUnits
+  attr_accessor :time
+  def export</p>
+
+<pre><code>Unit.where("active_at" &lt; time).each do |unit|
+  yield([unit.name])
+end
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>eau = ExportActiveUnits.new
+eau.time = Time.now
+Exporter.iterator_to_csv &ldquo;out.csv&rdquo;, eau.method(:export)
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[试用gitlab]]></title>
+    <link href="http://blog.linjunhalida.com/blog/try-gitlab/"/>
+    <updated>2013-03-27T12:10:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/try-gitlab</id>
+    <content type="html"><![CDATA[<p><img src="http://gitlab.org/images/gitlab_hq.png" alt="image" /></p>
+
+<p>今天我试着安装了一下<a href="http://gitlab.org/">gitlab</a>，它是一个开源的类似github的系统，
+利用它可以本地搭建一个github网站出来。可以解决一些需要客制化代码库，或者私有化管理的需求。</p>
+
+<h2>安装过程</h2>
+
+<p>按照<a href="https://github.com/gitlabhq/gitlabhq/blob/5-0-stable/doc/install/installation.md">文档</a>进行，我中间走了一些弯路：</p>
+
+<ul>
+<li>安装ruby的时候，我是采用rvm，而不是教程里面的采用系统ruby，后来发现不对，必须安装成系统的版本，不然服务起不起来。</li>
+<li>postgres用户gitlab不能登陆，后来搜索了一下，发现<a href="http://blog.deliciousrobots.com/2011/12/13/get-postgres-working-on-ubuntu-or-linux-mint/">需要修改权限</a></li>
+</ul>
+
+
+<p>其他过程比较顺利，基本按照教程来就可以了。</p>
+
+<h2>架构</h2>
+
+<p>其实整体系统还是比较简单的，安装了一个系统服务，后面主要是把gitlab当做一个rails应用来跑，后台启动了一个sidekiq。</p>
+
+<p>针对git的部分，分离出来了git-shell，其实就是在系统里面安装了一个shell，用户用git连过来的时候，就用这个shell来进行版本库的操作，它是调用rails网站服务器的API来做权限管控之类的事情。</p>
+
+<h2>试用感觉</h2>
+
+<p>因为我只是试用一下，没有用于生产，只是稍微浏览了一下功能。
+github有的功能它都有，还加上了用户管理，群组管理，查看系统日志等功能。
+功能上面感觉还是够用的。</p>
+
+<p>关于这个项目的架构思路，我觉得还是挺好的。
+网站的部分归网站，git的部分归git，中间通过API来通讯。
+git-shell的方式减少另外跑一个服务的成本，对于小用户群的环境来说可以，
+但是不是很适应用户数量过多的状况，但是场景不多，问题不大。
+不过需要安装系统的ruby环境倒是挺麻烦的，希望他们以后针对这个问题提出改进方案。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[给Rails加上https支持]]></title>
+    <link href="http://blog.linjunhalida.com/blog/using-https-for-rails/"/>
+    <updated>2013-03-24T18:46:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/using-https-for-rails</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/4mClj73.jpg"></p>
+
+<p>https是针对http的加密协议，它可以保证用户访问网站的过程中，通讯的数据是加密的，这样可以防止第三方监听，保护用户隐私。这里总结一下如何给Rails加上https的支持。</p>
+
+<p>首先，假设你的rails已经跑起来了，在<code>http://yourserver.com</code>，服务器是ubuntu，本地的访问方式是<code>127.0.0.1:8787</code>，那么你需要利用<code>nginx</code>来提供https的服务。</p>
+
+<p>首先安装<code>nginx</code>和<code>openssl</code>：</p>
+
+<pre><code>sudo apt-get install nginx openssl
+</code></pre>
+
+<p>生成服务器的秘钥公钥：</p>
+
+<pre><code>openssl req -new -nodes -keyout server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+</code></pre>
+
+<p>生成的几个文件解释：</p>
+
+<ul>
+<li><code>server.key</code> 服务器的私钥。</li>
+<li><code>server.csr</code> (certificate signing request) https证书签名请求。</li>
+<li><code>server.crt</code> 生成的服务器证书。</li>
+</ul>
+
+
+<p>然后有这些文件，我们可以配置nginx服务了。</p>
+
+<p>生成nginx的配置文件：</p>
+
+<pre><code>sudo touch /etc/nginx/sites-available/yourserver
+sudo ln -s /etc/nginx/sites-available/yourserver /etc/nginx/sites-enabled
+sudo vi /etc/nginx/sites-available/yourserver
+</code></pre>
+
+<p>里面的内容：</p>
+
+<p>```
+upstream unicorn {
+  server 127.0.0.1:8787 fail_timeout=0;
+}
+server {
+  listen       443;
+  server_name  yourserver.com;</p>
+
+<p>  ssl                  on;
+  ssl_certificate      yourpath/server.crt;
+  ssl_certificate_key  yourpath/server.key;</p>
+
+<p>  ssl_session_timeout  5m;</p>
+
+<p>  ssl_protocols  SSLv2 SSLv3 TLSv1;
+  ssl_ciphers  HIGH:!aNULL:!MD5;
+  ssl_prefer_server_ciphers   on;</p>
+
+<p>  location / {</p>
+
+<pre><code>  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_redirect off;
+  proxy_pass http://localserver;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>需要修改里面的<code>server_name，yourpath</code>。</p>
+
+<p>然后重新启动nginx:</p>
+
+<pre><code>sudo service nginx restart
+</code></pre>
+
+<p>如果没有报错，那么你就可以通过<code>https://yourserver.com</code>来访问你的网站了。</p>
+
+<p>不过，浏览器会阻止你继续访问，或者需要你的确认。
+浏览器会保存一份可信网站的列表，你的服务器加密是自己生成的，不在里面。
+如果你的网站是商用的，最好去注册一下。<a href="https://www.name.com/ssl">这里</a>有一个指引。</p>
+
+<p>引用资料：</p>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/357-adding-ssl?view=asciicast">railscast</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[install ruby2.0 by using rvm]]></title>
+    <link href="http://blog.linjunhalida.com/blog/install-ruby2-dot-0-by-using-rvm/"/>
+    <updated>2013-03-17T11:31:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/install-ruby2-dot-0-by-using-rvm</id>
+    <content type="html"><![CDATA[<p><img src="/images/posts/b0F7F9a.png"></p>
+
+<p>According to the <a href="http://www.ruby-lang.org/en/news/2013/02/24/ruby-2-0-0-p0-is-released/">NEWS</a>, ruby 2.0.0-p0 is released in February. With the performance improvement, lower memory usage, feature enhancement, and back support to 1.9.3, Everyone is encouraged to upgrade to ruby2.0.</p>
+
+<p>And here is the method about how to upgrade ruby under rvm:</p>
+
+<pre><code>rvm get head
+rvm install 2.0.0
+rvm use 2.0.0
+</code></pre>
+
+<p>Happy hacking, and keep fun~</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rails里面拆分大的model]]></title>
+    <link href="http://blog.linjunhalida.com/blog/split-big-model-in-rails/"/>
+    <updated>2013-03-04T22:07:00+00:00</updated>
+    <id>http://blog.linjunhalida.com/blog/split-big-model-in-rails</id>
+    <content type="html"><![CDATA[<p>有的时候，rails里面一个model的工作太多，在一个文件里面都放不下了，于是我需要拆分出不同的模块。我的拆分方法是这样的：</p>
+
+<p>user.rb里面：</p>
+
+<p>```ruby
+class User &lt; ActiveRecord::Base</p>
+
+<p>  def self.has_module name</p>
+
+<pre><code>eval "
+define_method :#{name} do
+  @#{name} ||= User#{name.to_s.camelize}.new(self)
+end
+"
+</code></pre>
+
+<p>  end</p>
+
+<p>  has_module :account
+  has_module :displayer
+  has_module :privacy
+  has_module :message</p>
+
+<p>end
+```</p>
+
+<p>然后对应的职责模块：</p>
+
+<p>```ruby
+class UserDisplayer</p>
+
+<p>  def initialize user</p>
+
+<pre><code>@user = user
+</code></pre>
+
+<p>  end</p>
+
+<p>  def address</p>
+
+<pre><code>"#{@user.city}#{', ' unless @user.city.blank? or @user.country.blank?}#{@user.country}"
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>然后调用的方式：</p>
+
+<p><code>ruby
+user = User.find 5
+user.displayer.address
+</code></p>
+
+<p>当用到对应模块的时候，才会加载该模块。</p>
+
+<p>原先我考虑过采用concerns，但是看起来只是把代码移动到另外的地方去，
+当需要调试的时候很不方便，不知道代码放到哪里了。所以不觉得好用。</p>
+
+<p>大家有什么看法？</p>
+]]></content>
+  </entry>
+  
+</feed>

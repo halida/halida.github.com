@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>oauth个人总结 - 网络寻租</title>
+  <meta name="author" content="机械唯物主义">
+
+  
+  <meta name="description" content="最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。 什么是oauth？ 在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.linjunhalida.com/blog/oauth/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="网络寻租" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-26509244-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">网络寻租</a></h1>
+  
+    <h2>Programmer, Gamer, Hacker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.linjunhalida.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/categories/english">English Blog</a></li>
+  <li><a href="/about">关于我</a></li>
+  <li><a href="/blog/archives">存档</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Oauth个人总结</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T19:29:00+00:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="http://hueniverse.com/wp-content/uploads/2007/12/My-Endpoints-300x267.png" alt="image" /></p>
+
+<p>最近因为工作需要， 回头看懂了oauth的整个过程和实现， 因为人的记忆系统是神经反应网络，
+不适合做系统性的记忆， 留存一份文档索引是非常有必要的。</p>
+
+<h2>什么是oauth？</h2>
+
+<p>在IT行业，经常会有这样的一种情况： 一个网站保存了用户的信息（比如一个照片记录网站photos.example.net），
+用户希望利用另外一个网站（priter.example.net）来打印这些照片， 但是因为安全性的考虑， 用户不想提供用户名和密码给它，
+希望只是提供一个受限的访问权限。 oauth就是为了实现这样的功能产生的。</p>
+
+<p>oauth本身是一个标准， 它指定了一系列的操作规范， 服务提供方（就是上面的photos.example.net）提供一系列的API，
+任何需要访问用户资源的第三方网站或者应用， 遵循这套规范， 向用户请求权限， 然后用户授权了之后， 这些第三方网站就能够获得需要的信息，
+同时兼顾了用户的安全需求。</p>
+
+<h2>oauth的过程</h2>
+
+<p>oauth的流程基于http协议， 通过POST请求实现数据通讯。首先定义一下涉及到的几个角色(引用<a href="http://zh.wikipedia.org/wiki/OAuth">维基百科</a>):</p>
+
+<ul>
+<li><strong>服务提供方(server)</strong>: 用户使用服务提供方来存储受保护的资源，如照片，视频，联系人列表。</li>
+<li><strong>用户(resource owner)</strong>: 存放在服务提供方的受保护的资源的拥有者。</li>
+<li><strong>客户端(client)</strong>: 要访问服务提供方资源的第三方应用，通常是网站，如提供照片打印服务的网站。在认证过程之前，客户端要向服务提供者申请客户端标识。</li>
+</ul>
+
+
+<p>整体流程分成3个步骤：</p>
+
+<ul>
+<li>client向服务器获得<code>request_token</code>， 包含token和secret， token用来作标识， secret用来做后续的通讯验证。</li>
+<li>client把resource owner导向到server， 让resource owner授权， 获得一个<code>verifier</code>， 通过后server又把用户重导向到client。</li>
+<li>client利用获得的<code>verifier</code>， 向server申请一个新的<code>access_token</code>， 申请成功后，就可以利用它来访问resource owner的受限资源。</li>
+</ul>
+
+
+<p>具体过程如下图：
+<img src="http://www.formatix.eu/wp-content/uploads/2009/12/diagram-oauth-handshake.png" alt="image" /></p>
+
+<p>为了安全起见， 这些通讯操作都应该在https下面进行。</p>
+
+<h2>疑问</h2>
+
+<p>下面是我在看<a href="rfc">rfc</a>的时候遇到的一些疑问， 以及我对它们的解答。</p>
+
+<h3>在第二步的时候， 如何跳转回client？</h3>
+
+<p>几个地方， 可以在网站创建<code>consumer_key</code>的时候设置默认callback， 以及在申请<code>request_token</code>的时候传入参数<code>oauth_callback</code>，
+就我用linkedin API的时候， 在authorize过程传入<code>oauth_callback</code>。</p>
+
+<h3>nonce的作用？</h3>
+
+<p>文档在<a href="http://tools.ietf.org/html/rfc5849#section-3.3">rfc3.3</a>，
+client生成的一个随机字符串， 让服务器记忆， 防止有中间人记录了通讯， 重复进行这样的请求来做攻击。
+每次给server的请求， 都会生成一个新的nonce。
+为了防止产生大量的nonce给服务器带来负担， 服务器会考虑利用时间来给出限制(具体如何做我也不是很明白， 猜测就是做一个延时吧)。</p>
+
+<h3>为什么要分离 <code>request_token</code> 和 <code>access_token</code>， 而不是只用request_token？</h3>
+
+<p>恩， 不是很清晰地明白具体会引发什么安全隐患， 个人猜测：
+<code>request_token</code>在resource owner， client， server之间通讯会有安全隐患，
+真正做访问的只有一个access_token， 获得<code>access_token</code>只在client和server之间发生一次， 这样限制一下更安全？</p>
+
+<h3>如何通过token和secret让服务器知道自己的？</h3>
+
+<p>用&#8221;HMAC-SHA1&#8221;, &ldquo;RSA-SHA1&rdquo;, &ldquo;PLAINTEXT&#8221;三种方式验证，
+利用secret， 根据请求的数据， 生成一个oauth_signature <a href="http://tools.ietf.org/html/rfc5849#section-3.4">section3.4</a>， server会通过它来验证通讯。</p>
+
+<h3><code>consumer_key</code>， <code>request_token</code>和<code>access_token</code>里面的token以及secret， <code>verifier</code>它们是如何生成的？</h3>
+
+<p>根据我看<a href="https://github.com/pelle/oauth-plugin">oauth-plugin的实现</a>， 最后追溯到的是一个随机字串生成器， 看起来只要服务器生成后记住就可以了。</p>
+
+<h3>可能的安全问题</h3>
+
+<p><a href="rfc">rfc</a>里面列出来很多安全性的考虑， 我因为只关心具体的使用， 就不看它们了， 等有担忧的时候再看。</p>
+
+<h3>oauth2.0</h3>
+
+<p>根据<a href="http://hueniverse.com/2012/07/oauth-2-0-and-the-road-to-hell/">Eran的说法</a>，oauth2.0状况不妙，facebooke和google做的还可以，那么我先不跟踪它了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">机械唯物主义</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T19:29:00+00:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ji-zhu/'>技术</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.linjunhalida.com/blog/oauth/" data-via="" data-counturl="http://blog.linjunhalida.com/blog/oauth/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/you-can-be-happy/" title="Previous Post: 你想要多快乐，就能多快乐">&laquo; 你想要多快乐，就能多快乐</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/hujs-1/" title="Next Post: hujs活动整理和总结1">hujs活动整理和总结1 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/radio-useless/">收音机没啥用了</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/ipkvm/">低成本IPKVM控制多台主机</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/bed-car/">床车方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/car-air-conditioner/">床车空调方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/work-in-car/">车作为第二空间</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/halida">@halida</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'halida',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2024 - 机械唯物主义 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'halidasvps';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.linjunhalida.com/blog/oauth/';
+        var disqus_url = 'http://blog.linjunhalida.com/blog/oauth/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
