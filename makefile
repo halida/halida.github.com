@@ -19,3 +19,10 @@ commit:
 
 install:
 	sudo apt install libyajl-dev
+
+# docker run
+PWD=`pwd`
+get_env=env RAILS_ENV=$(RAILS_ENV) UID=`id -u` GID=`id -g` PWD=`pwd`
+
+docker_bash:
+	docker compose --file docker-compose.yml run --rm setup_base bash --login

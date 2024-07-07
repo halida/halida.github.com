@@ -1,0 +1,18 @@
+x-setup: &default_setup
+  image: ${COMPOSE_PROJECT_NAME}-app
+  build:
+    context: .
+    args:
+      - "UID=${UID:-1000}"
+      - "GID=${GID:-1000}"
+  environment:
+    - "UID=${UID:-1000}"
+    - "GID=${GID:-1000}"
+  user: "${UID:-1000}:${GID:-1000}"
+  volumes: &base_volume
+    - .:/home/ubuntu/apps/app
+
+services:
+  setup_base: &setup_base
+    <<: *default_setup
+    command: bash --login -c "ls"
