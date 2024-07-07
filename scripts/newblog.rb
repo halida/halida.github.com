@@ -14,7 +14,7 @@ module NewBlog
   end
 
   def open_url(url)
-    run "xdg-open '#{url}'"
+    puts "xdg-open '#{url}'"
   end
 
   def log(text)
@@ -37,7 +37,7 @@ module NewBlog
     run "bundle exec rake 'isolate[#{filename}]'"
 
     # open emacs about new file
-    run "bash -cl 'cd #{BLOG_PATH}; ecc #{filename}'"
+    run "bash -cl 'cd #{BLOG_PATH}; echo #{filename}'"
 
     # and start watcher
     watcher_pid = fork do
