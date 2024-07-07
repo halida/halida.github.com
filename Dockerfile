@@ -15,11 +15,12 @@ RUN apt update && \
 RUN add-apt-repository ppa:rael-gc/rvm && \
     apt update && apt install -y rvm
 
-# install rails dep
+# install dep
 RUN apt install -y \
     libxml2-dev \
     libxslt1-dev \
-    libyajl-dev
+    libyajl-dev \
+    python2
 
 # ruby
 ARG RUBY=ruby-2.5.9
@@ -52,4 +53,12 @@ RUN mkdir -p ~/apps/app && \
     rvm use $RUBY
 
 WORKDIR /home/$DOCKER_USER/apps/app
+
+# bundle install
+ADD Gemfile Gemfile
+ADD Gemfile.lock Gemfile.lock
+
+ARG PROXY_SERVER
+RUN bash --login -c "https_proxy='$PROXY_SERVER' http_proxy='$PROXY_SERVER' bundle install"
+
 CMD ["whoami"]

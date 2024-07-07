@@ -5,12 +5,16 @@ x-setup: &default_setup
     args:
       - "UID=${UID:-1000}"
       - "GID=${GID:-1000}"
+      - "PROXY_SERVER=${PROXY_SERVER}"
   environment:
     - "UID=${UID:-1000}"
     - "GID=${GID:-1000}"
+    - LANG=en_US.UTF-8
   user: "${UID:-1000}:${GID:-1000}"
   volumes: &base_volume
     - .:/home/ubuntu/apps/app
+    - ${HOME}/.ssh:/home/ubuntu/.ssh:ro
+    - ${HOME}/.gitconfig:/home/ubuntu/.gitconfig:ro
 
 services:
   setup_base: &setup_base
