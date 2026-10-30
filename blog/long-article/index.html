@@ -108,28 +108,31 @@
   }
   backToTop();
 </script><ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8"></ul><div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start"><span class="italic">分享这篇文章：</span><div class="text-center"><a href="https://x.com/intent/post?url=http://blog.linjunhalida.com/blog/long-article/" title="分享到 X" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1 hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="m4 4 11.733 16H20L8.267 4zM4 20l6.768-6.768m2.46-2.46L20 4" /></svg><span class="sr-only">分享到 X</span></a><a href="https://t.me/share/url?url=http://blog.linjunhalida.com/blog/long-article/" title="分享到 Telegram" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1 hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="m15 10-4 4 6 6 4-16-18 7 4 2 2 6 3-4" /></svg><span class="sr-only">分享到 Telegram</span></a><a href="mailto:?subject=See%20this%20post&amp;body=http://blog.linjunhalida.com/blog/long-article/" title="通过邮件分享这篇文章" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1 hover:text-accent scale-90 p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><path d="m3 7 9 6 9-6" /></svg><span class="sr-only">通过邮件分享这篇文章</span></a></div></div><hr class="my-8 border-dashed"><div data-pagefind-ignore class="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2"><a href="/blog/design-home/" class="flex w-full gap-1 hover:opacity-75"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block flex-none rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M5 12l6 6M5 12l6-6" /></svg><div><span>上一篇</span><div class="text-accent/85 text-sm">家装设计策略</div></div></a><a href="/blog/happy-new-world/" class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"><div><span>下一篇</span><div class="text-accent/85 text-sm">赛博朋克化的世界</div></div><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block flex-none rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M13 18l6-6M13 6l6 6" /></svg></a></div><section id="comments" class="mt-12 border-t border-dashed pt-8"><h2 class="text-2xl font-semibold">评论</h2><div id="disqus_thread" aria-live="polite"></div><noscript><p class="text-muted-foreground mt-4 text-sm">需要启用 JavaScript 才能查看由 Disqus 提供的评论。</p></noscript><p id="comments-fallback" class="text-muted-foreground mt-4 hidden text-sm">评论加载失败，可能是网络无法访问 Disqus。你也可以<a href="https://halidasvps.disqus.com/?ref_noscript" target="_blank" rel="noopener noreferrer">直接在 Disqus 上留言</a>。</p><script data-astro-rerun>
+          // The embed script reads these from the global scope, so they must
+          // not be wrapped in a closure.
+          var disqus_shortname = "halidasvps";
+          var disqus_identifier = "http://blog.linjunhalida.com/blog/long-article/";
+          var disqus_url = "http://blog.linjunhalida.com/blog/long-article/";
+          var disqus_title = "为什么要阅读长文章";
+
+          var disqus_config = function () {
+            this.page.identifier = disqus_identifier;
+            this.page.url = disqus_url;
+            this.page.title = disqus_title;
+          };
+
           (function () {
-            var shortname = "halidasvps";
-            var identifier = "http://blog.linjunhalida.com/blog/long-article/";
-            var threadTitle = "为什么要阅读长文章";
-
-            var setThread = function () {
-              this.page.identifier = identifier;
-              this.page.url = identifier;
-              this.page.title = threadTitle;
-            };
-
-            // Client-side navigation: re-point an existing embed at this
+            // Client-side navigation: re-point the loaded embed at this
             // thread instead of loading the widget a second time.
             if (window.DISQUS) {
-              window.DISQUS.reset({ reload: true, config: setThread });
+              window.DISQUS.reset({ reload: true, config: disqus_config });
               return;
             }
 
             var dsq = document.createElement("script");
             dsq.type = "text/javascript";
             dsq.async = true;
-            dsq.src = "https://" + shortname + ".disqus.com/embed.js";
+            dsq.src = "https://" + disqus_shortname + ".disqus.com/embed.js";
             (
               document.getElementsByTagName("head")[0] ||
               document.getElementsByTagName("body")[0]
