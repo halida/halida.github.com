@@ -51,10 +51,13 @@
 │   └── content.config.ts   # 内容 schema
 ├── public/                 # images/ assets/ favicon.png CNAME（直接放行，不经构建）
 ├── scripts/
-│   ├── publish.sh          # 构建并发布到 Pages 分支
-│   ├── migrate-from-octopress.mjs
-│   ├── verify-urls.py
-│   └── verify-content.py
+│   ├── publish.sh                # 构建并发布到 Pages 分支
+│   ├── generate-favicon.mjs      # 由 favicon.png 生成 favicon.ico
+│   ├── scan-secrets.sh           # git-leaks 扫描
+│   ├── migrate-from-octopress.mjs # 从归档分支重新导入旧文章
+│   ├── disqus-threads.mjs        # 列出 Disqus 历史线程
+│   ├── verify-urls.py            # URL 全量核对
+│   └── verify-content.py         # 正文与图片逐篇核对
 ├── astro-paper.config.ts   # 站点配置（标题、作者、每页条数、时区、功能开关）
 └── astro.config.ts         # 框架配置（集成、Markdown、i18n、字体）
 ```
@@ -69,9 +72,8 @@ scripts/scan-secrets.sh
 
 脚本会按需把 git-leaks 下载到 `.tools/`（已 gitignore），然后依次扫描：
 
-1. Astro 仓库的**全部 git 历史**
-2. Astro 仓库的**工作目录**（含未跟踪的 `.env`）
-3. 旧 blog 仓库的**所有分支与历史**（880 个提交）
+1. 仓库的**全部 git 历史**（所有分支）
+2. **工作目录**（含未跟踪的 `.env`）
 
 规则见 `.gitleaks.toml`：在 git-leaks 默认规则之外，额外覆盖本项目用到的三种凭据形态
 （Disqus API key、GitHub token、Giscus 的 repo/category id）。
@@ -223,6 +225,9 @@ python3 scripts/verify-content.py   # 文章正文与图片逐篇核对
 两个脚本以仓库里保留的历史分支（`origin/pages-legacy` 存旧渲染产物，
 `origin/octopress-legacy` 存旧 Markdown 源码）为基准，用于确认站点内容没有意外漂移。
 基准分支可用环境变量 `BASELINE_BRANCH` / `SOURCE_BRANCH` 覆盖。
+
+`migrate-from-octopress.mjs` 也从 `origin/octopress-legacy` 读取旧 Markdown，
+所以重新导入不需要额外的目录。
 
 ## 当前限制
 
