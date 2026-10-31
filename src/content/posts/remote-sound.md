@@ -15,7 +15,7 @@ tags: []
 
 - [rspeakers](https://play.google.com/store/apps/details?id=com.boxxymays.rSpeakers&hl=en) 只支持PC端。
 - [iRemote](http://scientific-soft.com/mobile/index.php/menu-iremote) 看起来很粗糙的样子，没有测试。
-- [Airfoil](www.rogueamoeba.com/airfoil) 多平台通用，很不错。
+- [Airfoil](https://www.rogueamoeba.com/airfoil) 多平台通用，很不错。
 - [air mirror](http://osxdaily.com/2012/02/17/airplay-mirroring-mac-os-x-10-8-mountain-lion/) + [iPlay AirPlay](https://play.google.com/store/apps/details?id=com.mk.iPlayer.Audio&feature=search_result#?t=W251bGwsMSwyLDEsImNvbS5tay5pUGxheWVyLkF1ZGlvIl0.) 用osx的airplay，然后再加上一个收费的android应用，可用。
 
 我测试了Airfoil和iPlay的方案，都可以用，Airfoil如果要获取系统声音，需要重新启动电脑比较麻烦。并且价格也比较贵，iPlay的方案看起来比较适合我。

@@ -12,15 +12,44 @@
  *
  * Usage: node scripts/migrate-from-octopress.mjs
  */
-import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+const exec = promisify(execFile);
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
-const sourceDir = path.resolve(projectRoot, "../source/_posts");
 const targetDir = path.resolve(projectRoot, "src/content/posts");
+
+// The legacy Markdown lives on a branch of this repository, not in the
+// working tree: the source branch is the Astro project itself.
+const SOURCE_BRANCH = process.env.SOURCE_BRANCH || "origin/octopress-legacy";
+const SOURCE_PREFIX = "source/_posts";
+
+async function listLegacyFiles() {
+  const { stdout } = await exec(
+    "git",
+    ["ls-tree", "-r", "--name-only", SOURCE_BRANCH, SOURCE_PREFIX],
+    { cwd: projectRoot }
+  );
+  return stdout
+    .split("\n")
+    .filter(line => line.endsWith(".markdown"))
+    .map(line => path.basename(line));
+}
+
+async function readLegacyFile(name) {
+  const { stdout } = await exec(
+    "git",
+    ["show", `${SOURCE_BRANCH}:${SOURCE_PREFIX}/${name}`],
+    { cwd: projectRoot, maxBuffer: 8 * 1024 * 1024 }
+  );
+  return stdout;
+}
 
 /** Legacy Chinese category label -> frozen URL slug. */
 const CATEGORY_SLUGS = {
@@ -94,10 +123,14 @@ function toCategorySlugs(value) {
 
 /** Octopress image tag -> plain Markdown image. */
 function convertBody(body) {
-  return body.replace(
-    /\{%\s*img\s+(\S+?)\s*%\}/g,
-    (_match, src) => `![](${src})`
-  );
+  return body
+    .replace(/\{%\s*img\s+(\S+?)\s*%\}/g, (_match, src) => `![](${src})`)
+    // A few legacy links omit the scheme ("[x](example.com/page)"), which
+    // browsers resolve as a site-relative path and 404.
+    .replace(
+      /\]\(([a-z0-9][a-z0-9.-]*\.[a-z]{2,}(?:\/[^)\s]*)?)\)/gi,
+      "](https://$1)"
+    );
 }
 
 /** First meaningful paragraph of the body, used as the meta description. */
@@ -132,22 +165,15 @@ function yamlString(value) {
 }
 
 async function main() {
-  if (!existsSync(sourceDir)) {
-    throw new Error(`Legacy posts directory not found: ${sourceDir}`);
-  }
-
   await mkdir(targetDir, { recursive: true });
 
-  const files = (await readdir(sourceDir)).filter(file =>
-    file.endsWith(".markdown")
-  );
-  files.sort();
+  const files = (await listLegacyFiles()).sort();
 
   const manifest = [];
   let convertedImages = 0;
 
   for (const file of files) {
-    const raw = await readFile(path.join(sourceDir, file), "utf8");
+    const raw = await readLegacyFile(file);
     const { data, body } = parseFrontMatter(raw);
 
     const slug = file.replace(/\.markdown$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");

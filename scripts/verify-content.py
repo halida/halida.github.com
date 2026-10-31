@@ -185,6 +185,13 @@ def main() -> int:
             expected = re.sub(
                 r"\{%\s*img\s+(\S+?)\s*%\}", r"![](\1)", body
             )
+            # The migration also completes links that are missing a scheme.
+            expected = re.sub(
+                r"\]\(([a-z0-9][a-z0-9.-]*\.[a-z]{2,}(?:/[^)\s]*)?)\)",
+                r"](https://\1)",
+                expected,
+                flags=re.I,
+            )
             expected = re.sub(r"\s+", " ", expected).strip()
 
             migrated = (

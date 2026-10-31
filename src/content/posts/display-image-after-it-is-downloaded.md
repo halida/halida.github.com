@@ -20,7 +20,7 @@ So how can we implement it to our website? The method is simple:
 1. Display a loading gif, and hide the image.
 2. After image loaded, hide gif, and display image.
 
-We can use JQuery `load` method [here](api.jquery.com/load/) to add a callback to do the things in step 2 above.
+We can use JQuery `load` method [here](https://api.jquery.com/load/) to add a callback to do the things in step 2 above.
 Use this html:
 
 ```html

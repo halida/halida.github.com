@@ -120,7 +120,7 @@ end
 
 把文章抽象成一个在关键词作为维度的多维空间的向量，然后2篇文章的相似度就是它们之间的夹角。
 这种方法叫[余弦相似度](http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html)。
-按照[公式](en.wikipedia.org/wiki/Cosine_similarity)：
+按照[公式](https://en.wikipedia.org/wiki/Cosine_similarity)：
 
 ![](/images/posts/cosine-similarity.png)
 
