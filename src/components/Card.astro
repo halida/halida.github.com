@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getPostUrl } from "@/utils/getPostPaths";
+import { toTransitionName } from "@/utils/toTransitionName";
+import Datetime from "./Datetime.astro";
+import config from "@/config";
+
+type Props = {
+  variant?: "h2" | "h3";
+} & CollectionEntry<"posts">;
+
+const { variant: Heading = "h2", id, data, filePath } = Astro.props;
+
+const { title, description, ...props } = data;
+
+const postUrl = getPostUrl(id, filePath, Astro.currentLocale, data.slug);
+const commentProvider = config.comments?.provider;
+const showCommentLink = commentProvider === "disqus" || commentProvider === "giscus";
+// Only Disqus exposes a counter script; Giscus has no equivalent.
+const showCommentCount =
+  commentProvider === "disqus" && (config.comments?.disqus?.showCount ?? false);
+const threadId = new URL(`/blog/${data.slug}/`, config.site.url).href;
+---
+
+<li class="my-6">
+  <a
+    href={postUrl}
+    class:list={[
+      "text-accent inline-block text-lg font-medium",
+      "decoration-dashed underline-offset-4 hover:underline",
+      "focus-visible:no-underline focus-visible:underline-offset-0",
+    ]}
+  >
+    <Heading transition:name={toTransitionName(id)}>
+      {title}
+    </Heading>
+  </a>
+  <Datetime {...props} />
+  <p>{description}</p>
+  {
+    showCommentLink && (
+      <p class="text-muted-foreground mt-1 text-sm">
+        <a href={`${postUrl}#comments`} class="hover:text-accent">
+          评论
+        </a>
+        {
+          showCommentCount && (
+            <span
+              class="disqus-comment-count"
+              data-disqus-identifier={threadId}
+            />
+          )
+        }
+      </p>
+    )
+  }
+</li>

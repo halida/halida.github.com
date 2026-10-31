@@ -1,0 +1,20 @@
+---
+import config from "@/config";
+
+/**
+ * Loads Disqus' comment counter.
+ *
+ * It fills every `.disqus-comment-count` element on the page that carries a
+ * `data-disqus-identifier` attribute, i.e. the entries rendered by Card.
+ */
+const shortName =
+  config.comments?.provider === "disqus"
+    ? (config.comments.disqus?.shortName ?? null)
+    : null;
+---
+
+{
+  shortName && (
+    <script is:inline async src={`https://${shortName}.disqus.com/count.js`} />
+  )
+}

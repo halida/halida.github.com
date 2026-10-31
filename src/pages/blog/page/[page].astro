@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import BlogPagination from "@/components/BlogPagination.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getLastPage, getPageUrl, POSTS_PER_PAGE } from "@/utils/pagination";
+import { useTranslations } from "@/i18n";
+import DisqusCount from "@/components/DisqusCount.astro";
+import config from "@/config";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
+  const sortedPosts = getSortedPosts(posts);
+  const lastPage = getLastPage(sortedPosts.length);
+
+  // Page 1 lives at /blog/, so only pages 2..N are generated here.
+  return Array.from({ length: Math.max(0, lastPage - 1) }, (_, index) => {
+    const page = index + 2;
+    return {
+      params: { page: String(page) },
+      props: {
+        items: sortedPosts.slice(
+          (page - 1) * POSTS_PER_PAGE,
+          page * POSTS_PER_PAGE
+        ),
+        currentPage: page,
+        lastPage,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { items, currentPage, lastPage } = Astro.props;
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+---
+
+<Layout title={`${t.pages.postsTitle} | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={t.pages.postsTitle} pageDesc={t.pages.postsDesc}>
+    <ul>
+      {items.map(data => <Card {...data} />)}
+    </ul>
+  </Main>
+
+  <BlogPagination
+    currentPage={currentPage}
+    lastPage={lastPage}
+    prevUrl={currentPage > 2 ? getPageUrl(currentPage - 1) : "/blog/"}
+    nextUrl={currentPage < lastPage ? getPageUrl(currentPage + 1) : undefined}
+  />
+
+  <Footer noMarginTop={lastPage > 1} />
+  <DisqusCount />
+</Layout>

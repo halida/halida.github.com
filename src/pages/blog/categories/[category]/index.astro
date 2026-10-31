@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getCategoryName } from "@/utils/categories";
+import { useTranslations } from "@/i18n";
+import DisqusCount from "@/components/DisqusCount.astro";
+import config from "@/config";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
+  const categories = [...new Set(posts.flatMap(post => post.data.tags))].sort();
+
+  return categories.map(category => {
+    const items = getSortedPosts(
+      posts.filter(post => post.data.tags.includes(category))
+    );
+    return {
+      params: { category },
+      props: { category, items },
+    };
+  });
+}
+
+const { category, items } = Astro.props;
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const categoryName = getCategoryName(category);
+---
+
+<Layout title={`${t.pages.tagTitle}: ${categoryName} | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main
+    pageTitle={`${t.pages.tagTitle}: ${categoryName}`}
+    pageDesc={`${t.pages.tagDesc} "${categoryName}".`}
+  >
+    <ul>
+      {items.map(data => <Card {...data} />)}
+    </ul>
+  </Main>
+
+  <Footer />
+  <DisqusCount />
+</Layout>

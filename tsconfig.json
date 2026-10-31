@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/astro/tsconfigs/strict.json",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "public/pagefind"],
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/astro-paper.config": ["./astro-paper.config"]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+---
+import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import LinkButton from "./LinkButton.astro";
+import { useTranslations } from "@/i18n";
+
+type Props = {
+  currentPage: number;
+  lastPage: number;
+  prevUrl?: string;
+  nextUrl?: string;
+};
+
+const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props;
+
+const t = useTranslations(Astro.currentLocale);
+---
+
+{
+  lastPage > 1 && (
+    <nav
+      class="mt-auto mb-8 flex justify-center gap-4"
+      role="navigation"
+      aria-label="Pagination Navigation"
+    >
+      <LinkButton
+        disabled={!prevUrl}
+        href={prevUrl}
+        class:list={["select-none", { "opacity-50": !prevUrl }]}
+        aria-label={t.a11y.goToPreviousPage}
+      >
+        <IconArrowLeft class="inline-block rtl:rotate-180" />
+        {t.pagination.prev}
+      </LinkButton>
+      {currentPage} / {lastPage}
+      <LinkButton
+        disabled={!nextUrl}
+        href={nextUrl}
+        class:list={["select-none", { "opacity-50": !nextUrl }]}
+        aria-label={t.a11y.goToNextPage}
+      >
+        {t.pagination.next}
+        <IconArrowRight class="inline-block rtl:rotate-180" />
+      </LinkButton>
+    </nav>
+  )
+}

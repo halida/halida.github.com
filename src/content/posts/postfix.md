@@ -1,0 +1,93 @@
+---
+title: "postfix架构初探"
+slug: "postfix"
+pubDatetime: "2012-10-27T23:57:00+08:00"
+description: "最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。 我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了…"
+tags: ["ji-zhu"]
+---
+
+![image](https://help.ubuntu.com/community/PostfixBasicSetupHowto?action=AttachFile&do=get&target=PostfixComponentsNw.gif)
+
+最近几天我们的服务器没有办法收到邮件了， 为了解决这个问题， 我必须弄清楚现在服务器邮件系统的架构， 然后找到到底问题出在哪里。
+我们服务器是采用postfix的， 当初配置的时候不是我， 也没有留下配置文件。 弄清楚状况以及解决问题花费了我比较多的时间，
+在这里整理一下具体的信息， 下次再遇到问题的时候可以回来看看。 
+根据我的个人经验， 对于用到的一个技术， 如果没有研究透彻以及留下对应的文档， 以后一定会后悔。 所以在下面稍微整理一下， 没有兴趣就跳过吧。
+
+什么是postfix
+----------------------------------
+简单地说， postfix就是一个邮件服务器， 它用来处理邮件收发的一些工作。
+postfix控制了无数小的模块， 而自己可以说是一个路由器的角色。
+
+![image](http://www.linuxjournal.com/files/linuxjournal.com/linuxjournal/articles/094/9454/9454_f2-4.jpg)
+
+但是postfix内部细看的话又非常复杂， 文章开始的那个图片就是一个模块化的流程图。这里面有几篇文章可以看看的：
+
+- [postfix介绍文章](http://www.linuxjournal.com/article/9454)
+- [ubuntu basic setup的文章](https://help.ubuntu.com/community/PostfixBasicSetupHowto)
+
+如何配置
+----------------------------------
+我发现[linode的ubuntu的配置文档](https://library.linode.com/email/postfix/postfix2.9.6-dovecot2.0.19-mysql)
+很不错，采用mysql作为数据库，存储域名，邮件用户，邮件用户别名信息，然后用dovecot来作为用户和外界通讯的服务器，
+按照这个配置，可以搭建好一个可用的邮件系统。
+
+
+邮件流程
+----------------------------------
+为了弄清楚具体做了什么， 以便遇到问题的时候可以快速定位， 需要关注几点：
+
+**邮件是如何从外面发送进来， 被客户端接收的**
+
+外面的服务器会通过smtp发送邮件到postfix，postfix服务器会接收邮件，经过一系列的处理过程，最后保存到本地的邮件目录存放地里面。
+按照上面的设置，会保存在`/var/mail/%domain/%username`目录中。
+
+**邮件是如何通过客户端， 发送给其他邮件的。**
+
+通过devocot pop/imap服务器， 客户端发送对应的请求， 然后转存到本地mail地址， 然后postfix做发送处理。
+
+postfix也提供一个命令行的工具sendmail来[在本地发送邮件](http://www.linuxquestions.org/questions/linux-general-1/sendmail-command-line-examples-please-207756/)。
+
+**如何验证用户**
+
+dovecot设置文件里面具体设置如何做验证， 是否支持纯文本密码（非常不安全）， 是否支持ssl， 采用什么方式来验证等等。
+
+**具体的邮件本地缓存位置，配置文件和进程。**
+
+- 邮件本地存储的目录， 见postfix配置参数`virtual_mailbox_base`。
+- postfix配置目录在`/etc/postfix`
+- dovecot配置目录`/etc/dovecot`
+- 里面的配置文件会设置日志目录。 如果没有写的话， 可以去看 `/var/log/mail.log`
+- postfix master进程 `/usr/lib/postfix/master`， 它会跑一些其他worker进程干活， 可以看用户是postfix的进程们。
+- dovecot进程 `/usr/sbin/dovecot`， 用户验证进程 `dovecot-auth`， 还有以dovecot为用户的一些pop/imap服务器。
+
+更进一步的需求
+----------------------------------
+前面做的事情只是比较基本的部分，如果要成为一个可靠的生产环境，还是需要一些其他的事情：
+
+* 用户管理系统
+* spam过滤
+* [保证电子邮件的送达率](http://blog.linjunhalida.com/blog/reliable-email-delivery/)
+
+很多时候， 还是购买现成的服务比较好， 自己做的话成本太高了， 也做不到专业。
+
+2012-10-26问题整理
+----------------------------------
+本次发生邮件系统不能用的根本原因没有找到， 主要发现postfix， dovecot进程没有起来。
+花费了2个晚上的时间， 终于把问题解决了， 具体的挫折路线：
+
+- 不是很懂postfix， 看文档
+- pop服务器不知道是什么， 最后看postfix设置才知道是dovecot
+- 跑起来后发现没有起来pop， 安装dovecot-pop3d
+- 用gmail来获取邮件一直不成功， 后来发现google pop3方式ssl可能会去验证服务器ssl有效性， 需要服务器注册合法ssl（需要花钱）， 所以只能用plain的方式， 需要改 dovecot 设置支持plain。
+
+2013-12-08问题整理
+----------------------------------
+因为服务器更换，需要重新装一遍邮件系统，前一次安装的日志没有留下来，
+于是我采用[ubuntu](https://help.ubuntu.com/community/Postfix)的教程，结果耗费了一个星期都没有安装成功，几乎要崩溃了。
+后来找到现在用的安装教程，也是一路磕磕碰碰遇到很多问题。总结一下经验：
+
+- 一定一定要跟着教程走，不要自己想当然随便改，不然死都不知道怎么死的。
+- 走长路，每一步都要验证这一步走得正确。
+- 出现问题看log，好的日志会引导你走向正确的方向。
+
+回头看看， 走了不少弯路， 但是整理一下发现， 其实整个系统也并不是那么复杂。

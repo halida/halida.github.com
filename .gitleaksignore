@@ -1,0 +1,3 @@
+# Only fingerprints are accepted here; path patterns are not supported by
+# this version. node_modules/ and dist/ are scanned as well — they are
+# large but contain no secrets.

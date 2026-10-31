@@ -1,0 +1,93 @@
+---
+import config from "@/config";
+
+type Props = {
+  /**
+   * Disqus thread identifier.
+   *
+   * Disqus keys every thread by this string, so it has to match the value the
+   * comments were originally created with. The previous site used the post
+   * URL, which is why the URL scheme must stay stable.
+   */
+  identifier: string;
+  /** Thread title, shown in the Disqus UI. */
+  title: string;
+};
+
+const { identifier, title } = Astro.props;
+
+const comments = config.comments;
+const shortName =
+  comments?.provider === "disqus" ? (comments.disqus?.shortName ?? null) : null;
+---
+
+{
+  shortName && (
+    <section id="comments" class="mt-12 border-t border-dashed pt-8">
+      <h2 class="text-2xl font-semibold">评论</h2>
+
+      <div id="disqus_thread" aria-live="polite" />
+
+      <noscript>
+        <p class="text-muted-foreground mt-4 text-sm">
+          需要启用 JavaScript 才能查看由 Disqus 提供的评论。
+        </p>
+      </noscript>
+
+      <p id="comments-fallback" class="text-muted-foreground mt-4 hidden text-sm">
+        评论加载失败，可能是网络无法访问 Disqus。你也可以
+        <a
+          href={`https://${shortName}.disqus.com/?ref_noscript`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          直接在 Disqus 上留言
+        </a>。
+      </p>
+
+      <script
+        is:inline
+        data-astro-rerun
+        set:html={`
+          // The embed script reads these from the global scope, so they must
+          // not be wrapped in a closure.
+          var disqus_shortname = ${JSON.stringify(shortName)};
+          var disqus_identifier = ${JSON.stringify(identifier)};
+          var disqus_url = ${JSON.stringify(identifier)};
+          var disqus_title = ${JSON.stringify(title)};
+
+          var disqus_config = function () {
+            this.page.identifier = disqus_identifier;
+            this.page.url = disqus_url;
+            this.page.title = disqus_title;
+          };
+
+          (function () {
+            // Client-side navigation: re-point the loaded embed at this
+            // thread instead of loading the widget a second time.
+            if (window.DISQUS) {
+              window.DISQUS.reset({ reload: true, config: disqus_config });
+              return;
+            }
+
+            var dsq = document.createElement("script");
+            dsq.type = "text/javascript";
+            dsq.async = true;
+            dsq.src = "https://" + disqus_shortname + ".disqus.com/embed.js";
+            (
+              document.getElementsByTagName("head")[0] ||
+              document.getElementsByTagName("body")[0]
+            ).appendChild(dsq);
+
+            window.setTimeout(function () {
+              if (!window.DISQUS) {
+                var fallback = document.getElementById("comments-fallback");
+                if (fallback) fallback.classList.remove("hidden");
+              }
+            }, 8000);
+          })();
+        `}
+      />
+    </section>
+  )
+}

@@ -1,0 +1,80 @@
+---
+title: "局域网时代下科学上网"
+slug: "low-network-cross-gfw"
+pubDatetime: "2015-07-31T17:25:40+08:00"
+description: "(2015-12-14更新KCPTUN方法)"
+tags: []
+---
+
+(2015-12-14更新KCPTUN方法)
+
+我们知道，最近各大运营商都提速了，大家随便就可以买到100M以上的网络。
+但是国外出口没有配套提升，这样的结果就是，分到每个人的国际出口带宽就少了，
+访问国外网站就成为一个非常痛苦的过程。中国的网络就此成为一个名副其实的局域网。
+
+要解决访问国外网站的问题，需要两步：
+
+- 要有一个保障国际出口带宽的国内服务。
+- 要有一个国外流量中转服务来绕过我们都知道的防火墙干扰。
+
+用户连接国内VPS的方案可以是VPN，可以是代理。我偏好VPN，因为全局翻墙下各种命令行工具也是可以用的。对于普通人来说只需要访问网页，各种代理协议也可以。
+
+国内VPS连接国外VPS的方法最好是常见的VPN，为什么呢，因为常见VPN各大国内外企或者国内互联网公司也在用，防火墙不太会干扰这些主流业务。
+如果用ssh，或者其它代理或者不知名的协议，一方面会被防火墙干扰，另外一方面包协议没有足够好的优先级，性能会差一些。
+
+我觉得最好的解决方案是：国内一台有良好国际出口带宽的VPS和一台国外VPS结合，提供pptp/l2tp/anyconnect VPN服务。
+
+这种方案我没有配置成功，因为不知道如何让国内VPS来做VPN中继。只能用其他的方案了：
+结合[微林的云涟服务](https://vnet.link/soft/vxgg)以及ssh代理连到我买的国外VPS上网。
+
+云涟是一个提供良好国外出口流量的服务，方法是用openvpn或者anyconnect连接到一个阿里云里面CN2网络的VPS上面。
+有了好的出口带宽，之后用本地电脑命令行的ssh连到国外VPS，提供本地的一个sock5代理，再在浏览器上面设置代理访问网站。
+
+具体操作：
+
+- 注册[微林](https://vnet.link/?rc=18121)，按照教程，本地电脑连接上VPN。
+- 购买一台便宜的国外VPS，比如[DigitalOcean](https://www.digitalocean.com)。
+- 如果你是linux或者mac，在命令行执行 ssh -ND 1080 user@digital_ocean_vps_ip。
+- 设置浏览器的代理，用sock5，地址是127.0.0.1，端口1080。
+
+我现在用这种方法，访问国外网站非常顺畅，速度可以达到1MB/s。
+不过，成本会高一些，云涟的费用是1块钱每G，国内流量的费用是比较高的。
+国外VPS就便宜了，DigitalOcean是5美元一个月。
+
+期待有科学上网服务商提供这样的整体方案，省得大家自己弄了。
+
+2015-08-29更新：
+
+因为ssh提供sock5代理的性能问题，以及有协议特征容易被防火墙干扰，我建议大家换用shadowsocks。
+它是一个python写的客户端/服务器分离的sock5代理（国外服务器跑server端，client端和server端加密通讯，client端再启动一个sock5服务）。
+现在作者被喝茶，官方项目已经废掉了，不过还有[其他的镜像](https://github.com/Long-live-shadowsocks/shadowsocks)。
+
+客户端和服务器双方预先保存密码，没有登录等操作，直接用密码加密通讯，
+同时可以选择多种加密方式，这样通讯没有协议特征，防火墙没有办法干扰。
+不过还是会有流量特征，防火墙如果开启智能学习的话，会把通讯劣化掉。不过现在好像没有进行这样的干扰。
+同时因为跑的是非主流协议，运营商会降低通讯的优先级，造成性能差一些。
+
+使用方法：
+
+- 购买一台便宜的国外VPS，比如[DigitalOcean](https://www.digitalocean.com)。
+- [在VPS上面安装SS](https://github.com/Long-live-shadowsocks/shadowsocks/wiki/Shadowsocks-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)，然后执行`ssserver -p 4431 -k password`。记得修改-k的密码参数。
+- 注册[微林](https://vnet.link/?rc=18121)，在vxTrans里面创建一个端口映射，指向你的VPS服务器的4431端口。通过微林的CN2精品网络保证出国带宽。
+- 在你本地机器上面安装SS，执行`sslocal -s 微林服务器地址 -p 微林服务器分配给你的端口号 -k password -l 1080`，这样连接到微林的端口转接，同时在本地启动了一个1080的sock5服务。
+- 设置浏览器的sock5代理，指向本地服务器的1080端口。
+- 如果你希望在命令行下面翻墙，可以安装[proxychains-ng](https://github.com/rofl0r/proxychains-ng)，OSX下面可以用brew安装。
+
+2016-12-14更新：
+
+ss翻墙中间网络传输的速度不行，我发现了[kcptun](https://github.com/xtaci/kcptun)这个神器，针对链路进行加速，看youtube高清视频一点问题都没有。
+
+使用方法：
+
+- 在你的服务器上面安装kcptun，直接下载官方的[二进制包](https://github.com/xtaci/kcptun/releases/latest)就好。
+- 整体逻辑：`服务器ssserver - 服务器kcptun - 本地kcptun - 本地sslocal`，kcptun提供一个加速的链路，ss负责加密传输。
+- 服务器上面跑ss：`ssserver -p 4431 -k sskey`
+- 服务器上面跑kcptun：`./server_linux_amd64 -t "127.0.0.1:4431" -l ":42871" -key "sharedkey" -mtu 1400 -sndwnd 2048 -rcvwnd 2048 -mode fast2`
+- 本地机器上面跑kcptun： `./client_linux_amd64 -r "server.com:42871" -l ":4432" -key "sharedkey" -mtu 1400 -sndwnd 106 -rcvwnd 2048 -mode fast2`
+- 本地机器上面跑ss：`sslocal -s 127.0.0.1 -p 4432 -k sskey -b 0.0.0.0 -l 1081`
+- 里面42871是kcp的端口，kcptun把服务器sserver的4431端口映射到本地的4432端口让sslocal访问。sharedkey是你kcptun本地和服务器共享的密钥，sskey是ss共享的密钥，server.com是你vps的地址，都要修改一下。其它的参数你感兴趣可以去官方网站上面看解释。
+- 打开浏览器，设置SOCK5代理，端口1081就可以了。
+

@@ -1,0 +1,2048 @@
+[
+  {
+    "slug": "do-not-help-poor-people",
+    "title": "为什么不要帮助穷人",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "do-not-use-linux",
+    "title": "为什么不要使用linux",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "drug-dealing",
+    "title": "毒品交易",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "how-to-publish-program-on-windows",
+    "title": "如何在windows下面发布程序",
+    "categories": [],
+    "date": "2008-02-15 21:32:54 +0800"
+  },
+  {
+    "slug": "why-ask-why",
+    "title": "为什么要问为什么",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "why-big-govenment-is-bad",
+    "title": "福利社会为什么要不得",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "why-govenment-fails",
+    "title": "为什么政府没有效率",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "why-there-is-class-in-communism",
+    "title": "为什么共产社会有等级划分",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "why-we-need-commandline",
+    "title": "为什么我们要用命令行工具",
+    "categories": [],
+    "date": "2008-02-15 22:08:26 +0800"
+  },
+  {
+    "slug": "start-blog-again",
+    "title": "博客又开张了",
+    "categories": [],
+    "date": "2009-01-31 22:08:26 +0800"
+  },
+  {
+    "slug": "life",
+    "title": "生命",
+    "categories": [],
+    "date": "2009-02-01 22:08:26 +0800"
+  },
+  {
+    "slug": "why-I-need-windows",
+    "title": "为什么我不能放弃Windows",
+    "categories": [],
+    "date": "2009-02-02 22:08:26 +0800"
+  },
+  {
+    "slug": "why-I-use-linux",
+    "title": "为什么我要用linux",
+    "categories": [],
+    "date": "2009-02-02 22:08:26 +0800"
+  },
+  {
+    "slug": "self-thoughts",
+    "title": "自我反省",
+    "categories": [],
+    "date": "2009-02-10 22:08:26 +0800"
+  },
+  {
+    "slug": "sphinx",
+    "title": "用sphinx写文档",
+    "categories": [],
+    "date": "2009-02-10 22:08:26 +0800"
+  },
+  {
+    "slug": "how-to-design",
+    "title": "如何设计",
+    "categories": [],
+    "date": "2009-03-04 22:08:26 +0800"
+  },
+  {
+    "slug": "programming-language-as-language",
+    "title": "程序化语言",
+    "categories": [],
+    "date": "2009-03-05 22:08:26 +0800"
+  },
+  {
+    "slug": "illusion-of-life",
+    "title": "生存的幻觉",
+    "categories": [],
+    "date": "2009-03-17 22:08:26 +0800"
+  },
+  {
+    "slug": "how-to-learn-english",
+    "title": "如何学好英语",
+    "categories": [],
+    "date": "2009-05-31 22:08:26 +0800"
+  },
+  {
+    "slug": "when-plan-failed",
+    "title": "计划没有按照预定来怎么办",
+    "categories": [],
+    "date": "2009-05-31 22:08:26 +0800"
+  },
+  {
+    "slug": "how-to-learn-API",
+    "title": "如何学习API",
+    "categories": [],
+    "date": "2009-06-01 22:08:26 +0800"
+  },
+  {
+    "slug": "religon-of-programmer",
+    "title": "軟件工程師的信仰",
+    "categories": [],
+    "date": "2009-06-01 22:08:26 +0800"
+  },
+  {
+    "slug": "restriction-of-birth-is-bad",
+    "title": "计划生育不好",
+    "categories": [],
+    "date": "2009-06-01 22:08:26 +0800"
+  },
+  {
+    "slug": "burst-in-your-life",
+    "title": "生活需要时不时的burst一下",
+    "categories": [],
+    "date": "2009-06-02 22:08:26 +0800"
+  },
+  {
+    "slug": "software-development-information-prospective",
+    "title": "從信息的角度來看待軟件開發",
+    "categories": [],
+    "date": "2009-06-04 22:08:26 +0800"
+  },
+  {
+    "slug": "why-music-touches-people",
+    "title": "音乐为什么能够感染人",
+    "categories": [],
+    "date": "2009-06-05 22:08:26 +0800"
+  },
+  {
+    "slug": "unix",
+    "title": "unix的哲學",
+    "categories": [],
+    "date": "2009-06-08 22:08:26 +0800"
+  },
+  {
+    "slug": "TDD",
+    "title": "TDD 测试驱动开发",
+    "categories": [],
+    "date": "2012-05-01 22:08:26 +0800"
+  },
+  {
+    "slug": "cortex-command",
+    "title": "CortexCommand介绍",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "create-a-caculator",
+    "title": "实现计算器",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "docstring",
+    "title": "docstring",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "how-to-use-pre-compiled-header",
+    "title": "如何使用预编译头以及预编译头的原理",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "learn-sqlalchemy",
+    "title": "sqlalchemy学习",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "libusb",
+    "title": "采用libusb库让PC与USB通讯",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "qt-compile-speed-up",
+    "title": "qt编译加速以及使用预编译头",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "question-of-cell-phone-message-id",
+    "title": "手机分配短讯id的面试题目",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "rst2s5",
+    "title": "文本方式写幻灯片",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "trinity",
+    "title": "三一学会",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "why-use-ReST-for-blogging",
+    "title": "为什么用ReST写博客",
+    "categories": [],
+    "date": "2010-10-26 14:53:37 +0800"
+  },
+  {
+    "slug": "DwarfFortress-intro",
+    "title": "DwarfFortress介绍",
+    "categories": [],
+    "date": "2010-10-28 21:25:29 +0800"
+  },
+  {
+    "slug": "C-RAII",
+    "title": "C语言如何实现RAII",
+    "categories": [],
+    "date": "2010-10-29 14:25:54 +0800"
+  },
+  {
+    "slug": "PyQt4-async-message",
+    "title": "PyQt4的异步消息机制",
+    "categories": [],
+    "date": "2010-10-29 20:37:00 +0800"
+  },
+  {
+    "slug": "PyQt4-skin",
+    "title": "PyQt4的皮肤效果",
+    "categories": [],
+    "date": "2010-10-29 20:27:05 +0800"
+  },
+  {
+    "slug": "amway-to-education",
+    "title": "安利模式做教育",
+    "categories": [],
+    "date": "2010-10-29 19:52:07 +0800"
+  },
+  {
+    "slug": "can-we-do-this",
+    "title": "可以这样做吗",
+    "categories": [],
+    "date": "2010-10-29 16:37:20 +0800"
+  },
+  {
+    "slug": "fair-game",
+    "title": "所谓的你情我愿",
+    "categories": [],
+    "date": "2010-10-29 22:18:18 +0800"
+  },
+  {
+    "slug": "pyqt-publish",
+    "title": "pyqt编写的程序如何发布",
+    "categories": [],
+    "date": "2010-10-29 21:06:18 +0800"
+  },
+  {
+    "slug": "python-draw-landscape",
+    "title": "用python画地形图",
+    "categories": [],
+    "date": "2010-10-29 20:49:17 +0800"
+  },
+  {
+    "slug": "realpeople-steampunk",
+    "title": "真人蒸汽朋克",
+    "categories": [],
+    "date": "2010-10-29 20:50:54 +0800"
+  },
+  {
+    "slug": "ways-to-rome",
+    "title": "回的四种写法",
+    "categories": [],
+    "date": "2010-10-29 20:42:05 +0800"
+  },
+  {
+    "slug": "game-I-play",
+    "title": "我玩的游戏",
+    "categories": [],
+    "date": "2010-11-10 16:20:12 +0800"
+  },
+  {
+    "slug": "pyqt-intro",
+    "title": "pyqt介绍",
+    "categories": [],
+    "date": "2010-11-10 08:59:03 +0800"
+  },
+  {
+    "slug": "reStructuredText-intro",
+    "title": "reStructuredText介绍",
+    "categories": [],
+    "date": "2010-11-10 15:39:39 +0800"
+  },
+  {
+    "slug": "minecraft",
+    "title": "minecraft介绍",
+    "categories": [],
+    "date": "2010-11-12 10:34:10 +0800"
+  },
+  {
+    "slug": "pyqt-i18n",
+    "title": "pyqt多国语言",
+    "categories": [],
+    "date": "2010-11-21 16:44:39 +0800"
+  },
+  {
+    "slug": "rational-desgin",
+    "title": "关于理性的设计",
+    "categories": [],
+    "date": "2010-11-22 20:00:25 +0800"
+  },
+  {
+    "slug": "why-qt-is-for-you",
+    "title": "为什么qt是最适合你的",
+    "categories": [],
+    "date": "2010-11-22 21:02:51 +0800"
+  },
+  {
+    "slug": "qml",
+    "title": "qml介绍",
+    "categories": [],
+    "date": "2010-11-24 21:35:12 +0800"
+  },
+  {
+    "slug": "qwt-intro",
+    "title": "qwt介绍与使用",
+    "categories": [],
+    "date": "2010-11-27 10:55:37 +0800"
+  },
+  {
+    "slug": "ipython",
+    "title": "ipython",
+    "categories": [],
+    "date": "2010-11-30 13:03:47 +0800"
+  },
+  {
+    "slug": "pyqt-animation-framework",
+    "title": "pyqt_animation_framework",
+    "categories": [],
+    "date": "2010-11-30 09:14:01 +0800"
+  },
+  {
+    "slug": "my-emacs-config",
+    "title": "我的emacs配置",
+    "categories": [],
+    "date": "2010-12-04 20:48:50 +0800"
+  },
+  {
+    "slug": "scons",
+    "title": "scons介绍",
+    "categories": [],
+    "date": "2010-12-06 23:10:33 +0800"
+  },
+  {
+    "slug": "python-declarative-programming",
+    "title": "简单python_宣告式编程",
+    "categories": [],
+    "date": "2010-12-07 22:39:31 +0800"
+  },
+  {
+    "slug": "pyside",
+    "title": "pyside介绍",
+    "categories": [],
+    "date": "2010-12-08 22:37:34 +0800"
+  },
+  {
+    "slug": "online-update",
+    "title": "程序如何作在线更新",
+    "categories": [],
+    "date": "2010-12-17 11:01:49 +0800"
+  },
+  {
+    "slug": "sphinx-intro",
+    "title": "sphinx介绍",
+    "categories": [],
+    "date": "2010-12-19 19:17:22 +0800"
+  },
+  {
+    "slug": "why-use-plain-text",
+    "title": "为什么要用纯文本",
+    "categories": [],
+    "date": "2010-12-21 21:25:52 +0800"
+  },
+  {
+    "slug": "words",
+    "title": "箴言",
+    "categories": [],
+    "date": "2010-12-21 21:25:52 +0800"
+  },
+  {
+    "slug": "development-experience",
+    "title": "开发经验",
+    "categories": [],
+    "date": "2010-12-23 10:02:28 +0800"
+  },
+  {
+    "slug": "use-plain-text-for-documentation",
+    "title": "使用纯文本方式写文档",
+    "categories": [],
+    "date": "2010-12-26 09:31:10 +0800"
+  },
+  {
+    "slug": "pysideqwt-open-source",
+    "title": "pysideqwt开源经验",
+    "categories": [],
+    "date": "2011-01-06 12:40:35 +0800"
+  },
+  {
+    "slug": "git",
+    "title": "git学习总结",
+    "categories": [],
+    "date": "2011-01-07 14:43:14 +0800"
+  },
+  {
+    "slug": "shiboken",
+    "title": "用shiboken做python绑定",
+    "categories": [],
+    "date": "2011-01-07 11:23:31 +0800"
+  },
+  {
+    "slug": "how-to-organize-day-time",
+    "title": "如何度过每天的24小时",
+    "categories": [],
+    "date": "2011-01-22 11:16:08 +0800"
+  },
+  {
+    "slug": "hackers-and-painters",
+    "title": "黑客与画家",
+    "categories": [],
+    "date": "2011-02-07 18:48:49 +0800"
+  },
+  {
+    "slug": "http-intro",
+    "title": "http_介绍",
+    "categories": [],
+    "date": "2011-02-09 10:46:21 +0800"
+  },
+  {
+    "slug": "ruby-head-first",
+    "title": "ruby初探",
+    "categories": [],
+    "date": "2011-02-10 22:53:55 +0800"
+  },
+  {
+    "slug": "ruby-on-rails-head-first",
+    "title": "ruby_on_rails初探",
+    "categories": [],
+    "date": "2011-02-11 11:46:08 +0800"
+  },
+  {
+    "slug": "read-rss-as-email",
+    "title": "如何把rss当作邮件来阅读",
+    "categories": [],
+    "date": "2011-02-14 16:18:47 +0800"
+  },
+  {
+    "slug": "shpaml",
+    "title": "shpaml介绍",
+    "categories": [],
+    "date": "2011-02-15 16:15:51 +0800"
+  },
+  {
+    "slug": "shpaml-source-code",
+    "title": "shpaml源码分析",
+    "categories": [],
+    "date": "2011-02-20 21:43:59 +0800"
+  },
+  {
+    "slug": "not-work-8-hours-a-day",
+    "title": "你不需要一天工作8小时",
+    "categories": [],
+    "date": "2011-02-24 16:43:14 +0800"
+  },
+  {
+    "slug": "how-to-learn-python",
+    "title": "如何学习python",
+    "categories": [],
+    "date": "2011-02-25 11:20:51 +0800"
+  },
+  {
+    "slug": "utf8",
+    "title": "utf8介绍",
+    "categories": [],
+    "date": "2011-03-02 20:11:07 +0800"
+  },
+  {
+    "slug": "gmail-cannot-use",
+    "title": "gmail不能用了",
+    "categories": [],
+    "date": "2011-03-06 19:21:54 +0800"
+  },
+  {
+    "slug": "zeromq",
+    "title": "zeromq介绍",
+    "categories": [],
+    "date": "2011-03-15 20:01:50 +0800"
+  },
+  {
+    "slug": "my-tech-stack",
+    "title": "我的技术储备",
+    "categories": [],
+    "date": "2011-03-16 16:51:25 +0800"
+  },
+  {
+    "slug": "spacechem",
+    "title": "spacechem介绍",
+    "categories": [],
+    "date": "2011-03-25 16:25:15 +0800"
+  },
+  {
+    "slug": "last-week-to-live",
+    "title": "如果我还有一个星期可以活",
+    "categories": [],
+    "date": "2011-03-26 22:41:24 +0800"
+  },
+  {
+    "slug": "python-pype",
+    "title": "python-pype介绍",
+    "categories": [],
+    "date": "2011-03-30 11:38:05 +0800"
+  },
+  {
+    "slug": "donation",
+    "title": "我们来捐款吧",
+    "categories": [],
+    "date": "2011-03-31 11:49:51 +0800"
+  },
+  {
+    "slug": "trip-in-nanjing",
+    "title": "南京游记",
+    "categories": [],
+    "date": "2011-04-05 23:00:25 +0800"
+  },
+  {
+    "slug": "ruby-on-rails",
+    "title": "ruby_on_rails",
+    "categories": [],
+    "date": "2011-04-25 13:17:28 +0800"
+  },
+  {
+    "slug": "let-it-go",
+    "title": "放下的智慧",
+    "categories": [],
+    "date": "2011-05-10 09:43:37 +0800"
+  },
+  {
+    "slug": "try-to-strike-up",
+    "title": "尝试搭讪",
+    "categories": [],
+    "date": "2011-05-10 10:15:17 +0800"
+  },
+  {
+    "slug": "change-personality",
+    "title": "改变性格",
+    "categories": [],
+    "date": "2011-05-12 10:21:54 +0800"
+  },
+  {
+    "slug": "princess-and-knight",
+    "title": "公主与骑士",
+    "categories": [],
+    "date": "2011-05-13 16:06:32 +0800"
+  },
+  {
+    "slug": "wordpress-nginx-install",
+    "title": "wordpress_nginx安装",
+    "categories": [],
+    "date": "2011-05-16 10:46:30 +0800"
+  },
+  {
+    "slug": "rails-ubuntu-install",
+    "title": "rails ubuntu 下安装",
+    "categories": [],
+    "date": "2011-05-24 10:23:21 +0800"
+  },
+  {
+    "slug": "thinking",
+    "title": "思考",
+    "categories": [],
+    "date": "2011-05-31 11:31:26 +0800"
+  },
+  {
+    "slug": "why-blogging",
+    "title": "为什么要写博客",
+    "categories": [],
+    "date": "2011-06-03 10:54:37 +0800"
+  },
+  {
+    "slug": "GFW",
+    "title": "关于GFW的资料整理",
+    "categories": [],
+    "date": "2011-07-04 16:32:11 +0800"
+  },
+  {
+    "slug": "snake-challenge-event",
+    "title": "宅男们开房的故事_snake_challenge活动总结",
+    "categories": [],
+    "date": "2011-07-04 19:47:22 +0800"
+  },
+  {
+    "slug": "CS-roadmap",
+    "title": "计算机领域学习路线图",
+    "categories": [],
+    "date": "2011-07-11 15:04:23 +0800"
+  },
+  {
+    "slug": "be-a-better-man",
+    "title": "be_a_better_man",
+    "categories": [],
+    "date": "2011-07-12 09:19:29 +0800"
+  },
+  {
+    "slug": "rabbit-fiction",
+    "title": "兔子流",
+    "categories": [],
+    "date": "2011-07-13 08:59:57 +0800"
+  },
+  {
+    "slug": "shanzai-is-good",
+    "title": "爱抄才会赢",
+    "categories": [],
+    "date": "2011-07-16 19:48:43 +0800"
+  },
+  {
+    "slug": "heavy-metal-scene",
+    "title": "夏日重乐季现场",
+    "categories": [],
+    "date": "2011-07-17 10:20:22 +0800"
+  },
+  {
+    "slug": "python-epoll",
+    "title": "python下使用epoll",
+    "categories": [],
+    "date": "2011-07-19 13:11:34 +0800"
+  },
+  {
+    "slug": "write-a-compiler-by-python-in-one-day",
+    "title": "一天时间用python写门语言",
+    "categories": [],
+    "date": "2011-07-25 19:53:29 +0800"
+  },
+  {
+    "slug": "coder-under-building-site",
+    "title": "程序员在工地",
+    "categories": [],
+    "date": "2011-07-31 20:09:31 +0800"
+  },
+  {
+    "slug": "cython-intro",
+    "title": "cython介绍",
+    "categories": [],
+    "date": "2011-08-01 11:09:09 +0800"
+  },
+  {
+    "slug": "everyone-should-learn-one-musical-instrument",
+    "title": "人人都应该掌握一门乐器",
+    "categories": [],
+    "date": "2011-08-03 22:39:51 +0800"
+  },
+  {
+    "slug": "windows-setup-VPN",
+    "title": "windows下面设置VPN连接",
+    "categories": [],
+    "date": "2011-08-15 10:24:12 +0800"
+  },
+  {
+    "slug": "treat-time-as-money",
+    "title": "像对待金钱一样对待时间",
+    "categories": [],
+    "date": "2011-08-18 12:03:53 +0800"
+  },
+  {
+    "slug": "resque-intro",
+    "title": "resque介绍和分析",
+    "categories": [],
+    "date": "2011-08-23 10:38:25 +0800"
+  },
+  {
+    "slug": "how-to-change-yourself",
+    "title": "如何改变一个人",
+    "categories": [],
+    "date": "2011-09-02 11:00:11 +0800"
+  },
+  {
+    "slug": "trainning-series1-how-to-start",
+    "title": "训练专题1_如何开始训练",
+    "categories": [],
+    "date": "2011-09-04 21:58:59 +0800"
+  },
+  {
+    "slug": "no-name",
+    "title": "无题",
+    "categories": [],
+    "date": "2011-09-05 18:45:38 +0800"
+  },
+  {
+    "slug": "how-to-learn-computer-science",
+    "title": "如何学习计算机科学",
+    "categories": [],
+    "date": "2011-09-06 13:58:44 +0800"
+  },
+  {
+    "slug": "ceremony",
+    "title": "仪式",
+    "categories": [],
+    "date": "2011-09-15 08:56:57 +0800"
+  },
+  {
+    "slug": "comprehension",
+    "title": "关于理解",
+    "categories": [],
+    "date": "2011-09-16 09:32:35 +0800"
+  },
+  {
+    "slug": "mongodb-privilege",
+    "title": "mongodb访问权限设置",
+    "categories": [],
+    "date": "2011-09-16 18:31:01 +0800"
+  },
+  {
+    "slug": "mysql-backup",
+    "title": "mysql简单的备份策略",
+    "categories": [],
+    "date": "2011-09-16 18:48:59 +0800"
+  },
+  {
+    "slug": "charactar-needed-by-entrepreneur",
+    "title": "创业者需要的特质",
+    "categories": [],
+    "date": "2011-10-08 20:17:03 +0800"
+  },
+  {
+    "slug": "people-square-meetup",
+    "title": "我到人民广场相亲角相亲",
+    "categories": [],
+    "date": "2011-11-09 19:49:41 +0800"
+  },
+  {
+    "slug": "why-it-is-hard-to-learn-new-things-for-adaults",
+    "title": "为什么成人学习会变得困难",
+    "categories": [],
+    "date": "2011-12-20 11:05:46 +0800"
+  },
+  {
+    "slug": "rails-deploy-by-passenger",
+    "title": "rails_deploy方法之采用passenger",
+    "categories": [],
+    "date": "2011-12-21 09:32:08 +0800"
+  },
+  {
+    "slug": "2011-year-summary",
+    "title": "2011年度总结",
+    "categories": [
+      "resolution"
+    ],
+    "date": "2012-01-01 15:40:39 +0800"
+  },
+  {
+    "slug": "Metaprogramming-Ruby",
+    "title": "Metaprogramming_Ruby学习笔记",
+    "categories": [],
+    "date": "2012-01-01 22:31:19 +0800"
+  },
+  {
+    "slug": "GUI-under-the-hood",
+    "title": "电脑是如何实现图形显示的",
+    "categories": [],
+    "date": "2012-01-06 16:04:16 +0800"
+  },
+  {
+    "slug": "people-square-english-corner",
+    "title": "人民广场英语角参加小记",
+    "categories": [],
+    "date": "2012-02-19 23:11:48 +0800"
+  },
+  {
+    "slug": "javascript-web-applications",
+    "title": "javascript_web_applications_读书笔记",
+    "categories": [],
+    "date": "2012-02-26 19:16:06 +0800"
+  },
+  {
+    "slug": "fang-and-han",
+    "title": "方舟子打韩寒事件我见",
+    "categories": [],
+    "date": "2012-03-06 20:39:29 +0800"
+  },
+  {
+    "slug": "guard",
+    "title": "guard",
+    "categories": [],
+    "date": "2012-03-11 17:32:57 +0800"
+  },
+  {
+    "slug": "rspec",
+    "title": "rspec",
+    "categories": [],
+    "date": "2012-03-13 23:00:51 +0800"
+  },
+  {
+    "slug": "rails-intro",
+    "title": "rails介绍",
+    "categories": [],
+    "date": "2012-04-13 20:05:20 +0800"
+  },
+  {
+    "slug": "pjax",
+    "title": "pjax是什么以及为什么推荐大家用",
+    "categories": [],
+    "date": "2012-04-19 16:21:04 +0800"
+  },
+  {
+    "slug": "unicorn-config",
+    "title": "unicorn配置",
+    "categories": [],
+    "date": "2012-04-21 11:05:54 +0800"
+  },
+  {
+    "slug": "hackthon-in-may",
+    "title": "黑客马拉松活动小记",
+    "categories": [],
+    "date": "2012-05-07 15:01:12 +0800"
+  },
+  {
+    "slug": "new-blog-system",
+    "title": "老书换新封",
+    "categories": [],
+    "date": "2012-09-06 16:01"
+  },
+  {
+    "slug": "you-can-be-happy",
+    "title": "你想要多快乐，就能多快乐",
+    "categories": [],
+    "date": "2012-09-10 10:50"
+  },
+  {
+    "slug": "oauth",
+    "title": "oauth个人总结",
+    "categories": [
+      "ji-zhu"
+    ],
+    "date": "2012-09-12 19:29"
+  },
+  {
+    "slug": "hujs-1",
+    "title": "hujs活动整理和总结1",
+    "categories": [],
+    "date": "2012-09-16 21:55"
+  },
+  {
+    "slug": "hujs-2",
+    "title": "hujs活动整理和总结2",
+    "categories": [],
+    "date": "2012-09-16 23:34"
+  },
+  {
+    "slug": "coffeescript-class",
+    "title": "coffeescript的类机制",
+    "categories": [],
+    "date": "2012-09-18 09:40"
+  },
+  {
+    "slug": "coffeescript",
+    "title": "coffeescript",
+    "categories": [],
+    "date": "2012-09-24 11:01"
+  },
+  {
+    "slug": "ftl",
+    "title": "FTL游戏评测",
+    "categories": [
+      "game"
+    ],
+    "date": "2012-10-05 16:05"
+  },
+  {
+    "slug": "english-matters",
+    "title": "English Matters",
+    "categories": [
+      "english"
+    ],
+    "date": "2012-10-12 15:07"
+  },
+  {
+    "slug": "kazakhstan-time-zone",
+    "title": "尝试哈萨克斯坦时间",
+    "categories": [
+      "life"
+    ],
+    "date": "2012-10-14 22:56"
+  },
+  {
+    "slug": "standing-at-work",
+    "title": "尝试站着工作",
+    "categories": [],
+    "date": "2012-10-21 11:57"
+  },
+  {
+    "slug": "postfix",
+    "title": "postfix架构初探",
+    "categories": [
+      "ji-zhu"
+    ],
+    "date": "2012-10-27 23:57"
+  },
+  {
+    "slug": "new-mac-book-pro",
+    "title": "买了新的笔记本",
+    "categories": [],
+    "date": "2012-11-16 08:39"
+  },
+  {
+    "slug": "gdc-china-2012",
+    "title": "GDC China 2012",
+    "categories": [],
+    "date": "2012-11-18 18:52"
+  },
+  {
+    "slug": "tedxfdu-2012-11",
+    "title": "TEDxFDU 2012年11月 活动总结",
+    "categories": [],
+    "date": "2012-11-27 10:51"
+  },
+  {
+    "slug": "2012-summary",
+    "title": "2012总结与2013计划",
+    "categories": [
+      "resolution"
+    ],
+    "date": "2013-01-03 09:29"
+  },
+  {
+    "slug": "obfuscated-openssh",
+    "title": "obfuscated-openssh介绍",
+    "categories": [],
+    "date": "2013-01-17 22:58"
+  },
+  {
+    "slug": "github-dns-issue",
+    "title": "github最近DNS被污染的事情经过以及解法",
+    "categories": [],
+    "date": "2013-01-21 22:45"
+  },
+  {
+    "slug": "learn-programming",
+    "title": "从零开始学编程",
+    "categories": [],
+    "date": "2013-01-23 15:40"
+  },
+  {
+    "slug": "god-as-service",
+    "title": "进程监控遇到的麻烦事",
+    "categories": [],
+    "date": "2013-01-30 12:58"
+  },
+  {
+    "slug": "i-am-a-atheist",
+    "title": "关于宗教信仰",
+    "categories": [],
+    "date": "2013-02-27 11:37"
+  },
+  {
+    "slug": "reverse-ssh",
+    "title": "如何从外网访问内网主机",
+    "categories": [],
+    "date": "2013-02-28 11:11"
+  },
+  {
+    "slug": "ubuntu-wordpress",
+    "title": "ubuntu搭建wordpress",
+    "categories": [],
+    "date": "2013-02-28 11:27"
+  },
+  {
+    "slug": "split-big-model-in-rails",
+    "title": "rails里面拆分大的model",
+    "categories": [
+      "rails"
+    ],
+    "date": "2013-03-04 22:07"
+  },
+  {
+    "slug": "display-image-after-it-is-downloaded",
+    "title": "display image after it is downloaded",
+    "categories": [
+      "english"
+    ],
+    "date": "2013-03-10 18:40"
+  },
+  {
+    "slug": "install-ruby2-dot-0-by-using-rvm",
+    "title": "install ruby2.0 by using rvm",
+    "categories": [
+      "english",
+      "ruby",
+      "rails"
+    ],
+    "date": "2013-03-17 11:31"
+  },
+  {
+    "slug": "introduce-pow",
+    "title": "pow介绍",
+    "categories": [
+      "development",
+      "ruby"
+    ],
+    "date": "2013-03-24 19:30"
+  },
+  {
+    "slug": "using-https-for-rails",
+    "title": "给Rails加上https支持",
+    "categories": [
+      "rails"
+    ],
+    "date": "2013-03-24 18:46"
+  },
+  {
+    "slug": "try-gitlab",
+    "title": "试用gitlab",
+    "categories": [
+      "rails",
+      "ruby"
+    ],
+    "date": "2013-03-27 12:10"
+  },
+  {
+    "slug": "squeel",
+    "title": "squeel介绍",
+    "categories": [],
+    "date": "2013-04-02 11:44"
+  },
+  {
+    "slug": "mosh",
+    "title": "mosh介绍",
+    "categories": [],
+    "date": "2013-04-05 15:06"
+  },
+  {
+    "slug": "indie-games",
+    "title": "关于独立游戏",
+    "categories": [],
+    "date": "2013-04-08 08:54"
+  },
+  {
+    "slug": "debug-rails-autolink",
+    "title": "调试rails autolink",
+    "categories": [],
+    "date": "2013-05-09 22:03"
+  },
+  {
+    "slug": "remote-sound",
+    "title": "手机远程收听电脑声音",
+    "categories": [],
+    "date": "2013-05-09 12:48"
+  },
+  {
+    "slug": "commandline-proxy",
+    "title": "命令行下使用全局代理",
+    "categories": [],
+    "date": "2013-05-21 15:15"
+  },
+  {
+    "slug": "email-css",
+    "title": "如何写邮件样式",
+    "categories": [],
+    "date": "2013-05-21 21:29"
+  },
+  {
+    "slug": "reliable-email-delivery",
+    "title": "保证电子邮件的送达率",
+    "categories": [],
+    "date": "2013-05-21 19:15"
+  },
+  {
+    "slug": "no-need-real-book-any-more",
+    "title": "把书籍全部电子化",
+    "categories": [],
+    "date": "2013-05-26 22:43"
+  },
+  {
+    "slug": "continuous-integration-systems",
+    "title": "持续集成测试系统评估",
+    "categories": [],
+    "date": "2013-06-04 23:11"
+  },
+  {
+    "slug": "recommander-similar-items",
+    "title": "如何实现推荐类似文章功能",
+    "categories": [
+      "ji-qi-xue-xi",
+      "bian-cheng",
+      "ruby"
+    ],
+    "date": "2013-06-13 20:31"
+  },
+  {
+    "slug": "website-support-retina-device",
+    "title": "如何支持视网膜屏幕",
+    "categories": [
+      "frontend"
+    ],
+    "date": "2013-07-18 15:42"
+  },
+  {
+    "slug": "nested-set-model",
+    "title": "nested set model介绍",
+    "categories": [],
+    "date": "2013-07-27 16:15"
+  },
+  {
+    "slug": "website-cache",
+    "title": "网站cache机制",
+    "categories": [],
+    "date": "2013-08-11 19:45"
+  },
+  {
+    "slug": "js-controller",
+    "title": "一种简单的前端框架写法",
+    "categories": [],
+    "date": "2013-08-18 00:04"
+  },
+  {
+    "slug": "css-two-column",
+    "title": "css实现双栏同等高度",
+    "categories": [
+      "frontend"
+    ],
+    "date": "2013-08-25 08:05"
+  },
+  {
+    "slug": "project-time-spending",
+    "title": "项目计划预估",
+    "categories": [],
+    "date": "2013-08-26 19:40"
+  },
+  {
+    "slug": "pptp-vpn",
+    "title": "如何设置PPTP VPN",
+    "categories": [],
+    "date": "2013-09-21 10:04"
+  },
+  {
+    "slug": "rails-customize-error-page",
+    "title": "rails定制报错页面",
+    "categories": [],
+    "date": "2013-10-20 10:58"
+  },
+  {
+    "slug": "ordinary-or-extraordinary",
+    "title": "牛逼或怂逼",
+    "categories": [],
+    "date": "2013-10-27 19:45"
+  },
+  {
+    "slug": "boolean-retrieval",
+    "title": "最简单的搜索引擎",
+    "categories": [],
+    "date": "2013-10-30 23:52"
+  },
+  {
+    "slug": "daemonize-process",
+    "title": "如何让进程后台执行",
+    "categories": [],
+    "date": "2013-11-20 03:51"
+  },
+  {
+    "slug": "why-write-diary",
+    "title": "为什么我要每天写日记",
+    "categories": [],
+    "date": "2013-11-24 21:23"
+  },
+  {
+    "slug": "ruby-memory-leak-debug",
+    "title": "ruby内存泄漏调试方法",
+    "categories": [
+      "ruby"
+    ],
+    "date": "2013-11-27 20:44"
+  },
+  {
+    "slug": "librr-debug-cpu-usage-high",
+    "title": "记一次调试ruby内存问题",
+    "categories": [],
+    "date": "2013-11-28 10:36"
+  },
+  {
+    "slug": "librr",
+    "title": "librr介绍",
+    "categories": [
+      "ruby",
+      "kai-fa"
+    ],
+    "date": "2013-12-11 19:15"
+  },
+  {
+    "slug": "my-input-method",
+    "title": "关于输入法",
+    "categories": [],
+    "date": "2013-12-28 18:50:56 +0800"
+  },
+  {
+    "slug": "too-old-to-program",
+    "title": "Too Old to Program",
+    "categories": [
+      "english"
+    ],
+    "date": "2013-12-29 14:10:05 +0800"
+  },
+  {
+    "slug": "how-to-read-ruby-source-code",
+    "title": "如何阅读ruby源码",
+    "categories": [],
+    "date": "2014-01-03 19:55:17 +0800"
+  },
+  {
+    "slug": "2013-summary",
+    "title": "2013总结与2014计划",
+    "categories": [
+      "resolution"
+    ],
+    "date": "2014-01-04 10:25:35 +0800"
+  },
+  {
+    "slug": "mobile-html",
+    "title": "针对手机端写网页的方法",
+    "categories": [],
+    "date": "2014-01-12 18:33:37 +0800"
+  },
+  {
+    "slug": "information-sugar",
+    "title": "information sugar",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-01-19 21:47:34 +0800"
+  },
+  {
+    "slug": "introduce-autoit",
+    "title": "autoit介绍",
+    "categories": [],
+    "date": "2014-01-19 20:47:06 +0800"
+  },
+  {
+    "slug": "access-like-software",
+    "title": "access类型软件调研",
+    "categories": [],
+    "date": "2014-01-28 09:44:48 +0800"
+  },
+  {
+    "slug": "the-meaning-of-life",
+    "title": "the meaning of life",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-01-28 08:15:48 +0800"
+  },
+  {
+    "slug": "programming-chaos",
+    "title": "programming chaos",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-02-06 14:05:23 +0800"
+  },
+  {
+    "slug": "coj-1132",
+    "title": "解一道算法题",
+    "categories": [],
+    "date": "2014-02-07 09:32:43 +0800"
+  },
+  {
+    "slug": "factorio",
+    "title": "factorio介绍",
+    "categories": [
+      "games"
+    ],
+    "date": "2014-02-15 17:04:35 +0800"
+  },
+  {
+    "slug": "guan-yu-rails",
+    "title": "关于Rails",
+    "categories": [],
+    "date": "2014-03-09 19:56:01 +0800"
+  },
+  {
+    "slug": "pitfalls-of-programming",
+    "title": "pitfalls of programming",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-03-09 21:19:12 +0800"
+  },
+  {
+    "slug": "view-point",
+    "title": "求视线范围的算法",
+    "categories": [],
+    "date": "2014-03-29 10:55:02 +0800"
+  },
+  {
+    "slug": "fu-mao",
+    "title": "关于服贸协定",
+    "categories": [],
+    "date": "2014-04-05 19:02:35 +0800"
+  },
+  {
+    "slug": "xiang-qing",
+    "title": "关于相亲活动",
+    "categories": [],
+    "date": "2014-04-05 19:24:14 +0800"
+  },
+  {
+    "slug": "auto-update",
+    "title": "自动更新程序功能思考",
+    "categories": [],
+    "date": "2014-04-15 08:16:11 +0800"
+  },
+  {
+    "slug": "occult",
+    "title": "神秘学",
+    "categories": [],
+    "date": "2014-04-19 22:44:28 +0800"
+  },
+  {
+    "slug": "zhao-dui-xiang",
+    "title": "如何找对象",
+    "categories": [],
+    "date": "2014-04-28 14:32:17 +0800"
+  },
+  {
+    "slug": "grundy",
+    "title": "无偏博弈游戏的解法",
+    "categories": [],
+    "date": "2014-05-05 09:24:23 +0800"
+  },
+  {
+    "slug": "working-late",
+    "title": "加班语录",
+    "categories": [],
+    "date": "2014-06-05 17:48:36 +0800"
+  },
+  {
+    "slug": "fast-food",
+    "title": "大城市快捷美食解决方案",
+    "categories": [],
+    "date": "2014-06-07 09:27:44 +0800"
+  },
+  {
+    "slug": "fitting",
+    "title": "如何减肥",
+    "categories": [],
+    "date": "2014-06-09 14:03:00 +0800"
+  },
+  {
+    "slug": "capistrano",
+    "title": "capistrano介绍和入门",
+    "categories": [
+      "ruby"
+    ],
+    "date": "2014-06-16 10:28:51 +0800"
+  },
+  {
+    "slug": "english-mask",
+    "title": "country of mask",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-06-30 11:17:21 +0800"
+  },
+  {
+    "slug": "mask",
+    "title": "戴面具的国度",
+    "categories": [],
+    "date": "2014-06-30 09:33:34 +0800"
+  },
+  {
+    "slug": "english-gem",
+    "title": "how to use gem",
+    "categories": [
+      "ruby",
+      "english"
+    ],
+    "date": "2014-12-07 09:48:29 +0800"
+  },
+  {
+    "slug": "gem",
+    "title": "如何使用Gem",
+    "categories": [
+      "ruby"
+    ],
+    "date": "2014-12-07 09:41:47 +0800"
+  },
+  {
+    "slug": "backup-method",
+    "title": "个人资料备份策略",
+    "categories": [],
+    "date": "2014-12-13 17:33:29 +0800"
+  },
+  {
+    "slug": "english-backup-method",
+    "title": "personal data backup method",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-12-13 18:35:40 +0800"
+  },
+  {
+    "slug": "english-linux-disk-format",
+    "title": "how to mount disk to linux operation system",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-12-16 17:33:42 +0800"
+  },
+  {
+    "slug": "linux-disk-format",
+    "title": "linux分区策略",
+    "categories": [
+      "linux"
+    ],
+    "date": "2014-12-16 17:21:51 +0800"
+  },
+  {
+    "slug": "english-old-is-better",
+    "title": "old is better",
+    "categories": [
+      "english"
+    ],
+    "date": "2014-12-27 22:28:42 +0800"
+  },
+  {
+    "slug": "old-is-better",
+    "title": "喜新厌旧",
+    "categories": [],
+    "date": "2014-12-27 22:23:57 +0800"
+  },
+  {
+    "slug": "2014-summary",
+    "title": "2014总结与2015年计划",
+    "categories": [],
+    "date": "2015-01-04 08:25:59 +0800"
+  },
+  {
+    "slug": "english-2014-summary",
+    "title": "2014 Summary",
+    "categories": [
+      "english"
+    ],
+    "date": "2015-01-04 12:00:19 +0800"
+  },
+  {
+    "slug": "linux-arch",
+    "title": "从零开始构建linux",
+    "categories": [],
+    "date": "2015-02-26 12:21:00 +0800"
+  },
+  {
+    "slug": "introduce-chef",
+    "title": "chef介绍",
+    "categories": [],
+    "date": "2015-03-05 12:34:16 +0800"
+  },
+  {
+    "slug": "nas-server",
+    "title": "家庭NAS服务器搭建",
+    "categories": [],
+    "date": "2015-03-06 12:44:37 +0800"
+  },
+  {
+    "slug": "docker-introduction",
+    "title": "docker介绍",
+    "categories": [],
+    "date": "2015-03-12 12:55:36 +0800"
+  },
+  {
+    "slug": "into-systemd",
+    "title": "systemd初探",
+    "categories": [],
+    "date": "2015-03-12 12:03:05 +0800"
+  },
+  {
+    "slug": "nodewebkit-client-server-architecture-design",
+    "title": "采用node-webkit进行C/S架构客户端设计",
+    "categories": [],
+    "date": "2015-03-14 15:00:02 +0800"
+  },
+  {
+    "slug": "introduce-bitcoin",
+    "title": "比特币介绍",
+    "categories": [],
+    "date": "2015-03-19 11:51:33 +0800"
+  },
+  {
+    "slug": "introduce-slack",
+    "title": "slack介绍-企业级实时通讯工具",
+    "categories": [],
+    "date": "2015-03-26 17:33:52 +0800"
+  },
+  {
+    "slug": "rails-deployment",
+    "title": "rails项目的发布",
+    "categories": [],
+    "date": "2015-03-28 10:34:22 +0800"
+  },
+  {
+    "slug": "rails-server-restore",
+    "title": "rails容灾恢复策略",
+    "categories": [],
+    "date": "2015-03-28 19:53:07 +0800"
+  },
+  {
+    "slug": "right-way-to-use-sns",
+    "title": "正确使用社交网络的方法",
+    "categories": [],
+    "date": "2015-04-21 12:32:51 +0800"
+  },
+  {
+    "slug": "chef-manage-small-group-of-servers",
+    "title": "用chef对少量服务器进行配置管理",
+    "categories": [],
+    "date": "2015-05-05 10:12:09 +0800"
+  },
+  {
+    "slug": "learning-asp",
+    "title": "学习ASP.NET心得",
+    "categories": [],
+    "date": "2015-05-10 22:05:24 +0800"
+  },
+  {
+    "slug": "rails-export-data",
+    "title": "rails导出数据经验整理",
+    "categories": [
+      "rails"
+    ],
+    "date": "2015-05-20 08:42:25 +0800"
+  },
+  {
+    "slug": "fuck-commandline",
+    "title": "更好的命令行",
+    "categories": [],
+    "date": "2015-05-23 08:56:28 +0800"
+  },
+  {
+    "slug": "zhuangxiugongshi",
+    "title": "是否要用装修公司",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-07-20 09:12:40 +0800"
+  },
+  {
+    "slug": "low-network-cross-gfw",
+    "title": "局域网时代下科学上网",
+    "categories": [],
+    "date": "2015-07-31 17:25:40 +0800"
+  },
+  {
+    "slug": "common-data-exchange-format",
+    "title": "什么通用数据交换格式更好",
+    "categories": [],
+    "date": "2015-08-29 16:34:06 +0800"
+  },
+  {
+    "slug": "window",
+    "title": "装修如何选择窗户",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-09-06 15:56:58 +0800"
+  },
+  {
+    "slug": "zhuangxiu",
+    "title": "装修",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-09-06 15:49:17 +0800"
+  },
+  {
+    "slug": "vrv",
+    "title": "是否要用中央空调",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-09-13 10:33:23 +0800"
+  },
+  {
+    "slug": "choose-furniture",
+    "title": "乐从选购家具经验",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-10-09 20:32:50 +0800"
+  },
+  {
+    "slug": "design-home",
+    "title": "家装设计策略",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2015-11-15 14:26:58 +0800"
+  },
+  {
+    "slug": "happy-new-world",
+    "title": "赛博朋克化的世界",
+    "categories": [],
+    "date": "2015-12-13 13:05:09 +0800"
+  },
+  {
+    "slug": "long-article",
+    "title": "为什么要阅读长文章",
+    "categories": [],
+    "date": "2015-12-13 10:51:38 +0800"
+  },
+  {
+    "slug": "2015-summary",
+    "title": "2015年度总结",
+    "categories": [],
+    "date": "2016-01-01 15:37:33 +0800"
+  },
+  {
+    "slug": "ikea",
+    "title": "杭州宜家购物心得",
+    "categories": [
+      "zhuang-xiu"
+    ],
+    "date": "2016-05-30 16:43:22 +0800"
+  },
+  {
+    "slug": "how-to-choose-a-car",
+    "title": "如何挑选汽车",
+    "categories": [],
+    "date": "2016-08-29 15:06:25 +0800"
+  },
+  {
+    "slug": "bicycle-body-building",
+    "title": "骑折叠自行车健身",
+    "categories": [],
+    "date": "2016-09-24 13:16:12 +0800"
+  },
+  {
+    "slug": "recreational-vehicle",
+    "title": "如何选择房车",
+    "categories": [],
+    "date": "2016-09-24 11:52:48 +0800"
+  },
+  {
+    "slug": "buy-insurance",
+    "title": "关于保险",
+    "categories": [],
+    "date": "2016-09-27 15:06:33 +0800"
+  },
+  {
+    "slug": "better-house-market",
+    "title": "更好的住宅行业",
+    "categories": [],
+    "date": "2016-10-08 10:47:33 +0800"
+  },
+  {
+    "slug": "new-desktop-computer",
+    "title": "考虑买电脑",
+    "categories": [],
+    "date": "2016-12-03 11:17:36 +0800"
+  },
+  {
+    "slug": "shuiku",
+    "title": "水库论坛告诉我什么是炒房",
+    "categories": [],
+    "date": "2016-12-22 16:19:20 +0800"
+  },
+  {
+    "slug": "2016-summary",
+    "title": "2016年度总结",
+    "categories": [],
+    "date": "2016-12-29 08:37:33 +0800"
+  },
+  {
+    "slug": "ansible",
+    "title": "ansible介绍和服务器管理思考",
+    "categories": [],
+    "date": "2017-02-05 10:16:50 +0800"
+  },
+  {
+    "slug": "ruby-have-no-program-optimize",
+    "title": "ruby没有做到编程语言应该有的优化",
+    "categories": [
+      "ruby-sucks"
+    ],
+    "date": "2017-02-05 11:06:03 +0800"
+  },
+  {
+    "slug": "ruby-need-static-type-checking-system",
+    "title": "ruby需要一个静态类型验证系统",
+    "categories": [
+      "ruby-sucks"
+    ],
+    "date": "2017-02-05 10:33:54 +0800"
+  },
+  {
+    "slug": "long-request-api-design",
+    "title": "长时API调用设计方案",
+    "categories": [],
+    "date": "2017-03-28 20:59:03 +0800"
+  },
+  {
+    "slug": "link-domain-name-to-local-pc",
+    "title": "研究如何给本地机器绑定域名",
+    "categories": [],
+    "date": "2017-04-03 18:40:11 +0800"
+  },
+  {
+    "slug": "install-kdeneon",
+    "title": "在新笔记本上安装Kdeneon",
+    "categories": [],
+    "date": "2017-04-09 09:58:40 +0800"
+  },
+  {
+    "slug": "gns3",
+    "title": "GNS3介绍,安装和使用",
+    "categories": [],
+    "date": "2017-04-15 20:01:27 +0800"
+  },
+  {
+    "slug": "motobike",
+    "title": "考虑摩托车",
+    "categories": [],
+    "date": "2017-04-16 19:26:06 +0800"
+  },
+  {
+    "slug": "new-bag",
+    "title": "如何挑选背包",
+    "categories": [],
+    "date": "2017-04-16 18:21:19 +0800"
+  },
+  {
+    "slug": "password-authentication-is-bad",
+    "title": "比密码登录更好的权限验证方式",
+    "categories": [],
+    "date": "2017-05-15 13:37:59 +0800"
+  },
+  {
+    "slug": "encrypted-git-repo",
+    "title": "加密git远端版本库",
+    "categories": [],
+    "date": "2017-06-08 10:39:36 +0800"
+  },
+  {
+    "slug": "retire-some-programming-languages",
+    "title": "我们需要淘汰一些编程语言",
+    "categories": [],
+    "date": "2017-07-03 11:24:09 +0800"
+  },
+  {
+    "slug": "server-architecture-configuration-management",
+    "title": "如何一个人管理一堆服务器",
+    "categories": [],
+    "date": "2017-07-08 19:45:17 +0800"
+  },
+  {
+    "slug": "understand-computer-science-in-one-day-fundamental",
+    "title": "一天弄懂计算机科学之体篇",
+    "categories": [],
+    "date": "2017-07-16 13:30:16 +0800"
+  },
+  {
+    "slug": "understand-computer-science-in-one-day",
+    "title": "一天弄懂计算机科学",
+    "categories": [],
+    "date": "2017-07-16 13:13:04 +0800"
+  },
+  {
+    "slug": "modern-pitfalls",
+    "title": "现代社会防骗指南",
+    "categories": [],
+    "date": "2017-07-23 13:11:45 +0800"
+  },
+  {
+    "slug": "about-social-system",
+    "title": "论社会制度",
+    "categories": [],
+    "date": "2017-07-30 17:44:57 +0800"
+  },
+  {
+    "slug": "ordinary-is-week",
+    "title": "论普通人的弱",
+    "categories": [],
+    "date": "2017-11-12 11:40:40 +0800"
+  },
+  {
+    "slug": "make-more-money",
+    "title": "赚钱就是正义",
+    "categories": [],
+    "date": "2017-11-19 19:53:51 +0800"
+  },
+  {
+    "slug": "remote-windows-server-commandline",
+    "title": "windows服务器远程跑命令行代码",
+    "categories": [],
+    "date": "2017-12-05 22:26:28 +0800"
+  },
+  {
+    "slug": "midlife-crisis",
+    "title": "论中年危机以及应对策略",
+    "categories": [],
+    "date": "2017-12-31 12:58:49 +0800"
+  },
+  {
+    "slug": "2017-summary",
+    "title": "2017年度总结",
+    "categories": [],
+    "date": "2018-01-07 15:34:01 +0800"
+  },
+  {
+    "slug": "2018-summary",
+    "title": "2018年度总结",
+    "categories": [],
+    "date": "2019-01-06 10:41:17 -0600"
+  },
+  {
+    "slug": "996",
+    "title": "论996",
+    "categories": [],
+    "date": "2019-03-31 10:44:10 +0800"
+  },
+  {
+    "slug": "programmer-class",
+    "title": "程序员为什么是低级兵种",
+    "categories": [],
+    "date": "2019-04-08 20:45:49 +0800"
+  },
+  {
+    "slug": "rational-man",
+    "title": "正确理解经济学的理性人假设",
+    "categories": [],
+    "date": "2019-04-08 21:02:05 +0800"
+  },
+  {
+    "slug": "migrate-to-us",
+    "title": "不建议移民欧美",
+    "categories": [],
+    "date": "2019-04-11 09:37:59 +0800"
+  },
+  {
+    "slug": "career-build",
+    "title": "职业发展的框架",
+    "categories": [],
+    "date": "2019-04-13 13:35:38 +0800"
+  },
+  {
+    "slug": "good-woman",
+    "title": "重男轻女是对的",
+    "categories": [],
+    "date": "2019-04-27 13:34:31 +0800"
+  },
+  {
+    "slug": "spend-money-on-child",
+    "title": "请控制在小孩教育上面的花费",
+    "categories": [],
+    "date": "2019-04-27 14:50:08 +0800"
+  },
+  {
+    "slug": "life-money",
+    "title": "普通中国人一辈子需要赚多少钱",
+    "categories": [],
+    "date": "2019-06-01 12:38:37 +0800"
+  },
+  {
+    "slug": "camper-trailer",
+    "title": "如何选购房车",
+    "categories": [],
+    "date": "2020-04-30 09:36:10 +0800"
+  },
+  {
+    "slug": "home-server",
+    "title": "家用服务器整体策略思考",
+    "categories": [],
+    "date": "2021-02-07 10:07:30 +0800"
+  },
+  {
+    "slug": "laptop-input",
+    "title": "膝上键盘鼠标方案",
+    "categories": [],
+    "date": "2021-02-07 09:50:36 +0800"
+  },
+  {
+    "slug": "population-problem",
+    "title": "如何解决人口老龄化问题",
+    "categories": [],
+    "date": "2021-02-14 21:34:01 +0800"
+  },
+  {
+    "slug": "borgbackup",
+    "title": "更合理的文件备份方法",
+    "categories": [],
+    "date": "2021-03-27 13:30:20 +0800"
+  },
+  {
+    "slug": "small-it-arch",
+    "title": "小型IT系统如何架构",
+    "categories": [],
+    "date": "2021-03-27 12:56:05 +0800"
+  },
+  {
+    "slug": "outside-coding",
+    "title": "如何做到不带包随时远程工作",
+    "categories": [],
+    "date": "2021-12-14 15:12:44 +0800"
+  },
+  {
+    "slug": "smarthome",
+    "title": "为什么要搞智能家居",
+    "categories": [
+      "smarthome"
+    ],
+    "date": "2022-12-25 11:27:49 +0800"
+  },
+  {
+    "slug": "multi-room-music",
+    "title": "智能家居之全屋音乐方案",
+    "categories": [
+      "smarthome"
+    ],
+    "date": "2022-12-26 09:28:40 +0800"
+  },
+  {
+    "slug": "smarthome-light",
+    "title": "智能家居之灯光改造方案",
+    "categories": [
+      "smarthome"
+    ],
+    "date": "2022-12-27 09:13:48 +0800"
+  },
+  {
+    "slug": "pc-laptop-cowork",
+    "title": "笔记本结合台式机开发方案",
+    "categories": [],
+    "date": "2022-12-30 10:05:10 +0800"
+  },
+  {
+    "slug": "no-need-10g",
+    "title": "家庭网络没必要上万兆",
+    "categories": [],
+    "date": "2022-12-31 11:17:45 +0800"
+  },
+  {
+    "slug": "zero-hot-water",
+    "title": "远端零热水方案",
+    "categories": [],
+    "date": "2023-01-01 22:20:56 +0800"
+  },
+  {
+    "slug": "kid-outside",
+    "title": "带娃户外方案",
+    "categories": [],
+    "date": "2023-01-03 09:56:32 +0800"
+  },
+  {
+    "slug": "computer-eco",
+    "title": "消费级计算机生态位",
+    "categories": [],
+    "date": "2023-01-05 12:00:50 +0800"
+  },
+  {
+    "slug": "china-developed",
+    "title": "中国必然成为发达国家",
+    "categories": [],
+    "date": "2023-01-07 10:29:24 +0800"
+  },
+  {
+    "slug": "nas-hardware",
+    "title": "家用NAS机器设计方案",
+    "categories": [],
+    "date": "2023-01-09 14:46:27 +0800"
+  },
+  {
+    "slug": "electronic-car",
+    "title": "电动车优势劣势以及选择",
+    "categories": [],
+    "date": "2023-01-10 10:29:16 +0800"
+  },
+  {
+    "slug": "cai-li",
+    "title": "彩礼制度有用吗",
+    "categories": [],
+    "date": "2023-01-14 10:55:49 +0800"
+  },
+  {
+    "slug": "price-depends-on-demand-and-supply",
+    "title": "价格由供需决定",
+    "categories": [],
+    "date": "2023-02-05 10:56:20 +0800"
+  },
+  {
+    "slug": "work-in-car",
+    "title": "车作为第二空间",
+    "categories": [],
+    "date": "2023-03-19 21:58:43 +0800"
+  },
+  {
+    "slug": "bed-car",
+    "title": "床车方案",
+    "categories": [],
+    "date": "2023-05-22 16:44:12 +0800"
+  },
+  {
+    "slug": "car-air-conditioner",
+    "title": "床车空调方案",
+    "categories": [],
+    "date": "2023-05-22 16:15:06 +0800"
+  },
+  {
+    "slug": "ipkvm",
+    "title": "低成本IPKVM控制多台主机",
+    "categories": [],
+    "date": "2024-07-07 22:48:21 +0800"
+  },
+  {
+    "slug": "radio-useless",
+    "title": "收音机没啥用了",
+    "categories": [],
+    "date": "2024-07-07 15:09:28 +0000"
+  }
+]

@@ -1,0 +1,36 @@
+# Extra rules for this project on top of the git-leaks defaults.
+#
+#   git-leaks git . --config .gitleaks.toml
+#
+# The defaults already cover GitHub tokens, private keys, generic API keys
+# and so on. These entries pin down the two credential shapes this repo
+# actually uses, so a leaked value cannot slip through under a generic rule.
+
+title = "blog secrets"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "disqus-api-key"
+description = "Disqus API key"
+regex = '''(?i)disqus[_-]?api[_-]?key\s*[=:]\s*["']?[a-z0-9]{32,}'''
+keywords = ["disqus"]
+
+[[rules]]
+id = "giscus-discussion-ids"
+description = "Giscus repository or category id"
+regex = '''(?i)(repo[_-]?id|category[_-]?id)\s*[=:]\s*["']?(R_kgDO|DIC_kwDO)[A-Za-z0-9_]+'''
+keywords = ["repo_id", "repoId", "category_id", "categoryId", "R_kgDO", "DIC_kwDO"]
+
+# RE2 has no look-ahead, so the "xxxx" placeholders are filtered here.
+[rules.allowlist]
+description = "placeholder ids"
+regexTarget = "match"
+regexes = ['''x{4,}''']
+
+[[rules]]
+id = "github-discussion-token"
+description = "GitHub token used for the Discussions import"
+regex = '''(?i)github[_-]?token\s*[=:]\s*["']?(gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{60,})'''
+keywords = ["github_token", "githubToken", "ghp_", "github_pat_"]

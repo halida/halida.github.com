@@ -1,0 +1,55 @@
+---
+import config from "@/config";
+
+type Props = {
+  /**
+   * Path of the post, e.g. "/blog/tdd/".
+   *
+   * Giscus matches posts to discussions by this value, so it has to stay
+   * stable for the lifetime of the site.
+   */
+  pathname: string;
+};
+
+const { pathname } = Astro.props;
+
+const giscus =
+  config.comments?.provider === "giscus" ? config.comments.giscus : null;
+
+// Without both ids (no .env yet) the widget cannot work, so it is skipped
+// instead of rendering a broken frame.
+const ready = Boolean(giscus?.repoId && giscus?.categoryId);
+---
+
+{
+  giscus && ready && (
+    <section id="comments" class="mt-12 border-t border-dashed pt-8">
+      <h2 class="text-2xl font-semibold">评论</h2>
+
+      <p class="text-muted-foreground mt-2 text-sm">
+        评论通过 GitHub 账号发布，需要先使用 GitHub 登录。
+      </p>
+
+      <div class="giscus" data-pathname={pathname} />
+
+      <script
+        is:inline
+        src="https://giscus.app/client.js"
+        data-repo={giscus.repo}
+        data-repo-id={giscus.repoId}
+        data-category={giscus.category}
+        data-category-id={giscus.categoryId}
+        data-mapping={giscus.mapping ?? "pathname"}
+        data-strict={giscus.strict ? "1" : "0"}
+        data-reactions-enabled={giscus.reactionsEnabled === false ? "0" : "1"}
+        data-emit-metadata={giscus.emitMetadata ? "1" : "0"}
+        data-input-position={giscus.inputPosition ?? "top"}
+        data-theme="preferred_color_scheme"
+        data-lang={giscus.lang ?? "zh-CN"}
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+      />
+    </section>
+  )
+}
