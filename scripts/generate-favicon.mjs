@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Generates public/favicon.ico from public/favicon.png.
  *
