@@ -105,7 +105,7 @@
 <h2 id="选择类似的文章">选择类似的文章</h2>
 <p>把文章抽象成一个在关键词作为维度的多维空间的向量，然后2篇文章的相似度就是它们之间的夹角。
 这种方法叫<a href="http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html">余弦相似度</a>。
-按照<a href="en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
+按照<a href="https://en.wikipedia.org/wiki/Cosine_similarity">公式</a>：</p>
 <p><img src="/images/posts/cosine-similarity.png" alt=""></p>
 <p>实现起来很简单：</p>
 <pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="ruby"><code><span class="line"><span style="--shiki-light:#D32F2F;--shiki-light-font-style:inherit;--shiki-dark:#C792EA;--shiki-dark-font-style:italic">  def</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> similars</span><span style="--shiki-light:#FF9800;--shiki-dark:#7FDBCA"> data</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB">,</span><span style="--shiki-light:#FF9800;--shiki-dark:#7FDBCA"> d1</span></span>
