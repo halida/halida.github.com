@@ -17,17 +17,9 @@ description = "Disqus API key"
 regex = '''(?i)disqus[_-]?api[_-]?key\s*[=:]\s*["']?[a-z0-9]{32,}'''
 keywords = ["disqus"]
 
-[[rules]]
-id = "giscus-discussion-ids"
-description = "Giscus repository or category id"
-regex = '''(?i)(repo[_-]?id|category[_-]?id)\s*[=:]\s*["']?(R_kgDO|DIC_kwDO)[A-Za-z0-9_]+'''
-keywords = ["repo_id", "repoId", "category_id", "categoryId", "R_kgDO", "DIC_kwDO"]
-
-# RE2 has no look-ahead, so the "xxxx" placeholders are filtered here.
-[rules.allowlist]
-description = "placeholder ids"
-regexTarget = "match"
-regexes = ['''x{4,}''']
+# Note: the Giscus repository and category ids are *not* secrets — they are
+# public identifiers that appear in every page's <script> tag. They are kept
+# in .env for tidiness, but flagging them would only produce noise.
 
 [[rules]]
 id = "github-discussion-token"
